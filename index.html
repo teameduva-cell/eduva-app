@@ -1,0 +1,1279 @@
+﻿<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EDUVA - Kota Smart Learning Hub</title>
+  
+  <!-- Tailwind CSS & Lucide Icons -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Three.js 3D Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <!-- Markdown & LaTeX Engine -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+  
+  <!-- Professional Fonts: Plus Jakarta Sans & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    * { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+    .mono-font { font-family: 'JetBrains Mono', monospace; }
+    
+    .bg-paper { background-color: #F8FAFC; }
+    .card-clean {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+    }
+    .card-clean:hover { border-color: #CBD5E1; }
+    
+    .ink-navy { background-color: #0F172A; color: #F8FAFC; }
+    .marigold-gradient { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+    .logo-gradient { background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
+    
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .chat-bubble p { margin-bottom: 0.5rem; }
+    .chat-bubble p:last-child { margin-bottom: 0; }
+    .chat-bubble ul, .chat-bubble ol { margin-left: 1.25rem; margin-bottom: 0.5rem; list-style-type: disc; }
+    .chat-bubble strong { color: #0F172A; font-weight: 700; }
+    .katex-display { margin: 0.5rem 0 !important; overflow-x: auto; overflow-y: hidden; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fadeIn { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased">
+
+  <!-- TOP PROFESSIONAL HEADER -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-xs">
+    <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+      <div class="w-10 h-10 logo-gradient rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-md">
+        E✨
+      </div>
+      <div>
+        <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none flex items-center gap-1.5">
+          EDUVA
+        </h1>
+        <p class="text-[10px] text-slate-500 font-bold mt-0.5 tracking-wider uppercase mono-font">KOTA SMART LEARNING HUB</p>
+      </div>
+    </div>
+
+    <!-- Right Header Tools, Goal Selector & Optional Login -->
+    <div class="flex items-center space-x-3">
+      <select id="header-batch-select" onchange="updateStudentGoal(this.value)" class="bg-slate-50 border border-slate-300 text-slate-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-pointer mono-font shadow-2xs">
+        <option value="Eduva Medicos">Eduva Medicos (NEET)</option>
+        <option value="Eduva Builders">Eduva Builders (JEE)</option>
+        <option value="Eduva Scholar">Eduva Scholar (11th-12th)</option>
+        <option value="Eduva Ignite">Eduva Ignite (9th-10th)</option>
+        <option value="Eduva Junior">Eduva Junior (6th-8th)</option>
+      </select>
+
+      <button onclick="giveKotaBoost()" class="hidden sm:flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs">
+        <i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡
+      </button>
+
+      <div class="bg-red-50 border border-red-200 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
+        <i data-lucide="flame" class="w-4 h-4 text-red-600 fill-red-600"></i>
+        <span class="text-xs font-black text-red-700 mono-font" id="header-streak-display">12 STREAK</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <div class="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-5 lg:p-6 pb-24 md:pb-6 flex gap-6">
+
+    <!-- DESKTOP SIDEBAR -->
+    <aside class="hidden lg:flex flex-col w-72 card-clean rounded-3xl p-4 gap-4 shrink-0 h-[calc(100vh-100px)] justify-between border border-slate-200 overflow-y-auto hide-scrollbar">
+      <div class="space-y-4">
+        <!-- Professional ID Card Header -->
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center relative overflow-hidden shadow-2xs">
+          <div class="w-14 h-14 mx-auto rounded-2xl ink-navy flex items-center justify-center mb-2 text-2xl text-white font-black shadow-sm">
+            👨‍🏫
+          </div>
+          <h3 class="font-extrabold text-sm text-slate-900 flex items-center justify-center gap-1">
+            Edu Sir <i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-600 fill-blue-600"></i>
+          </h3>
+          <p class="text-[11px] text-slate-600 font-bold mt-0.5 mono-font" id="sidebar-greeting-title">Hello Future Doctor!</p>
+          <div class="mt-2 pt-2 border-t border-slate-200 text-[10px] mono-font text-slate-400">ROLL NO: <span class="text-slate-900 font-bold">KOTA-2026-99</span></div>
+        </div>
+
+        <nav class="space-y-1.5 text-xs font-bold">
+          <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl ink-navy text-white transition shadow-2xs">
+            <i data-lucide="home" class="w-4 h-4"></i> Home Dashboard
+          </button>
+          <button onclick="switchTab('courses')" id="dtab-courses" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i> कोर्सेज & AI DPPs
+          </button>
+          <button onclick="switchTab('chat')" id="dtab-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i> AI Chat & Doubts
+          </button>
+          <button onclick="switchTab('community')" id="dtab-community" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी डाउट पूल 👥
+          </button>
+          <button onclick="switchTab('flashcards')" id="dtab-flashcards" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="layers" class="w-4 h-4 text-amber-500"></i> 1-Min Flashcards 🃏
+          </button>
+          <button onclick="switchTab('mocktest')" id="dtab-mocktest" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="timer" class="w-4 h-4 text-rose-500"></i> Kota Test Series ⏱️
+          </button>
+          <button onclick="switchTab('vault')" id="dtab-vault" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> Formula Vault 📌
+          </button>
+          <button onclick="switchTab('classroom')" id="dtab-classroom" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="video" class="w-4 h-4 text-cyan-600"></i> Live AI Classroom 🎥
+          </button>
+          <button onclick="switchTab('timetable')" id="dtab-timetable" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i> AI टाइम टेबल जनरेटर
+          </button>
+          <button onclick="switchTab('health')" id="dtab-health" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-500"></i> स्टूडेंट हेल्थ & डाइट टिप्स
+          </button>
+          <button onclick="switchTab('counseling')" id="dtab-counseling" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="smile" class="w-4 h-4 text-purple-600"></i> मेंटल हेल्थ & काउंसलिंग
+          </button>
+          <button onclick="switchTab('faq')" id="dtab-faq" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ (अक्सर पूछे जाने वाले सवाल) ❓
+          </button>
+          <button onclick="switchTab('about')" id="dtab-about" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="info" class="w-4 h-4 text-blue-500"></i> About Us
+          </button>
+          <button onclick="switchTab('contact')" id="dtab-contact" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="mail" class="w-4 h-4 text-emerald-500"></i> Contact Us
+          </button>
+          <button onclick="switchTab('feedback')" id="dtab-feedback" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-500"></i> गुप्त फाउंडर फीडबैक
+          </button>
+        </nav>
+      </div>
+
+      <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-1">
+        <p class="text-xs font-black text-amber-900 mono-font" id="sidebar-batch-label">Eduva Medicos (NEET)</p>
+        <p class="text-[10px] text-amber-700 font-semibold">Class 6th to 12th Complete Hub</p>
+      </div>
+    </aside>
+
+    <!-- CONTENT WRAPPER -->
+    <main class="flex-1 min-w-0 flex flex-col">
+
+      <!-- ================= 1. HOME DASHBOARD VIEW ================= -->
+      <section id="view-home" class="space-y-6 animate-fadeIn">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
+          <div class="space-y-3 z-10 max-w-xl">
+            <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-emerald-800 text-xs font-bold mono-font">
+              <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> 24x7 Live AI Mentor Active
+            </div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
+              जय श्री राम, चैंपियन! 🙏
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
+              कोटा वाले ऑथेंटिक माहौल में अपनी तैयारी को दें एक नई रफ़्तार। बिना किसी रुकावट के अपने डाउट्स पूछें और परीक्षा में शत-प्रतिशत सफलता सुनिश्चित करें।
+            </p>
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="giveKotaBoost()" class="px-4 py-2 bg-amber-500 text-slate-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡</button>
+              <button onclick="switchTab('faq')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-xs rounded-xl transition">❓ FAQ (सवाल-जवाब)</button>
+            </div>
+          </div>
+          <div class="w-full md:w-72 p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs shrink-0 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <span class="text-[10px] font-bold text-slate-400 mono-font uppercase">STATUS: VERIFIED</span>
+              <span class="text-xs font-black text-blue-600 mono-font">EDUVA PASS</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ink-navy flex items-center justify-center text-lg shadow-sm">🎯</div>
+              <div>
+                <p class="text-xs font-black text-slate-900">Kota Smart Learning Hub</p>
+                <p class="text-[10px] text-slate-500 font-semibold">Unlimited Doubt Clearing</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-clean rounded-2xl p-2.5 flex items-center gap-3 bg-white border border-slate-200 transition shadow-xs">
+          <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
+          <input type="text" id="home-search-input" placeholder="कोटा स्टाइल में कोई भी सवाल या चैप्टर सर्च करें..." class="flex-1 bg-transparent text-xs sm:text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
+          <button onclick="switchTab('chat')" class="p-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition">
+            <i data-lucide="mic" class="w-4 h-4"></i>
+          </button>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Ask Your Way (कोटा स्टाइल)</h3>
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <div onclick="switchTab('chat')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="camera" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">Camera</p>
+              <p class="text-[10px] text-slate-500 font-semibold">सवाल की फोटो खींचो</p>
+            </div>
+            <div onclick="switchTab('community')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="users" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">Community Help</p>
+              <p class="text-[10px] text-slate-500 font-semibold">छात्रों से डाउट पूछें</p>
+            </div>
+            <div onclick="switchTab('flashcards')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="layers" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">Flashcards</p>
+              <p class="text-[10px] text-slate-500 font-semibold">1-Min रिवीजन कार्ड्स</p>
+            </div>
+            <div onclick="switchTab('faq')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="help-circle" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">FAQs</p>
+              <p class="text-[10px] text-slate-500 font-semibold">अक्सर पूछे जाने वाले सवाल</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
+          <button onclick="switchTab('courses')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="book-open" class="w-5 h-5 mx-auto text-indigo-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">कोर्सेज & DPP</p>
+          </button>
+          <button onclick="switchTab('classroom')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="video" class="w-5 h-5 mx-auto text-cyan-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Live & 3D Lab</p>
+          </button>
+          <button onclick="switchTab('vault')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="bookmark" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">फॉर्मूला वॉल्ट</p>
+          </button>
+          <button onclick="switchTab('timetable')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="calendar" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">टाइम टेबल</p>
+          </button>
+          <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="help-circle" class="w-5 h-5 mx-auto text-indigo-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">FAQs</p>
+          </button>
+          <button onclick="switchTab('contact')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="mail" class="w-5 h-5 mx-auto text-emerald-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Contact Us</p>
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= 2. AI CHAT VIEW ================= -->
+      <section id="view-chat" class="hidden flex-1 flex flex-col card-clean rounded-3xl overflow-hidden h-[calc(100vh-100px)] animate-fadeIn border border-slate-200">
+        <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2 text-xs font-bold shrink-0">
+          <div class="flex items-center gap-2 text-slate-700">
+            <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
+            <span>पढ़ाने का तरीका (Teaching Mode):</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="sendUnsatisfiedToCommunity()" class="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition flex items-center gap-1 text-[11px]" title="यदि AI उत्तर पसंद न आए तो कम्युनिटी में भेजें"><i data-lucide="users" class="w-3.5 h-3.5"></i> कम्युनिटी में पूछें 👥</button>
+            <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition flex items-center gap-1 text-[11px]"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault</button>
+            <div class="hidden sm:flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
+              <button onclick="setTeachingMode('direct')" id="mode-direct-btn" class="px-3 py-1.5 rounded-lg ink-navy text-white transition">डायरेक्ट आंसर</button>
+              <button onclick="setTeachingMode('socratic')" id="mode-socratic-btn" class="px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition">हिंट देकर सिखाओ</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 hide-scrollbar">
+          <div class="flex items-start space-x-3 max-w-2xl">
+            <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">
+              ES
+            </div>
+            <div class="space-y-2">
+              <div id="chat-welcome-msg" class="bg-white border border-slate-200 p-5 rounded-3xl rounded-tl-sm text-xs sm:text-sm text-slate-800 shadow-xs leading-relaxed">
+                जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>。<br>
+                चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो—तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
+              </div>
+              <button onclick="speakText('जय श्री राम, चैंपियन! मैं हूँ आपका अपना एडू सर। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो, तेरा भाई हर तरह से तैयार है!')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200 font-bold text-[11px] rounded-xl transition">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Edu Sir को सुनें
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="image-preview-container" class="hidden px-4 py-2 bg-slate-50 border-t border-slate-200 shrink-0">
+          <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-xl text-xs text-blue-800 font-semibold">
+            <i data-lucide="image" class="w-4 h-4"></i> <span>Question Photo Attached</span>
+            <button onclick="removeImage()" class="text-rose-600 font-black ml-2">✕</button>
+          </div>
+        </div>
+
+        <div class="p-3 sm:p-4 bg-white border-t border-slate-200 shrink-0">
+          <div class="flex items-center gap-2.5 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-200 focus-within:border-blue-600 transition shadow-inner">
+            <input id="chat-input" type="text" placeholder="अपना डाउट लिखो भाई (बिना किसी झिझक के)..." class="flex-1 bg-transparent text-xs sm:text-sm outline-none text-slate-900 placeholder:text-slate-400 font-medium" onkeydown="if(event.key==='Enter') sendDoubt()">
+            
+            <button onclick="recordVoice()" class="p-2.5 text-slate-500 hover:text-blue-600 active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="Voice Input">
+              <i data-lucide="mic" class="w-4 h-4"></i>
+            </button>
+            
+            <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="Upload Image">
+              <i data-lucide="camera" class="w-4 h-4"></i>
+              <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleImage(this)">
+            </label>
+            
+            <button onclick="sendDoubt()" class="p-3 ink-navy text-white rounded-xl active:scale-95 shadow-md font-bold text-xs flex items-center justify-center transition">
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= NEW FEATURE: FAQ (अक्सर पूछे जाने वाले सवाल) VIEW ================= -->
+      <section id="view-faq" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-black shadow-md">❓</div>
+            <div>
+              <span class="px-3 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Help & Answers</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">अक्सर पूछे जाने वाले सवाल (FAQs)</h2>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या EDUVA ऐप पूरी तरह से फ्री है?
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                हाँ भाई! यह ऐप छात्रों के लिए पूरी तरह से **100% फ्री** है। यहाँ बिना किसी क्रेडिट लिमिट, सब्सक्रिप्शन या पैसे के आप असीमित डाउट्स पूछ सकते हैं।
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या मैं अपने सवाल की फोटो खींचकर पूछ सकता हूँ?
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                बिल्कुल! चैट बॉक्स में दिए गए कैमरा आइकॉन पर क्लिक करके अपने कठिन सवाल या मॉड्यूल की फोटो अपलोड करें, 'Edu Sir' तुरंत उसका स्टेप-बाय-स्टेप हल देंगे।
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> कम्युनिटी डाउट पूल (Community Pool) क्या है?
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                यदि AI के उत्तर से आप संतुष्ट नहीं हैं, तो आप अपना सवाल कम्युनिटी में डाल सकते हैं जहाँ देश भर के दूसरे साथी छात्र उसका उत्तर देते हैं और आपस में वेरीफाई करते हैं। इससे आपके स्ट्रीक्स भी बढ़ते हैं!
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या इसके लिए लॉगिन या साइन-अप करना जरूरी है?
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                नहीं, लॉगिन करना पूरी तरह वैकल्पिक (Optional) है। आप बिना किसी झंझट के सीधे ऐप खोलकर पढ़ाई और डाउट सॉल्विंग शुरू कर सकते हैं।
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> यह ऐप किस क्लास के बच्चों के लिए है?
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                यह कक्षा 6 से 12वीं के स्कूली छात्रों के साथ-साथ NEET UG और IIT-JEE की तैयारी कर रहे सभी कोटा एस्पिरेंट्स के लिए बेस्ट है। ऊपर हेडर से आप अपना बैच भी बदल सकते हैं!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
+      <section id="view-community" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <span class="px-3 py-1 bg-purple-50 border border-purple-200 text-purple-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Peer-to-Peer Help Hub</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">कम्युनिटी डाउट पूल & स्टूडेंट वेरीफिकेशन 👥</h2>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-2xs">
+              <i data-lucide="flame" class="w-4 h-4 text-amber-600 fill-amber-600"></i>
+              <span class="text-xs font-black text-amber-800 mono-font" id="community-streak-counter">मेरे स्ट्रीक्स: 12</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed font-medium">
+            यदि AI के उत्तर से संतुष्ट नहीं हैं या कोई पेचीदा सवाल है, तो यहाँ पोस्ट करें। दूसरे छात्र आपके सवाल का उत्तर देंगे, और बाकी बच्चे उसे वेरीफाई करेंगे। सही उत्तर और वेरीफिकेशन देने पर आपके स्ट्रीक्स बढ़ेंगे!
+          </p>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+            <h3 class="text-xs font-black text-slate-900">अपना अनसुलझा सवाल कम्युनिटी में डालें:</h3>
+            <textarea id="community-new-doubt" rows="3" placeholder="यहाँ अपना सवाल या फिजिक्स/केमिस्ट्री/बायो का डाउट लिखें..." class="w-full bg-white border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-xs font-medium leading-relaxed"></textarea>
+            <button onclick="postCommunityDoubt()" class="px-5 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm transition">कम्युनिटी में पोस्ट करें 🚀</button>
+          </div>
+
+          <div class="space-y-4 pt-2">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Active Student Doubts & Solutions</h3>
+            <div id="community-doubts-list" class="space-y-4"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FLASHCARDS VIEW ================= -->
+      <section id="view-flashcards" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-4">
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-xs font-bold mono-font">
+            🃏 1-Minute High-Yield Flashcards
+          </div>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900">क्विक फॉर्मूला & कॉन्सेप्ट रिवीज़न</h2>
+          <p class="text-xs text-slate-600">एग्जाम से पहले तेजी से फॉर्मूले रिवाइज करने के लिए कार्ड पर क्लिक करके पलटें!</p>
+          
+          <div onclick="flipFlashcard()" class="w-full h-64 bg-slate-900 text-white rounded-3xl p-8 flex flex-col items-center justify-center cursor-pointer shadow-xl relative transition transform hover:scale-[1.01]">
+            <span class="absolute top-4 left-4 text-[10px] text-amber-400 font-mono uppercase tracking-widest" id="fc-category">PHYSICS • MECHANICS</span>
+            <span class="absolute top-4 right-4 text-[10px] text-slate-400 font-mono" id="fc-counter">1 / 5</span>
+            <div id="fc-content" class="text-center space-y-3 my-auto">
+              <h3 class="text-lg sm:text-xl font-bold text-amber-300">गति के समीकरण (Equations of Motion)</h3>
+              <p class="text-sm font-mono text-slate-300">$v = u + at$ <br> $s = ut + \frac{1}{2}at^2$ <br> $v^2 = u^2 + 2as$</p>
+            </div>
+            <p class="absolute bottom-4 text-[11px] text-slate-400 font-semibold">👆 टैप करके उत्तर/विवरण देखें</p>
+          </div>
+
+          <div class="flex items-center justify-between gap-4 pt-2">
+            <button onclick="prevFlashcard()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-2xl transition">⬅ पिछला कार्ड</button>
+            <button onclick="nextFlashcard()" class="flex-1 py-3 ink-navy text-white font-bold text-xs rounded-2xl transition shadow-sm">अगला कार्ड ➡</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MOCK TEST VIEW ================= -->
+      <section id="view-mocktest" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <span class="px-3 py-1 bg-rose-50 border border-rose-200 text-rose-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Kota CBT Simulation</span>
+              <h2 class="text-xl font-black text-slate-900 mt-1">NEET / JEE ऑनलाइन मॉक टेस्ट इंजन</h2>
+            </div>
+            <div id="test-timer-box" class="hidden bg-slate-900 text-amber-400 px-4 py-2 rounded-2xl font-mono text-sm font-black shadow-inner flex items-center gap-2">
+              <i data-lucide="clock" class="w-4 h-4"></i> <span id="timer-display">03:00:00</span>
+            </div>
+          </div>
+
+          <div id="test-intro-box" class="space-y-4 text-xs sm:text-sm text-slate-700">
+            <p>यह टेस्ट कोटा के टॉप कोचिंग पैटर्न पर आधारित है जिसमें सही उत्तर पर +4 और गलत उत्तर पर -1 अंक (Negative Marking) का प्रावधान है।</p>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 font-medium">
+              <p>📌 <b>नियम:</b></p>
+              <ul class="list-disc list-inside space-y-1 text-slate-600">
+                <li>कुल प्रश्न: 5 महत्वपूर्ण सवाल (डेमो सेट)</li>
+                <li>समय सीमा: 10 मिनट</li>
+                <li>सबमिट करने पर तुरंत स्कोरकार्ड और विस्तृत हल मिलेगा।</li>
+              </ul>
+            </div>
+            <button onclick="startMockTest()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+              <i data-lucide="play-circle" class="w-4 h-4"></i> मॉक टेस्ट शुरू करें
+            </button>
+          </div>
+
+          <div id="test-questions-box" class="hidden space-y-6">
+            <div id="test-question-container" class="space-y-4"></div>
+            <div class="flex justify-between pt-4 border-t border-slate-200">
+              <button onclick="prevTestQuestion()" class="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">पिछला</button>
+              <button onclick="nextTestQuestion()" id="next-test-btn" class="px-6 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm">अगला प्रश्न</button>
+            </div>
+          </div>
+
+          <div id="test-result-box" class="hidden text-center space-y-4 p-6 bg-slate-50 rounded-3xl border border-slate-200">
+            <div class="text-4xl">🏆</div>
+            <h3 class="text-xl font-black text-slate-900">टेस्ट सफलताપूर्व संपन्न हुआ!</h3>
+            <p id="test-score-summary" class="text-sm font-bold text-blue-600 mono-font"></p>
+            <button onclick="resetMockTest()" class="px-6 py-3 ink-navy text-white font-bold text-xs rounded-xl">दोबारा टेस्ट दें</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VAULT VIEW ================= -->
+      <section id="view-vault" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div>
+              <span class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">My Personal Vault</span>
+              <h2 class="text-xl font-black text-slate-900 mt-1">सेव किए गए फॉर्मूले और डाउट्स (Vault)</h2>
+            </div>
+            <button onclick="clearVault()" class="text-xs text-rose-600 font-bold hover:underline">खाली करें</button>
+          </div>
+          <div id="vault-items-container" class="space-y-3"></div>
+        </div>
+      </section>
+
+      <!-- ================= CLASSROOM VIEW ================= -->
+      <section id="view-classroom" class="hidden grid grid-cols-1 lg:grid-cols-12 gap-5 h-[calc(100vh-100px)] animate-fadeIn">
+        <aside class="lg:col-span-3 card-clean rounded-3xl p-5 flex flex-col justify-between border border-slate-200">
+          <div class="space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-cyan-50 border border-cyan-200 text-cyan-600 flex items-center justify-center font-bold"><i data-lucide="video" class="w-5 h-5"></i></div>
+              <div>
+                <h2 class="font-extrabold text-sm text-slate-900">Live AI Classroom 🎥</h2>
+                <p class="text-[11px] text-slate-500 font-semibold mono-font">24x7 Kota Style Live</p>
+              </div>
+            </div>
+            <div class="space-y-2 text-xs font-bold pt-2">
+              <button onclick="setBoardMode('draw')" class="w-full py-3 px-4 rounded-xl ink-navy text-white flex items-center gap-2 shadow-sm transition"><i data-lucide="edit-3" class="w-4 h-4"></i> Live Whiteboard Mode</button>
+              <button onclick="setBoardMode('3d')" class="w-full py-3 px-4 rounded-xl border border-slate-200 text-slate-800 hover:bg-slate-50 flex items-center gap-2 transition"><i data-lucide="box" class="w-4 h-4 text-purple-600"></i> Live 3D Science Lab 🪐</button>
+            </div>
+
+            <div id="classroom-3d-selectors" class="hidden space-y-2 pt-2">
+              <p class="text-[10px] font-black uppercase text-slate-400 tracking-wider mono-font">Select 3D Chapter Model</p>
+              <button onclick="switch3DModel('heart')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition">🫀 Human Heart Model</button>
+              <button onclick="switch3DModel('atom')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition">⚛️ 3D Atom Structure</button>
+            </div>
+          </div>
+          <button onclick="clearCanvas()" class="w-full py-3 bg-red-50 text-red-600 font-bold text-xs rounded-xl border border-red-200 hover:bg-red-100 transition">Clear Board</button>
+        </aside>
+
+        <div class="lg:col-span-9 card-clean rounded-3xl p-4 flex flex-col relative overflow-hidden border border-slate-200">
+          <div class="absolute top-6 left-6 z-10 flex items-center gap-2 bg-red-600 text-white px-3.5 py-1.5 rounded-full text-[10px] font-black shadow-lg animate-pulse mono-font">
+            <span class="w-2 h-2 rounded-full bg-white"></span> KOTA LIVE 24x7 STREAMING
+          </div>
+
+          <div id="board-container-draw" class="w-full h-full bg-slate-900 rounded-2xl relative overflow-hidden">
+            <canvas id="whiteboard" class="w-full h-full touch-none cursor-crosshair"></canvas>
+          </div>
+          <div id="board-container-3d" class="hidden w-full h-full bg-slate-950 rounded-2xl relative overflow-hidden">
+            <div id="classroom-three-canvas" class="w-full h-full cursor-grab active:cursor-grabbing"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= COURSES VIEW ================= -->
+      <section id="view-courses" class="hidden space-y-6 max-w-6xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <span class="px-3.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">Complete Academic Hub</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">कोर्सेज, एनसीईआरटी सॉल्यूशंस & AI DPPs</h2>
+            <p class="text-xs text-slate-600 mt-1 font-medium leading-relaxed">कक्षा 6 से 12, NEET, JEE और ओलंपियाड के लिए विशेष एआई-जनरेटेड प्रैक्टिस शीट्स।</p>
+          </div>
+          <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">🎯</div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center font-bold text-xl">🩺</div>
+            <h3 class="font-black text-base text-slate-900">NEET UG & IIT-JEE Elite</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">कोटा के टॉप फैकल्टी मॉड्यूल्स और पिछले 15 साल के PYQs के साथ AI DPPs।</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे NEET/JEE फिजिक्स का एक इंपॉर्टेंट प्रैक्टिस क्वेश्चन और उसका शॉर्टकट तरीका बताओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">प्रैक्टिस शुरू करें</button>
+          </div>
+
+          <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center font-bold text-xl">📖</div>
+            <h3 class="font-black text-base text-slate-900">Class 11th & 12th Boards</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">NCERT लाइन-बाय-लाइन सॉल्यूशंस, इंपॉर्टेंट डेरिवेशंस और बोर्ड परीक्षा मॉडल पेपर।</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे क्लास 12 केमिस्ट्री के महत्वपूर्ण नेमिंग रिएक्शंस समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">नोट्स व सॉल्यूशन देखें</button>
+          </div>
+
+          <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center font-bold text-xl">🔥</div>
+            <h3 class="font-black text-base text-slate-900">Foundation & Olympiad (9th-10th)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">NTSE, NSEJS और ओलंपियाड लेवल के उच्च कोटि के ट्रिकी सवाल और कॉन्सेप्ट्स।</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे ओलंपियाड लेवल का मैथ्स का एक ट्रिकी सवाल और उसका हल समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">ओलंपियाड चैलेंज लें</button>
+          </div>
+
+          <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-200 text-purple-600 flex items-center justify-center font-bold text-xl">🌟</div>
+            <h3 class="font-black text-base text-slate-900">Junior Genius Hub (6th-8th)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">साइंस और मैथ्स की मजबूत नींव बनाने के लिए मजेदार एक्टिविटी और वर्कशीट।</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे विज्ञान का एक मजेदार प्रयोग और उसका कारण सरल भाषा में समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">विज्ञान सीखें</button>
+          </div>
+
+          <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group sm:col-span-2">
+            <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center font-bold text-xl">⚡</div>
+            <h3 class="font-black text-base text-slate-900">AI Generated Daily Practice Papers (DPP)</h3>
+            <p class="text-xs text-slate-600 leading-relaxed">हर दिन आपके लक्ष्य के हिसाब से एआई द्वारा तैयार की गई नई प्रैक्टिस शीट, जिसमें तुरंत हिंट और स्टेप-बाय-स्टेप सॉल्यूशन मिलते हैं।</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मेरे लिए आज की एआई डीपीपी (DPP) का एक सेट तैयार करो।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">आज की DPP जनरेट करें</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= ABOUT US VIEW ================= -->
+      <section id="view-about" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
+          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl ink-navy text-white flex items-center justify-center text-xl shadow-md">ℹ️</div>
+            <div>
+              <span class="px-3 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">About EDUVA</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">हमारे प्लेटफॉर्म के बारे में</h2>
+            </div>
+          </div>
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+            <p><b>EDUVA</b> भारत का सबसे बेहतरीन और स्टूडेंट-फर्स्ट AI लर्निंग प्लेटफॉर्म है, जिसे खासतौर पर कोटा के माहौल को ध्यान में रखकर बनाया गया है जहाँ हर छात्र का सपना डॉक्टर या इंजीनियर बनने का होता है।</p>
+            <p>हमारा मिशन है कि देश के हर कोने में बैठे छात्र को उच्च गुणवत्ता की शिक्षा, 24x7 अनलिमिटेड डाउट सॉल्विंग, और एक बड़ा भाई जैसा मार्गदर्शक ('Edu Sir') मिले—वो भी बिना किसी भारी-भरकम फीस या पाबंदी के। यहाँ कोई जजमेंट नहीं है, केवल सीखने का जज़्बा है!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTACT US VIEW ================= -->
+      <section id="view-contact" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
+          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-md">📧</div>
+            <div>
+              <span class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Get in Touch</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Contact Us (संपर्क करें)</h2>
+            </div>
+          </div>
+          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
+            <p>अगर आपको ऐप इस्तेमाल करने में कोई भी दिक्कत आ रही है, कोई नया सुझाव देना है, या किसी भी तरह की मदद चाहिए, तो हमारी टीम हमेशा आपकी सेवा में हाजिर है।</p>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3 shadow-2xs">
+              <i data-lucide="mail" class="w-6 h-6 text-emerald-600"></i>
+              <div>
+                <p class="text-[10px] uppercase font-bold text-slate-400 mono-font">Official Support Email</p>
+                <a href="mailto:team.eduwa@gmail.com" class="text-sm sm:text-base font-black text-slate-900 hover:underline mono-font">team.eduwa@gmail.com</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FOUNDER FEEDBACK VIEW ================= -->
+      <section id="view-feedback" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
+          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl marigold-gradient text-slate-900 flex items-center justify-center text-xl font-black shadow-md">🤫</div>
+            <div>
+              <span class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">100% Confidential</span>
+              <h2 class="text-lg sm:text-xl font-black text-slate-900 mt-1">फाउंडर के लिए गुप्त फीडबैक वॉल्ट</h2>
+            </div>
+          </div>
+          <p class="text-xs text-slate-700 leading-relaxed font-medium">यह सेक्शन पूरी तरह गुप्त है। यहाँ आप बेझिझक बता सकते हैं कि ऐप में क्या कमी खल रही है, या क्या नया फीचर होना चाहिए।</p>
+          <div class="space-y-4 text-xs font-bold">
+            <div>
+              <label class="block text-slate-800 mb-1.5 font-bold">अनुभव कैसा रहा?</label>
+              <select id="fb-rating" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 font-semibold text-xs cursor-pointer shadow-2xs">
+                <option value="Superb">⭐ बहुत शानदार लग रही है ऐप!</option>
+                <option value="Good">👍 अच्छी है, पर कुछ सुधार चाहिए</option>
+                <option value="Needs Work">⚠️ काफी कमियाँ हैं, इन्हें ठीक करना होगा</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-slate-800 mb-1.5 font-bold">गुप्त सुझाव या कमी (Secret Notes)</label>
+              <textarea id="fb-message" rows="4" placeholder="यहाँ खुलकर लिखें..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 font-medium text-xs leading-relaxed shadow-2xs"></textarea>
+            </div>
+            <button onclick="submitPrivateFeedback()" class="w-full py-4 marigold-gradient text-slate-900 font-black text-xs sm:text-sm rounded-2xl shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i data-lucide="lock" class="w-4 h-4"></i> फाउंडर को गुप्त रूप से भेजें</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= TIMETABLE GENERATOR ================= -->
+      <section id="view-timetable" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-slate-200 shadow-sm">
+          <div>
+            <span class="px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">AI Routine Builder</span>
+            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">स्मार्ट स्टूडेंट टाइम टेबल जनरेटर</h2>
+          </div>
+          <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">⏱️</div>
+        </div>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 border border-slate-200 shadow-md">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">सुबह उठने का समय</label><input type="time" id="tt-wake" value="06:00" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs"></div>
+            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">रात को सोने का समय</label><input type="time" id="tt-sleep" value="23:00" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs"></div>
+            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">कोचिंग के कुल घंटे</label><select id="tt-coaching" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs cursor-pointer"><option value="4 Hours">4 घंटे</option><option value="6 Hours" selected>6 घंटे</option><option value="8 Hours">8 घंटे</option></select></div>
+            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">लक्ष्य / परीक्षा</label><select id="tt-goal" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs cursor-pointer"><option value="NEET UG Exam">Eduva Medicos (NEET)</option><option value="IIT-JEE Exam">Eduva Builders (JEE)</option></select></div>
+          </div>
+          <button onclick="generateCustomTimetable()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i data-lucide="sparkles" class="w-4 h-4"></i> मेरा टाइम टेबल तैयार करें</button>
+        </div>
+      </section>
+
+      <!-- ================= HEALTH VIEW ================= -->
+      <section id="view-health" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-slate-200 shadow-sm">
+          <div><span class="px-3.5 py-1 bg-rose-50 border border-rose-200 text-rose-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">Health & Wellness</span><h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">विद्यार्थी स्वास्थ्य व पोषण गाइड</h2></div>
+          <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">🥗</div>
+        </div>
+      </section>
+
+      <!-- ================= COUNSELING VIEW ================= -->
+      <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
+          <h2 class="text-xl sm:text-2xl font-black text-slate-900">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
+          <button onclick="startCounselingSession('मुझे पढ़ाई में फोकस करने में परेशानी हो रही है और बहुत स्ट्रेस हो रहा है।')" class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-blue-600 text-left space-y-2 transition shadow-xs w-full"><p class="text-xs font-extrabold text-slate-900">फोकस व कंसंट्रेशन नहीं बन रहा</p></button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 z-50 shadow-lg">
+    <div class="flex justify-around items-center text-[10px] font-extrabold text-slate-500">
+      <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition"><i data-lucide="home" class="w-4 h-4"></i> Home</button>
+      <button onclick="switchTab('community')" id="tab-community" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी</button>
+      <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
+      <button onclick="switchTab('faq')" id="tab-faq" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ</button>
+      <button onclick="switchTab('vault')" id="tab-vault" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> वॉल्ट</button>
+    </div>
+  </nav>
+
+  <script>
+    lucide.createIcons();
+    let base64Image = null;
+    let lastUserQuestion = "";
+    let currentStudentGoal = "Eduva Medicos";
+    let currentTeachingMode = "direct"; 
+    let userStreakCount = 12;
+
+    const GROQ_KEY = "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";
+
+    // --- COMMUNITY DOUBT POOL LOGIC ---
+    let communityDoubts = [
+      { id: 1, author: "राहुल (Kota Student)", doubt: "क्लास 12 इलेक्ट्रोस्टैटिक्स में गाउस लॉ (Gauss's Law) सिर्फ बंद सतह के लिए ही क्यों लागू होता है, खुले पृष्ठ के लिए क्यों नहीं?", answers: [{ text: "भैया, गाउस लॉ सिमेट्रिक क्लोज्ड सरफेस (Gaussian surface) के फ्लक्स को कैलकुलेट करने के लिए बना है ताकि कुल आवेश (Total charge enclosed) आसानी से निकल सके।", verified: true, by: "प्रिया (AIIMS Aspirant)" }] }
+    ];
+
+    function loadCommunityDoubts() {
+      let container = document.getElementById('community-doubts-list');
+      if (!container) return;
+      if (communityDoubts.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">अभी कोई डाउट नहीं है। पहला सवाल पूछें!</p>`;
+        return;
+      }
+      container.innerHTML = communityDoubts.map((item, index) => `
+        <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold text-slate-500 mono-font">👤 ${item.author}</span>
+            <span class="text-[10px] bg-purple-50 text-purple-700 font-bold px-2.5 py-0.5 rounded-full">Active Doubt</span>
+          </div>
+          <p class="text-xs sm:text-sm font-bold text-slate-900">${item.doubt}</p>
+          
+          <div class="space-y-2 pt-2 border-t border-slate-100">
+            <p class="text-[11px] font-black text-slate-400 mono-font">साथी छात्रों के उत्तर:</p>
+            ${item.answers.map((ans, aIdx) => `
+              <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                <p class="text-xs text-slate-800 font-medium">${ans.text}</p>
+                <div class="flex items-center justify-between text-[10px]">
+                  <span class="text-slate-500 font-bold">उत्तरदाता: ${ans.by}</span>
+                  <div>
+                    ${ans.verified ? '<span class="text-emerald-700 font-black bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">✔ Verified by Peer</span>' : `<button onclick="verifyCommunityAnswer(${index}, ${aIdx})" class="px-2.5 py-1 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition">सही है (Verify)</button>`}
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="flex items-center gap-2 pt-2">
+            <input type="text" id="ans-input-${index}" placeholder="इस डाउट का उत्तर लिखें..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-blue-600 font-medium">
+            <button onclick="submitCommunityAnswer(${index})" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl hover:bg-emerald-700 transition">उत्तर दें</button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    function postCommunityDoubt() {
+      const doubtText = document.getElementById('community-new-doubt').value.trim();
+      if (!doubtText) { alert("कृपया अपना डाउट लिखें!"); return; }
+      communityDoubts.unshift({ id: Date.now(), author: "आप (" + currentStudentGoal + ")", doubt: doubtText, answers: [] });
+      document.getElementById('community-new-doubt').value = "";
+      alert("✅ आपका डाउट कम्युनिटी पूल में सफलतापूर्वक पोस्ट हो गया है!");
+      loadCommunityDoubts();
+    }
+
+    function submitCommunityAnswer(dIndex) {
+      const ansText = document.getElementById(`ans-input-${dIndex}`).value.trim();
+      if (!ansText) { alert("कृपया उत्तर लिखें!"); return; }
+      communityDoubts[dIndex].answers.push({ text: ansText, verified: false, by: "आप (Kota Aspirant)" });
+      document.getElementById(`ans-input-${dIndex}`).value = "";
+      alert("🎉 आपका उत्तर पोस्ट हो गया! अन्य छात्र इसे वेरीफाई करेंगे।");
+      loadCommunityDoubts();
+    }
+
+    function verifyCommunityAnswer(dIndex, aIndex) {
+      communityDoubts[dIndex].answers[aIndex].verified = true;
+      userStreakCount += 1; 
+      document.getElementById('header-streak-display').innerText = `${userStreakCount} STREAK`;
+      document.getElementById('community-streak-counter').innerText = `मेरे स्ट्रीक्स: ${userStreakCount}`;
+      alert("🌟 शानदार! आपके वेरीफिकेशन से इस उत्तर को अप्रूव कर दिया गया है। आपका स्ट्रीक बढ़ गया है!");
+      loadCommunityDoubts();
+    }
+
+    function sendUnsatisfiedToCommunity() {
+      if (!lastUserQuestion) { alert("कोई पिछला सवाल नहीं मिला जिसे कम्युनिटी में भेजा जाए।"); return; }
+      communityDoubts.unshift({ id: Date.now(), author: "आप (" + currentStudentGoal + ")", doubt: lastUserQuestion, answers: [{ text: "AI का उत्तर संतोषजनक नहीं था, कृपया साथी छात्र इसे आसान भाषा में समझाएं।", verified: false, by: "सिस्टम नोट" }] });
+      switchTab('community');
+      alert("📤 आपका सवाल कम्युनिटी डाउट पूल में भेज दिया गया है!");
+    }
+    // --- END COMMUNITY LOGIC ---
+
+    // --- CHAT REACTION LOGIC ---
+    function handleChatReaction(action, msgId) {
+      if (action === 'up') {
+        alert("👍 धन्यवाद! फीडबैक दर्ज कर लिया गया है।");
+      } else if (action === 'down') {
+        alert("👎 क्षमा करें! यह सवाल कम्युनिटी डाउट पूल में भेजा जा रहा है ताकि साथी छात्र और बेहतर समझा सकें।");
+        sendUnsatisfiedToCommunity();
+      } else if (action === 'op') {
+        alert("🔥 वाह! इस सवाल और उत्तर को आपके Formula Vault में सेव कर लिया गया है!");
+        bookmarkCurrentChat();
+      } else if (action === 'regen') {
+        alert("🔄 उत्तर दोबारा जनरेट किया जा रहा है...");
+        sendDoubt();
+      }
+    }
+    // --- END CHAT REACTION LOGIC ---
+
+    // Flashcards Data & Logic
+    const flashcardsData = [
+      { cat: "PHYSICS • MECHANICS", q: "गति के समीकरण (Equations of Motion)", a: "v = u + at <br> s = ut + 1/2 at² <br> v² = u² + 2as" },
+      { cat: "CHEMISTRY • PHYSICAL", q: "आदर्श गैस समीकरण (Ideal Gas Equation)", a: "PV = nRT <br> जहाँ P=Pressure, V=Volume, n=Moles, R=Gas Constant, T=Temperature" },
+      { cat: "BIOLOGY • GENETICS", q: "मैंडल का स्वतंत्र अपव्यूहन नियम (Law of Independent Assortment)", a: "डाईहाइब्रिड क्रॉस का फिनोटाइपिक अनुपात (Phenotypic Ratio): <br> 9 : 3 : 3 : 1" },
+      { cat: "PHYSICS • ELECTROSTATICS", q: "कूलाॅम का नियम (Coulomb's Law)", a: "F = k * (q₁ * q₂) / r² <br> जहाँ k = 1 / (4πε₀) ≈ 9 × 10⁹ N·m²/C²" },
+      { cat: "CHEMISTRY • ORGANIC", q: "मार्कोनीकॉव नियम (Markovnikov's Rule)", a: "असममित एल्कीन पर HX के योग में, ऋणात्मक भाग (X⁻) उस कार्बन पर जुड़ता है जिस पर हाइड्रोजन परमाणुओं की संख्या कम होती है।" }
+    ];
+    let currentFCIndex = 0, isFCFlipped = false;
+
+    function flipFlashcard() {
+      const contentEl = document.getElementById('fc-content');
+      isFCFlipped = !isFCFlipped;
+      if (isFCFlipped) {
+        contentEl.innerHTML = `<h3 class="text-lg font-bold text-emerald-400">उत्तर / मुख्य सूत्र:</h3><p class="text-sm font-mono text-white leading-relaxed">${flashcardsData[currentFCIndex].a}</p>`;
+      } else {
+        contentEl.innerHTML = `<h3 class="text-lg sm:text-xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+      }
+    }
+    function nextFlashcard() {
+      currentFCIndex = (currentFCIndex + 1) % flashcardsData.length;
+      isFCFlipped = false;
+      document.getElementById('fc-category').innerText = flashcardsData[currentFCIndex].cat;
+      document.getElementById('fc-counter').innerText = `${currentFCIndex + 1} / ${flashcardsData.length}`;
+      document.getElementById('fc-content').innerHTML = `<h3 class="text-lg sm:text-xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+    }
+    function prevFlashcard() {
+      currentFCIndex = (currentFCIndex - 1 + flashcardsData.length) % flashcardsData.length;
+      isFCFlipped = false;
+      document.getElementById('fc-category').innerText = flashcardsData[currentFCIndex].cat;
+      document.getElementById('fc-counter').innerText = `${currentFCIndex + 1} / ${flashcardsData.length}`;
+      document.getElementById('fc-content').innerHTML = `<h3 class="text-lg sm:text-xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+    }
+
+    // Mock Test Engine
+    const mockQuestions = [
+      { q: "1. यदि किसी वस्तु का वेग दोगुना कर दिया जाए, तो उसकी गतिज ऊर्जा (Kinetic Energy) कितनी हो जाएगी?", options: ["दोगुनी (2x)", "चार गुना (4x)", "आधी (1/2)", "अपरिवर्तित"], ans: 1 },
+      { q: "2. मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "यकृत (Liver)", "थायराइड (Thyroid)", "पीयूष ग्रंथि (Pituitary)"], ans: 1 },
+      { q: "3. ग्लूकोज का अणुसूत्र (Molecular Formula) क्या है?", options: ["C6H12O6", "C12H22O11", "CH3COOH", "C2H5OH"], ans: 0 },
+      { q: "4. निर्वात में प्रकाश की चाल (Speed of Light) कितनी होती है?", options: ["3 × 10^8 m/s", "3 × 10^6 m/s", "3 × 10^10 m/s", "3 × 10^5 m/s"], ans: 0 },
+      { q: "5. आवर्त सारणी में सबसे अधिक विद्युतऋणात्मक (Most Electronegative) तत्व कौन सा है?", options: ["ऑक्सीजन (O)", "क्लोरिन (Cl)", "फ्लोरिन (F)", "नायट्रोजन (N)"], ans: 2 }
+    ];
+    let currentTestQ = 0, userAnswers = {}, testTimerInterval = null;
+
+    function startMockTest() {
+      document.getElementById('test-intro-box').classList.add('hidden');
+      document.getElementById('test-questions-box').classList.remove('hidden');
+      document.getElementById('test-timer-box').classList.remove('hidden');
+      currentTestQ = 0; userAnswers = {};
+      loadTestQuestion();
+      
+      let timeLeft = 600; 
+      testTimerInterval = setInterval(() => {
+        let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+        document.getElementById('timer-display').innerText = `00:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+        if (timeLeft <= 0) { clearInterval(testTimerInterval); submitMockTest(); }
+        timeLeft--;
+      }, 1000);
+    }
+
+    function loadTestQuestion() {
+      const qData = mockQuestions[currentTestQ];
+      let html = `<p class="font-extrabold text-sm sm:text-base text-slate-900">${qData.q}</p><div class="space-y-2 pt-2">`;
+      qData.options.forEach((opt, idx) => {
+        let isSel = userAnswers[currentTestQ] === idx ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700';
+        html += `<div onclick="selectTestOption(${currentTestQ}, ${idx})" class="p-3.5 rounded-2xl border cursor-pointer text-xs sm:text-sm transition ${isSel}">${String.fromCharCode(65+idx)}. ${opt}</div>`;
+      });
+      html += `</div>`;
+      document.getElementById('test-question-container').innerHTML = html;
+      document.getElementById('next-test-btn').innerText = currentTestQ === mockQuestions.length - 1 ? "टेस्ट सबमिट करें 🎯" : "अगला प्रश्न";
+    }
+
+    function selectTestOption(qIdx, optIdx) {
+      userAnswers[qIdx] = optIdx;
+      loadTestQuestion();
+    }
+
+    function nextTestQuestion() {
+      if (currentTestQ < mockQuestions.length - 1) {
+        currentTestQ++;
+        loadTestQuestion();
+      } else {
+        submitMockTest();
+      }
+    }
+
+    function submitMockTest() {
+      if (testTimerInterval) clearInterval(testTimerInterval);
+      document.getElementById('test-questions-box').classList.add('hidden');
+      document.getElementById('test-timer-box').classList.add('hidden');
+      document.getElementById('test-result-box').classList.remove('hidden');
+
+      let score = 0, correct = 0, incorrect = 0;
+      mockQuestions.forEach((q, idx) => {
+        if (userAnswers[idx] === q.ans) { score += 4; correct++; }
+        else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; }
+      });
+      document.getElementById('test-score-summary').innerText = `कुल अंक: ${score} / 20 (सही: ${correct}, गलत: ${incorrect})`;
+    }
+
+    function resetMockTest() {
+      document.getElementById('test-result-box').classList.add('hidden');
+      document.getElementById('test-intro-box').classList.remove('hidden');
+    }
+
+    // Vault Bookmarks Logic
+    function bookmarkCurrentChat() {
+      let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+      vault.push({ text: lastUserQuestion || "महत्वपूर्ण फॉर्मूला / डाउट", date: new Date().toLocaleDateString('hi-IN') });
+      localStorage.setItem('eduva_vault', JSON.stringify(vault));
+      alert("📌 सफलताપूर्व आपके पर्सनल वॉल्ट में सेव हो गया!");
+      loadVaultItems();
+    }
+
+    function loadVaultItems() {
+      let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+      let container = document.getElementById('vault-items-container');
+      if (!container) return;
+      if (vault.length === 0) {
+        container.innerHTML = `<p class="text-xs text-slate-400 text-center py-6">आपका वॉल्ट अभी खाली है। चैट से डाउट्स सेव करें!</p>`;
+        return;
+      }
+      container.innerHTML = vault.map((item, idx) => `
+        <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
+          <div><p class="font-bold text-slate-900">${item.text}</p><span class="text-[10px] text-slate-400 font-mono">Saved on: ${item.date}</span></div>
+          <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline">हटाएं</button>
+        </div>
+      `).join('');
+    }
+
+    function removeVaultItem(idx) {
+      let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+      vault.splice(idx, 1);
+      localStorage.setItem('eduva_vault', JSON.stringify(vault));
+      loadVaultItems();
+    }
+
+    function clearVault() {
+      localStorage.removeItem('eduva_vault');
+      loadVaultItems();
+    }
+
+    function giveKotaBoost() {
+      switchTab('chat');
+      setPromptSuggestion("Edu Sir, मैं थोड़ा डीमोटीवेट महसूस कर रहा हूँ। कोटा वाले अंदाज़ में मुझे एक ज़ोरदार मोटिवेशनल बूस्ट दो भाई!");
+      sendDoubt();
+    }
+
+    function setTeachingMode(mode) {
+      currentTeachingMode = mode;
+      const directBtn = document.getElementById('mode-direct-btn');
+      const socraticBtn = document.getElementById('mode-socratic-btn');
+      if (mode === 'direct') {
+        directBtn.className = "px-3 py-1.5 rounded-lg ink-navy text-white transition";
+        socraticBtn.className = "px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition";
+      } else {
+        socraticBtn.className = "px-3 py-1.5 rounded-lg bg-emerald-600 text-white transition";
+        directBtn.className = "px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition";
+      }
+    }
+
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = 'hi-IN';
+        utterance.rate = 1.0; 
+        utterance.pitch = 1.1; 
+        window.speechSynthesis.speak(utterance);
+      } else {
+        alert("आपका ब्राउज़र वॉइस स्पीच सपोर्ट नहीं करता है।");
+      }
+    }
+
+    function getGreetingTitle(goal) {
+      if (goal === "Eduva Medicos") return "Hello Future Doctor!";
+      if (goal === "Eduva Builders") return "Hello Future Engineer!";
+      if (goal === "Eduva Scholar") return "Hello Future Scholar!";
+      if (goal === "Eduva Ignite") return "Hello Future Champion!";
+      return "Hello Future Innovator!";
+    }
+
+    function updateStudentGoal(goal) {
+      currentStudentGoal = goal;
+      document.getElementById('sidebar-greeting-title').innerText = getGreetingTitle(goal);
+      document.getElementById('sidebar-batch-label').innerText = goal;
+      document.getElementById('header-batch-select').value = goal;
+
+      const welcomeEl = document.getElementById('chat-welcome-msg');
+      if (welcomeEl) {
+        let titleGreet = getGreetingTitle(goal);
+        welcomeEl.innerHTML = `जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b> (${goal}).<br><b>${titleGreet}</b> चाहे 20 बार पूछ, तेरा भाई हर बार प्यार से समझाएगा!`;
+      }
+    }
+
+    function submitPrivateFeedback() {
+      const message = document.getElementById('fb-message').value.trim();
+      if (!message) { alert("कृपया अपना सुझाव या कमी लिखकर भेजें!"); return; }
+      alert("✅ आपका गुप्त सुझाव सफलतापूर्वक फाउंडर तक पहुँच गया है! धन्यवाद।");
+      document.getElementById('fb-message').value = "";
+      switchTab('home');
+    }
+
+    function generateCustomTimetable() {
+      const wake = document.getElementById('tt-wake').value;
+      const sleep = document.getElementById('tt-sleep').value;
+      const coaching = document.getElementById('tt-coaching').value;
+      const goal = document.getElementById('tt-goal').value;
+
+      switchTab('chat');
+      setPromptSuggestion(`Edu Sir (${currentStudentGoal}), मैं सुबह ${wake} पर उठता हूँ और रात को ${sleep} पर सोता हूँ। मेरी कोचिंग ${coaching} की है और मेरा लक्ष्य "${goal}" है। कोटा हॉस्टल लाइफ के हिसाब से मेरे लिए प्रैक्टिकल टाइम टेबल बनाओ भाई।`);
+      sendDoubt();
+    }
+
+    function startCounselingSession(topic) {
+      switchTab('chat');
+      setPromptSuggestion(`Edu Sir (${currentStudentGoal}), ${topic} कोटा में थोड़ा स्ट्रेस हो रहा है, बड़े भाई की तरह समझाओ ना यार।`);
+      sendDoubt();
+    }
+
+    function sendCustomDoubt(text) {
+      switchTab('chat');
+      setPromptSuggestion(text);
+      sendDoubt();
+    }
+
+    function setPromptSuggestion(text) {
+      document.getElementById('chat-input').value = text;
+      document.getElementById('chat-input').focus();
+    }
+
+    const BASE_SYSTEM_PROMPT = `You are "Edu Sir", an authentic, high-energy, and deeply affectionate Kota mentor (around 22-24 years old, like a loving elder brother/bhaiya). You speak natural Hinglish with a true Kota student culture vibe.
+RULES FOR EDU SIR:
+1. ABSOLUTELY NO NEGATIVITY, NO DEMOTIVATION, NO HARSH WORDS. Never use words like 'gadha', 'nalayak', 'ullu', or any abuse.
+2. ENDLESS PATIENCE: Answer with 20 times more energy, warmth, and a big smile. Never get annoyed.
+3. TEACHING MODES:
+   - DIRECT MODE: Give a clear, step-by-step practical explanation with real-world examples.
+   - SOCRATIC / HINT MODE: Do NOT give the direct answer immediately! Give a helpful hint, ask guiding questions to make the student think, and encourage them step-by-step. Once solved, give 4-5 similar practice questions for revision.
+4. Always address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".`;
+
+    let conversationHistory = [{ role: "system", content: BASE_SYSTEM_PROMPT }];
+
+    function switchTab(tabId) {
+      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq'].forEach(t => {
+        const el = document.getElementById(`view-${t}`);
+        if (el) el.classList.add('hidden');
+        
+        const tabBtn = document.getElementById(`tab-${t}`);
+        if (tabBtn) { tabBtn.classList.remove('text-slate-900', 'font-extrabold'); tabBtn.classList.add('text-slate-500', 'font-bold'); }
+      });
+
+      const activeEl = document.getElementById(`view-${tabId}`);
+      if (activeEl) activeEl.classList.remove('hidden');
+
+      const activeTab = document.getElementById(`tab-${tabId}`);
+      if (activeTab) { activeTab.classList.add('text-slate-900', 'font-extrabold'); activeTab.classList.remove('text-slate-500', 'font-bold'); }
+
+      if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
+      if (tabId === 'vault') loadVaultItems();
+      if (tabId === 'community') loadCommunityDoubts();
+    }
+
+    let canvas, ctx, painting = false;
+    function initWhiteboard() {
+      canvas = document.getElementById('whiteboard');
+      if (!canvas) return;
+      ctx = canvas.getContext('2d');
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+
+      canvas.addEventListener('mousedown', () => painting = true);
+      window.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
+      canvas.addEventListener('mousemove', (e) => {
+        if (!painting) return;
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#38BDF8';
+        const r = canvas.getBoundingClientRect();
+        ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
+      });
+    }
+    function clearCanvas() { if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height); }
+    function setBoardMode(m) {
+      if (m === 'draw') {
+        document.getElementById('board-container-draw').classList.remove('hidden');
+        document.getElementById('board-container-3d').classList.add('hidden');
+        document.getElementById('classroom-3d-selectors').classList.add('hidden');
+        initWhiteboard();
+      } else {
+        document.getElementById('board-container-draw').classList.add('hidden');
+        document.getElementById('board-container-3d').classList.remove('hidden');
+        document.getElementById('classroom-3d-selectors').classList.remove('hidden');
+        init3DClassroom();
+      }
+    }
+
+    let cScene, cCamera, cRenderer, cGroup, is3DInit = false;
+    function init3DClassroom() {
+      const container = document.getElementById('classroom-three-canvas');
+      if (!container || is3DInit) return;
+      cScene = new THREE.Scene();
+      cCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      cCamera.position.z = 7;
+      cRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+      cRenderer.setSize(container.clientWidth, container.clientHeight);
+      container.appendChild(cRenderer.domElement);
+      cScene.add(new THREE.AmbientLight(0xffffff, 0.9));
+      cGroup = new THREE.Group();
+      cScene.add(cGroup);
+      cGroup.add(new THREE.Mesh(new THREE.TorusKnotGeometry(1.5, 0.45, 100, 16), new THREE.MeshStandardMaterial({ color: 0xEF4444, roughness: 0.3 })));
+      
+      function animate() {
+        requestAnimationFrame(animate);
+        cGroup.rotation.y += 0.008;
+        cRenderer.render(cScene, cCamera);
+      }
+      animate();
+      is3DInit = true;
+    }
+
+    function switch3DModel(type) {
+      if (!cGroup) return;
+      while (cGroup.children.length > 0) cGroup.remove(cGroup.children[0]);
+      if (type === 'heart') {
+        cGroup.add(new THREE.Mesh(new THREE.TorusKnotGeometry(1.5, 0.45, 100, 16), new THREE.MeshStandardMaterial({ color: 0xEF4444 })));
+      } else {
+        cGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.8, 32, 32), new THREE.MeshStandardMaterial({ color: 0xF59E0B })));
+      }
+    }
+
+    function recordVoice() {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRecognition) return;
+      const r = new SpeechRecognition();
+      r.lang = 'hi-IN';
+      r.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; };
+      r.start();
+    }
+
+    function handleImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          base64Image = e.target.result;
+          document.getElementById('image-preview-container').classList.remove('hidden');
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+    function removeImage() {
+      base64Image = null;
+      document.getElementById('image-preview-container').classList.add('hidden');
+      document.getElementById('file-input').value = "";
+    }
+
+    function renderMathInElementCustom(el) {
+      if (window.renderMathInElement) {
+        renderMathInElement(el, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+      }
+    }
+
+    async function sendDoubt() {
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text && !base64Image) return;
+
+      lastUserQuestion = text;
+      const container = document.getElementById('chat-messages');
+      container.innerHTML += `
+        <div class="flex justify-end">
+          <div class="ink-navy text-white p-4 rounded-3xl rounded-tr-sm text-xs sm:text-sm shadow-md max-w-[85%] font-medium">
+            ${base64Image ? '<span class="block text-[10px] text-white/80 font-bold mb-1">📷 [Photo Attached]</span>' : ''}
+            ${text}
+          </div>
+        </div>
+      `;
+
+      input.value = "";
+      const currentImg = base64Image;
+      removeImage();
+      container.scrollTop = container.scrollHeight;
+
+      const loadingId = 'loading-' + Date.now();
+      container.innerHTML += `
+        <div id="${loadingId}" class="flex items-start space-x-3">
+          <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+          <div class="bg-white border border-slate-200 p-3.5 rounded-2xl text-xs text-slate-700 font-medium">Edu Sir (${currentStudentGoal}) कोटा वाले अंदाज़ में समझा रहे हैं...</div>
+        </div>
+      `;
+      lucide.createIcons();
+      container.scrollTop = container.scrollHeight;
+
+      try {
+        let modeInstruction = currentTeachingMode === 'socratic' 
+          ? "[Instruction: Use Socratic/Hint mode. Do not give the direct answer immediately. Give a hint, ask guiding questions, and prompt the student to think. Once solved, give 4-5 practice questions.]" 
+          : "[Instruction: Use Direct Mode. Give a clear, step-by-step practical explanation with real-world Kota examples.]";
+
+        let userContent = `${modeInstruction} [Student Goal: ${currentStudentGoal}] ` + (text || "कृपया इस प्रश्न को हल करें।");
+        
+        let messagePayload;
+        let selectedModel;
+
+        if (currentImg) {
+          selectedModel = "llama-3.2-11b-vision-preview";
+          messagePayload = { role: "user", content: [{ type: "text", text: userContent }, { type: "image_url", image_url: { url: currentImg } }] };
+        } else {
+          selectedModel = "openai/gpt-oss-120b";
+          messagePayload = { role: "user", content: userContent };
+        }
+
+        conversationHistory.push(messagePayload);
+
+        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${GROQ_KEY}` },
+          body: JSON.stringify({ model: selectedModel, messages: conversationHistory, temperature: 0.3, max_tokens: 4096 })
+        });
+
+        if (!res.ok) throw new Error(`Server Status ${res.status}`);
+
+        const data = await res.json();
+        let reply = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+        conversationHistory.push({ role: "assistant", content: reply });
+
+        document.getElementById(loadingId).remove();
+        
+        const messageId = 'msg-' + Date.now();
+        const plainTextForSpeech = reply.replace(/[*_#`$]/g, ''); 
+        
+        container.innerHTML += `
+          <div class="flex items-start space-x-3 max-w-3xl">
+            <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+            <div class="space-y-2.5 w-full">
+              <div id="${messageId}" class="bg-white border border-slate-200 chat-bubble p-5 rounded-3xl rounded-tl-sm text-xs sm:text-sm text-slate-900 shadow-xs leading-relaxed">
+                ${marked.parse(reply)}
+              </div>
+              <div class="flex items-center gap-2 pt-1">
+                <button onclick="handleChatReaction('up', '${messageId}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="thumbs-up" class="w-3.5 h-3.5 text-emerald-600"></i> Helpful</button>
+                <button onclick="handleChatReaction('down', '${messageId}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="thumbs-down" class="w-3.5 h-3.5 text-rose-600"></i> Not Satisfied</button>
+                <button onclick="handleChatReaction('op', '${messageId}')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 font-black text-[11px] rounded-lg transition flex items-center gap-1 border border-amber-200 shadow-2xs"><i data-lucide="zap" class="w-3.5 h-3.5"></i> OP 🔥</button>
+                <button onclick="handleChatReaction('regen', '${messageId}')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="rotate-cw" class="w-3.5 h-3.5 text-blue-600"></i> Regenerate</button>
+              </div>
+              <button onclick="speakText('${plainTextForSpeech.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200 font-bold text-[11px] rounded-xl transition shadow-2xs mt-1">
+                <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Edu Sir को बोलकर सुनें
+              </button>
+            </div>
+          </div>
+        `;
+        
+        renderMathInElementCustom(document.getElementById(messageId));
+        lucide.createIcons();
+        container.scrollTop = container.scrollHeight;
+
+      } catch (err) {
+        document.getElementById(loadingId).remove();
+        container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border border-red-200 mx-2">⚠️ Error: ${err.message}</div>`;
+      }
+    }
+  </script>
+</body>
+</html>
