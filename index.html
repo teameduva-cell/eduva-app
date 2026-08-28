@@ -62,21 +62,31 @@
       to { opacity: 1; transform: translateY(0); }
     }
     .animate-fadeIn { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    
+    .eduva-back-btn {
+      display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.55rem 0.8rem; border-radius: 0.85rem;
+      background: #fff; border: 1px solid #E2E8F0; color: #475569; font-size: 0.72rem; font-weight: 800;
+      box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.35); cursor: pointer; transition: 0.18s ease;
+    }
+    .eduva-back-btn:hover { color: #2563EB; border-color: #BFDBFE; transform: translateX(-2px); }
   </style>
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
   <!-- TOP PROFESSIONAL HEADER -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-xs">
-    <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
-      <div class="w-10 h-10 logo-gradient rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-md">
-        E✨
-      </div>
-      <div>
-        <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none flex items-center gap-1.5">
-          EDUVA
-        </h1>
-        <p class="text-[10px] text-slate-500 font-bold mt-0.5 tracking-wider uppercase mono-font">KOTA SMART LEARNING HUB</p>
+    <div class="flex items-center space-x-3">
+      <button type="button" class="eduva-back-btn" onclick="goBack()" title="पीछे जाएं">← Back</button>
+      <div class="flex items-center space-x-2 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-10 h-10 logo-gradient rounded-2xl flex items-center justify-center font-black text-xl text-white shadow-md">
+          E✨
+        </div>
+        <div>
+          <h1 class="text-xl font-black text-slate-900 tracking-tight leading-none flex items-center gap-1.5">
+            EDUVA
+          </h1>
+          <p class="text-[10px] text-slate-500 font-bold mt-0.5 tracking-wider uppercase mono-font">KOTA SMART LEARNING HUB</p>
+        </div>
       </div>
     </div>
 
@@ -90,11 +100,11 @@
         <option value="Eduva Junior">Eduva Junior (6th-8th)</option>
       </select>
 
-      <button onclick="openLoginModal()" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs">
+      <button onclick="openLoginModal()" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs cursor-pointer">
         <i data-lucide="user" class="w-3.5 h-3.5"></i> Login / Signup
       </button>
 
-      <button onclick="giveKotaBoost()" class="hidden sm:flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs">
+      <button onclick="giveKotaBoost()" class="hidden sm:flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs cursor-pointer">
         <i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡
       </button>
 
@@ -124,41 +134,44 @@
         </div>
 
         <nav class="space-y-1.5 text-xs font-bold">
-          <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl ink-navy text-white transition shadow-2xs">
+          <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl ink-navy text-white transition shadow-2xs cursor-pointer">
             <i data-lucide="home" class="w-4 h-4"></i> Home Dashboard
           </button>
-          <button onclick="switchTab('learning')" id="dtab-learning" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('learning')" id="dtab-learning" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i> My Learning & Subjects 📚
           </button>
-          <button onclick="switchTab('chat')" id="dtab-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('avatar-lectures')" id="dtab-avatar-lectures" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="video" class="w-4 h-4 text-rose-600"></i> AI Avatar Lectures 🎬
+          </button>
+          <button onclick="switchTab('chat')" id="dtab-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i> AI Chat & Doubts
           </button>
-          <button onclick="switchTab('community')" id="dtab-community" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('community')" id="dtab-community" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी डाउट पूल 👥
           </button>
-          <button onclick="switchTab('flashcards')" id="dtab-flashcards" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('flashcards')" id="dtab-flashcards" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="layers" class="w-4 h-4 text-amber-500"></i> 1-Min Flashcards 🃏
           </button>
-          <button onclick="switchTab('mocktest')" id="dtab-mocktest" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('mocktest')" id="dtab-mocktest" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="timer" class="w-4 h-4 text-rose-500"></i> Kota Test Series ⏱️
           </button>
-          <button onclick="switchTab('vault')" id="dtab-vault" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('vault')" id="dtab-vault" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> Formula Vault 📌
           </button>
-          <button onclick="switchTab('profile')" id="dtab-profile" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('profile')" id="dtab-profile" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="award" class="w-4 h-4 text-amber-600"></i> My Profile & Badges 🏆
           </button>
-          <button onclick="switchTab('classroom')" id="dtab-classroom" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="video" class="w-4 h-4 text-cyan-600"></i> Live AI Classroom 🎥
+          <button onclick="switchTab('memory')" id="dtab-memory" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="brain" class="w-4 h-4 text-violet-600"></i> My Mistake Book 🧠
           </button>
-          <button onclick="switchTab('timetable')" id="dtab-timetable" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+          <button onclick="switchTab('classroom')" id="dtab-classroom" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="monitor" class="w-4 h-4 text-cyan-600"></i> Live AI Classroom 🎥
+          </button>
+          <button onclick="switchTab('timetable')" id="dtab-timetable" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i> AI टाइम टेबल जनरेटर
           </button>
-          <button onclick="switchTab('faq')" id="dtab-faq" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ (अक्सर पूछे जाने वाले सवाल) ❓
-          </button>
-          <button onclick="switchTab('feedback')" id="dtab-feedback" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="shield-alert" class="w-4 h-4 text-amber-500"></i> गुप्त फाउंडर फीडबैक
+          <button onclick="switchTab('faq')" id="dtab-faq" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ ❓
           </button>
         </nav>
       </div>
@@ -177,90 +190,49 @@
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 flex flex-col md:flex-row items-center justify-between gap-6 relative overflow-hidden">
           <div class="space-y-3 z-10 max-w-xl">
             <div class="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full text-emerald-800 text-xs font-bold mono-font">
-              <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> 24x7 Live AI Mentor Active
+              <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> AI Avatar Lecture Engine Active 🎬
             </div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              Good Morning, Future Doctor! 👋
+              जय श्री राम, चैंपियन! 🙏
             </h2>
             <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-              Let's make today productive and achieve your goals. (No download, no screenshot allowed — study securely inside the app)
+              कोटा वाले ऑथेंटिक माहौल में AI Video Teacher के साथ चैप्टर-वाइज स्टेप-बाय-स्टेप पढ़ाई करें। (No download, no screenshot allowed)
             </p>
-            
-            <!-- XP & Stats Bar -->
-            <div class="grid grid-cols-3 gap-3 pt-2">
-              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase">Day Streak</p>
-                <p class="text-sm font-black text-red-600 flex items-center justify-center gap-1"><i data-lucide="flame" class="w-3.5 h-3.5 fill-red-600"></i> 12</p>
-              </div>
-              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase">Tasks Done</p>
-                <p class="text-sm font-black text-blue-600">4 / 6</p>
-              </div>
-              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase">NEET Prep</p>
-                <p class="text-sm font-black text-emerald-600">68%</p>
-              </div>
-            </div>
-
             <div class="flex flex-wrap gap-2 pt-1">
-              <button onclick="giveKotaBoost()" class="px-4 py-2 bg-amber-500 text-slate-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡</button>
-              <button onclick="switchTab('profile')" class="px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs rounded-xl transition">🏆 My Profile & XP</button>
+              <button onclick="switchTab('avatar-lectures')" class="px-4 py-2 bg-rose-600 text-white font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"><i data-lucide="video" class="w-3.5 h-3.5"></i> Watch AI Lectures 🎬</button>
+              <button onclick="giveKotaBoost()" class="px-4 py-2 bg-amber-500 text-slate-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition cursor-pointer"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡</button>
             </div>
           </div>
-          
-          <div class="w-full md:w-72 p-5 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-md shrink-0 space-y-3">
-            <div class="flex items-center justify-between border-b border-indigo-700/50 pb-2">
-              <span class="text-[10px] font-bold text-indigo-300 mono-font uppercase">EDUVA XP</span>
-              <span class="text-xs font-black text-amber-400 mono-font">RANK #12</span>
+          <div class="w-full md:w-72 p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs shrink-0 space-y-3">
+            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
+              <span class="text-[10px] font-bold text-slate-400 mono-font uppercase">STATUS: SECURE</span>
+              <span class="text-xs font-black text-blue-600 mono-font">DLP ACTIVE</span>
             </div>
-            <div>
-              <p class="text-2xl font-black text-white">2,450 XP</p>
-              <p class="text-[10px] text-indigo-200 font-medium mt-0.5">Keep learning, keep growing!</p>
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl ink-navy flex items-center justify-center text-lg shadow-sm">🎓</div>
+              <div>
+                <p class="text-xs font-black text-slate-900">AI Video Classes</p>
+                <p class="text-[10px] text-slate-500 font-semibold">Interactive Learning</p>
+              </div>
             </div>
-            <button onclick="switchTab('learning')" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-xs font-bold transition">View Learning Progress ➡</button>
           </div>
         </div>
 
         <div class="card-clean rounded-2xl p-2.5 flex items-center gap-3 bg-white border border-slate-200 transition shadow-xs">
           <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
-          <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-xs sm:text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
-          <button onclick="switchTab('chat')" class="p-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition">
+          <input type="text" id="home-search-input" placeholder="कोटा स्टाइल में कोई भी सवाल या चैप्टर सर्च करें..." class="flex-1 bg-transparent text-xs sm:text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
+          <button onclick="switchTab('chat')" class="p-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer">
             <i data-lucide="mic" class="w-4 h-4"></i>
           </button>
-        </div>
-
-        <!-- Continue Learning Section -->
-        <div class="space-y-3">
-          <div class="flex items-center justify-between">
-            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Continue Learning (In-App Secured)</h3>
-            <button onclick="switchTab('learning')" class="text-xs font-bold text-blue-600 hover:underline">View All</button>
-          </div>
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-blue-500 transition space-y-2">
-              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Physics</span><span class="text-xs font-black text-blue-600">68%</span></div>
-              <p class="text-[10px] text-slate-500 font-medium">Motion in Straight Line</p>
-              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[68%]" style="width: 68%;"></div></div>
-            </div>
-            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition space-y-2">
-              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Chemistry</span><span class="text-xs font-black text-emerald-600">42%</span></div>
-              <p class="text-[10px] text-slate-500 font-medium">Atomic Structure</p>
-              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-emerald-600 h-full w-[42%]" style="width: 42%;"></div></div>
-            </div>
-            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition space-y-2">
-              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Mathematics</span><span class="text-xs font-black text-purple-600">75%</span></div>
-              <p class="text-[10px] text-slate-500 font-medium">Quadratic Equations</p>
-              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-purple-600 h-full w-[75%]" style="width: 75%;"></div></div>
-            </div>
-          </div>
         </div>
 
         <div class="space-y-3">
           <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Ask Your Way (कोटा स्टाइल)</h3>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div onclick="switchTab('chat')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
-              <div class="w-12 h-12 mx-auto rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="camera" class="w-6 h-6"></i></div>
-              <p class="text-xs font-black text-slate-900">Camera</p>
-              <p class="text-[10px] text-slate-500 font-semibold">सवाल की फोटो खींचो</p>
+            <div onclick="switchTab('avatar-lectures')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="video" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">AI Lectures</p>
+              <p class="text-[10px] text-slate-500 font-semibold">वीडियो लेक्चर देखें</p>
             </div>
             <div onclick="switchTab('community')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
               <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="users" class="w-6 h-6"></i></div>
@@ -281,46 +253,48 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
-          <button onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+          <button onclick="switchTab('courses')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="book-open" class="w-5 h-5 mx-auto text-indigo-600 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">My Learning</p>
+            <p class="text-xs font-bold text-slate-900">कोर्सेज & DPP</p>
           </button>
-          <button onclick="switchTab('classroom')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
-            <i data-lucide="video" class="w-5 h-5 mx-auto text-cyan-600 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">Live & 3D Lab</p>
+          <button onclick="switchTab('avatar-lectures')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="video" class="w-5 h-5 mx-auto text-rose-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">AI Lectures</p>
           </button>
-          <button onclick="switchTab('vault')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+          <button onclick="switchTab('vault')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="bookmark" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
             <p class="text-xs font-bold text-slate-900">फॉर्मूला वॉल्ट</p>
           </button>
-          <button onclick="switchTab('profile')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
-            <i data-lucide="award" class="w-5 h-5 mx-auto text-amber-500 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">Profile & Badges</p>
+          <button onclick="switchTab('timetable')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="calendar" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">टाइम टेबल</p>
           </button>
-          <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+          <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="help-circle" class="w-5 h-5 mx-auto text-indigo-500 group-hover:scale-110 transition"></i>
             <p class="text-xs font-bold text-slate-900">FAQs</p>
           </button>
-          <button onclick="switchTab('mocktest')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
-            <i data-lucide="timer" class="w-5 h-5 mx-auto text-rose-500 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">मॉक टेस्ट</p>
+          <button onclick="switchTab('memory')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="brain" class="w-5 h-5 mx-auto text-violet-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Mistake Book</p>
           </button>
         </div>
       </section>
 
       <!-- ================= 2. AI CHAT VIEW ================= -->
       <section id="view-chat" class="hidden flex-1 flex flex-col card-clean rounded-3xl overflow-hidden h-[calc(100vh-100px)] animate-fadeIn border border-slate-200">
+        <div class="mb-2 px-3 pt-3"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="px-4 py-2.5 bg-slate-50 border-b border-slate-200 flex items-center justify-between gap-2 text-xs font-bold shrink-0">
           <div class="flex items-center gap-2 text-slate-700">
             <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
             <span>पढ़ाने का तरीका (Teaching Mode):</span>
           </div>
           <div class="flex items-center gap-2">
-            <button onclick="sendUnsatisfiedToCommunity()" class="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition flex items-center gap-1 text-[11px]" title="यदि AI उत्तर पसंद न आए तो कम्युनिटी में भेजें"><i data-lucide="users" class="w-3.5 h-3.5"></i> कम्युनिटी में पूछें 👥</button>
-            <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition flex items-center gap-1 text-[11px]"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault</button>
+            <button onclick="sendUnsatisfiedToCommunity()" class="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="users" class="w-3.5 h-3.5"></i> कम्युनिटी में पूछें 👥</button>
+            <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault</button>
             <div class="hidden sm:flex items-center bg-white border border-slate-200 rounded-xl p-1 shadow-2xs">
-              <button onclick="setTeachingMode('direct')" id="mode-direct-btn" class="px-3 py-1.5 rounded-lg ink-navy text-white transition">डायरेक्ट आंसर</button>
-              <button onclick="setTeachingMode('socratic')" id="mode-socratic-btn" class="px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition">हिंट देकर सिखाओ</button>
+              <button onclick="setTeachingMode('direct')" id="mode-direct-btn" class="px-3 py-1.5 rounded-lg ink-navy text-white transition cursor-pointer">डायरेक्ट आंसर</button>
+              <button onclick="setTeachingMode('socratic')" id="mode-socratic-btn" class="px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition cursor-pointer">हिंट देकर सिखाओ</button>
             </div>
           </div>
         </div>
@@ -335,7 +309,7 @@
                 जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>。<br>
                 चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो—तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
               </div>
-              <button onclick="speakText('जय श्री राम, चैंपियन! मैं हूँ आपका अपना एडू सर। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो, तेरा भाई हर तरह से तैयार है!')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200 font-bold text-[11px] rounded-xl transition">
+              <button onclick="speakText('जय श्री राम, चैंपियन! मैं हूँ आपका अपना एडू सर। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो, तेरा भाई हर तरह से तैयार है!')" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200 font-bold text-[11px] rounded-xl transition cursor-pointer">
                 <i data-lucide="volume-2" class="w-3.5 h-3.5"></i> Edu Sir को सुनें
               </button>
             </div>
@@ -345,7 +319,7 @@
         <div id="image-preview-container" class="hidden px-4 py-2 bg-slate-50 border-t border-slate-200 shrink-0">
           <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-200 px-3.5 py-1.5 rounded-xl text-xs text-blue-800 font-semibold">
             <i data-lucide="image" class="w-4 h-4"></i> <span>Question Photo Attached</span>
-            <button onclick="removeImage()" class="text-rose-600 font-black ml-2">✕</button>
+            <button onclick="removeImage()" class="text-rose-600 font-black ml-2 cursor-pointer">✕</button>
           </div>
         </div>
 
@@ -353,7 +327,7 @@
           <div class="flex items-center gap-2.5 bg-slate-50 rounded-2xl px-4 py-3 border border-slate-200 focus-within:border-blue-600 transition shadow-inner">
             <input id="chat-input" type="text" placeholder="अपना डाउट लिखो भाई (बिना किसी झिझक के)..." class="flex-1 bg-transparent text-xs sm:text-sm outline-none text-slate-900 placeholder:text-slate-400 font-medium" onkeydown="if(event.key==='Enter') sendDoubt()">
             
-            <button onclick="recordVoice()" class="p-2.5 text-slate-500 hover:text-blue-600 active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="Voice Input">
+            <button onclick="recordVoice()" class="p-2.5 text-slate-500 hover:text-blue-600 active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs cursor-pointer" title="Voice Input">
               <i data-lucide="mic" class="w-4 h-4"></i>
             </button>
             
@@ -362,15 +336,92 @@
               <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleImage(this)">
             </label>
             
-            <button onclick="sendDoubt()" class="p-3 ink-navy text-white rounded-xl active:scale-95 shadow-md font-bold text-xs flex items-center justify-center transition">
+            <button onclick="sendDoubt()" class="p-3 ink-navy text-white rounded-xl active:scale-95 shadow-md font-bold text-xs flex items-center justify-center transition cursor-pointer">
               <i data-lucide="send" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
       </section>
 
+      <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW ================= -->
+      <section id="view-avatar-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <span class="px-3 py-1 bg-rose-50 border border-rose-200 text-rose-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">AI Video Teacher 🎬</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">AI Avatar Interactive Lectures</h2>
+            </div>
+            <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-2xs">
+              <i data-lucide="zap" class="w-4 h-4 text-amber-600 fill-amber-600"></i>
+              <span class="text-xs font-black text-amber-800 mono-font">Step-by-Step AI Teaching</span>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed font-medium">
+            यहाँ आप किसी भी चैप्टर को AI Avatar Video Teacher के साथ लाइव क्लास की तरह पढ़ सकते हैं। यदि बीच में कोई स्टेप समझ न आए, तो नीचे दिए गए <b>"Ask Edu Sir"</b> बटन से तुरंत सवाल पूछें!
+          </p>
+
+          <!-- Video Player Simulation Container -->
+          <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 relative">
+            <div class="absolute top-4 left-4 z-20 flex items-center gap-2 bg-rose-600 text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg animate-pulse mono-font">
+              <span class="w-2 h-2 rounded-full bg-white"></span> AI AVATAR LIVE CLASS
+            </div>
+            
+            <div id="avatar-video-screen" class="w-full h-72 sm:h-96 flex flex-col items-center justify-center p-6 text-center text-white relative bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
+              <div class="w-20 h-20 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center text-4xl mb-3 shadow-inner">
+                👨‍🏫
+              </div>
+              <h3 id="avatar-lecture-title" class="text-lg sm:text-xl font-bold text-amber-300">Physics: Motion in a Straight Line</h3>
+              <p id="avatar-lecture-step" class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed">
+                "चैंपियन, आज हम सीखेंगे कि गति के समीकरण ($v = u + at$) को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!"
+              </p>
+              <div class="mt-6 flex items-center gap-3">
+                <button onclick="prevLectureStep()" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold transition cursor-pointer">◀ पिछला स्टेप</button>
+                <button onclick="toggleAvatarPlay()" id="play-pause-btn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 rounded-xl text-xs font-black shadow-lg transition cursor-pointer">⏸ Pause</button>
+                <button onclick="nextLectureStep()" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold transition cursor-pointer">अगला स्टेप ▶</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Topic Selector -->
+          <div class="space-y-3 pt-2">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Select Chapter Lecture</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <div onclick="loadAvatarLecture('Physics: Motion in a Straight Line', 'चैंपियन, आज हम सीखेंगे कि गति के समीकरण ($v = u + at$) को ग्राफिकल मेथड से कैसे ड्राइव करते हैं।')" class="p-4 bg-slate-50 hover:bg-blue-50 border rounded-2xl cursor-pointer transition space-y-1">
+                <p class="text-xs font-black text-slate-900">⚛️ Physics</p>
+                <p class="text-[11px] text-slate-600 font-semibold">Motion in a Straight Line</p>
+              </div>
+              <div onclick="loadAvatarLecture('Chemistry: Atomic Structure', 'बच्चों, बोहर का मॉडल (Bohr Model) समझने से पहले हमें हाइड्रोजन स्पेक्ट्रम के बामर और लाइमन सीरीज को समझना होगा।')" class="p-4 bg-slate-50 hover:bg-emerald-50 border rounded-2xl cursor-pointer transition space-y-1">
+                <p class="text-xs font-black text-slate-900">🧪 Chemistry</p>
+                <p class="text-[11px] text-slate-600 font-semibold">Atomic Structure & Bohr Model</p>
+              </div>
+              <div onclick="loadAvatarLecture('Mathematics: Quadratic Equations', 'मेरे भाई, द्विघात समीकरण (Quadratic Equations) के मूल निकालने के लिए श्रीधराचार्य फॉर्मूला सबसे शक्तिशाली हथियार है।')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-1">
+                <p class="text-xs font-black text-slate-900">📐 Mathematics</p>
+                <p class="text-[11px] text-slate-600 font-semibold">Quadratic Equations & Roots</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Instant Ask Edu Sir Integration -->
+          <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600 text-white flex items-center justify-center font-bold text-sm">🤖</div>
+              <div>
+                <p class="text-xs font-black text-indigo-950">वीडियो देखते-देखते किसी स्टेप पर अटक गए?</p>
+                <p class="text-[10px] text-indigo-700 font-medium">तुरंत 'Ask Edu Sir' दबाएं और उसी चैप्टर के संदर्भ में AI से समाधान लें।</p>
+              </div>
+            </div>
+            <button onclick="askEduSirAboutLecture()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition shrink-0 cursor-pointer">Ask Edu Sir Now 🚀</button>
+          </div>
+        </div>
+      </section>
+
       <!-- ================= MY LEARNING VIEW ================= -->
       <section id="view-learning" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
           <div class="flex items-center justify-between border-b border-slate-200 pb-4">
             <div>
@@ -415,6 +466,8 @@
 
       <!-- ================= MY PROFILE & BADGES VIEW ================= -->
       <section id="view-profile" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div class="flex items-center gap-4">
@@ -425,7 +478,7 @@
                 <span class="inline-block mt-1 px-3 py-0.5 bg-amber-100 text-amber-800 rounded-full text-[10px] font-black">⭐ Premium Student</span>
               </div>
             </div>
-            <button onclick="alert('Profile settings saved!')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">⚙️ Edit Profile</button>
+            <button onclick="alert('Profile settings saved!')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition cursor-pointer">⚙️ Edit Profile</button>
           </div>
 
           <!-- Stats Grid -->
@@ -461,6 +514,8 @@
 
       <!-- ================= FAQ VIEW ================= -->
       <section id="view-faq" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
           <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
             <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-black shadow-md">❓</div>
@@ -494,6 +549,8 @@
 
       <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
       <section id="view-community" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div>
@@ -509,7 +566,7 @@
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
             <h3 class="text-xs font-black text-slate-900">अपना अनसुलझा सवाल कम्युनिटी में डालें:</h3>
             <textarea id="community-new-doubt" rows="3" placeholder="यहाँ अपना सवाल लिखें..." class="w-full bg-white border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-xs font-medium leading-relaxed"></textarea>
-            <button onclick="postCommunityDoubt()" class="px-5 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm transition">कम्युनिटी में पोस्ट करें 🚀</button>
+            <button onclick="postCommunityDoubt()" class="px-5 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm transition cursor-pointer">कम्युनिटी में पोस्ट करें 🚀</button>
           </div>
 
           <div class="space-y-4 pt-2">
@@ -521,6 +578,8 @@
 
       <!-- ================= FLASHCARDS VIEW ================= -->
       <section id="view-flashcards" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-4">
           <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-xs font-bold mono-font">
             🃏 1-Minute High-Yield Flashcards
@@ -538,14 +597,16 @@
           </div>
 
           <div class="flex items-center justify-between gap-4 pt-2">
-            <button onclick="prevFlashcard()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-2xl transition">⬅ पिछला कार्ड</button>
-            <button onclick="nextFlashcard()" class="flex-1 py-3 ink-navy text-white font-bold text-xs rounded-2xl transition shadow-sm">अगला कार्ड ➡</button>
+            <button onclick="prevFlashcard()" class="flex-1 py-3 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold text-xs rounded-2xl transition cursor-pointer">⬅ पिछला कार्ड</button>
+            <button onclick="nextFlashcard()" class="flex-1 py-3 ink-navy text-white font-bold text-xs rounded-2xl transition shadow-sm cursor-pointer">अगला कार्ड ➡</button>
           </div>
         </div>
       </section>
 
       <!-- ================= MOCK TEST VIEW ================= -->
       <section id="view-mocktest" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
           <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
             <div>
@@ -559,7 +620,7 @@
 
           <div id="test-intro-box" class="space-y-4 text-xs sm:text-sm text-slate-700">
             <p>यह टेस्ट कोटा के टॉप कोचिंग पैटर्न पर आधारित है जिसमें सही उत्तर पर +4 और गलत उत्तर पर -1 अंक (Negative Marking) का प्रावधान है।</p>
-            <button onclick="startMockTest()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2">
+            <button onclick="startMockTest()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
               <i data-lucide="play-circle" class="w-4 h-4"></i> मॉक टेस्ट शुरू करें
             </button>
           </div>
@@ -567,8 +628,8 @@
           <div id="test-questions-box" class="hidden space-y-6">
             <div id="test-question-container" class="space-y-4"></div>
             <div class="flex justify-between pt-4 border-t border-slate-200">
-              <button onclick="prevTestQuestion()" class="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl">पिछला</button>
-              <button onclick="nextTestQuestion()" id="next-test-btn" class="px-6 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm">अगला प्रश्न</button>
+              <button onclick="prevTestQuestion()" class="px-5 py-2.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-xl cursor-pointer">पिछला</button>
+              <button onclick="nextTestQuestion()" id="next-test-btn" class="px-6 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm cursor-pointer">अगला प्रश्न</button>
             </div>
           </div>
 
@@ -576,20 +637,22 @@
             <div class="text-4xl">🏆</div>
             <h3 class="text-xl font-black text-slate-900">टेस्ट सफलताપूर्व संपन्न हुआ!</h3>
             <p id="test-score-summary" class="text-sm font-bold text-blue-600 mono-font"></p>
-            <button onclick="resetMockTest()" class="px-6 py-3 ink-navy text-white font-bold text-xs rounded-xl">दोबारा टेस्ट दें</button>
+            <button onclick="resetMockTest()" class="px-6 py-3 ink-navy text-white font-bold text-xs rounded-xl cursor-pointer">दोबारा टेस्ट दें</button>
           </div>
         </div>
       </section>
 
       <!-- ================= VAULT VIEW ================= -->
       <section id="view-vault" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
           <div class="flex items-center justify-between border-b border-slate-200 pb-4">
             <div>
               <span class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">My Personal Vault</span>
               <h2 class="text-xl font-black text-slate-900 mt-1">सेव किए गए फॉर्मूले और डाउट्स (Vault)</h2>
             </div>
-            <button onclick="clearVault()" class="text-xs text-rose-600 font-bold hover:underline">खाली करें</button>
+            <button onclick="clearVault()" class="text-xs text-rose-600 font-bold hover:underline cursor-pointer">खाली करें</button>
           </div>
           <div id="vault-items-container" class="space-y-3"></div>
         </div>
@@ -607,17 +670,17 @@
               </div>
             </div>
             <div class="space-y-2 text-xs font-bold pt-2">
-              <button onclick="setBoardMode('draw')" class="w-full py-3 px-4 rounded-xl ink-navy text-white flex items-center gap-2 shadow-sm transition"><i data-lucide="edit-3" class="w-4 h-4"></i> Live Whiteboard Mode</button>
-              <button onclick="setBoardMode('3d')" class="w-full py-3 px-4 rounded-xl border border-slate-200 text-slate-800 hover:bg-slate-50 flex items-center gap-2 transition"><i data-lucide="box" class="w-4 h-4 text-purple-600"></i> Live 3D Science Lab 🪐</button>
+              <button onclick="setBoardMode('draw')" class="w-full py-3 px-4 rounded-xl ink-navy text-white flex items-center gap-2 shadow-sm transition cursor-pointer"><i data-lucide="edit-3" class="w-4 h-4"></i> Live Whiteboard Mode</button>
+              <button onclick="setBoardMode('3d')" class="w-full py-3 px-4 rounded-xl border border-slate-200 text-slate-800 hover:bg-slate-50 flex items-center gap-2 transition cursor-pointer"><i data-lucide="box" class="w-4 h-4 text-purple-600"></i> Live 3D Science Lab 🪐</button>
             </div>
 
             <div id="classroom-3d-selectors" class="hidden space-y-2 pt-2">
               <p class="text-[10px] font-black uppercase text-slate-400 tracking-wider mono-font">Select 3D Chapter Model</p>
-              <button onclick="switch3DModel('heart')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition">🫀 Human Heart Model</button>
-              <button onclick="switch3DModel('atom')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition">⚛️ 3D Atom Structure</button>
+              <button onclick="switch3DModel('heart')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition cursor-pointer">🫀 Human Heart Model</button>
+              <button onclick="switch3DModel('atom')" class="w-full py-2.5 px-3 rounded-xl bg-slate-50 hover:bg-blue-50 text-slate-700 text-xs font-bold text-left flex items-center gap-2 transition cursor-pointer">⚛️ 3D Atom Structure</button>
             </div>
           </div>
-          <button onclick="clearCanvas()" class="w-full py-3 bg-red-50 text-red-600 font-bold text-xs rounded-xl border border-red-200 hover:bg-red-100 transition">Clear Board</button>
+          <button onclick="clearCanvas()" class="w-full py-3 bg-red-50 text-red-600 font-bold text-xs rounded-xl border border-red-200 hover:bg-red-100 transition cursor-pointer">Clear Board</button>
         </aside>
 
         <div class="lg:col-span-9 card-clean rounded-3xl p-4 flex flex-col relative overflow-hidden border border-slate-200">
@@ -632,6 +695,8 @@
 
       <!-- ================= COURSES VIEW ================= -->
       <section id="view-courses" class="hidden space-y-6 max-w-6xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <span class="px-3.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">Complete Academic Hub</span>
@@ -645,42 +710,43 @@
           <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
             <div class="w-12 h-12 rounded-2xl bg-blue-50 border border-blue-200 text-blue-600 flex items-center justify-center font-bold text-xl">🩺</div>
             <h3 class="font-black text-base text-slate-900">NEET UG & IIT-JEE Elite</h3>
-            <p class="text-xs text-slate-600 leading-relaxed">कोटा के टॉप फैकल्टी मॉड्यूल्स और पिछले 15 साल के PYQs के साथ AI DPPs।</p>
-            <button onclick="sendCustomDoubt('Edu Sir, मुझे NEET/JEE फिजिक्स का एक इंपॉर्टेंट प्रैक्टिस क्वेश्चन और उसका शॉर्टकट तरीका बताओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">प्रैक्टिस शुरू करें</button>
+            <p class="text-xs text-slate-600 leading-relaxed">कोटा के टॉप फैकल्टी मॉड्यूल्स और पिछले 15 साल के PYQs के साथ AI DPPs。</p>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे NEET/JEE फिजिक्स का एक इंपॉर्टेंट प्रैक्टिस क्वेश्चन और उसका शॉर्टकट तरीका बताओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer">प्रैक्टिस शुरू करें</button>
           </div>
 
           <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
             <div class="w-12 h-12 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-600 flex items-center justify-center font-bold text-xl">📖</div>
             <h3 class="font-black text-base text-slate-900">Class 11th & 12th Boards</h3>
             <p class="text-xs text-slate-600 leading-relaxed">NCERT लाइन-बाय-लाइन सॉल्यूशंस, इंपॉर्टेंट डेरिवेशंस और बोर्ड परीक्षा मॉडल पेपर।</p>
-            <button onclick="sendCustomDoubt('Edu Sir, मुझे क्लास 12 केमिस्ट्री के महत्वपूर्ण नेमिंग रिएक्शंस समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">नोट्स व सॉल्यूशन देखें</button>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे क्लास 12 केमिस्ट्री के महत्वपूर्ण नेमिंग रिएक्शंस समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer">नोट्स व सॉल्यूशन देखें</button>
           </div>
 
           <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
             <div class="w-12 h-12 rounded-2xl bg-amber-50 border border-amber-200 text-amber-600 flex items-center justify-center font-bold text-xl">🔥</div>
             <h3 class="font-black text-base text-slate-900">Foundation & Olympiad (9th-10th)</h3>
             <p class="text-xs text-slate-600 leading-relaxed">NTSE, NSEJS और ओलंपियाड लेवल के उच्च कोटि के ट्रिकी सवाल और कॉन्सेप्ट्स।</p>
-            <button onclick="sendCustomDoubt('Edu Sir, मुझे ओलंपियाड लेवल का मैथ्स का एक ट्रिकी सवाल और उसका हल समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">ओलंपियाड चैलेंज लें</button>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे ओलंपियाड लेवल का मैथ्स का एक ट्रिकी सवाल और उसका हल समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer">ओलंपियाड चैलेंज लें</button>
           </div>
 
           <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group">
             <div class="w-12 h-12 rounded-2xl bg-purple-50 border border-purple-200 text-purple-600 flex items-center justify-center font-bold text-xl">🌟</div>
             <h3 class="font-black text-base text-slate-900">Junior Genius Hub (6th-8th)</h3>
             <p class="text-xs text-slate-600 leading-relaxed">साइंस और मैथ्स की मजबूत नींव बनाने के लिए मजेदार एक्टिविटी और वर्कशीट।</p>
-            <button onclick="sendCustomDoubt('Edu Sir, मुझे विज्ञान का एक मजेदार प्रयोग और उसका कारण सरल भाषा में समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">विज्ञान सीखें</button>
+            <button onclick="sendCustomDoubt('Edu Sir, मुझे विज्ञान का एक मजेदार प्रयोग और उसका कारण सरल भाषा में समझाओ।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer">विज्ञान सीखें</button>
           </div>
 
           <div class="card-clean p-6 rounded-3xl space-y-4 border border-slate-200 transition group sm:col-span-2">
             <div class="w-12 h-12 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center font-bold text-xl">⚡</div>
             <h3 class="font-black text-base text-slate-900">AI Generated Daily Practice Papers (DPP)</h3>
             <p class="text-xs text-slate-600 leading-relaxed">हर दिन आपके लक्ष्य के हिसाब से एआई द्वारा तैयार की गई नई प्रैक्टिस शीट, जिसमें तुरंत हिंट और स्टेप-बाय-स्टेप सॉल्यूशन मिलते हैं।</p>
-            <button onclick="sendCustomDoubt('Edu Sir, मेरे लिए आज की एआई डीपीपी (DPP) का एक सेट तैयार करो।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs">आज की DPP जनरेट करें</button>
+            <button onclick="sendCustomDoubt('Edu Sir, मेरे लिए आज की एआई डीपीपी (DPP) का एक सेट तैयार करो।')" class="w-full py-2.5 ink-navy text-white font-bold text-xs rounded-xl transition shadow-xs cursor-pointer">आज की DPP जनरेट करें</button>
           </div>
         </div>
       </section>
 
       <!-- ================= OTHER VIEWS ================= -->
       <section id="view-about" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
           <h2 class="text-xl font-black text-slate-900">हमारे प्लेटफॉर्म के बारे में</h2>
           <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">EDUVA भारत का सबसे सुरक्षित और स्टूडेंट-फर्स्ट AI लर्निंग प्लेटफॉर्म है।</p>
@@ -688,6 +754,7 @@
       </section>
 
       <section id="view-contact" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
           <h2 class="text-xl font-black text-slate-900">Contact Us</h2>
           <p class="text-xs font-bold text-slate-700">Official Support Email: <a href="mailto:team.eduwa@gmail.com" class="text-blue-600 hover:underline">team.eduwa@gmail.com</a></p>
@@ -695,27 +762,31 @@
       </section>
 
       <section id="view-feedback" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
           <h2 class="text-lg sm:text-xl font-black text-slate-900">फाउंडर के लिए गुप्त फीडबैक वॉल्ट</h2>
           <textarea id="fb-message" rows="4" placeholder="यहाँ खुलकर लिखें..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 text-xs font-medium"></textarea>
-          <button onclick="submitPrivateFeedback()" class="w-full py-4 marigold-gradient text-slate-900 font-black text-xs rounded-2xl shadow-md">गुप्त रूप से भेजें</button>
+          <button onclick="submitPrivateFeedback()" class="w-full py-4 marigold-gradient text-slate-900 font-black text-xs rounded-2xl shadow-md cursor-pointer">गुप्त रूप से भेजें</button>
         </div>
       </section>
 
       <section id="view-timetable" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
           <h2 class="text-xl font-black text-slate-900">स्मार्ट स्टूडेंट टाइम टेबल जनरेटर</h2>
-          <button onclick="generateCustomTimetable()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-2xl">मेरा टाइम टेबल तैयार करें</button>
+          <button onclick="generateCustomTimetable()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-2xl cursor-pointer">मेरा टाइम टेबल तैयार करें</button>
         </div>
       </section>
 
       <section id="view-health" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
           <h2 class="text-xl font-black text-slate-900">विद्यार्थी स्वास्थ्य व पोषण गाइड</h2>
         </div>
       </section>
 
       <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
           <h2 class="text-xl font-black text-slate-900">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
         </div>
@@ -727,7 +798,7 @@
   <!-- LOGIN / SIGNUP MODAL -->
   <div id="login-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
     <div class="card-clean bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 relative shadow-2xl animate-fadeIn">
-      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm">✕</button>
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
       <div class="text-center space-y-2">
         <div class="w-12 h-12 mx-auto logo-gradient rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-md">E✨</div>
         <h3 class="text-xl font-black text-slate-900">EDUVA में आपका स्वागत है</h3>
@@ -738,19 +809,70 @@
           <label class="block text-slate-700 mb-1">मोबाइल नंबर या ईमेल</label>
           <input type="text" id="login-input-val" placeholder="उदा. 9876543210" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:border-blue-600">
         </div>
-        <button onclick="submitLogin()" class="w-full py-3.5 ink-navy text-white font-black rounded-xl shadow-md">OTP भेजें & लॉगिन करें 🚀</button>
+        <button onclick="submitLogin()" class="w-full py-3.5 ink-navy text-white font-black rounded-xl shadow-md cursor-pointer">OTP भेजें & लॉगिन करें 🚀</button>
       </div>
     </div>
   </div>
 
+
+  <!-- ================= EDUVA MEMORY & MISTAKE BOOK ================= -->
+  <section id="view-memory" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
+    <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
+    <div class="card-clean p-6 rounded-3xl bg-gradient-to-r from-violet-50 via-white to-blue-50 border-violet-200">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <span class="px-3 py-1 bg-violet-100 text-violet-800 rounded-full text-xs font-bold">🧠 Your Learning Memory</span>
+          <h2 class="text-xl sm:text-2xl font-black text-slate-800 mt-2">My EDUVA Memory</h2>
+          <p class="text-xs text-slate-500 mt-1">Edu Sir आपकी पढ़ाई की journey, बार-बार होने वाली mistakes और revision points याद रखता है।</p>
+        </div>
+        <div class="text-4xl">🎯</div>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+      <div class="card-clean p-4 rounded-2xl">
+        <p class="text-[10px] font-bold text-slate-500">Questions Asked</p>
+        <p id="mem-questions" class="text-2xl font-black text-slate-800 mt-1">0</p>
+      </div>
+      <div class="card-clean p-4 rounded-2xl">
+        <p class="text-[10px] font-bold text-slate-500">Mistakes Saved</p>
+        <p id="mem-mistakes" class="text-2xl font-black text-rose-600 mt-1">0</p>
+      </div>
+      <div class="card-clean p-4 rounded-2xl">
+        <p class="text-[10px] font-bold text-slate-500">Concepts</p>
+        <p id="mem-concepts" class="text-2xl font-black text-blue-600 mt-1">0</p>
+      </div>
+      <div class="card-clean p-4 rounded-2xl">
+        <p class="text-[10px] font-bold text-slate-500">Goal</p>
+        <p id="mem-goal" class="text-sm font-black text-emerald-700 mt-2 truncate">Eduva Medicos</p>
+      </div>
+    </div>
+
+    <div class="card-clean p-5 sm:p-6 rounded-3xl">
+      <div class="flex items-center justify-between gap-3 mb-4">
+        <div>
+          <h3 class="font-black text-slate-800">📕 My Mistake Book</h3>
+          <p class="text-[11px] text-slate-500 mt-1">महत्वपूर्ण सवाल और revision points यहाँ जमा होंगे।</p>
+        </div>
+        <button onclick="clearEduvaMemory()" class="text-[10px] font-bold text-slate-400 hover:text-rose-500 cursor-pointer">Clear Memory</button>
+      </div>
+      <div id="mistake-list" class="space-y-2">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-100 text-xs text-slate-500 text-center">
+          अभी कोई saved mistake नहीं है। पढ़ाई शुरू करो — EDUVA तुम्हारी learning journey बनाना शुरू करेगा। 🚀
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- MOBILE BOTTOM NAVIGATION -->
   <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 z-50 shadow-lg">
     <div class="flex justify-around items-center text-[10px] font-extrabold text-slate-500">
-      <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition"><i data-lucide="home" class="w-4 h-4"></i> Home</button>
-      <button onclick="switchTab('community')" id="tab-community" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी</button>
-      <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
-      <button onclick="switchTab('faq')" id="tab-faq" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ</button>
-      <button onclick="switchTab('vault')" id="tab-vault" class="flex flex-col items-center gap-1 hover:text-slate-900 transition"><i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> वॉल्ट</button>
+      <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer"><i data-lucide="home" class="w-4 h-4"></i> Home</button>
+      <button onclick="switchTab('community')" id="tab-community" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी</button>
+      <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
+      <button onclick="switchTab('faq')" id="tab-faq" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ</button>
+      <button onclick="switchTab('vault')" id="tab-vault" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> वॉल्ट</button>
     </div>
   </nav>
 
@@ -820,7 +942,7 @@
                 <div class="flex items-center justify-between text-[10px]">
                   <span class="text-slate-500 font-bold">उत्तरदाता: ${ans.by}</span>
                   <div>
-                    ${ans.verified ? '<span class="text-emerald-700 font-black bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">✔ Verified by Peer</span>' : `<button onclick="verifyCommunityAnswer(${index}, ${aIdx})" class="px-2.5 py-1 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition">सही है (Verify)</button>`}
+                    ${ans.verified ? '<span class="text-emerald-700 font-black bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">✔ Verified by Peer</span>' : `<button onclick="verifyCommunityAnswer(${index}, ${aIdx})" class="px-2.5 py-1 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition cursor-pointer">सही है (Verify)</button>`}
                   </div>
                 </div>
               </div>
@@ -829,7 +951,7 @@
 
           <div class="flex items-center gap-2 pt-2">
             <input type="text" id="ans-input-${index}" placeholder="इस डाउट का उत्तर लिखें..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs outline-none focus:border-blue-600 font-medium">
-            <button onclick="submitCommunityAnswer(${index})" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl hover:bg-emerald-700 transition">उत्तर दें</button>
+            <button onclick="submitCommunityAnswer(${index})" class="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-xl hover:bg-emerald-700 transition cursor-pointer">उत्तर दें</button>
           </div>
         </div>
       `).join('');
@@ -864,7 +986,7 @@
     }
 
     function sendUnsatisfiedToCommunity() {
-      if (!lastUserQuestion) { alert("कोई पिछला सवाल नहीं मिला जिसे कम्युनिटी में भेजा जाए।"); return; }
+      if (!lastUserQuestion) { alert("कोई पिछला सवाल नहीं मिला जिसे कम्युनिटी में भेजा जाए। समय बचाने के लिए सीधे पूछें।"); return; }
       communityDoubts.unshift({ id: Date.now(), author: "आप (" + currentStudentGoal + ")", doubt: lastUserQuestion, answers: [{ text: "AI का उत्तर संतोषजनक नहीं था, कृपया साथी छात्र इसे आसान भाषा में समझाएं।", verified: false, by: "सिस्टम नोट" }] });
       switchTab('community');
       alert("📤 आपका सवाल कम्युनिटी डाउट पूल में भेज दिया गया है!");
@@ -1013,7 +1135,7 @@
       container.innerHTML = vault.map((item, idx) => `
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
           <div><p class="font-bold text-slate-900">${item.text}</p><span class="text-[10px] text-slate-400 font-mono">Saved on: ${item.date}</span></div>
-          <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline">हटाएं</button>
+          <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline cursor-pointer">हटाएं</button>
         </div>
       `).join('');
     }
@@ -1126,17 +1248,29 @@ RULES FOR EDU SIR:
 3. TEACHING MODES:
    - DIRECT MODE: Give a clear, step-by-step practical explanation with real-world examples.
    - SOCRATIC / HINT MODE: Do NOT give the direct answer immediately! Give a helpful hint, ask guiding questions to make the student think, and encourage them step-by-step. Once solved, give 4-5 similar practice questions for revision.
-4. Always address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".`;
+4. Always address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", या "मेरे भाई".`;
 
     let conversationHistory = [{ role: "system", content: BASE_SYSTEM_PROMPT }];
 
     // Stack-based Navigation Handler with Back Button Support
+    function goBack() {
+      if (navigationHistory.length > 1) {
+        navigationHistory.pop();
+        const previousTab = navigationHistory[navigationHistory.length - 1];
+        switchTab(previousTab, true);
+        try { history.pushState({ eduva: true }, '', location.href); } catch (_) {}
+      } else {
+        switchTab('home', true);
+      }
+    }
+
     function switchTab(tabId, isBackAction = false) {
-      if (!isBackAction) {
+      if (!isBackAction && navigationHistory[navigationHistory.length - 1] !== tabId) {
           navigationHistory.push(tabId);
+          try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
       }
 
-      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile'].forEach(t => {
+      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if (el) el.classList.add('hidden');
         
@@ -1153,15 +1287,19 @@ RULES FOR EDU SIR:
       if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
       if (tabId === 'vault') loadVaultItems();
       if (tabId === 'community') loadCommunityDoubts();
+      if (tabId === 'memory') updateMemoryDashboard();
     }
 
     // Handle Browser Popstate / Back Button Stack Navigation
-    window.addEventListener('popstate', (event) => {
-        if (navigationHistory.length > 1) {
-            navigationHistory.pop(); // Remove current view
-            const previousTab = navigationHistory[navigationHistory.length - 1]; // Get previous view
-            switchTab(previousTab, true);
-        }
+    window.addEventListener('popstate', () => {
+      if (navigationHistory.length > 1) {
+        navigationHistory.pop();
+        const previousTab = navigationHistory[navigationHistory.length - 1];
+        switchTab(previousTab, true);
+      } else {
+        switchTab('home', true);
+      }
+      try { history.pushState({ eduva: true }, '', location.href); } catch (_) {}
     });
 
     let canvas, ctx, painting = false;
