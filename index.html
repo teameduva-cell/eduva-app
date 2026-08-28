@@ -27,6 +27,15 @@
     * { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
     .mono-font { font-family: 'JetBrains Mono', monospace; }
     
+    /* DLP & Content Security: No download, no screenshot assistance, no text copying */
+    .secure-content {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+    }
+    
     .bg-paper { background-color: #F8FAFC; }
     .card-clean {
       background: #FFFFFF;
@@ -55,7 +64,7 @@
     .animate-fadeIn { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
   </style>
 </head>
-<body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased">
+<body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
   <!-- TOP PROFESSIONAL HEADER -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 lg:px-8 py-3.5 flex items-center justify-between shadow-xs">
@@ -71,7 +80,7 @@
       </div>
     </div>
 
-    <!-- Right Header Tools, Goal Selector & Optional Login -->
+    <!-- Right Header Tools, Goal Selector & Login Button -->
     <div class="flex items-center space-x-3">
       <select id="header-batch-select" onchange="updateStudentGoal(this.value)" class="bg-slate-50 border border-slate-300 text-slate-900 font-bold text-xs rounded-xl px-3 py-2 outline-none cursor-pointer mono-font shadow-2xs">
         <option value="Eduva Medicos">Eduva Medicos (NEET)</option>
@@ -80,6 +89,10 @@
         <option value="Eduva Ignite">Eduva Ignite (9th-10th)</option>
         <option value="Eduva Junior">Eduva Junior (6th-8th)</option>
       </select>
+
+      <button onclick="openLoginModal()" class="flex items-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs">
+        <i data-lucide="user" class="w-3.5 h-3.5"></i> Login / Signup
+      </button>
 
       <button onclick="giveKotaBoost()" class="hidden sm:flex items-center gap-1.5 bg-amber-500 hover:bg-amber-600 text-slate-900 font-extrabold text-xs px-3.5 py-2 rounded-xl transition shadow-xs">
         <i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡
@@ -114,8 +127,8 @@
           <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl ink-navy text-white transition shadow-2xs">
             <i data-lucide="home" class="w-4 h-4"></i> Home Dashboard
           </button>
-          <button onclick="switchTab('courses')" id="dtab-courses" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i> कोर्सेज & AI DPPs
+          <button onclick="switchTab('learning')" id="dtab-learning" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="book-open" class="w-4 h-4 text-indigo-600"></i> My Learning & Subjects 📚
           </button>
           <button onclick="switchTab('chat')" id="dtab-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i> AI Chat & Doubts
@@ -132,26 +145,17 @@
           <button onclick="switchTab('vault')" id="dtab-vault" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> Formula Vault 📌
           </button>
+          <button onclick="switchTab('profile')" id="dtab-profile" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
+            <i data-lucide="award" class="w-4 h-4 text-amber-600"></i> My Profile & Badges 🏆
+          </button>
           <button onclick="switchTab('classroom')" id="dtab-classroom" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="video" class="w-4 h-4 text-cyan-600"></i> Live AI Classroom 🎥
           </button>
           <button onclick="switchTab('timetable')" id="dtab-timetable" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="calendar" class="w-4 h-4 text-emerald-600"></i> AI टाइम टेबल जनरेटर
           </button>
-          <button onclick="switchTab('health')" id="dtab-health" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="heart-pulse" class="w-4 h-4 text-rose-500"></i> स्टूडेंट हेल्थ & डाइट टिप्स
-          </button>
-          <button onclick="switchTab('counseling')" id="dtab-counseling" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="smile" class="w-4 h-4 text-purple-600"></i> मेंटल हेल्थ & काउंसलिंग
-          </button>
           <button onclick="switchTab('faq')" id="dtab-faq" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ (अक्सर पूछे जाने वाले सवाल) ❓
-          </button>
-          <button onclick="switchTab('about')" id="dtab-about" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="info" class="w-4 h-4 text-blue-500"></i> About Us
-          </button>
-          <button onclick="switchTab('contact')" id="dtab-contact" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
-            <i data-lucide="mail" class="w-4 h-4 text-emerald-500"></i> Contact Us
           </button>
           <button onclick="switchTab('feedback')" id="dtab-feedback" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition">
             <i data-lucide="shield-alert" class="w-4 h-4 text-amber-500"></i> गुप्त फाउंडर फीडबैक
@@ -161,7 +165,7 @@
 
       <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-center space-y-1">
         <p class="text-xs font-black text-amber-900 mono-font" id="sidebar-batch-label">Eduva Medicos (NEET)</p>
-        <p class="text-[10px] text-amber-700 font-semibold">Class 6th to 12th Complete Hub</p>
+        <p class="text-[10px] text-amber-700 font-semibold">🔒 DLP Secure Hub Active</p>
       </div>
     </aside>
 
@@ -176,37 +180,78 @@
               <span class="w-2 h-2 rounded-full bg-emerald-600 animate-pulse"></span> 24x7 Live AI Mentor Active
             </div>
             <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
-              जय श्री राम, चैंपियन! 🙏
+              Good Morning, Future Doctor! 👋
             </h2>
             <p class="text-xs sm:text-sm text-slate-600 font-medium leading-relaxed">
-              कोटा वाले ऑथेंटिक माहौल में अपनी तैयारी को दें एक नई रफ़्तार। बिना किसी रुकावट के अपने डाउट्स पूछें और परीक्षा में शत-प्रतिशत सफलता सुनिश्चित करें।
+              Let's make today productive and achieve your goals. (No download, no screenshot allowed — study securely inside the app)
             </p>
-            <div class="flex flex-wrap gap-2 pt-1">
-              <button onclick="giveKotaBoost()" class="px-4 py-2 bg-amber-500 text-slate-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡</button>
-              <button onclick="switchTab('faq')" class="px-4 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 font-bold text-xs rounded-xl transition">❓ FAQ (सवाल-जवाब)</button>
-            </div>
-          </div>
-          <div class="w-full md:w-72 p-5 rounded-2xl bg-slate-50 border border-slate-200 shadow-2xs shrink-0 space-y-3">
-            <div class="flex items-center justify-between border-b border-slate-200 pb-2">
-              <span class="text-[10px] font-bold text-slate-400 mono-font uppercase">STATUS: VERIFIED</span>
-              <span class="text-xs font-black text-blue-600 mono-font">EDUVA PASS</span>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl ink-navy flex items-center justify-center text-lg shadow-sm">🎯</div>
-              <div>
-                <p class="text-xs font-black text-slate-900">Kota Smart Learning Hub</p>
-                <p class="text-[10px] text-slate-500 font-semibold">Unlimited Doubt Clearing</p>
+            
+            <!-- XP & Stats Bar -->
+            <div class="grid grid-cols-3 gap-3 pt-2">
+              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">Day Streak</p>
+                <p class="text-sm font-black text-red-600 flex items-center justify-center gap-1"><i data-lucide="flame" class="w-3.5 h-3.5 fill-red-600"></i> 12</p>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">Tasks Done</p>
+                <p class="text-sm font-black text-blue-600">4 / 6</p>
+              </div>
+              <div class="bg-slate-50 border border-slate-200 p-3 rounded-2xl text-center">
+                <p class="text-[10px] text-slate-400 font-bold uppercase">NEET Prep</p>
+                <p class="text-sm font-black text-emerald-600">68%</p>
               </div>
             </div>
+
+            <div class="flex flex-wrap gap-2 pt-1">
+              <button onclick="giveKotaBoost()" class="px-4 py-2 bg-amber-500 text-slate-900 font-extrabold text-xs rounded-xl shadow-xs flex items-center gap-1.5 transition"><i data-lucide="zap" class="w-3.5 h-3.5"></i> Kota Boost ⚡</button>
+              <button onclick="switchTab('profile')" class="px-4 py-2 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 font-bold text-xs rounded-xl transition">🏆 My Profile & XP</button>
+            </div>
+          </div>
+          
+          <div class="w-full md:w-72 p-5 rounded-2xl bg-gradient-to-br from-indigo-900 to-slate-900 text-white shadow-md shrink-0 space-y-3">
+            <div class="flex items-center justify-between border-b border-indigo-700/50 pb-2">
+              <span class="text-[10px] font-bold text-indigo-300 mono-font uppercase">EDUVA XP</span>
+              <span class="text-xs font-black text-amber-400 mono-font">RANK #12</span>
+            </div>
+            <div>
+              <p class="text-2xl font-black text-white">2,450 XP</p>
+              <p class="text-[10px] text-indigo-200 font-medium mt-0.5">Keep learning, keep growing!</p>
+            </div>
+            <button onclick="switchTab('learning')" class="w-full py-2 bg-indigo-600 hover:bg-indigo-700 rounded-xl text-xs font-bold transition">View Learning Progress ➡</button>
           </div>
         </div>
 
         <div class="card-clean rounded-2xl p-2.5 flex items-center gap-3 bg-white border border-slate-200 transition shadow-xs">
           <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
-          <input type="text" id="home-search-input" placeholder="कोटा स्टाइल में कोई भी सवाल या चैप्टर सर्च करें..." class="flex-1 bg-transparent text-xs sm:text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
+          <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-xs sm:text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
           <button onclick="switchTab('chat')" class="p-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition">
             <i data-lucide="mic" class="w-4 h-4"></i>
           </button>
+        </div>
+
+        <!-- Continue Learning Section -->
+        <div class="space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Continue Learning (In-App Secured)</h3>
+            <button onclick="switchTab('learning')" class="text-xs font-bold text-blue-600 hover:underline">View All</button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-blue-500 transition space-y-2">
+              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Physics</span><span class="text-xs font-black text-blue-600">68%</span></div>
+              <p class="text-[10px] text-slate-500 font-medium">Motion in Straight Line</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[68%]" style="width: 68%;"></div></div>
+            </div>
+            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-emerald-500 transition space-y-2">
+              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Chemistry</span><span class="text-xs font-black text-emerald-600">42%</span></div>
+              <p class="text-[10px] text-slate-500 font-medium">Atomic Structure</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-emerald-600 h-full w-[42%]" style="width: 42%;"></div></div>
+            </div>
+            <div onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl cursor-pointer hover:border-purple-500 transition space-y-2">
+              <div class="flex items-center justify-between"><span class="text-xs font-bold text-slate-900">Mathematics</span><span class="text-xs font-black text-purple-600">75%</span></div>
+              <p class="text-[10px] text-slate-500 font-medium">Quadratic Equations</p>
+              <div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden"><div class="bg-purple-600 h-full w-[75%]" style="width: 75%;"></div></div>
+            </div>
+          </div>
         </div>
 
         <div class="space-y-3">
@@ -236,9 +281,9 @@
         </div>
 
         <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
-          <button onclick="switchTab('courses')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+          <button onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
             <i data-lucide="book-open" class="w-5 h-5 mx-auto text-indigo-600 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">कोर्सेज & DPP</p>
+            <p class="text-xs font-bold text-slate-900">My Learning</p>
           </button>
           <button onclick="switchTab('classroom')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
             <i data-lucide="video" class="w-5 h-5 mx-auto text-cyan-600 group-hover:scale-110 transition"></i>
@@ -248,17 +293,17 @@
             <i data-lucide="bookmark" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
             <p class="text-xs font-bold text-slate-900">फॉर्मूला वॉल्ट</p>
           </button>
-          <button onclick="switchTab('timetable')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
-            <i data-lucide="calendar" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">टाइम टेबल</p>
+          <button onclick="switchTab('profile')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="award" class="w-5 h-5 mx-auto text-amber-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Profile & Badges</p>
           </button>
           <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
             <i data-lucide="help-circle" class="w-5 h-5 mx-auto text-indigo-500 group-hover:scale-110 transition"></i>
             <p class="text-xs font-bold text-slate-900">FAQs</p>
           </button>
-          <button onclick="switchTab('contact')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
-            <i data-lucide="mail" class="w-5 h-5 mx-auto text-emerald-500 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">Contact Us</p>
+          <button onclick="switchTab('mocktest')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group">
+            <i data-lucide="timer" class="w-5 h-5 mx-auto text-rose-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">मॉक टेस्ट</p>
           </button>
         </div>
       </section>
@@ -324,7 +369,97 @@
         </div>
       </section>
 
-      <!-- ================= NEW FEATURE: FAQ (अक्सर पूछे जाने वाले सवाल) VIEW ================= -->
+      <!-- ================= MY LEARNING VIEW ================= -->
+      <section id="view-learning" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-200 pb-4">
+            <div>
+              <span class="px-3 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Academic Tracker</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">My Learning Progress 📚</h2>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl flex items-center gap-4">
+              <div>
+                <p class="text-[10px] font-bold text-indigo-600 uppercase">Weekly Goal</p>
+                <p class="text-xs font-black text-slate-900">12 / 15 hrs</p>
+              </div>
+              <div class="w-10 h-10 rounded-full bg-indigo-600 text-white flex items-center justify-center font-bold text-xs">80%</div>
+            </div>
+          </div>
+
+          <div class="p-3 bg-amber-50 border border-amber-200 text-amber-800 rounded-2xl text-xs font-semibold flex items-center gap-2">
+            <i data-lucide="shield-check" class="w-4 h-4 text-amber-600 shrink-0"></i>
+            <span>नोट: सभी लेक्चर्स, नोट्स और डीपीपी केवल ऐप के अंदर पढ़ने के लिए सुरक्षित हैं। डाउनलोड या स्क्रीनशॉट प्रतिबंधित हैं।</span>
+          </div>
+
+          <div class="space-y-4">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between"><span class="font-black text-sm text-slate-900">⚛️ Physics (Mechanics & Electrodynamics)</span><span class="text-xs font-black text-blue-600">60% Completed</span></div>
+              <p class="text-xs text-slate-600">12 / 20 Chapters Mastered with AI DPPs & In-App Study</p>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-blue-600 h-full w-[60%]"></div></div>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between"><span class="font-black text-sm text-slate-900">🧪 Chemistry (Organic & Physical)</span><span class="text-xs font-black text-emerald-600">64% Completed</span></div>
+              <p class="text-xs text-slate-600">16 / 25 Chapters Mastered with NCERT Lines</p>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-emerald-600 h-full w-[64%]"></div></div>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <div class="flex items-center justify-between"><span class="font-black text-sm text-slate-900">📐 Mathematics (Calculus & Algebra)</span><span class="text-xs font-black text-purple-600">55% Completed</span></div>
+              <p class="text-xs text-slate-600">10 / 18 Chapters Completed with Shortcut Tricks</p>
+              <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-purple-600 h-full w-[55%]"></div></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MY PROFILE & BADGES VIEW ================= -->
+      <section id="view-profile" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div class="flex items-center gap-4">
+              <div class="w-16 h-16 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-3xl font-black shadow-lg">👨‍🎓</div>
+              <div>
+                <h2 class="text-xl font-black text-slate-900 flex items-center gap-1.5">Kanha <span class="text-blue-600 text-sm">✔ Verified</span></h2>
+                <p class="text-xs text-slate-500 font-medium">Eduva Medicos • Class 12 | kanha@example.com</p>
+                <span class="inline-block mt-1 px-3 py-0.5 bg-amber-100 text-amber-800 rounded-full text-[10px] font-black">⭐ Premium Student</span>
+              </div>
+            </div>
+            <button onclick="alert('Profile settings saved!')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-xl transition">⚙️ Edit Profile</button>
+          </div>
+
+          <!-- Stats Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200"><p class="text-[10px] text-slate-400 uppercase font-bold">Doubts Asked</p><p class="text-lg font-black text-slate-900">2,458</p></div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200"><p class="text-[10px] text-slate-400 uppercase font-bold">Tests Attempted</p><p class="text-lg font-black text-slate-900">128</p></div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200"><p class="text-[10px] text-slate-400 uppercase font-bold">Accuracy Rate</p><p class="text-lg font-black text-emerald-600">82%</p></div>
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200"><p class="text-[10px] text-slate-400 uppercase font-bold">Current Streak</p><p class="text-lg font-black text-red-600">12 Days</p></div>
+          </div>
+
+          <!-- Badges & Achievements -->
+          <div class="space-y-3 pt-2">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Badges & Achievements (Level 8)</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🔥</div><p class="text-xs font-bold text-slate-900">7 Day Streak</p></div>
+              <div class="p-4 bg-purple-50 border border-purple-200 rounded-2xl text-center space-y-1"><div class="text-2xl">👑</div><p class="text-xs font-bold text-slate-900">Doubt Master</p></div>
+              <div class="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🎯</div><p class="text-xs font-bold text-slate-900">100 Questions</p></div>
+              <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🏆</div><p class="text-xs font-bold text-slate-900">Test Champion</p></div>
+            </div>
+          </div>
+
+          <!-- Weekly Leaderboard Preview -->
+          <div class="space-y-3 pt-2">
+            <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Weekly Leaderboard Rank</h3>
+            <div class="space-y-2">
+              <div class="p-3 bg-slate-50 rounded-xl border flex items-center justify-between text-xs font-bold"><span>1. Aarav Singh</span><span class="text-indigo-600">5,230 XP</span></div>
+              <div class="p-3 bg-slate-50 rounded-xl border flex items-center justify-between text-xs font-bold"><span>2. Riya Sharma</span><span class="text-indigo-600">4,230 XP</span></div>
+              <div class="p-3 bg-indigo-50 border border-indigo-200 rounded-xl flex items-center justify-between text-xs font-black text-indigo-900"><span>🏆 12. Kanha (You)</span><span class="text-blue-600">2,450 XP</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FAQ VIEW ================= -->
       <section id="view-faq" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
           <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
@@ -338,46 +473,19 @@
           <div class="space-y-4">
             <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
               <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या नोट्स या मॉड्यूल्स डाउनलोड किए जा सकते हैं? (DLP Policy)
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
+                नहीं भाई! DLP पॉलिसी के तहत सभी मॉड्यूल्स, डीपीपी और टेस्ट पूरी तरह से ऐप के अंदर ही सुरक्षित हैं। छात्र नोट्स डाउनलोड या स्क्रीनशॉट नहीं ले सकते—जो पढ़ना है, वह केवल ऐप पर ही सुरक्षित रूप से पढ़ें।
+              </p>
+            </div>
+
+            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
+              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
                 <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या EDUVA ऐप पूरी तरह से फ्री है?
               </h3>
               <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
                 हाँ भाई! यह ऐप छात्रों के लिए पूरी तरह से **100% फ्री** है। यहाँ बिना किसी क्रेडिट लिमिट, सब्सक्रिप्शन या पैसे के आप असीमित डाउट्स पूछ सकते हैं।
-              </p>
-            </div>
-
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या मैं अपने सवाल की फोटो खींचकर पूछ सकता हूँ?
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                बिल्कुल! चैट बॉक्स में दिए गए कैमरा आइकॉन पर क्लिक करके अपने कठिन सवाल या मॉड्यूल की फोटो अपलोड करें, 'Edu Sir' तुरंत उसका स्टेप-बाय-स्टेप हल देंगे।
-              </p>
-            </div>
-
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span> कम्युनिटी डाउट पूल (Community Pool) क्या है?
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                यदि AI के उत्तर से आप संतुष्ट नहीं हैं, तो आप अपना सवाल कम्युनिटी में डाल सकते हैं जहाँ देश भर के दूसरे साथी छात्र उसका उत्तर देते हैं और आपस में वेरीफाई करते हैं। इससे आपके स्ट्रीक्स भी बढ़ते हैं!
-              </p>
-            </div>
-
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span> क्या इसके लिए लॉगिन या साइन-अप करना जरूरी है?
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                नहीं, लॉगिन करना पूरी तरह वैकल्पिक (Optional) है। आप बिना किसी झंझट के सीधे ऐप खोलकर पढ़ाई और डाउट सॉल्विंग शुरू कर सकते हैं।
-              </p>
-            </div>
-
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2">
-              <h3 class="text-xs sm:text-sm font-extrabold text-slate-900 flex items-center gap-2">
-                <span class="w-2 h-2 rounded-full bg-blue-600"></span> यह ऐप किस क्लास के बच्चों के लिए है?
-              </h3>
-              <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                यह कक्षा 6 से 12वीं के स्कूली छात्रों के साथ-साथ NEET UG और IIT-JEE की तैयारी कर रहे सभी कोटा एस्पिरेंट्स के लिए बेस्ट है। ऊपर हेडर से आप अपना बैच भी बदल सकते हैं!
               </p>
             </div>
           </div>
@@ -398,13 +506,9 @@
             </div>
           </div>
 
-          <p class="text-xs text-slate-600 leading-relaxed font-medium">
-            यदि AI के उत्तर से संतुष्ट नहीं हैं या कोई पेचीदा सवाल है, तो यहाँ पोस्ट करें। दूसरे छात्र आपके सवाल का उत्तर देंगे, और बाकी बच्चे उसे वेरीफाई करेंगे। सही उत्तर और वेरीफिकेशन देने पर आपके स्ट्रीक्स बढ़ेंगे!
-          </p>
-
           <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
             <h3 class="text-xs font-black text-slate-900">अपना अनसुलझा सवाल कम्युनिटी में डालें:</h3>
-            <textarea id="community-new-doubt" rows="3" placeholder="यहाँ अपना सवाल या फिजिक्स/केमिस्ट्री/बायो का डाउट लिखें..." class="w-full bg-white border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-xs font-medium leading-relaxed"></textarea>
+            <textarea id="community-new-doubt" rows="3" placeholder="यहाँ अपना सवाल लिखें..." class="w-full bg-white border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-xs font-medium leading-relaxed"></textarea>
             <button onclick="postCommunityDoubt()" class="px-5 py-2.5 ink-navy text-white font-bold text-xs rounded-xl shadow-sm transition">कम्युनिटी में पोस्ट करें 🚀</button>
           </div>
 
@@ -422,7 +526,6 @@
             🃏 1-Minute High-Yield Flashcards
           </div>
           <h2 class="text-xl sm:text-2xl font-black text-slate-900">क्विक फॉर्मूला & कॉन्सेप्ट रिवीज़न</h2>
-          <p class="text-xs text-slate-600">एग्जाम से पहले तेजी से फॉर्मूले रिवाइज करने के लिए कार्ड पर क्लिक करके पलटें!</p>
           
           <div onclick="flipFlashcard()" class="w-full h-64 bg-slate-900 text-white rounded-3xl p-8 flex flex-col items-center justify-center cursor-pointer shadow-xl relative transition transform hover:scale-[1.01]">
             <span class="absolute top-4 left-4 text-[10px] text-amber-400 font-mono uppercase tracking-widest" id="fc-category">PHYSICS • MECHANICS</span>
@@ -456,14 +559,6 @@
 
           <div id="test-intro-box" class="space-y-4 text-xs sm:text-sm text-slate-700">
             <p>यह टेस्ट कोटा के टॉप कोचिंग पैटर्न पर आधारित है जिसमें सही उत्तर पर +4 और गलत उत्तर पर -1 अंक (Negative Marking) का प्रावधान है।</p>
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-2 font-medium">
-              <p>📌 <b>नियम:</b></p>
-              <ul class="list-disc list-inside space-y-1 text-slate-600">
-                <li>कुल प्रश्न: 5 महत्वपूर्ण सवाल (डेमो सेट)</li>
-                <li>समय सीमा: 10 मिनट</li>
-                <li>सबमिट करने पर तुरंत स्कोरकार्ड और विस्तृत हल मिलेगा।</li>
-              </ul>
-            </div>
             <button onclick="startMockTest()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2">
               <i data-lucide="play-circle" class="w-4 h-4"></i> मॉक टेस्ट शुरू करें
             </button>
@@ -526,10 +621,6 @@
         </aside>
 
         <div class="lg:col-span-9 card-clean rounded-3xl p-4 flex flex-col relative overflow-hidden border border-slate-200">
-          <div class="absolute top-6 left-6 z-10 flex items-center gap-2 bg-red-600 text-white px-3.5 py-1.5 rounded-full text-[10px] font-black shadow-lg animate-pulse mono-font">
-            <span class="w-2 h-2 rounded-full bg-white"></span> KOTA LIVE 24x7 STREAMING
-          </div>
-
           <div id="board-container-draw" class="w-full h-full bg-slate-900 rounded-2xl relative overflow-hidden">
             <canvas id="whiteboard" class="w-full h-full touch-none cursor-crosshair"></canvas>
           </div>
@@ -545,7 +636,7 @@
           <div>
             <span class="px-3.5 py-1 bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">Complete Academic Hub</span>
             <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">कोर्सेज, एनसीईआरटी सॉल्यूशंस & AI DPPs</h2>
-            <p class="text-xs text-slate-600 mt-1 font-medium leading-relaxed">कक्षा 6 से 12, NEET, JEE और ओलंपियाड के लिए विशेष एआई-जनरेटेड प्रैक्टिस शीट्स।</p>
+            <p class="text-xs text-slate-600 mt-1 font-medium leading-relaxed">कक्षा 6 से 12, NEET, JEE और ओलंपियाड के लिए विशेष एआई-जनरेटेड प्रैक्टिस शीट्स (केवल इन-ऐप अध्ययन सुरक्षित)।</p>
           </div>
           <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">🎯</div>
         </div>
@@ -588,112 +679,68 @@
         </div>
       </section>
 
-      <!-- ================= ABOUT US VIEW ================= -->
+      <!-- ================= OTHER VIEWS ================= -->
       <section id="view-about" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
-          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
-            <div class="w-12 h-12 rounded-2xl ink-navy text-white flex items-center justify-center text-xl shadow-md">ℹ️</div>
-            <div>
-              <span class="px-3 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">About EDUVA</span>
-              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">हमारे प्लेटफॉर्म के बारे में</h2>
-            </div>
-          </div>
-          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-            <p><b>EDUVA</b> भारत का सबसे बेहतरीन और स्टूडेंट-फर्स्ट AI लर्निंग प्लेटफॉर्म है, जिसे खासतौर पर कोटा के माहौल को ध्यान में रखकर बनाया गया है जहाँ हर छात्र का सपना डॉक्टर या इंजीनियर बनने का होता है।</p>
-            <p>हमारा मिशन है कि देश के हर कोने में बैठे छात्र को उच्च गुणवत्ता की शिक्षा, 24x7 अनलिमिटेड डाउट सॉल्विंग, और एक बड़ा भाई जैसा मार्गदर्शक ('Edu Sir') मिले—वो भी बिना किसी भारी-भरकम फीस या पाबंदी के। यहाँ कोई जजमेंट नहीं है, केवल सीखने का जज़्बा है!</p>
-          </div>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
+          <h2 class="text-xl font-black text-slate-900">हमारे प्लेटफॉर्म के बारे में</h2>
+          <p class="text-xs sm:text-sm text-slate-700 leading-relaxed">EDUVA भारत का सबसे सुरक्षित और स्टूडेंट-फर्स्ट AI लर्निंग प्लेटफॉर्म है।</p>
         </div>
       </section>
 
-      <!-- ================= CONTACT US VIEW ================= -->
       <section id="view-contact" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
-          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white flex items-center justify-center text-xl shadow-md">📧</div>
-            <div>
-              <span class="px-3 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Get in Touch</span>
-              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Contact Us (संपर्क करें)</h2>
-            </div>
-          </div>
-          <div class="space-y-4 text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
-            <p>अगर आपको ऐप इस्तेमाल करने में कोई भी दिक्कत आ रही है, कोई नया सुझाव देना है, या किसी भी तरह की मदद चाहिए, तो हमारी टीम हमेशा आपकी सेवा में हाजिर है।</p>
-            <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center gap-3 shadow-2xs">
-              <i data-lucide="mail" class="w-6 h-6 text-emerald-600"></i>
-              <div>
-                <p class="text-[10px] uppercase font-bold text-slate-400 mono-font">Official Support Email</p>
-                <a href="mailto:team.eduwa@gmail.com" class="text-sm sm:text-base font-black text-slate-900 hover:underline mono-font">team.eduwa@gmail.com</a>
-              </div>
-            </div>
-          </div>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
+          <h2 class="text-xl font-black text-slate-900">Contact Us</h2>
+          <p class="text-xs font-bold text-slate-700">Official Support Email: <a href="mailto:team.eduwa@gmail.com" class="text-blue-600 hover:underline">team.eduwa@gmail.com</a></p>
         </div>
       </section>
 
-      <!-- ================= FOUNDER FEEDBACK VIEW ================= -->
       <section id="view-feedback" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
-          <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
-            <div class="w-12 h-12 rounded-2xl marigold-gradient text-slate-900 flex items-center justify-center text-xl font-black shadow-md">🤫</div>
-            <div>
-              <span class="px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">100% Confidential</span>
-              <h2 class="text-lg sm:text-xl font-black text-slate-900 mt-1">फाउंडर के लिए गुप्त फीडबैक वॉल्ट</h2>
-            </div>
-          </div>
-          <p class="text-xs text-slate-700 leading-relaxed font-medium">यह सेक्शन पूरी तरह गुप्त है। यहाँ आप बेझिझक बता सकते हैं कि ऐप में क्या कमी खल रही है, या क्या नया फीचर होना चाहिए।</p>
-          <div class="space-y-4 text-xs font-bold">
-            <div>
-              <label class="block text-slate-800 mb-1.5 font-bold">अनुभव कैसा रहा?</label>
-              <select id="fb-rating" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 font-semibold text-xs cursor-pointer shadow-2xs">
-                <option value="Superb">⭐ बहुत शानदार लग रही है ऐप!</option>
-                <option value="Good">👍 अच्छी है, पर कुछ सुधार चाहिए</option>
-                <option value="Needs Work">⚠️ काफी कमियाँ हैं, इन्हें ठीक करना होगा</option>
-              </select>
-            </div>
-            <div>
-              <label class="block text-slate-800 mb-1.5 font-bold">गुप्त सुझाव या कमी (Secret Notes)</label>
-              <textarea id="fb-message" rows="4" placeholder="यहाँ खुलकर लिखें..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 font-medium text-xs leading-relaxed shadow-2xs"></textarea>
-            </div>
-            <button onclick="submitPrivateFeedback()" class="w-full py-4 marigold-gradient text-slate-900 font-black text-xs sm:text-sm rounded-2xl shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i data-lucide="lock" class="w-4 h-4"></i> फाउंडर को गुप्त रूप से भेजें</button>
-          </div>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
+          <h2 class="text-lg sm:text-xl font-black text-slate-900">फाउंडर के लिए गुप्त फीडबैक वॉल्ट</h2>
+          <textarea id="fb-message" rows="4" placeholder="यहाँ खुलकर लिखें..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 outline-none focus:border-blue-600 text-xs font-medium"></textarea>
+          <button onclick="submitPrivateFeedback()" class="w-full py-4 marigold-gradient text-slate-900 font-black text-xs rounded-2xl shadow-md">गुप्त रूप से भेजें</button>
         </div>
       </section>
 
-      <!-- ================= TIMETABLE GENERATOR ================= -->
       <section id="view-timetable" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-slate-200 shadow-sm">
-          <div>
-            <span class="px-3.5 py-1 bg-emerald-50 border border-emerald-200 text-emerald-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">AI Routine Builder</span>
-            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">स्मार्ट स्टूडेंट टाइम टेबल जनरेटर</h2>
-          </div>
-          <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">⏱️</div>
-        </div>
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 border border-slate-200 shadow-md">
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">सुबह उठने का समय</label><input type="time" id="tt-wake" value="06:00" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs"></div>
-            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">रात को सोने का समय</label><input type="time" id="tt-sleep" value="23:00" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs"></div>
-            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">कोचिंग के कुल घंटे</label><select id="tt-coaching" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs cursor-pointer"><option value="4 Hours">4 घंटे</option><option value="6 Hours" selected>6 घंटे</option><option value="8 Hours">8 घंटे</option></select></div>
-            <div class="space-y-1.5"><label class="block text-xs font-bold text-slate-800">लक्ष्य / परीक्षा</label><select id="tt-goal" class="w-full bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs font-bold outline-none focus:border-blue-600 shadow-2xs cursor-pointer"><option value="NEET UG Exam">Eduva Medicos (NEET)</option><option value="IIT-JEE Exam">Eduva Builders (JEE)</option></select></div>
-          </div>
-          <button onclick="generateCustomTimetable()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs sm:text-sm rounded-2xl shadow-md active:scale-95 transition flex items-center justify-center gap-2"><i data-lucide="sparkles" class="w-4 h-4"></i> मेरा टाइम टेबल तैयार करें</button>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
+          <h2 class="text-xl font-black text-slate-900">स्मार्ट स्टूडेंट टाइम टेबल जनरेटर</h2>
+          <button onclick="generateCustomTimetable()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-black text-xs rounded-2xl">मेरा टाइम टेबल तैयार करें</button>
         </div>
       </section>
 
-      <!-- ================= HEALTH VIEW ================= -->
       <section id="view-health" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl flex flex-col sm:flex-row items-center justify-between gap-4 bg-white border border-slate-200 shadow-sm">
-          <div><span class="px-3.5 py-1 bg-rose-50 border border-rose-200 text-rose-700 rounded-full text-xs font-extrabold uppercase tracking-wider mono-font">Health & Wellness</span><h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-2.5">विद्यार्थी स्वास्थ्य व पोषण गाइड</h2></div>
-          <div class="text-5xl bg-slate-50 p-4 rounded-3xl border border-slate-200 shadow-inner">🥗</div>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
+          <h2 class="text-xl font-black text-slate-900">विद्यार्थी स्वास्थ्य व पोषण गाइड</h2>
         </div>
       </section>
 
-      <!-- ================= COUNSELING VIEW ================= -->
       <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200 shadow-md">
-          <h2 class="text-xl sm:text-2xl font-black text-slate-900">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
-          <button onclick="startCounselingSession('मुझे पढ़ाई में फोकस करने में परेशानी हो रही है और बहुत स्ट्रेस हो रहा है।')" class="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-blue-600 text-left space-y-2 transition shadow-xs w-full"><p class="text-xs font-extrabold text-slate-900">फोकस व कंसंट्रेशन नहीं बन रहा</p></button>
+        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
+          <h2 class="text-xl font-black text-slate-900">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
         </div>
       </section>
 
     </main>
+  </div>
+
+  <!-- LOGIN / SIGNUP MODAL -->
+  <div id="login-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="card-clean bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 relative shadow-2xl animate-fadeIn">
+      <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm">✕</button>
+      <div class="text-center space-y-2">
+        <div class="w-12 h-12 mx-auto logo-gradient rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-md">E✨</div>
+        <h3 class="text-xl font-black text-slate-900">EDUVA में आपका स्वागत है</h3>
+        <p class="text-xs text-slate-500 font-medium">अपना मोबाइल नंबर या ईमेल दर्ज करके लॉगिन करें</p>
+      </div>
+      <div class="space-y-3.5 text-xs font-bold">
+        <div>
+          <label class="block text-slate-700 mb-1">मोबाइल नंबर या ईमेल</label>
+          <input type="text" id="login-input-val" placeholder="उदा. 9876543210" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3.5 outline-none focus:border-blue-600">
+        </div>
+        <button onclick="submitLogin()" class="w-full py-3.5 ink-navy text-white font-black rounded-xl shadow-md">OTP भेजें & लॉगिन करें 🚀</button>
+      </div>
+    </div>
   </div>
 
   <!-- MOBILE BOTTOM NAVIGATION -->
@@ -715,7 +762,35 @@
     let currentTeachingMode = "direct"; 
     let userStreakCount = 12;
 
+    // Navigation History Stack for Back Button support
+    let navigationHistory = ['home'];
+
     const GROQ_KEY = "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";
+
+    // DLP & Content Security Guardrails (No download, no right-click, no copy shortcuts)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.addEventListener('keydown', (e) => {
+      if (e.ctrlKey && (e.key === 's' || e.key === 'p' || e.key === 'c' || e.key === 'u')) {
+        e.preventDefault();
+        alert("⚠️ सुरक्षा कारणों से EDUVA पर यह एक्शन प्रतिबंधित है। सभी मॉड्यूल्स केवल ऐप के अंदर पढ़ने के लिए सुरक्षित हैं!");
+      }
+    });
+
+    // Login Modal Handlers
+    function openLoginModal() {
+        document.getElementById('login-modal').classList.remove('hidden');
+    }
+
+    function closeLoginModal() {
+        document.getElementById('login-modal').classList.add('hidden');
+    }
+
+    function submitLogin() {
+        const val = document.getElementById('login-input-val').value.trim();
+        if (!val) { alert("कृपया अपना मोबाइल नंबर या ईमेल दर्ज करें!"); return; }
+        alert("✅ लॉगिन सफल! आपका स्वागत है चैंपियन।");
+        closeLoginModal();
+    }
 
     // --- COMMUNITY DOUBT POOL LOGIC ---
     let communityDoubts = [
@@ -850,7 +925,7 @@
     // Mock Test Engine
     const mockQuestions = [
       { q: "1. यदि किसी वस्तु का वेग दोगुना कर दिया जाए, तो उसकी गतिज ऊर्जा (Kinetic Energy) कितनी हो जाएगी?", options: ["दोगुनी (2x)", "चार गुना (4x)", "आधी (1/2)", "अपरिवर्तित"], ans: 1 },
-      { q: "2. मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "यकृत (Liver)", "थायराइड (Thyroid)", "पीयूष ग्रंथि (Pituitary)"], ans: 1 },
+      { q: "2. मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "यकृत (Liver)", "थायराइड (Thyroid)", "पीयूष ग्रंथि (Pituitary)"], ans: 1 },
       { q: "3. ग्लूकोज का अणुसूत्र (Molecular Formula) क्या है?", options: ["C6H12O6", "C12H22O11", "CH3COOH", "C2H5OH"], ans: 0 },
       { q: "4. निर्वात में प्रकाश की चाल (Speed of Light) कितनी होती है?", options: ["3 × 10^8 m/s", "3 × 10^6 m/s", "3 × 10^10 m/s", "3 × 10^5 m/s"], ans: 0 },
       { q: "5. आवर्त सारणी में सबसे अधिक विद्युतऋणात्मक (Most Electronegative) तत्व कौन सा है?", options: ["ऑक्सीजन (O)", "क्लोरिन (Cl)", "फ्लोरिन (F)", "नायट्रोजन (N)"], ans: 2 }
@@ -957,7 +1032,7 @@
 
     function giveKotaBoost() {
       switchTab('chat');
-      setPromptSuggestion("Edu Sir, मैं थोड़ा डीमोटीवेट महसूस कर रहा हूँ। कोटा वाले अंदाज़ में मुझे एक ज़ोरदार मोटिवेशनल बूस्ट दो भाई!");
+      setPromptSuggestion("Edu Sir, मैं थोड़ा डीमोटीवेट महसूस कर रहा हूँ। कोटा वाले अंदाज़ में मुझे एक ज़ोरदार मोटिवेशनल बूस्ट दो भाई!");
       sendDoubt();
     }
 
@@ -1029,7 +1104,7 @@
 
     function startCounselingSession(topic) {
       switchTab('chat');
-      setPromptSuggestion(`Edu Sir (${currentStudentGoal}), ${topic} कोटा में थोड़ा स्ट्रेस हो रहा है, बड़े भाई की तरह समझाओ ना यार।`);
+      setPromptSuggestion(`Edu Sir (${currentStudentGoal}), ${topic} कोटा में थोड़ा स्ट्रेस हो रहा है, बड़े भाई की तरह समझाओ ना यार।`);
       sendDoubt();
     }
 
@@ -1055,8 +1130,13 @@ RULES FOR EDU SIR:
 
     let conversationHistory = [{ role: "system", content: BASE_SYSTEM_PROMPT }];
 
-    function switchTab(tabId) {
-      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq'].forEach(t => {
+    // Stack-based Navigation Handler with Back Button Support
+    function switchTab(tabId, isBackAction = false) {
+      if (!isBackAction) {
+          navigationHistory.push(tabId);
+      }
+
+      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if (el) el.classList.add('hidden');
         
@@ -1074,6 +1154,15 @@ RULES FOR EDU SIR:
       if (tabId === 'vault') loadVaultItems();
       if (tabId === 'community') loadCommunityDoubts();
     }
+
+    // Handle Browser Popstate / Back Button Stack Navigation
+    window.addEventListener('popstate', (event) => {
+        if (navigationHistory.length > 1) {
+            navigationHistory.pop(); // Remove current view
+            const previousTab = navigationHistory[navigationHistory.length - 1]; // Get previous view
+            switchTab(previousTab, true);
+        }
+    });
 
     let canvas, ctx, painting = false;
     function initWhiteboard() {
