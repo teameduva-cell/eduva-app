@@ -168,6 +168,12 @@
           <button onclick="switchTab('avatar-lectures')" id="dtab-avatar-lectures" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="video" class="w-4 h-4 text-rose-600"></i> AI Avatar Lectures 🎬
           </button>
+          <button onclick="switchTab('motivation')" id="dtab-motivation" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="play-circle" class="w-4 h-4 text-amber-500"></i> Motivation & Career 🔥
+          </button>
+          <button onclick="switchTab('counseling')" id="dtab-counseling" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+            <i data-lucide="heart-handshake" class="w-4 h-4 text-purple-600"></i> Mental Health & Counseling 💜
+          </button>
           <button onclick="switchTab('chat')" id="dtab-chat" class="w-full flex items-center gap-3 px-3.5 py-3 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
             <i data-lucide="message-square" class="w-4 h-4 text-blue-600"></i> AI Chat & Doubts
           </button>
@@ -231,11 +237,11 @@
             <button onclick="switchTab('courses')" class="bg-white text-blue-700 px-5 py-3 rounded-xl font-black text-xs shadow-lg hover:scale-105 transition cursor-pointer">
               Start Learning
             </button>
-            <button onclick="switchTab('chat')" class="border border-white/30 bg-white/10 text-white px-5 py-3 rounded-xl font-bold text-xs hover:bg-white/20 transition cursor-pointer">
-              Ask Edu Sir
+            <button onclick="switchTab('motivation')" class="bg-amber-500 text-slate-900 px-5 py-3 rounded-xl font-black text-xs shadow-md transition cursor-pointer">
+              🔥 Motivation & Career
             </button>
-            <button onclick="switchTab('avatar-lectures')" class="bg-rose-600 text-white px-5 py-3 rounded-xl font-bold text-xs shadow-md transition cursor-pointer">
-              🎬 AI Video Classes
+            <button onclick="switchTab('counseling')" class="border border-white/30 bg-white/10 text-white px-5 py-3 rounded-xl font-bold text-xs hover:bg-white/20 transition cursor-pointer">
+              💜 Counseling Support
             </button>
           </div>
         </div>
@@ -307,15 +313,15 @@
         <div class="space-y-3">
           <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Ask Your Way (कोटा स्टाइल)</h3>
           <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            <div onclick="switchTab('avatar-lectures')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
-              <div class="w-12 h-12 mx-auto rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="video" class="w-6 h-6"></i></div>
-              <p class="text-xs font-black text-slate-900">AI Lectures</p>
-              <p class="text-[10px] text-slate-500 font-semibold">वीडियो लेक्चर देखें</p>
+            <div onclick="switchTab('motivation')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="play-circle" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">Motivation</p>
+              <p class="text-[10px] text-slate-500 font-semibold">मोटिवेशनल वीडियो</p>
             </div>
-            <div onclick="switchTab('community')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
-              <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="users" class="w-6 h-6"></i></div>
-              <p class="text-xs font-black text-slate-900">Community Help</p>
-              <p class="text-[10px] text-slate-500 font-semibold">छात्रों से डाउट पूछें</p>
+            <div onclick="switchTab('counseling')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+              <div class="w-12 h-12 mx-auto rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="heart-handshake" class="w-6 h-6"></i></div>
+              <p class="text-xs font-black text-slate-900">Counseling</p>
+              <p class="text-[10px] text-slate-500 font-semibold">मेंटल हेल्थ सपोर्ट</p>
             </div>
             <div onclick="switchTab('flashcards')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
               <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="layers" class="w-6 h-6"></i></div>
@@ -335,9 +341,9 @@
             <i data-lucide="book-open" class="w-5 h-5 mx-auto text-indigo-600 group-hover:scale-110 transition"></i>
             <p class="text-xs font-bold text-slate-900">My Learning</p>
           </button>
-          <button onclick="switchTab('avatar-lectures')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
-            <i data-lucide="video" class="w-5 h-5 mx-auto text-rose-600 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">AI Lectures</p>
+          <button onclick="switchTab('motivation')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="play-circle" class="w-5 h-5 mx-auto text-amber-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Motivation</p>
           </button>
           <button onclick="switchTab('vault')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="bookmark" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
@@ -345,7 +351,7 @@
           </button>
           <button onclick="switchTab('profile')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="award" class="w-5 h-5 mx-auto text-amber-500 group-hover:scale-110 transition"></i>
-            <p class="text-xs font-bold text-slate-900">Profile & Badges</p>
+            <p class="text-xs font-bold text-slate-900">Profile</p>
           </button>
           <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
             <i data-lucide="help-circle" class="w-5 h-5 mx-auto text-indigo-500 group-hover:scale-110 transition"></i>
@@ -511,6 +517,87 @@
               </div>
             </div>
             <button onclick="askEduSirAboutLecture()" class="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs rounded-xl shadow-md transition shrink-0 cursor-pointer">Ask Edu Sir Now 🚀</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MOTIVATION & CAREER GUIDANCE VIEW ================= -->
+      <section id="view-motivation" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+          <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-black shadow-sm">🔥</div>
+            <div>
+              <span class="px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Inspiration & Roadmap</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">मोटिवेशन & करियर गाइडेंस वीडियो</h2>
+            </div>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed font-medium">
+            कोटा के सफल छात्रों और टॉपर्स के अनुभव, परीक्षा के दबाव से निपटने के तरीके, और NEET/JEE के बाद बेहतरीन करियर ऑप्शन्स की वीडियो गाइड।
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-5 bg-slate-50 border rounded-2xl space-y-3">
+              <div class="flex items-center justify-between"><span class="text-[10px] bg-rose-100 text-rose-700 font-bold px-2.5 py-0.5 rounded-full">Top Motivation</span><span class="text-[10px] text-slate-500 font-mono">12 mins</span></div>
+              <h3 class="font-black text-sm text-slate-900">"जब पढ़ाई में मन न लगे तो यह वीडियो देखना!" — Edu Sir</h3>
+              <p class="text-xs text-slate-600">बर्नआउट (Burnout) से कैसे बाहर आएं और अपनी खोई हुई ऊर्जा वापस कैसे लाएं।</p>
+              <button onclick="speakText('चैंपियन, जब भी डीमोटिवेटेड महसूस हो, याद रखो कि तुम्हारी मेहनत रंग जरूर लाएगी। बस कंसिस्टेंसी मत छोड़ना!')" class="w-full py-2 bg-amber-500 text-slate-900 font-black text-xs rounded-xl shadow-xs transition cursor-pointer">क्विक मोटिवेशन सुनें 🎧</button>
+            </div>
+
+            <div class="p-5 bg-slate-50 border rounded-2xl space-y-3">
+              <div class="flex items-center justify-between"><span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2.5 py-0.5 rounded-full">Career Roadmap</span><span class="text-[10px] text-slate-500 font-mono">18 mins</span></div>
+              <h3 class="font-black text-sm text-slate-900">NEET / JEE के अलावा टॉप करियर विकल्प 2026</h3>
+              <p class="text-xs text-slate-600">साइंस स्टूडेंट्स के लिए इंजीनियरिंग और मेडिकल के अलावा उभरते हुए शानदार क्षेत्र।</p>
+              <button onclick="sendCustomDoubt('Edu Sir, मुझे NEET और JEE के अलावा साइंस स्टूडेंट्स के लिए बेस्ट करियर ऑप्शन्स के बारे में विस्तार से बताओ।')" class="w-full py-2 ink-navy text-white font-black text-xs rounded-xl transition cursor-pointer">गाइडेंस चैट शुरू करें 🚀</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
+      <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
+
+        <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
+          <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
+            <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-black shadow-sm">💜</div>
+            <div>
+              <span class="px-3 py-1 bg-purple-50 text-purple-700 rounded-full text-[10px] font-black uppercase tracking-wider mono-font">Emotional Support</span>
+              <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
+            </div>
+          </div>
+
+          <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl text-xs text-indigo-900 font-medium leading-relaxed">
+            "चैंपियन, याद रखना—नंबर कम आना या मॉक टेस्ट में रैंक गिरना जिंदगी का अंत नहीं है। तेरा भाई (Edu Sir) हमेशा तेरे साथ है। कभी भी अकेलापन या तनाव महसूस हो, तो खुलकर बात करो।"
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div onclick="startCounselingSession('परीक्षा का डर और एंग्जायटी (Exam Fear)')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-2 text-center group">
+              <div class="text-2xl">😰</div>
+              <p class="text-xs font-black text-slate-900">Exam Fear & Stress</p>
+              <p class="text-[10px] text-slate-500">परीक्षा के डर से कैसे निपटें?</p>
+            </div>
+
+            <div onclick="startCounselingSession('मोटिवेशन की कमी और थकान (Low Motivation)')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-2 text-center group">
+              <div class="text-2xl">🔋</div>
+              <p class="text-xs font-black text-slate-900">Low Energy / Burnout</p>
+              <p class="text-[10px] text-slate-500">पढ़ाई में मन न लगे तो क्या करें?</p>
+            </div>
+
+            <div onclick="startCounselingSession('अकेलापन और होमसिकनेस (Homesickness)')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-2 text-center group">
+              <div class="text-2xl">🏡</div>
+              <p class="text-xs font-black text-slate-900">Hostel & Homesickness</p>
+              <p class="text-[10px] text-slate-500">घर की याद सताए तो क्या करें?</p>
+            </div>
+          </div>
+
+          <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 text-center space-y-3">
+            <h3 class="text-xs font-black text-slate-900">तुरंत Edu Sir से दिल की बात कहें:</h3>
+            <button onclick="switchTab('chat'); setPromptSuggestion('Edu Sir, मुझे अभी पढ़ाई को लेकर थोड़ा तनाव हो रहा है, बड़े भाई की तरह समझाओ ना यार।'); sendDoubt();" class="px-6 py-3 ink-navy text-white font-black text-xs rounded-xl shadow-md transition cursor-pointer">
+              Edu Sir से काउंसलिंग चैट शुरू करें 💬
+            </button>
           </div>
         </div>
       </section>
@@ -882,13 +969,6 @@
         </div>
       </section>
 
-      <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
-        <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
-          <h2 class="text-xl font-black text-slate-900">Edu Sir AI मेंटल हेल्थ & काउंसलिंग</h2>
-        </div>
-      </section>
-
     </main>
   </div>
 
@@ -968,7 +1048,7 @@
       <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer"><i data-lucide="home" class="w-4 h-4"></i> Home</button>
       <button onclick="switchTab('community')" id="tab-community" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="users" class="w-4 h-4 text-purple-600"></i> कम्युनिटी</button>
       <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
-      <button onclick="switchTab('faq')" id="tab-faq" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="help-circle" class="w-4 h-4 text-indigo-500"></i> FAQ</button>
+      <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="award" class="w-4 h-4 text-amber-600"></i> Profile</button>
       <button onclick="switchTab('vault')" id="tab-vault" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer"><i data-lucide="bookmark" class="w-4 h-4 text-emerald-600"></i> वॉल्ट</button>
     </div>
   </nav>
@@ -1118,12 +1198,6 @@
         updateAvatarUI();
         speakLectureStep();
       }
-    }
-
-    function finishLecture() {
-      stopLecture();
-      alert("🎉 शानदार! आपने यह लेक्चर सफलतापूर्वक पूरा कर लिया है।");
-      switchTab('home');
     }
 
     function repeatLectureSimpler() {
@@ -1378,7 +1452,7 @@
       container.innerHTML = vault.map((item, idx) => `
         <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between text-xs">
           <div><p class="font-bold text-slate-900">${item.text}</p><span class="text-[10px] text-slate-400 font-mono">Saved on: ${item.date}</span></div>
-          <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline cursor-pointer">हटाएं</button>
+          <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline">हटाएं</button>
         </div>
       `).join('');
     }
@@ -1513,7 +1587,7 @@ RULES FOR EDU SIR:
           try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
       }
 
-      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory'].forEach(t => {
+      ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation'].forEach(t => {
         const el = document.getElementById(`view-${t}`);
         if (el) el.classList.add('hidden');
         
