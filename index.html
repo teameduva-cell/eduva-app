@@ -48,7 +48,6 @@
     .marigold-gradient { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
     .logo-gradient { background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%); box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
     
-    /* Reference UI Styles Integration */
     .header-custom {
       height: 72px;
       background: linear-gradient(135deg, #101b78, #1d2497, #2739dc);
@@ -99,7 +98,7 @@
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
-  <!-- TOP PROFESSIONAL HEADER (Reference UI Inspired) -->
+  <!-- TOP PROFESSIONAL HEADER -->
   <header class="header-custom">
     <div class="flex items-center space-x-3">
       <button type="button" class="eduva-back-btn" onclick="goBack()" title="पीछे जाएं">← Back</button>
@@ -126,8 +125,12 @@
         <option value="Eduva Junior" class="text-slate-900">Eduva Junior (6th-8th)</option>
       </select>
 
-      <button onclick="openLoginModal()" class="border border-white/30 bg-white/10 text-white border-radius-12 px-3.5 py-2 font-extrabold text-xs rounded-xl transition shadow-xs cursor-pointer">
-        Login / Signup
+      <button onclick="switchTab('profile')" class="hidden sm:flex items-center gap-1 bg-white/15 hover:bg-white/25 text-white px-3 py-2 rounded-xl text-xs font-bold transition cursor-pointer" title="My Profile">
+        <i data-lucide="user" class="w-3.5 h-3.5"></i> Profile
+      </button>
+
+      <button onclick="openLoginModal()" class="border border-white/30 bg-white/10 text-white px-3.5 py-2 font-extrabold text-xs rounded-xl transition shadow-xs cursor-pointer">
+        Login
       </button>
 
       <div class="bg-red-500/20 border border-red-300/30 px-3 py-1 rounded-full flex items-center gap-1.5 shadow-2xs">
@@ -144,12 +147,12 @@
     <aside class="hidden lg:flex flex-col w-72 card-clean rounded-3xl p-4 gap-4 shrink-0 h-[calc(100vh-100px)] justify-between border border-slate-200 overflow-y-auto hide-scrollbar">
       <div class="space-y-4">
         <!-- Professional ID Card Header -->
-        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center relative overflow-hidden shadow-2xs">
+        <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 text-center relative overflow-hidden shadow-2xs cursor-pointer" onclick="switchTab('profile')">
           <div class="w-14 h-14 mx-auto rounded-2xl ink-navy flex items-center justify-center mb-2 text-2xl text-white font-black shadow-sm">
             👨‍🏫
           </div>
           <h3 class="font-extrabold text-sm text-slate-900 flex items-center justify-center gap-1">
-            Edu Sir <i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-600 fill-blue-600"></i>
+            Kanha (Profile) <i data-lucide="check-circle" class="w-3.5 h-3.5 text-blue-600 fill-blue-600"></i>
           </h3>
           <p class="text-[11px] text-slate-600 font-bold mt-0.5 mono-font" id="sidebar-greeting-title">Hello Future Doctor!</p>
           <div class="mt-2 pt-2 border-t border-slate-200 text-[10px] mono-font text-slate-400">ROLL NO: <span class="text-slate-900 font-bold">KOTA-2026-99</span></div>
@@ -207,12 +210,17 @@
     <!-- CONTENT WRAPPER -->
     <main class="flex-1 min-w-0 flex flex-col">
 
-      <!-- ================= 1. HOME DASHBOARD VIEW (Polished UI) ================= -->
+      <!-- ================= 1. HOME DASHBOARD VIEW ================= -->
       <section id="view-home" class="space-y-6 animate-fadeIn">
         
-        <!-- HERO CARD (Reference UI Layout) -->
+        <!-- HERO CARD -->
         <div class="hero-custom p-6 sm:p-8 rounded-[26px] relative overflow-hidden flex flex-col justify-between">
-          <small class="font-extrabold uppercase tracking-widest opacity-80">WELCOME BACK, CHAMPION 👋</small>
+          <div class="flex items-center justify-between">
+            <small class="font-extrabold uppercase tracking-widest opacity-80">WELCOME BACK, CHAMPION 👋</small>
+            <button onclick="switchTab('profile')" class="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-xl text-xs font-bold transition cursor-pointer flex items-center gap-1">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i> View Profile
+            </button>
+          </div>
           <h1 class="text-3xl sm:text-4xl font-black mt-2 leading-tight">
             Jai Shri Ram,<br> Champion! 🚀
           </h1>
@@ -232,17 +240,17 @@
           </div>
         </div>
 
-        <!-- QUICK STATS (Reference UI 3-Grid) -->
+        <!-- QUICK STATS -->
         <div class="grid grid-cols-3 gap-3">
-          <div class="card-clean p-4 rounded-2xl text-center bg-white">
+          <div class="card-clean p-4 rounded-2xl text-center bg-white cursor-pointer hover:border-blue-300 transition" onclick="switchTab('profile')">
             <div class="text-xl font-black text-slate-900">🔥 12</div>
             <div class="text-[10px] font-bold text-slate-500 mt-1 uppercase">Day Streak</div>
           </div>
-          <div class="card-clean p-4 rounded-2xl text-center bg-white">
+          <div class="card-clean p-4 rounded-2xl text-center bg-white cursor-pointer hover:border-blue-300 transition" onclick="switchTab('learning')">
             <div class="text-xl font-black text-blue-600">🎯 4/6</div>
             <div class="text-[10px] font-bold text-slate-500 mt-1 uppercase">Tasks Done</div>
           </div>
-          <div class="card-clean p-4 rounded-2xl text-center bg-white">
+          <div class="card-clean p-4 rounded-2xl text-center bg-white cursor-pointer hover:border-blue-300 transition" onclick="switchTab('profile')">
             <div class="text-xl font-black text-emerald-600">📈 68%</div>
             <div class="text-[10px] font-bold text-slate-500 mt-1 uppercase">NEET Prep</div>
           </div>
@@ -322,26 +330,31 @@
           </div>
         </div>
 
-        <!-- Today's Study Plan -->
-        <div class="card-clean p-5 sm:p-6 rounded-3xl bg-white space-y-4">
-          <div class="flex items-center justify-between">
-            <h3 class="text-base font-black text-slate-900">Today's Study Plan</h3>
-            <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-2.5 py-1 rounded-full">3 Tasks Pending</span>
-          </div>
-          <div class="space-y-3">
-            <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-              <span class="text-xs font-black text-indigo-700 w-16">11:00 AM</span>
-              <div class="flex-1"><strong class="text-xs block text-slate-900">Physics – Current Electricity</strong><span class="text-[10px] text-slate-500">45 minutes</span></div>
-            </div>
-            <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-              <span class="text-xs font-black text-indigo-700 w-16">01:30 PM</span>
-              <div class="flex-1"><strong class="text-xs block text-slate-900">Chemistry – Chemical Bonding</strong><span class="text-[10px] text-slate-500">45 minutes</span></div>
-            </div>
-            <div class="flex items-center gap-3 p-3 bg-slate-50 rounded-2xl border border-slate-100">
-              <span class="text-xs font-black text-indigo-700 w-16">04:00 PM</span>
-              <div class="flex-1"><strong class="text-xs block text-slate-900">Full Syllabus Mock Test</strong><span class="text-[10px] text-slate-500">60 minutes</span></div>
-            </div>
-          </div>
+        <div class="grid grid-cols-2 sm:grid-cols-6 gap-3">
+          <button onclick="switchTab('learning')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="book-open" class="w-5 h-5 mx-auto text-indigo-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">My Learning</p>
+          </button>
+          <button onclick="switchTab('avatar-lectures')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="video" class="w-5 h-5 mx-auto text-rose-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">AI Lectures</p>
+          </button>
+          <button onclick="switchTab('vault')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="bookmark" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">फॉर्मूला वॉल्ट</p>
+          </button>
+          <button onclick="switchTab('profile')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="award" class="w-5 h-5 mx-auto text-amber-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Profile & Badges</p>
+          </button>
+          <button onclick="switchTab('faq')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="help-circle" class="w-5 h-5 mx-auto text-indigo-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">FAQs</p>
+          </button>
+          <button onclick="switchTab('memory')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+            <i data-lucide="brain" class="w-5 h-5 mx-auto text-violet-500 group-hover:scale-110 transition"></i>
+            <p class="text-xs font-bold text-slate-900">Mistake Book</p>
+          </button>
         </div>
       </section>
 
@@ -408,7 +421,7 @@
         </div>
       </section>
 
-      <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW (Fully Fixed & Functional) ================= -->
+      <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW ================= -->
       <section id="view-avatar-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
         <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">← Back</button></div>
 
@@ -419,32 +432,51 @@
               <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">AI Avatar Interactive Lectures</h2>
             </div>
             <div class="bg-amber-50 border border-amber-200 px-4 py-2 rounded-2xl flex items-center gap-2 shadow-2xs">
-              <i data-lucide="zap" class="w-4 h-4 text-amber-600 fill-amber-600"></i>
-              <span class="text-xs font-black text-amber-800 mono-font">Step-by-Step AI Teaching</span>
+              <i data-lucide="volume-2" class="w-4 h-4 text-amber-600 fill-amber-600"></i>
+              <span id="avatar-step-counter" class="text-xs font-black text-amber-800 mono-font">Step 1 / 4</span>
             </div>
           </div>
 
           <p class="text-xs text-slate-600 leading-relaxed font-medium">
-            यहाँ आप किसी भी चैप्टर को AI Avatar Video Teacher के साथ लाइव क्लास की तरह पढ़ सकते हैं। यदि बीच में कोई स्टेप समझ न आए, तो नीचे दिए गए <b>"Ask Edu Sir"</b> बटन से तुरंत सवाल पूछें!
+            यहाँ आप किसी भी चैप्टर को वास्तविक ब्राउज़र स्पीच (Edu Sir Voice) और स्टेप-बाय-स्टेप लेक्चर्स के साथ पढ़ सकते हैं। Play दबाएं और सुनें!
           </p>
+
+          <!-- Lecture Progress Bar -->
+          <div class="w-full bg-slate-100 h-2 rounded-full overflow-hidden border">
+            <div id="avatar-progress-bar" class="bg-rose-600 h-full w-[25%] transition-all duration-300"></div>
+          </div>
 
           <!-- Video Player Simulation Container -->
           <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-2xl border border-slate-800 relative">
             <div class="absolute top-4 left-4 z-20 flex items-center gap-2 bg-rose-600 text-white px-3 py-1 rounded-full text-[10px] font-black shadow-lg animate-pulse mono-font">
-              <span class="w-2 h-2 rounded-full bg-white"></span> AI AVATAR LIVE CLASS
+              <span class="w-2 h-2 rounded-full bg-white"></span> EDU SIR LIVE VOICE CLASS
             </div>
             
             <div id="avatar-video-screen" class="w-full h-72 sm:h-96 flex flex-col items-center justify-center p-6 text-center text-white relative bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
-              <div class="w-20 h-20 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center text-4xl mb-3 shadow-inner">
+              <div id="avatar-speaker-icon" class="w-20 h-20 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center text-4xl mb-3 shadow-inner transition-transform duration-300">
                 👨‍🏫
               </div>
               <h3 id="avatar-lecture-title" class="text-lg sm:text-xl font-bold text-amber-300">Physics: Motion in a Straight Line</h3>
               <p id="avatar-lecture-step" class="text-xs sm:text-sm text-slate-300 mt-2 max-w-lg leading-relaxed">
-                "चैंपियन, आज हम सीखेंगे कि गति के समीकरण ($v = u + at$) को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!"
+                "चैंपियन, आज हम सीखेंगे कि गति के समीकरण को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!"
               </p>
-              <div class="mt-6 flex items-center gap-3">
+
+              <!-- Adaptive Feedback Box -->
+              <div id="avatar-completion-box" class="hidden mt-4 p-4 bg-slate-900/90 border border-amber-400/50 rounded-2xl max-w-md w-full text-center space-y-3 animate-fadeIn">
+                <p class="text-xs font-bold text-amber-300">चैंपियन, आज का lecture पूरा हो गया। समझ में आया या एक बार और समझाऊँ?</p>
+                <div class="flex items-center justify-center gap-3">
+                  <button onclick="understoodYes()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold transition cursor-pointer">समझ आया 👍</button>
+                  <button onclick="repeatLectureSimpler()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-bold transition cursor-pointer">नहीं आया, फिर समझाओ 🔄</button>
+                </div>
+              </div>
+
+              <!-- Controls -->
+              <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
                 <button onclick="prevLectureStep()" class="px-4 py-2 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-bold transition cursor-pointer">◀ पिछला स्टेप</button>
-                <button onclick="toggleAvatarPlay()" id="play-pause-btn" class="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 rounded-xl text-xs font-black shadow-lg transition cursor-pointer">⏸ Pause</button>
+                <button onclick="speakLectureStep()" id="play-btn" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Play</button>
+                <button onclick="pauseLecture()" class="px-4 py-2 bg-amber-600 hover:bg-amber-700 rounded-xl text-xs font-black shadow-md transition cursor-pointer">⏸ Pause</button>
+                <button onclick="resumeLecture()" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Resume</button>
+                <button onclick="stopLecture()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded-xl text-xs font-black shadow-md transition cursor-pointer">⏹ Stop</button>
                 <button onclick="nextLectureStep()" class="px-4 py-2 bg-white/15 hover:bg-white/25 rounded-xl text-xs font-bold transition cursor-pointer">अगला स्टेप ▶</button>
               </div>
             </div>
@@ -454,15 +486,15 @@
           <div class="space-y-3 pt-2">
             <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Select Chapter Lecture</h3>
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              <div onclick="loadAvatarLecture('Physics: Motion in a Straight Line', 'चैंपियन, आज हम सीखेंगे कि गति के समीकरण ($v = u + at$) को ग्राफिकल मेथड से कैसे ड्राइव करते हैं।')" class="p-4 bg-slate-50 hover:bg-blue-50 border rounded-2xl cursor-pointer transition space-y-1">
+              <div onclick="loadAvatarLecture('Physics: Motion in a Straight Line', ['चैंपियन, आज हम सीखेंगे कि गति के समीकरण को ग्राफिकल मेथड से कैसे ड्राइव करते हैं।', 'स्टेप 1: वेलोसिटी-टाइम ग्राफ बनाएं जहाँ इनिशियल वेलोसिटी u है।', 'स्टेप 2: ग्राफ का स्लोप हमें एक्सीलरेशन देता है।', 'स्टेप 3: v = u + at प्रूफ हो गया!'])" class="p-4 bg-slate-50 hover:bg-blue-50 border rounded-2xl cursor-pointer transition space-y-1">
                 <p class="text-xs font-black text-slate-900">⚛️ Physics</p>
                 <p class="text-[11px] text-slate-600 font-semibold">Motion in a Straight Line</p>
               </div>
-              <div onclick="loadAvatarLecture('Chemistry: Atomic Structure', 'बच्चों, बोहर का मॉडल (Bohr Model) समझने से पहले हमें हाइड्रोजन स्पेक्ट्रम के बामर और लाइमन सीरीज को समझना होगा।')" class="p-4 bg-slate-50 hover:bg-emerald-50 border rounded-2xl cursor-pointer transition space-y-1">
+              <div onclick="loadAvatarLecture('Chemistry: Atomic Structure', ['बच्चों, बोहर का मॉडल समझने से पहले हमें हाइड्रोजन स्पेक्ट्रम समझना होगा।', 'स्टेप 1: इलेक्ट्रॉन निश्चित कक्षाओं में चक्कर लगाते हैं।', 'स्टेप 2: ऊर्जा का उत्सर्जन या अवशोषण होता है।', 'स्टेप 3: E2 - E1 = h nu होता है।'])" class="p-4 bg-slate-50 hover:bg-emerald-50 border rounded-2xl cursor-pointer transition space-y-1">
                 <p class="text-xs font-black text-slate-900">🧪 Chemistry</p>
                 <p class="text-[11px] text-slate-600 font-semibold">Atomic Structure & Bohr Model</p>
               </div>
-              <div onclick="loadAvatarLecture('Mathematics: Quadratic Equations', 'मेरे भाई, द्विघात समीकरण (Quadratic Equations) के मूल निकालने के लिए श्रीधराचार्य फॉर्मूला सबसे शक्तिशाली हथियार है।')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-1">
+              <div onclick="loadAvatarLecture('Mathematics: Quadratic Equations', ['मेरे भाई, द्विघात समीकरण के मूल निकालने के लिए श्रीधराचार्य फॉर्मूला सबसे शक्तिशाली है।', 'स्टेप 1: ax² + bx + c = 0 से तुलना करें।', 'स्टेप 2: Discriminant D = b² - 4ac निकालें।', 'स्टेप 3: x = (-b ± √D) / 2a फॉर्मूला लगाएं।'])" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-1">
                 <p class="text-xs font-black text-slate-900">📐 Mathematics</p>
                 <p class="text-[11px] text-slate-600 font-semibold">Quadratic Equations & Roots</p>
               </div>
@@ -979,56 +1011,149 @@
         closeLoginModal();
     }
 
-    // --- AI AVATAR LECTURE ENGINE SCRIPT ---
+    // --- FULLY FUNCTIONAL AI AVATAR SPEECH & LECTURE ENGINE ---
     let currentAvatarTopic = "Physics: Motion in a Straight Line";
-    let isAvatarPlaying = true;
     let avatarSteps = [
-      "चैंपियन, आज हम सीखेंगे कि गति के समीकरण ($v = u + at$) को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!",
-      "स्टेप 1: वेलोसिटी-टाइम ग्राफ (v-t graph) बनाएं जहाँ इनिशियल वेलोसिटी u है और फाइनल वेलोसिटी v है।",
-      "स्टेप 2: ग्राफ का स्लोप (Slope) हमें एक्सीलरेशन (Acceleration, a) देता है: a = (v - u) / t।",
-      "स्टेप 3: इसे क्रॉस-मल्टीप्लाई करने पर हमें मिलता है: v = u + at। हो गया प्रूफ! अब प्रैक्टिस क्वेश्चन ट्राई करते हैं।"
+      "चैंपियन, आज हम सीखेंगे कि गति के समीकरण को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!",
+      "स्टेप 1: वेलोसिटी-टाइम ग्राफ बनाएं जहाँ इनिशियल वेलोसिटी u है।",
+      "स्टेप 2: ग्राफ का स्लोप हमें एक्सीलरेशन देता है।",
+      "स्टेप 3: v = u + at प्रूफ हो गया!"
     ];
     let currentAvatarStepIdx = 0;
 
-    function loadAvatarLecture(title, firstStep) {
+    function pickEduSirVoice() {
+      if (!('speechSynthesis' in window)) return null;
+      const voices = window.speechSynthesis.getVoices() || [];
+      const hindi = voices.filter(v => /^hi(-|_)?IN/i.test(v.lang) || /hindi/i.test(v.name));
+      return hindi.length ? hindi[0] : voices[0] || null;
+    }
+
+    function loadAvatarLecture(title, stepsArray) {
       currentAvatarTopic = title;
-      avatarSteps = [
-        firstStep,
-        `स्टेप 1: ${title} के मुख्य फॉर्मूले और बेसिक टर्म्स को समझें।`,
-        `स्टेप 2: कोटा कोचिंग मॉड्यूल का एक स्टैंडर्ड न्यूमेरिकल उदाहरण हल करें।`,
-        `स्टेप 3: इस टॉपिक के पिछले 5 साल के PYQ ट्रेंड्स का विश्लेषण करें।`
-      ];
+      avatarSteps = stepsArray;
       currentAvatarStepIdx = 0;
+      stopLecture();
       document.getElementById('avatar-lecture-title').innerText = title;
-      document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+      document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[0]}"`;
+      updateAvatarUI();
+    }
+
+    function updateAvatarUI() {
+      const total = avatarSteps.length;
+      const current = currentAvatarStepIdx + 1;
+      document.getElementById('avatar-step-counter').innerText = `Step ${current} / ${total}`;
+      const pct = (current / total) * 100;
+      document.getElementById('avatar-progress-bar').style.width = `${pct}%`;
+      
+      const completionBox = document.getElementById('avatar-completion-box');
+      if (currentAvatarStepIdx >= avatarSteps.length - 1) {
+        completionBox.classList.remove('hidden');
+      } else {
+        completionBox.classList.add('hidden');
+      }
+    }
+
+    function speakLectureStep() {
+      if (!('speechSynthesis' in window)) {
+        alert("आपका ब्राउज़र वॉइस स्पीच सपोर्ट नहीं करता है।");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const text = avatarSteps[currentAvatarStepIdx];
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'hi-IN';
+      utterance.rate = 0.95;
+      utterance.pitch = 1.0;
+      
+      const voice = pickEduSirVoice();
+      if (voice) utterance.voice = voice;
+
+      utterance.onstart = () => {
+        const icon = document.getElementById('avatar-speaker-icon');
+        if (icon) icon.classList.add('scale-110', 'bg-rose-600/50');
+      };
+      utterance.onend = () => {
+        const icon = document.getElementById('avatar-speaker-icon');
+        if (icon) icon.classList.remove('scale-110', 'bg-rose-600/50');
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function pauseLecture() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.pause();
+      }
+    }
+
+    function resumeLecture() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.resume();
+      }
+    }
+
+    function stopLecture() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+      const icon = document.getElementById('avatar-speaker-icon');
+      if (icon) icon.classList.remove('scale-110', 'bg-rose-600/50');
     }
 
     function nextLectureStep() {
+      stopLecture();
       if (currentAvatarStepIdx < avatarSteps.length - 1) {
         currentAvatarStepIdx++;
         document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
-      } else {
-        currentAvatarStepIdx = 0;
-        document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+        updateAvatarUI();
+        speakLectureStep();
       }
     }
 
     function prevLectureStep() {
+      stopLecture();
       if (currentAvatarStepIdx > 0) {
         currentAvatarStepIdx--;
         document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+        updateAvatarUI();
+        speakLectureStep();
       }
     }
 
+    function finishLecture() {
+      stopLecture();
+      alert("🎉 शानदार! आपने यह लेक्चर सफलतापूर्वक पूरा कर लिया है।");
+      switchTab('home');
+    }
+
+    function repeatLectureSimpler() {
+      stopLecture();
+      avatarSteps.push("कोटा वाले अंदाज़ में दोबारा समझें: इसे आसान बनाने के लिए हम इसका एक और प्रैक्टिकल उदाहरण देखते हैं।");
+      currentAvatarStepIdx = avatarSteps.length - 1;
+      document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+      updateAvatarUI();
+      speakLectureStep();
+    }
+
+    function understoodYes() {
+      stopLecture();
+      alert("🌟 बहुत बढ़िया! आपका कॉन्सेप्ट पक्का हो गया है।");
+      switchTab('home');
+    }
+
     function toggleAvatarPlay() {
-      isAvatarPlaying = !isAvatarPlaying;
-      const btn = document.getElementById('play-pause-btn');
-      btn.innerText = isAvatarPlaying ? "⏸ Pause" : "▶ Play";
+      if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+        if (window.speechSynthesis.paused) resumeLecture();
+        else pauseLecture();
+      } else {
+        speakLectureStep();
+      }
     }
 
     function askEduSirAboutLecture() {
+      stopLecture();
       switchTab('chat');
-      setPromptSuggestion(`Edu Sir, मैं अभी AI Lecture में "${currentAvatarTopic}" पढ़ रहा था। मुझे इसके इस स्टेप में थोड़ा डाउट है, इसे आसान भाषा में समझाओ ना यार: "${avatarSteps[currentAvatarStepIdx]}"`);
+      setPromptSuggestion(`Edu Sir, मैं अभी AI Lecture में "${currentAvatarTopic}" पढ़ रहा था। मुझे इसके इस स्टेप में थोड़ा डाउट है, इसे आसान भाषा में समझाओ: "${avatarSteps[currentAvatarStepIdx]}"`);
       sendDoubt();
     }
 
@@ -1130,7 +1255,7 @@
 
     // Flashcards Data & Logic
     const flashcardsData = [
-      { cat: "PHYSICS • MECHANICS", q: "गति के समीकरण (Equations of Motion)", a: "v = u + at <br> s = ut + 1/2 at² <br> v^2 = u^2 + 2as" },
+      { cat: "PHYSICS • MECHANICS", q: "गति के समीकरण (Equations of Motion)", a: "v = u + at <br> s = ut + 1/2 at² <br> v² = u² + 2as" },
       { cat: "CHEMISTRY • PHYSICAL", q: "आदर्श गैस समीकरण (Ideal Gas Equation)", a: "PV = nRT <br> जहाँ P=Pressure, V=Volume, n=Moles, R=Gas Constant, T=Temperature" },
       { cat: "BIOLOGY • GENETICS", q: "मैंडल का स्वतंत्र अपव्यूहन नियम (Law of Independent Assortment)", a: "डाईहाइब्रिड क्रॉस का फिनोटाइपिक अनुपात (Phenotypic Ratio): <br> 9 : 3 : 3 : 1" },
       { cat: "PHYSICS • ELECTROSTATICS", q: "कूलाॅम का नियम (Coulomb's Law)", a: "F = k * (q₁ * q₂) / r² <br> जहाँ k = 1 / (4πε₀) ≈ 9 × 10⁹ N·m²/C²" },
@@ -1617,6 +1742,31 @@ RULES FOR EDU SIR:
       } catch (err) {
         document.getElementById(loadingId).remove();
         container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border border-red-200 mx-2">⚠️ Error: ${err.message}</div>`;
+      }
+    }
+
+    /* ================= EDUVA MEMORY ENGINE ================= */
+    const EDUVA_MEMORY_KEY = "eduva_student_memory_v1";
+    function getEduvaMemory() {
+      try { return JSON.parse(localStorage.getItem(EDUVA_MEMORY_KEY)) || { questions: 0, concepts: [], mistakes: [] }; }
+      catch(e) { return { questions: 0, concepts: [], mistakes: [] }; }
+    }
+    function saveEduvaMemory(m) { localStorage.setItem(EDUVA_MEMORY_KEY, JSON.stringify(m)); }
+    function updateMemoryDashboard() {
+      const m = getEduvaMemory();
+      const q = document.getElementById("mem-questions");
+      const mi = document.getElementById("mem-mistakes");
+      const c = document.getElementById("mem-concepts");
+      const g = document.getElementById("mem-goal");
+      if (q) q.textContent = m.questions || 0;
+      if (mi) mi.textContent = (m.mistakes || []).length;
+      if (c) c.textContent = (m.concepts || []).length;
+      if (g) g.textContent = currentStudentGoal;
+    }
+    function clearEduvaMemory() {
+      if (confirm("क्या आप EDUVA की memory साफ करना चाहते हैं?")) {
+        localStorage.removeItem(EDUVA_MEMORY_KEY);
+        updateMemoryDashboard();
       }
     }
   </script>
