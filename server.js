@@ -9,7 +9,7 @@ app.post('/chat', async (req, res) => {
   try {
     const userMessage = req.body.message;
 
-    const response = express.response || await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
@@ -21,10 +21,16 @@ app.post('/chat', async (req, res) => {
       })
     });
 
+    if (!response.ok) {
+      const errText = await response.text();
+      return res.status(response.status).json({ error: errText });
+    }
+
     const data = await response.json();
     res.json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+    res.status(500).json({ error: error.message });
   }
 });
 
