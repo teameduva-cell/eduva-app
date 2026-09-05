@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
   <meta charset="UTF-8">
@@ -1125,8 +1125,6 @@
     // Navigation History Stack for Back Button support
     let navigationHistory = ['home'];
 
-    const GROQ_KEY = "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";
-
     // --- DLP & Content Security Guardrails Fixed (Right-click & shortcuts blocked) ---
     document.addEventListener('contextmenu', event => event.preventDefault());
     document.addEventListener('copy', event => event.preventDefault());
@@ -1843,15 +1841,21 @@ RULES FOR EDU SIR:
 
         conversationHistory.push(messagePayload);
 
-        const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        // API Request updated to safely call Render Backend Proxy
+        const res = await fetch("https://eduva-app.onrender.com/chat", {
           method: "POST",
-          headers: { "Content-Type": "application/json", "Authorization": `Bearer ${GROQ_KEY}` },
-          body: JSON.stringify({ model: selectedModel, messages: conversationHistory, temperature: 0.3, max_tokens: 4096 })
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: userContent })
         });
 
         if (!res.ok) throw new Error(`Server Status ${res.status}`);
 
         const data = await res.json();
+        
+        if (!data.choices || data.choices.length === 0) {
+          throw new Error("Invalid response from proxy server.");
+        }
+
         let reply = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
         conversationHistory.push({ role: "assistant", content: reply });
 
@@ -1886,7 +1890,7 @@ RULES FOR EDU SIR:
 
       } catch (err) {
         document.getElementById(loadingId).remove();
-        container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border border-red-200 mx-2">⚠️ Error: ${err.message}</div>`;
+        container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border border-red-200 mx-2">⚠️ Error: ${err.message}. (ध्यान दें: Render का फ्री सर्वर इनएक्टिव होने पर पहली रिक्वेस्ट पर 30-50 सेकंड ले सकता है, कृपया दोबारा प्रयास करें)।</div>`;
       }
     }
 
