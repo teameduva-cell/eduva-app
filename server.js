@@ -12,8 +12,8 @@ app.get('/', (req, res) => {
   res.send('EDUVA AI Backend is Live! 🚀');
 });
 
-// POST endpoint for chat completions
-app.post('/chat', async (req, res) => {
+// POST endpoint for chat completions (updated to /api/chat)
+app.post('/api/chat', async (req, res) => {
   try {
     // Extract user message from request body
     const userMessage = req.body.message;
