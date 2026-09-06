@@ -55,8 +55,10 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-// Define port and start server (works for both local node and serverless environments)
+// Define port and start server (Only for local testing, ignored on Vercel serverless)
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Proxy server running on port ${PORT}`));
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => console.log(`Proxy server running on port ${PORT}`));
+}
 
 module.exports = app;
