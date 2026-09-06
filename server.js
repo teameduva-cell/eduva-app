@@ -61,4 +61,7 @@ if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => console.log(`Proxy server running on port ${PORT}`));
 }
 
-module.exports = app;
+// Fixed export handler for Vercel serverless compatibility
+module.exports = (req, res) => {
+  return app(req, res);
+};
