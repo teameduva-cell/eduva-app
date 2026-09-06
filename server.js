@@ -4,8 +4,13 @@ const app = express();
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-// Enable CORS for all routes ( allow frontend to connect)
+// Enable CORS for all routes so your frontend can connect seamlessly
 app.use(cors());
+
+// Root route so opening the URL in browser shows a friendly status instead of "Cannot GET /"
+app.get('/', (req, res) => {
+  res.send('EDUVA AI Backend is Live! 🚀');
+});
 
 // POST endpoint for chat completions
 app.post('/chat', async (req, res) => {
@@ -26,17 +31,15 @@ app.post('/chat', async (req, res) => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        // FIXED: Updated to a currently active model
         model: 'llama-3.1-8b-instant',
         messages: [{ role: 'user', content: userMessage }],
-        temperature: 0.7 // Optional: Adjust creativity
+        temperature: 0.7
       })
     });
 
     // Handle Groq API errors
     if (!response.ok) {
       const errText = await response.text();
-      // Log the actual error from Groq to Render console
       console.error('Groq API error:', errText);
       return res.status(response.status).json({ error: errText });
     }
@@ -52,6 +55,8 @@ app.post('/chat', async (req, res) => {
   }
 });
 
-// Define port and start server
+// Define port and start server (works for both local node and serverless environments)
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Proxy server running on port ${PORT}`));
+
+module.exports = app;
