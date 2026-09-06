@@ -1239,7 +1239,8 @@
             const paragraphs = text.split('\n');
             const lines = [];
 
-       paragraphs.forEach((para) => {
+       
+            paragraphs.forEach((para) => {
                 if (para.trim() === '') {
                     lines.push(''); // खाली लाइन = पैराग्राफ गैप
                     return;
@@ -2031,8 +2032,8 @@ RULES FOR EDU SIR:
 
                 conversationHistory.push(messagePayload);
 
-                // API Request updated to safely call Render Backend Proxy
-                const res = await fetch("https://eduva-app.onrender.com/chat", {
+                // API Request updated to safely call Vercel Backend Proxy
+                const res = await fetch("https://eduva-app.vercel.app/api/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: userContent })
