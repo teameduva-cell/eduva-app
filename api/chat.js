@@ -1,6 +1,7 @@
 const Groq = require("groq-sdk");
 
 module.exports = async function handler(req, res) {
+  res.setHeader("Content-Type", "application/json; charset=utf-8");
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
@@ -11,72 +12,99 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== "POST") {
     return res.status(405).json({
+      ok: false,
       error: "Method not allowed. Use POST."
     });
   }
 
   try {
-    const { message, chatHistory = [], context = {} } = req.body || {};
+    const body = req.body || {};
+    const message = typeof body.message === "string" ? body.message.trim() : "";
+    const chatHistory = Array.isArray(body.chatHistory) ? body.chatHistory : [];
+    const context = body.context || {};
 
-    if (!message || typeof message !== "string") {
+    if (!message) {
       return res.status(400).json({
+        ok: false,
         error: "Message is required."
       });
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
-
-    if (!apiKey) {
+    if (!process.env.GROQ_API_KEY) {
       return res.status(500).json({
+        ok: false,
         error: "GROQ_API_KEY missing in Vercel Environment Variables."
       });
     }
 
     const groq = new Groq({
-      apiKey: apiKey
+      apiKey: process.env.GROQ_API_KEY
     });
+
+    const safeHistory = chatHistory
+      .filter((item) => {
+        return (
+          item &&
+          typeof item.content === "string" &&
+          ["user", "assistant"].includes(item.role)
+        );
+      })
+      .slice(-8)
+      .map((item) => ({
+        role: item.role,
+        content: item.content
+      }));
 
     const completion = await groq.chat.completions.create({
       model: "openai/gpt-oss-20b",
+      temperature: 0.7,
+      max_tokens: 800,
       messages: [
         {
           role: "system",
           content:
-            "You are EDUVA, a friendly and expert AI teacher for NEET, JEE, and classes 6 to 12. " +
-            "Reply in simple Hindi-English. Explain every academic concept step by step. " +
-            "For Physics, Chemistry and Maths questions, show relevant formulas, units and calculations. " +
-            "For Biology, give NCERT-oriented clear explanations. " +
-            "Use LaTeX math notation where helpful. " +
-            "Student context: " + JSON.stringify(context)
+            "You are EDUVA, an AI tutor for NEET, JEE, and classes 6 to 12. " +
+            "Answer in clear Hindi-English and explain academic topics step by step. " +
+            "For numerical questions, show formula, substitution and final answer. " +
+            "For biology, be NCERT-focused. " +
+            "Use LaTeX only when it helps. " +
+            "Context: " + JSON.stringify(context)
         },
-        ...chatHistory.slice(-8),
+        ...safeHistory,
         {
           role: "user",
-          content: message.trim()
+          content: message
         }
-      ],
-      temperature: 0.7,
-      max_tokens: 800
+      ]
     });
 
-    const answer =
-      completion.choices?.[0]?.message?.content ||
-      "Sorry, abhi answer generate nahi ho saka.";
+    const responseText = completion?.choices?.[0]?.message?.content;
+
+    if (!responseText) {
+      return res.status(502).json({
+        ok: false,
+        error: "Groq returned an empty AI response."
+      });
+    }
 
     return res.status(200).json({
-      response: answer
+      ok: true,
+      response: responseText
     });
   } catch (error) {
-    console.error("EDUVA_GROQ_ERROR:", {
-      message: error.message,
-      status: error.status,
-      code: error.code,
-      type: error.type
+    console.error("EDUVA_CHAT_ERROR", {
+      message: error?.message,
+      status: error?.status,
+      code: error?.code,
+      type: error?.type,
+      groqError: error?.error
     });
 
-    return res.status(error.status || 500).json({
-      error: "AI response generate nahi ho saka.",
-      details: error.message || "Unknown backend error"
+    return res.status(error?.status || 500).json({
+      ok: false,
+      error: "AI proxy request failed.",
+      details: error?.message || "Unknown backend error",
+      code: error?.code || null
     });
   }
 };
