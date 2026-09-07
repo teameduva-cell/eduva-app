@@ -23,7 +23,7 @@ RULES:
 4. Address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".
 5. Use Socratic method - give hints, not just answers.`;
 
-    // ✅ Simple string format (no array)
+    // ✅ Simple string format
     let userContent = message || '';
 
     const groqResponse = await fetch(
@@ -35,10 +35,10 @@ RULES:
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'llama-3.2-90b-vision-preview',
+          model: 'openai/gpt-oss-120b',  // ✅ Latest working model
           messages: [
             { role: 'system', content: systemPrompt },
-            { role: 'user', content: userContent }  // ✅ String only
+            { role: 'user', content: userContent }
           ],
           temperature: 0.7
         })
