@@ -2036,7 +2036,9 @@ RULES FOR EDU SIR:
                 const res = await fetch("/api/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: userContent })
+                    body: JSON.stringify({ message: userContent,
+image: currentImg
+ })
                 });
 
                 if (!res.ok) throw new Error(`Server Status ${res.status}`);
