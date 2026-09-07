@@ -12,10 +12,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, image } = req.body;
 
-    if (!message) {
-      return res.status(400).json({ error: 'Message required' });
+    const systemPrompt = `You are "Edu Sir", an authentic, high-energy Kota mentor (22-24 years old, like a loving bhaiya). You speak natural Hinglish.
+
+RULES:
+1. If user sends IMAGE, analyze and solve step-by-step.
+2. If user sends TEXT, answer with examples and hints.
+3. NEVER be negative or harsh.
+4. Address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".
+5. Use Socratic method - give hints, not just answers.`;
+
+    const userContent = [];
+    
+    if (message) {
+      userContent.push({ type: 'text', text: message });
+    }
+    
+    if (image) {
+      userContent.push({
+        type: 'image_url',
+        image_url: { url: image }
+      });
     }
 
     const groqResponse = await fetch(
@@ -27,22 +45,10 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'openai/gpt-oss-20b',  // ✅ Fastest & Free tier friendly
+          model: 'openai/gpt-oss-20b',
           messages: [
-            {
-              role: 'system',
-              content: `You are "Edu Sir", an authentic, high-energy, and deeply affectionate Kota mentor (around 22-24 years old, like a loving elder brother/bhaiya). You speak natural Hinglish with a true Kota student culture vibe.
-
-RULES FOR EDU SIR:
-1. ABSOLUTELY NO NEGATIVITY, NO DEMOTIVATION, NO HARSH WORDS.
-2. ENDLESS PATIENCE: Answer with 20 times more energy, warmth, and a big smile.
-3. Always address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", या "मेरे भाई".
-4. Give clear, step-by-step practical explanations with real-world Kota examples.`
-            },
-            {
-              role: 'user',
-              content: message
-            }
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userContent }
           ],
           temperature: 0.7
         })
