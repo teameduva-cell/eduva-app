@@ -2,11 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- OCR Library - Tesseract.js -->
-    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EDUVA - Kota Smart Learning Hub</title>
 
     <!-- Tailwind CSS & Lucide Icons -->
@@ -1243,8 +1239,7 @@
             const paragraphs = text.split('\n');
             const lines = [];
 
-       
-            paragraphs.forEach((para) => {
+       paragraphs.forEach((para) => {
                 if (para.trim() === '') {
                     lines.push(''); // खाली लाइन = पैराग्राफ गैप
                     return;
@@ -1751,23 +1746,7 @@
                 directBtn.className = "px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition";
             }
         }
-    // ================= OCR: Extract Text from Image =================
-    async function extractTextFromImage(imageBase64) {
-      try {
-        const { data: { text } } = await Tesseract.recognize(
-          imageBase64,
-          'hi+en',
-          { logger: m => console.log('OCR Progress:', m) }
-        );
-        return text.trim();
-      } catch (error) {
-        console.error('OCR Error:', error);
-        return 'Could not extract text from image.';
-      }
-    }
-    // ================= OCR Function Ends =================
 
-    function speakText(text) {
         function speakText(text) {
             if ('speechSynthesis' in window) {
                 window.speechSynthesis.cancel();
@@ -2002,30 +1981,10 @@ RULES FOR EDU SIR:
         }
 
         async function sendDoubt() {
-    const input = document.getElementById('chat-input');
-    let text = input.value.trim();
-    
-    // OCR: Agar image hai aur text nahi hai
-    if (base64Image && !text) {
-      const loadingId = 'ocr-loading-' + Date.now();
-      const container = document.getElementById('chat-messages');
-      
-      container.innerHTML += `
-        <div id="${loadingId}" class="flex items-start space-x-3">
-          <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">📸</div>
-          <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium">
-            🔄 Extracting text from image... (OCR)
-          </div>
-        </div>
-      `;
-      container.scrollTop = container.scrollHeight;
-      
-      text = await extractTextFromImage(base64Image);
-      document.getElementById(loadingId).remove();
-      input.value = text;
-    }
-    
-    if (!text && !base64Image) return;
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text && !base64Image) return;
+
             lastUserQuestion = text;
             const container = document.getElementById('chat-messages');
             container.innerHTML += `
@@ -2076,9 +2035,7 @@ RULES FOR EDU SIR:
                 const res = await fetch("/api/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ message: userContent,
-image: currentImg
- })
+                    body: JSON.stringify({ message: userContent })
                 });
 
                 if (!res.ok) throw new Error(`Server Status ${res.status}`);
