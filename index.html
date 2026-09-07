@@ -305,7 +305,8 @@
                 <!-- SEARCH BAR -->
                 <div class="card-clean rounded-2xl p-3 flex items-center gap-3 bg-white border border-slate-200 transition shadow-xs">
                     <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
-                    <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
+                    <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { const q = this.value; switchTab('chat'); document.getElementById('chat-input').value = q; sendDoubt(); }">
+ class="flex-1 bg-transparent text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
                     <button onclick="switchTab('chat')" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer">
                         <i data-lucide="mic" class="w-4 h-4"></i>
                     </button>
