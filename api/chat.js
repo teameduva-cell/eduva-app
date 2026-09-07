@@ -1,7 +1,7 @@
 const Groq = require("groq-sdk");
 
 module.exports = async function handler(req, res) {
-  // CORS Headers ताकी कहीं से भी ब्लॉक न हो
+  // CORS Headers ताकी कहीं से भी रिक्वेस्ट ब्लॉक न हो
   res.setHeader('Access-Control-Allow-Credentials', true);
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
@@ -33,7 +33,7 @@ module.exports = async function handler(req, res) {
     const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.1-8b-instant",
+      model: "llama-3.3-70b-versatile",
       messages: [
         { role: "system", content: "You are EDUVA, a helpful AI tutor for students." },
         { role: "user", content: message }
@@ -44,12 +44,10 @@ module.exports = async function handler(req, res) {
     return res.status(200).json({ response: reply });
 
   } catch (err) {
-    // यह खुद एरर को रीड करके उसका कच्चा-चिट्ठा बाहर निकाल देगा
     console.error("Auto-Caught Server Error:", err);
     return res.status(500).json({ 
       error: "AI Generation Failed", 
-      details: err.message,
-      stack: err.stack 
+      details: err.message 
     });
   }
 };
