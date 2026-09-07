@@ -45,7 +45,7 @@ RULES:
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'openai/gpt-oss-20b',
+          model: 'llama-3.2-90b-vision-preview',  // ✅ Vision model
           messages: [
             { role: 'system', content: systemPrompt },
             { role: 'user', content: userContent }
