@@ -27,7 +27,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'llama-3.3-70b-versatile',  // ✅ Latest working model
+          model: 'openai/gpt-oss-20b',  // ✅ Fastest & Free tier friendly
           messages: [
             {
               role: 'system',
