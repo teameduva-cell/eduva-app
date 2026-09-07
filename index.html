@@ -2032,7 +2032,7 @@ RULES FOR EDU SIR:
                 conversationHistory.push(messagePayload);
 
                 // API Request updated to safely call Vercel Backend Proxy
-                const res = await fetch("https://eduva-app.vercel.app/chat", {
+                const res = await fetch("https://eduva-app.vercel.app/api/chat", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ message: userContent })
