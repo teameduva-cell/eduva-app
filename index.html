@@ -2108,7 +2108,186 @@ RULES FOR EDU SIR:
                 localStorage.removeItem(EDUVA_MEMORY_KEY);
                 updateMemoryDashboard();
             }
+        }    <script>
+        lucide.createIcons();
+        let base64Image = null;
+        let lastUserQuestion = "";
+        let currentStudentGoal = "Eduva Medicos";
+        let currentTeachingMode = "direct";
+        let userStreakCount = 12;
+        let navigationHistory = ['home'];
+
+        // DLP Security Guardrails
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+        document.addEventListener('dragstart', event => event.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if ((e.ctrlKey || e.metaKey) && ['s', 'p', 'c', 'u', 'x', 'a'].includes(k)) {
+                e.preventDefault();
+                alert("⚠️ सुरक्षा कारणों से EDUVA पर यह एक्शन प्रतिबंधित है!");
+            }
+        });
+
+        function openLoginModal() { document.getElementById('login-modal').classList.remove('hidden'); }
+        function closeLoginModal() { document.getElementById('login-modal').classList.add('hidden'); }
+
+        function submitLogin() {
+            const val = document.getElementById('login-input-val').value.trim();
+            if (!val) { alert("कृपया अपना मोबाइल नंबर या ईमेल दर्ज करें!"); return; }
+            alert("✅ लॉगिन सफल! स्वागत है चैंपियन।");
+            closeLoginModal();
         }
+
+        // Navigation Management
+        function goBack() {
+            if (navigationHistory.length > 1) {
+                navigationHistory.pop();
+                switchTab(navigationHistory[navigationHistory.length - 1], true);
+            } else { switchTab('home', true); }
+        }
+
+        function switchTab(tabId, isBackAction = false) {
+            if (!isBackAction && navigationHistory[navigationHistory.length - 1] !== tabId) navigationHistory.push(tabId);
+            ['home', 'chat', 'courses', 'motivation', 'counseling', 'learning', 'profile', 'vault', 'community', 'faq', 'avatar-lectures', 'classroom', 'mocktest', 'flashcards', 'memory'].forEach(t => {
+                const el = document.getElementById(`view-${t}`); if (el) el.classList.add('hidden');
+            });
+            const activeEl = document.getElementById(`view-${tabId}`); if (activeEl) activeEl.classList.remove('hidden');
+            if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
+            if (tabId === 'vault') loadVaultItems();
+            if (tabId === 'community') loadCommunityDoubts();
+            if (tabId === 'memory') updateMemoryDashboard();
+        }
+
+        function setTeachingMode(mode) {
+            currentTeachingMode = mode;
+            const directBtn = document.getElementById('mode-direct-btn');
+            const socraticBtn = document.getElementById('mode-socratic-btn');
+            if(directBtn && socraticBtn) {
+                directBtn.className = mode === 'direct' ? "px-3 py-1.5 rounded-lg ink-navy text-white cursor-pointer" : "px-3 py-1.5 rounded-lg text-slate-700 cursor-pointer";
+                socraticBtn.className = mode === 'socratic' ? "px-3 py-1.5 rounded-lg bg-emerald-600 text-white cursor-pointer" : "px-3 py-1.5 rounded-lg text-slate-700 cursor-pointer";
+            }
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'hi-IN'; window.speechSynthesis.speak(utterance);
+            }
+        }
+
+        function updateStudentGoal(goal) {
+            currentStudentGoal = goal;
+            const greet = document.getElementById('sidebar-greeting-title');
+            if(greet) greet.innerText = goal === "Eduva Medicos" ? "Hello Future Doctor!" : "Hello Champion!";
+        }
+
+        function handleImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => { base64Image = e.target.result; document.getElementById('image-preview-container').classList.remove('hidden'); };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function removeImage() { base64Image = null; document.getElementById('image-preview-container').classList.add('hidden'); document.getElementById('file-input').value = ""; }
+
+        // --- MAIN CHAT & AI PROXY FUNCTION ---
+        async function sendDoubt() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text && !base64Image) return;
+
+            lastUserQuestion = text;
+            const container = document.getElementById('chat-messages');
+            container.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="ink-navy text-white p-4 rounded-3xl rounded-tr-sm text-sm shadow-md max-w-[85%] font-medium">
+                        ${base64Image ? '<span class="block text-xs text-white/80 font-bold mb-1">📷 [Photo Attached]</span>' : ''}
+                        ${text}
+                    </div>
+                </div>
+            `;
+            input.value = ""; const currentImg = base64Image; removeImage(); container.scrollTop = container.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            container.innerHTML += `
+                <div id="${loadingId}" class="flex items-start space-x-3">
+                    <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">ES</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm text-slate-700 font-medium">Edu Sir कोटा वाले अंदाज़ में समझा रहे हैं...</div>
+                </div>
+            `;
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                let modeInstruction = currentTeachingMode === 'socratic'
+                    ? "[Instruction: Use Socratic/Hint mode. Give a helpful hint, ask guiding questions.]"
+                    : "[Instruction: Use Direct Mode. Give a clear, step-by-step practical explanation.]";
+
+                let userContent = `${modeInstruction} [Goal: ${currentStudentGoal}] ` + (text || "प्रश्न हल करें।");
+                
+                // Absolute clean relative path request to Vercel Serverless Backend
+                const res = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userContent })
+                });
+
+                if (!res.ok) throw new Error(`Server Status ${res.status}`);
+                const data = await res.json();
+                if (!data.response) throw new Error("Invalid response from server.");
+
+                let reply = data.response.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+                document.getElementById(loadingId).remove();
+
+                const messageId = 'msg-' + Date.now();
+                container.innerHTML += `
+                    <div class="flex items-start space-x-3 max-w-3xl">
+                        <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">ES</div>
+                        <div class="space-y-3 w-full">
+                            <div id="${messageId}" class="bg-white border border-slate-200 chat-bubble p-5 rounded-3xl rounded-tl-sm text-base text-slate-900 shadow-xs leading-relaxed">
+                                ${marked.parse(reply)}
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 flex-wrap">
+                                <button onclick="alert('धन्यवाद!')" class="px-3 py-1.5 bg-slate-100 text-slate-700 font-bold text-xs rounded-lg">👍 Helpful</button>
+                                <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 bg-amber-50 text-amber-800 font-bold text-xs rounded-lg">🔥 Save to Vault</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.scrollTop = container.scrollHeight;
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border">⚠️ Error: ${err.message}.</div>`;
+            }
+        }
+
+        function bookmarkCurrentChat() {
+            let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+            vault.push({ text: lastUserQuestion || "महत्वपूर्ण डाउट", date: new Date().toLocaleDateString('hi-IN') });
+            localStorage.setItem('eduva_vault', JSON.stringify(vault));
+            alert("📌 Formula Vault में सेव हो गया!");
+        }
+
+        function loadVaultItems() {
+            let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+            let container = document.getElementById('vault-items-container');
+            if (!container) return;
+            if (vault.length === 0) { container.innerHTML = `<p class="text-sm text-gray-400 text-center py-6">आपका वॉल्ट अभी खाली है।</p>`; return; }
+            container.innerHTML = vault.map((item, idx) => `
+                <div class="glass-card rounded-xl p-4 flex items-center justify-between text-sm">
+                    <div><p class="font-bold">${item.text}</p><span class="text-xs text-gray-400">${item.date}</span></div>
+                    <button onclick="let v = JSON.parse(localStorage.getItem('eduva_vault')); v.splice(${idx},1); localStorage.setItem('eduva_vault', JSON.stringify(v)); loadVaultItems();" class="text-rose-500 font-bold">हटाएं</button>
+                </div>
+            `).join('');
+        }
+
+        function updateMemoryDashboard() {}
+    </script>
+
     </script>
 </body>
 </html>
