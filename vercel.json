@@ -2,7 +2,7 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "builds": [
     {
-      "src": "api/index.js",
+      "src": "api/chat.js",
       "use": "@vercel/node"
     },
     {
@@ -12,8 +12,8 @@
   ],
   "routes": [
     {
-      "src": "/chat",
-      "dest": "/api/index.js"
+      "src": "/api/chat",
+      "dest": "/api/chat.js"
     },
     {
       "src": "/(.*)",
