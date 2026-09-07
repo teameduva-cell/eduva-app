@@ -1,15 +1,12 @@
 export default async function handler(req, res) {
-  // CORS headers for production
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-  // OPTIONS request handle (CORS preflight)
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // POST request only
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -30,7 +27,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'llama-3.1-8b-instant',
+          model: 'llama-3.1-70b-versatile',  // ✅ Updated model
           messages: [
             {
               role: 'system',
