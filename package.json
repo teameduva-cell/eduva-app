@@ -1,7 +1,5 @@
 {
-  "name": "eduva-app",
-  "version": "1.0.0",
   "dependencies": {
-    "groq-sdk": "latest"
+    "groq-sdk": "^0.9.0"
   }
 }
