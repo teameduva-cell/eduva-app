@@ -2002,10 +2002,30 @@ RULES FOR EDU SIR:
         }
 
         async function sendDoubt() {
-            const input = document.getElementById('chat-input');
-            const text = input.value.trim();
-            if (!text && !base64Image) return;
-
+    const input = document.getElementById('chat-input');
+    let text = input.value.trim();
+    
+    // OCR: Agar image hai aur text nahi hai
+    if (base64Image && !text) {
+      const loadingId = 'ocr-loading-' + Date.now();
+      const container = document.getElementById('chat-messages');
+      
+      container.innerHTML += `
+        <div id="${loadingId}" class="flex items-start space-x-3">
+          <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">📸</div>
+          <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium">
+            🔄 Extracting text from image... (OCR)
+          </div>
+        </div>
+      `;
+      container.scrollTop = container.scrollHeight;
+      
+      text = await extractTextFromImage(base64Image);
+      document.getElementById(loadingId).remove();
+      input.value = text;
+    }
+    
+    if (!text && !base64Image) return;
             lastUserQuestion = text;
             const container = document.getElementById('chat-messages');
             container.innerHTML += `
