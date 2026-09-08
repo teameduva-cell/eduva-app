@@ -26,7 +26,109 @@
     <!-- Handwriting Font for Notes Generator -->
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* DLP & Content Security: No download, no screenshot assistance, no text copying */
+        .secure-content {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .bg-paper { background-color: #f7f8fc; }
+        .card-clean {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+        }
+        .card-clean:hover { border-color: #CBD5E1; }
+
+        .ink-navy { background-color: #0F172A; color: #F8FAFC; }
+        .marigold-gradient { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+
+        /* New Premium Logo Design */
+        .logo-brand-box {
+            background: linear-gradient(135deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-custom {
+            height: 72px;
+            background: linear-gradient(135deg, #0F172A, #1E293B, #2563EB);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(20, 30, 120, .18);
+        }
+
+        .hero-custom {
+            border-radius: 26px;
+            overflow: hidden;
+            background: radial-gradient(circle at 80% 20%, rgba(116,88,255,.45), transparent 35%), linear-gradient(135deg, #11176f, #2528ad, #4b2ae5);
+            color: white;
+            min-height: 350px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(36,52,216,.22);
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chat-bubble { font-size: 15.5px !important; line-height: 1.8 !important; }
+        .chat-bubble p { margin-bottom: 0.75rem; }
+        .chat-bubble p:last-child { margin-bottom: 0; }
+        .chat-bubble ul, .chat-bubble ol { margin-left: 1.25rem; margin-bottom: 0.75rem; list-style-type: disc; }
+        .chat-bubble strong { color: #0F172A; font-weight: 800; }
+        .katex-display { margin: 0.75rem 0 !important; overflow-x: auto; overflow-y: hidden; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Clean Arrow-Only Back Button */
+        .eduva-back-btn {
+            display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px;
+            background: #fff; border: 1px solid #E2E8F0; color: #475569; font-size: 1.1rem; font-weight: 900;
+            box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.35); cursor: pointer; transition: 0.18s ease;
+        }
+        .eduva-back-btn:hover { color: #2563EB; border-color: #BFDBFE; transform: translateX(-2px); }
+
+        /* ===== Handwritten Notes Generator (Modal) ===== */
+        #notes-modal textarea#notesText {
+            width: 100%;
+            height: 110px;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            resize: vertical;
+        }
+        #notes-modal .notes-canvas-wrap {
+            max-width: 100%;
+            max-height: 55vh;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+        }
+        #notes-modal canvas#notesCanvas {
+            max-width: 100%;
+            display: block;
+        }
+    </style>
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
@@ -1063,17 +1165,950 @@
         </div>
     </nav>
 
+    <script>
+        lucide.createIcons();
+        let base64Image = null;
+        let lastUserQuestion = "";
+        let currentStudentGoal = "Eduva Medicos";
+        let currentTeachingMode = "direct";
+        let userStreakCount = 12;
 
-    <script src="js/core.js"></script>
-    <script src="js/notes-generator.js"></script>
-    <script src="js/avatar-lectures.js"></script>
-    <script src="js/community-chat-reactions.js"></script>
-    <script src="js/flashcards.js"></script>
-    <script src="js/mocktest.js"></script>
-    <script src="js/vault.js"></script>
-    <script src="js/chat-engine.js"></script>
-    <script src="js/navigation-classroom.js"></script>
-    <script src="js/memory.js"></script>
-    <script>lucide.createIcons();</script>
+        // Navigation History Stack for Back Button support
+        let navigationHistory = ['home'];
+
+        // --- DLP & Content Security Guardrails Fixed (Right-click & shortcuts blocked) ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+        document.addEventListener('dragstart', event => event.preventDefault());
+
+        document.addEventListener('keydown', (e) => {
+            const k = e.key.toLowerCase();
+            if ((e.ctrlKey || e.metaKey) && ['s', 'p', 'c', 'u', 'x', 'a'].includes(k)) {
+                e.preventDefault();
+                alert("⚠️ सुरक्षा कारणों से EDUVA पर यह एक्शन प्रतिबंधित है। सभी मॉड्यूल्स केवल ऐप के अंदर पढ़ने के लिए सुरक्षित हैं!");
+            }
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['i', 'j', 'c'].includes(k))) {
+                e.preventDefault();
+                alert("⚠️ Developer tools are disabled under DLP Security Policy.");
+            }
+        });
+
+        // Login Modal Handlers
+        function openLoginModal() {
+            document.getElementById('login-modal').classList.remove('hidden');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('login-modal').classList.add('hidden');
+        }
+
+        function submitLogin() {
+            const val = document.getElementById('login-input-val').value.trim();
+            if (!val) { alert("कृपया अपना मोबाइल नंबर या ईमेल दर्ज करें!"); return; }
+            alert("✅ लॉगिन सफल! आपका स्वागत है चैंपियन।");
+            closeLoginModal();
+        }
+
+        /* ================= HANDWRITTEN NOTES GENERATOR ================= */
+        const NOTES_CANVAS_WIDTH = 800;
+        const NOTES_LEFT_MARGIN_X = 100;
+        const NOTES_RIGHT_PADDING = 40;
+        const NOTES_TOP_START_Y = 60;
+        const NOTES_LINE_HEIGHT = 40;
+        const NOTES_BOTTOM_PADDING = 40;
+        const NOTES_FONT_SIZE = 28;
+        const NOTES_FONT = `${NOTES_FONT_SIZE}px "Kalam", cursive`;
+
+        function openNotesModal(prefillText) {
+            document.getElementById('notes-modal').classList.remove('hidden');
+            const textarea = document.getElementById('notesText');
+            if (prefillText) textarea.value = prefillText;
+            document.fonts.load(NOTES_FONT).then(() => {
+                generateNotes();
+            });
+        }
+
+        function closeNotesModal() {
+            document.getElementById('notes-modal').classList.add('hidden');
+        }
+
+        // टेक्स्ट को \n पर पैराग्राफ में तोड़ो, फिर हर पैराग्राफ को word-wrap करो
+        function wrapNotesText(ctx, text, maxWidth) {
+            const paragraphs = text.split('\n');
+            const lines = [];
+
+       paragraphs.forEach((para) => {
+                if (para.trim() === '') {
+                    lines.push(''); // खाली लाइन = पैराग्राफ गैप
+                    return;
+                }
+                const words = para.split(' ');
+                let line = '';
+
+                for (let n = 0; n < words.length; n++) {
+                    const testLine = line + words[n] + ' ';
+                    const testWidth = ctx.measureText(testLine).width;
+
+                    if (testWidth > maxWidth && line !== '') {
+                        lines.push(line.trim());
+                        line = words[n] + ' ';
+                    } else {
+                        line = testLine;
+                    }
+                }
+                lines.push(line.trim());
+            });
+
+            return lines;
+        }
+
+        function generateNotes() {
+            const canvas = document.getElementById('notesCanvas');
+            const ctx = canvas.getContext('2d');
+            const text = document.getElementById('notesText').value;
+            const naturalTilt = document.getElementById('naturalTilt').checked;
+
+            const maxWidth = NOTES_CANVAS_WIDTH - NOTES_LEFT_MARGIN_X - NOTES_RIGHT_PADDING;
+
+            // पहले फॉन्ट सेट करो ताकि measureText सही चले
+            ctx.font = NOTES_FONT;
+            const lines = wrapNotesText(ctx, text, maxWidth);
+
+            // ज़रूरी height calculate करो (dynamic canvas size)
+            const neededHeight = NOTES_TOP_START_Y + (lines.length * NOTES_LINE_HEIGHT) + NOTES_BOTTOM_PADDING;
+            canvas.height = Math.max(1000, neededHeight);
+
+            // canvas height बदलने के बाद font फिर से सेट करना पड़ता है
+            ctx.font = NOTES_FONT;
+
+            drawNotesPaperBackground(ctx, canvas);
+            drawNotesRuledLines(ctx, canvas);
+
+            ctx.fillStyle = '#1e3a8a'; // पेन की नीली स्याही का रंग
+
+            let y = NOTES_TOP_START_Y - 8;
+
+            lines.forEach((line) => {
+                if (line === '') {
+                    y += NOTES_LINE_HEIGHT;
+                    return;
+                }
+
+                ctx.save();
+
+                if (naturalTilt) {
+                    // हर लाइन पर हल्का सा रैंडम टिल्ट और पोजीशन वेरिएशन
+                    const angle = (Math.random() * 1.6 - 0.8) * (Math.PI / 180); // ±0.8 डिग्री
+                    const yJitter = Math.random() * 3 - 1.5; // ±1.5px
+                    const xJitter = Math.random() * 2; // 0-2px
+
+                    ctx.translate(NOTES_LEFT_MARGIN_X, y + yJitter);
+                    ctx.rotate(angle);
+                    ctx.fillText(line, xJitter, 0);
+                } else {
+                    ctx.fillText(line, NOTES_LEFT_MARGIN_X, y);
+                }
+
+                ctx.restore();
+                y += NOTES_LINE_HEIGHT;
+            });
+        }
+
+        function drawNotesPaperBackground(ctx, canvas) {
+            ctx.fillStyle = '#fdfbf7';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        function drawNotesRuledLines(ctx, canvas) {
+            // नीली क्षैतिज लाइनें
+            ctx.strokeStyle = '#93c5fd';
+            ctx.lineWidth = 1;
+            for (let y = NOTES_TOP_START_Y; y < canvas.height; y += NOTES_LINE_HEIGHT) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // लाल मार्जिन लाइन (वर्टिकल)
+            ctx.strokeStyle = '#f87171';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(80, 0);
+            ctx.lineTo(80, canvas.height);
+            ctx.stroke();
+        }
+
+        function downloadNotes() {
+            const canvas = document.getElementById('notesCanvas');
+            const link = document.createElement('a');
+            link.download = 'eduva-notes-' + Date.now() + '.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        /* ================= END HANDWRITTEN NOTES GENERATOR ================= */
+
+        // --- FULLY FUNCTIONAL AI AVATAR SPEECH & LECTURE ENGINE ---
+        let currentAvatarTopic = "Physics: Motion in a Straight Line";
+        let avatarSteps = [
+            "चैंपियन, आज हम सीखेंगे कि गति के समीकरण को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!",
+            "स्टेप 1: वेलोसिटी-टाइम ग्राफ बनाएं जहाँ इनिशियल वेलोसिटी u है।",
+            "स्टेप 2: ग्राफ का स्लोप हमें एक्सीलरेशन देता है।",
+            "स्टेप 3: v = u + at प्रूफ हो गया!"
+        ];
+        let currentAvatarStepIdx = 0;
+
+        function pickEduSirVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            const voices = window.speechSynthesis.getVoices() || [];
+            const hindi = voices.filter(v => /^hi(-|_)?IN/i.test(v.lang) || /hindi/i.test(v.name));
+            return hindi.length ? hindi[0] : voices[0] || null;
+        }
+
+        function loadAvatarLecture(title, stepsArray) {
+            currentAvatarTopic = title;
+            avatarSteps = stepsArray;
+            currentAvatarStepIdx = 0;
+            stopLecture();
+            document.getElementById('avatar-lecture-title').innerText = title;
+            document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[0]}"`;
+            updateAvatarUI();
+        }
+
+        function updateAvatarUI() {
+            const total = avatarSteps.length;
+            const current = currentAvatarStepIdx + 1;
+            document.getElementById('avatar-step-counter').innerText = `Step ${current} / ${total}`;
+            const pct = (current / total) * 100;
+            document.getElementById('avatar-progress-bar').style.width = `${pct}%`;
+
+            const completionBox = document.getElementById('avatar-completion-box');
+            if (currentAvatarStepIdx >= avatarSteps.length - 1) {
+                completionBox.classList.remove('hidden');
+            } else {
+                completionBox.classList.add('hidden');
+            }
+        }
+
+        function speakLectureStep() {
+            if (!('speechSynthesis' in window)) {
+                alert("आपका ब्राउज़र वॉइस स्पीच सपोर्ट नहीं करता है।");
+                return;
+            }
+            window.speechSynthesis.cancel();
+            const text = avatarSteps[currentAvatarStepIdx];
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.95;
+            utterance.pitch = 1.0;
+
+            const voice = pickEduSirVoice();
+            if (voice) utterance.voice = voice;
+
+            utterance.onstart = () => {
+                const icon = document.getElementById('avatar-speaker-icon');
+                if (icon) icon.classList.add('scale-110', 'bg-rose-600/50');
+            };
+            utterance.onend = () => {
+                const icon = document.getElementById('avatar-speaker-icon');
+                if (icon) icon.classList.remove('scale-110', 'bg-rose-600/50');
+            };
+
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function pauseLecture() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.pause();
+            }
+        }
+
+        function resumeLecture() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.resume();
+            }
+        }
+
+        function stopLecture() {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+            }
+            const icon = document.getElementById('avatar-speaker-icon');
+            if (icon) icon.classList.remove('scale-110', 'bg-rose-600/50');
+        }
+
+        function nextLectureStep() {
+            stopLecture();
+            if (currentAvatarStepIdx < avatarSteps.length - 1) {
+                currentAvatarStepIdx++;
+                document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+                updateAvatarUI();
+                speakLectureStep();
+            }
+        }
+
+        function prevLectureStep() {
+            stopLecture();
+            if (currentAvatarStepIdx > 0) {
+                currentAvatarStepIdx--;
+                document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+                updateAvatarUI();
+                speakLectureStep();
+            }
+        }
+
+        function repeatLectureSimpler() {
+            stopLecture();
+            avatarSteps.push("कोटा वाले अंदाज़ में दोबारा समझें: इसे आसान बनाने के लिए हम इसका एक और प्रैक्टिकल उदाहरण देखते हैं।");
+            currentAvatarStepIdx = avatarSteps.length - 1;
+            document.getElementById('avatar-lecture-step').innerText = `"${avatarSteps[currentAvatarStepIdx]}"`;
+            updateAvatarUI();
+            speakLectureStep();
+        }
+
+        function understoodYes() {
+            stopLecture();
+            alert("🌟 बहुत बढ़िया! आपका कॉन्सेप्ट पक्का हो गया है।");
+            switchTab('home');
+        }
+
+        function toggleAvatarPlay() {
+            if ('speechSynthesis' in window && window.speechSynthesis.speaking) {
+                if (window.speechSynthesis.paused) resumeLecture();
+                else pauseLecture();
+            } else {
+                speakLectureStep();
+            }
+        }
+
+        function askEduSirAboutLecture() {
+            stopLecture();
+            switchTab('chat');
+            setPromptSuggestion(`Edu Sir, मैं अभी AI Lecture में "${currentAvatarTopic}" पढ़ रहा था। मुझे इसके इस स्टेप में थोड़ा डाउट है, इसे आसान भाषा में समझाओ: "${avatarSteps[currentAvatarStepIdx]}"`);
+            sendDoubt();
+        }
+
+        // --- COMMUNITY DOUBT POOL LOGIC ---
+        let communityDoubts = [
+            { id: 1, author: "राहुल (Kota Student)", doubt: "क्लास 12 इलेक्ट्रोस्टैटिक्स में गाउस लॉ (Gauss's Law) सिर्फ बंद सतह के लिए ही क्यों लागू होता है, खुले पृष्ठ के लिए क्यों नहीं?", answers: [{ text: "भैया, गाउस लॉ सिमेट्रिक क्लोज्ड सरफेस (Gaussian surface) के फ्लक्स को कैलकुलेट करने के लिए बना है ताकि कुल आवेश (Total charge enclosed) आसानी से निकल सके।", verified: true, by: "प्रिया (AIIMS Aspirant)" }] }
+        ];
+
+        function loadCommunityDoubts() {
+            let container = document.getElementById('community-doubts-list');
+            if (!container) return;
+            if (communityDoubts.length === 0) {
+                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-4">अभी कोई डाउट नहीं है। पहला सवाल पूछें!</p>`;
+                return;
+            }
+            container.innerHTML = communityDoubts.map((item, index) => `
+                <div class="p-4 bg-white rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 mono-font">👤 ${item.author}</span>
+                        <span class="text-xs bg-purple-50 text-purple-700 font-bold px-2.5 py-0.5 rounded-full">Active Doubt</span>
+                    </div>
+                    <p class="text-sm sm:text-base font-bold text-slate-900">${item.doubt}</p>
+
+                    <div class="space-y-2 pt-2 border-t border-slate-100">
+                        <p class="text-xs font-black text-slate-400 mono-font">साथी छात्रों के उत्तर:</p>
+                        ${item.answers.map((ans, aIdx) => `
+                            <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1.5">
+                                <p class="text-sm sm:text-base text-slate-800 font-medium">${ans.text}</p>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span class="text-slate-500 font-bold">उत्तरदाता: ${ans.by}</span>
+                                    <div>
+                                        ${ans.verified ? '<span class="text-emerald-700 font-black bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-md">✔ Verified by Peer</span>' : `<button onclick="verifyCommunityAnswer(${index}, ${aIdx})" class="px-3.5 py-1.5 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition">सही है (Verify)</button>`}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div class="flex items-center gap-2.5 pt-2">
+                        <input type="text" id="ans-input-${index}" placeholder="इस डाउट का उत्तर लिखें..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-blue-600 font-medium">
+                        <button onclick="submitCommunityAnswer(${index})" class="px-4.5 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition">उत्तर दें</button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function postCommunityDoubt() {
+            const doubtText = document.getElementById('community-new-doubt').value.trim();
+            if (!doubtText) { alert("कृपया अपना डाउट लिखें!"); return; }
+            communityDoubts.unshift({ id: Date.now(), author: "आप (" + currentStudentGoal + ")", doubt: doubtText, answers: [] });
+            document.getElementById('community-new-doubt').value = "";
+            alert("✅ आपका डाउट कम्युनिटी पूल में सफलतापूर्वक पोस्ट हो गया है!");
+            loadCommunityDoubts();
+        }
+
+        function submitCommunityAnswer(dIndex) {
+            const ansText = document.getElementById(`ans-input-${dIndex}`).value.trim();
+            if (!ansText) { alert("कृपया उत्तर लिखें!"); return; }
+            communityDoubts[dIndex].answers.push({ text: ansText, verified: false, by: "आप (Kota Aspirant)" });
+            document.getElementById(`ans-input-${dIndex}`).value = "";
+            alert("🎉 आपका उत्तर पोस्ट हो गया! अन्य छात्र इसे वेरीफाई करेंगे।");
+            loadCommunityDoubts();
+        }
+
+        function verifyCommunityAnswer(dIndex, aIndex) {
+            communityDoubts[dIndex].answers[aIndex].verified = true;
+            userStreakCount += 1;
+            document.getElementById('header-streak-display').innerText = `${userStreakCount} STREAK`;
+            document.getElementById('community-streak-counter').innerText = `मेरे स्ट्रीक्स: ${userStreakCount}`;
+            alert("🌟 शानदार! आपके वेरीफिकेशन से इस उत्तर को अप्रूव कर दिया गया है। आपका स्ट्रीक बढ़ गया है!");
+            loadCommunityDoubts();
+        }
+
+        function sendUnsatisfiedToCommunity() {
+            if (!lastUserQuestion) { alert("कोई पिछला सवाल नहीं मिला जिसे कम्युनिटी में भेजा जाए।"); return; }
+            communityDoubts.unshift({ id: Date.now(), author: "आप (" + currentStudentGoal + ")", doubt: lastUserQuestion, answers: [{ text: "AI का उत्तर संतोषजनक नहीं था, कृपया साथी छात्र इसे आसान भाषा में समझाएं।", verified: false, by: "सिस्टम नोट" }] });
+            switchTab('community');
+            alert("📤 आपका सवाल कम्युनिटी डाउट पूल में भेज दिया गया है!");
+        }
+        // --- END COMMUNITY LOGIC ---
+
+        // --- CHAT REACTION LOGIC ---
+        function handleChatReaction(action, msgId) {
+            if (action === 'up') {
+                alert("👍 धन्यवाद! फीडबैक दर्ज कर लिया गया है।");
+            } else if (action === 'down') {
+                alert("👎 क्षमा करें! यह सवाल कम्युनिटी डाउट पूल में भेजा जा रहा है ताकि साथी छात्र और बेहतर समझा सकें।");
+                sendUnsatisfiedToCommunity();
+            } else if (action === 'op') {
+                alert("🔥 वाह! इस सवाल और उत्तर को आपके Formula Vault में सेव कर लिया गया है!");
+                bookmarkCurrentChat();
+            } else if (action === 'regen') {
+                alert("🔄 उत्तर दोबारा जनरेट किया जा रहा है...");
+                sendDoubt();
+            }
+        }
+        // --- END CHAT REACTION LOGIC ---
+
+        // Flashcards Data & Logic
+        const flashcardsData = [
+            { cat: "PHYSICS • MECHANICS", q: "गति के समीकरण (Equations of Motion)", a: "v = u + at <br> s = ut + 1/2 at² <br> v² = u² + 2as" },
+            { cat: "CHEMISTRY • PHYSICAL", q: "आदर्श गैस समीकरण (Ideal Gas Equation)", a: "PV = nRT <br> जहाँ P=Pressure, V=Volume, n=Moles, R=Gas Constant, T=Temperature" },
+            { cat: "BIOLOGY • GENETICS", q: "मैंडल का स्वतंत्र अपव्यूहन नियम (Law of Independent Assortment)", a: "डाईहाइब्रिड क्रॉस का फिनोटाइपिक अनुपात (Phenotypic Ratio): <br> 9 : 3 : 3 : 1" },
+            { cat: "PHYSICS • ELECTROSTATICS", q: "कूलाॅम का नियम (Coulomb's Law)", a: "F = k * (q₁ * q₂) / r² <br> जहाँ k = 1 / (4πε₀) ≈ 9 × 10⁹ N·m²/C²" },
+            { cat: "CHEMISTRY • ORGANIC", q: "मार्कोनीकॉव नियम (Markovnikov's Rule)", a: "असममित एल्कीन पर HX के योग में, ऋणात्मक भाग (X⁻) उस कार्बन पर जुड़ता है जिस पर हाइड्रोजन परमाणुओं की संख्या कम होती है।" }
+        ];
+        let currentFCIndex = 0, isFCFlipped = false;
+
+        function flipFlashcard() {
+            const contentEl = document.getElementById('fc-content');
+            isFCFlipped = !isFCFlipped;
+            if (isFCFlipped) {
+                contentEl.innerHTML = `<h3 class="text-lg font-bold text-emerald-400">उत्तर / मुख्य सूत्र:</h3><p class="text-base sm:text-lg font-mono text-white leading-relaxed">${flashcardsData[currentFCIndex].a}</p>`;
+            } else {
+                contentEl.innerHTML = `<h3 class="text-xl sm:text-2xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+            }
+        }
+        function nextFlashcard() {
+            currentFCIndex = (currentFCIndex + 1) % flashcardsData.length;
+            isFCFlipped = false;
+            document.getElementById('fc-category').innerText = flashcardsData[currentFCIndex].cat;
+            document.getElementById('fc-counter').innerText = `${currentFCIndex + 1} / ${flashcardsData.length}`;
+            document.getElementById('fc-content').innerHTML = `<h3 class="text-xl sm:text-2xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+        }
+        function prevFlashcard() {
+            currentFCIndex = (currentFCIndex - 1 + flashcardsData.length) % flashcardsData.length;
+            isFCFlipped = false;
+            document.getElementById('fc-category').innerText = flashcardsData[currentFCIndex].cat;
+            document.getElementById('fc-counter').innerText = `${currentFCIndex + 1} / ${flashcardsData.length}`;
+            document.getElementById('fc-content').innerHTML = `<h3 class="text-xl sm:text-2xl font-bold text-amber-300">${flashcardsData[currentFCIndex].q}</h3>`;
+        }
+
+        // Mock Test Engine
+        const mockQuestions = [
+            { q: "1. यदि किसी वस्तु का वेग दोगुना कर दिया जाए, तो उसकी गतिज ऊर्जा (Kinetic Energy) कितनी हो जाएगी?", options: ["दोगुनी (2x)", "चार गुना (4x)", "आधी (1/2)", "अपरिवर्तित"], ans: 1 },
+            { q: "2. मानव शरीर की सबसे बड़ी ग्रंथि (Largest Gland) कौन सी है?", options: ["अग्न्याशय (Pancreas)", "यकृत (Liver)", "थायराइड (Thyroid)", "पीयूष ग्रंथि (Pituitary)"], ans: 1 },
+            { q: "3. ग्लूकोज का अणुसूत्र (Molecular Formula) क्या है?", options: ["C6H12O6", "C12H22O11", "CH3COOH", "C2H5OH"], ans: 0 },
+            { q: "4. निर्वात में प्रकाश की चाल (Speed of Light) कितनी होती है?", options: ["3 × 10^8 m/s", "3 × 10^6 m/s", "3 × 10^10 m/s", "3 × 10^5 m/s"], ans: 0 },
+            { q: "5. आवर्त सारणी में सबसे अधिक विद्युतऋणात्मक (Most Electronegative) तत्व कौन सा है?", options: ["ऑक्सीजन (O)", "क्लोरिन (Cl)", "फ्लोरिन (F)", "नायट्रोजन (N)"], ans: 2 }
+        ];
+        let currentTestQ = 0, userAnswers = {}, testTimerInterval = null;
+
+        function startMockTest() {
+            document.getElementById('test-intro-box').classList.add('hidden');
+            document.getElementById('test-questions-box').classList.remove('hidden');
+            document.getElementById('test-timer-box').classList.remove('hidden');
+            currentTestQ = 0; userAnswers = {};
+            loadTestQuestion();
+
+            let timeLeft = 600;
+            testTimerInterval = setInterval(() => {
+                let m = Math.floor(timeLeft / 60), s = timeLeft % 60;
+                document.getElementById('timer-display').innerText = `00:${m < 10 ? '0'+m : m}:${s < 10 ? '0'+s : s}`;
+                if (timeLeft <= 0) { clearInterval(testTimerInterval); submitMockTest(); }
+                timeLeft--;
+            }, 1000);
+        }
+
+        function loadTestQuestion() {
+            const qData = mockQuestions[currentTestQ];
+            let html = `<p class="font-extrabold text-base sm:text-lg text-slate-900">${qData.q}</p><div class="space-y-3 pt-3">`;
+            qData.options.forEach((opt, idx) => {
+                let isSel = userAnswers[currentTestQ] === idx ? 'bg-blue-50 border-blue-600 text-blue-900 font-bold' : 'bg-slate-50 border-slate-200 text-slate-700';
+                html += `<div onclick="selectTestOption(${currentTestQ}, ${idx})" class="p-4 rounded-2xl border cursor-pointer text-sm sm:text-base transition ${isSel}">${String.fromCharCode(65+idx)}. ${opt}</div>`;
+            });
+            html += `</div>`;
+            document.getElementById('test-question-container').innerHTML = html;
+            document.getElementById('next-test-btn').innerText = currentTestQ === mockQuestions.length - 1 ? "टेस्ट सबमिट करें 🎯" : "अगला प्रश्न";
+        }
+
+        function selectTestOption(qIdx, optIdx) {
+            userAnswers[qIdx] = optIdx;
+            loadTestQuestion();
+        }
+
+        function nextTestQuestion() {
+            if (currentTestQ < mockQuestions.length - 1) {
+                currentTestQ++;
+                loadTestQuestion();
+            } else {
+                submitMockTest();
+            }
+        }
+
+        function submitMockTest() {
+            if (testTimerInterval) clearInterval(testTimerInterval);
+            document.getElementById('test-questions-box').classList.add('hidden');
+            document.getElementById('test-timer-box').classList.add('hidden');
+            document.getElementById('test-result-box').classList.remove('hidden');
+
+            let score = 0, correct = 0, incorrect = 0;
+            mockQuestions.forEach((q, idx) => {
+                if (userAnswers[idx] === q.ans) { score += 4; correct++; }
+                else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; }
+            });
+            document.getElementById('test-score-summary').innerText = `कुल अंक: ${score} / 20 (सही: ${correct}, गलत: ${incorrect})`;
+        }
+
+        function resetMockTest() {
+            document.getElementById('test-result-box').classList.add('hidden');
+            document.getElementById('test-intro-box').classList.remove('hidden');
+        }
+
+        // Vault Bookmarks Logic
+        function bookmarkCurrentChat() {
+            let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+            vault.push({ text: lastUserQuestion || "महत्वपूर्ण फॉर्मूला / डाउट", date: new Date().toLocaleDateString('hi-IN') });
+            localStorage.setItem('eduva_vault', JSON.stringify(vault));
+            alert("📌 सफलताપूर्व आपके पर्सनल वॉल्ट में सेव हो गया!");
+            loadVaultItems();
+        }
+
+        function loadVaultItems() {
+            let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+            let container = document.getElementById('vault-items-container');
+            if (!container) return;
+            if (vault.length === 0) {
+                container.innerHTML = `<p class="text-sm text-slate-400 text-center py-6">आपका वॉल्ट अभी खाली है। चैट से डाउट्स सेव करें!</p>`;
+                return;
+            }
+            container.innerHTML = vault.map((item, idx) => `
+                <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 flex items-center justify-between text-sm">
+                    <div><p class="font-bold text-slate-900">${item.text}</p><span class="text-xs text-slate-400 font-mono">Saved on: ${item.date}</span></div>
+                    <button onclick="removeVaultItem(${idx})" class="text-rose-600 font-bold hover:underline cursor-pointer">हटाएं</button>
+                </div>
+            `).join('');
+        }
+
+        function removeVaultItem(idx) {
+            let vault = JSON.parse(localStorage.getItem('eduva_vault') || '[]');
+            vault.splice(idx, 1);
+            localStorage.setItem('eduva_vault', JSON.stringify(vault));
+            loadVaultItems();
+        }
+
+        function clearVault() {
+            localStorage.removeItem('eduva_vault');
+            loadVaultItems();
+        }
+
+        function giveKotaBoost() {
+            switchTab('chat');
+            setPromptSuggestion("Edu Sir, मैं थोड़ा डीमोटीवेट महसूस कर रहा हूँ। कोटा वाले अंदाज़ में मुझे एक ज़ोरदार मोटिवेशनल बूस्ट दो भाई!");
+            sendDoubt();
+        }
+
+        function setTeachingMode(mode) {
+            currentTeachingMode = mode;
+            const directBtn = document.getElementById('mode-direct-btn');
+            const socraticBtn = document.getElementById('mode-socratic-btn');
+            if (mode === 'direct') {
+                directBtn.className = "px-3 py-1.5 rounded-lg ink-navy text-white transition";
+                socraticBtn.className = "px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition";
+            } else {
+                socraticBtn.className = "px-3 py-1.5 rounded-lg bg-emerald-600 text-white transition";
+                directBtn.className = "px-3 py-1.5 rounded-lg text-slate-700 hover:bg-slate-100 transition";
+            }
+        }
+
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel();
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'hi-IN';
+                utterance.rate = 1.0;
+                utterance.pitch = 1.1;
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert("आपका ब्राउज़र वॉइस स्पीच सपोर्ट नहीं करता है।");
+            }
+        }
+
+        function getGreetingTitle(goal) {
+            if (goal === "Eduva Medicos") return "Hello Future Doctor!";
+            if (goal === "Eduva Builders") return "Hello Future Engineer!";
+            if (goal === "Eduva Scholar") return "Hello Future Scholar!";
+            if (goal === "Eduva Ignite") return "Hello Future Champion!";
+            return "Hello Future Innovator!";
+        }
+
+        function updateStudentGoal(goal) {
+            currentStudentGoal = goal;
+            document.getElementById('sidebar-greeting-title').innerText = getGreetingTitle(goal);
+            document.getElementById('sidebar-batch-label').innerText = goal;
+            document.getElementById('header-batch-select').value = goal;
+
+            const welcomeEl = document.getElementById('chat-welcome-msg');
+            if (welcomeEl) {
+                let titleGreet = getGreetingTitle(goal);
+                welcomeEl.innerHTML = `जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b> (${goal}).<br><b>${titleGreet}</b> चाहे 20 बार पूछ, तेरा भाई हर बार प्यार से समझाएगा!`;
+            }
+        }
+
+        function submitPrivateFeedback() {
+            const message = document.getElementById('fb-message').value.trim();
+            if (!message) { alert("कृपया अपना सुझाव या कमी लिखकर भेजें!"); return; }
+            alert("✅ आपका गुप्त सुझाव सफलतापूर्वक फाउंडर तक पहुँच गया है! धन्यवाद।");
+            document.getElementById('fb-message').value = "";
+            switchTab('home');
+        }
+
+        function generateCustomTimetable() {
+            const wake = document.getElementById('tt-wake').value;
+            const sleep = document.getElementById('tt-sleep').value;
+            const coaching = document.getElementById('tt-coaching').value;
+            const goal = document.getElementById('tt-goal').value;
+
+            switchTab('chat');
+            setPromptSuggestion(`Edu Sir (${currentStudentGoal}), मैं सुबह ${wake} पर उठता हूँ और रात को ${sleep} पर सोता हूँ। मेरी कोचिंग ${coaching} की है और मेरा लक्ष्य "${goal}" है। कोटा हॉस्टल लाइफ के हिसाब से मेरे लिए प्रैक्टिकल टाइम टेबल बनाओ भाई।`);
+            sendDoubt();
+        }
+
+        function startCounselingSession(topic) {
+            switchTab('chat');
+            setPromptSuggestion(`Edu Sir (${currentStudentGoal}), ${topic} कोटा में थोड़ा स्ट्रेस हो रहा है, बड़े भाई की तरह समझाओ ना यार।`);
+            sendDoubt();
+        }
+
+        function sendCustomDoubt(text) {
+            switchTab('chat');
+            setPromptSuggestion(text);
+            sendDoubt();
+        }
+
+        function setPromptSuggestion(text) {
+            document.getElementById('chat-input').value = text;
+            document.getElementById('chat-input').focus();
+        }
+
+        const BASE_SYSTEM_PROMPT = `You are "Edu Sir", an authentic, high-energy, and deeply affectionate Kota mentor (around 22-24 years old, like a loving elder brother/bhaiya). You speak natural Hinglish with a true Kota student culture vibe.
+RULES FOR EDU SIR:
+1. ABSOLUTELY NO NEGATIVITY, NO DEMOTIVATION, NO HARSH WORDS. Never use words like 'gadha', 'nalayak', 'ullu', or any abuse.
+2. ENDLESS PATIENCE: Answer with 20 times more energy, warmth, and a big smile. Never get annoyed.
+3. TEACHING MODES:
+   - DIRECT MODE: Give a clear, step-by-step practical explanation with real-world examples.
+   - SOCRATIC / HINT MODE: Do NOT give the direct answer immediately! Give a helpful hint, ask guiding questions to make the student think, and encourage them step-by-step. Once solved, give 4-5 similar practice questions for revision.
+4. Always address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", या "मेरे भाई".`;
+
+        let conversationHistory = [{ role: "system", content: BASE_SYSTEM_PROMPT }];
+
+        // Stack-based Navigation Handler with Back Button Support
+        function goBack() {
+            if (navigationHistory.length > 1) {
+                navigationHistory.pop();
+                const previousTab = navigationHistory[navigationHistory.length - 1];
+                switchTab(previousTab, true);
+                try { history.pushState({ eduva: true }, '', location.href); } catch (_) {}
+            } else {
+                switchTab('home', true);
+            }
+        }
+
+        function switchTab(tabId, isBackAction = false) {
+            if (!isBackAction && navigationHistory[navigationHistory.length - 1] !== tabId) {
+                navigationHistory.push(tabId);
+                try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
+            }
+
+            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation'].forEach(t => {
+                const el = document.getElementById(`view-${t}`);
+                if (el) el.classList.add('hidden');
+
+                const tabBtn = document.getElementById(`tab-${t}`);
+                if (tabBtn) { tabBtn.classList.remove('text-slate-900', 'font-extrabold'); tabBtn.classList.add('text-slate-500', 'font-bold'); }
+            });
+
+            const activeEl = document.getElementById(`view-${tabId}`);
+            if (activeEl) activeEl.classList.remove('hidden');
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
+            if (activeTab) { activeTab.classList.add('text-slate-900', 'font-extrabold'); activeTab.classList.remove('text-slate-500', 'font-bold'); }
+
+            if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
+            if (tabId === 'vault') loadVaultItems();
+            if (tabId === 'community') loadCommunityDoubts();
+            if (tabId === 'memory') updateMemoryDashboard();
+        }
+
+        // Handle Browser Popstate / Back Button Stack Navigation
+        window.addEventListener('popstate', () => {
+            if (navigationHistory.length > 1) {
+                navigationHistory.pop();
+                const previousTab = navigationHistory[navigationHistory.length - 1];
+                switchTab(previousTab, true);
+            } else {
+                switchTab('home', true);
+            }
+            try { history.pushState({ eduva: true }, '', location.href); } catch (_) {}
+        });
+
+        let canvas, ctx, painting = false;
+        function initWhiteboard() {
+            canvas = document.getElementById('whiteboard');
+            if (!canvas) return;
+            ctx = canvas.getContext('2d');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+
+            canvas.addEventListener('mousedown', () => painting = true);
+            window.addEventListener('mouseup', () => { painting = false; ctx.beginPath(); });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!painting) return;
+                ctx.lineWidth = 3;
+                ctx.strokeStyle = '#38BDF8';
+                const r = canvas.getBoundingClientRect();
+                ctx.lineTo(e.clientX - r.left, e.clientY - r.top);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(e.clientX - r.left, e.clientY - r.top);
+            });
+        }
+        function clearCanvas() { if (ctx && canvas) ctx.clearRect(0, 0, canvas.width, canvas.height); }
+        function setBoardMode(m) {
+            if (m === 'draw') {
+                document.getElementById('board-container-draw').classList.remove('hidden');
+                document.getElementById('board-container-3d').classList.add('hidden');
+                document.getElementById('classroom-3d-selectors').classList.add('hidden');
+                initWhiteboard();
+            } else {
+                document.getElementById('board-container-draw').classList.add('hidden');
+                document.getElementById('board-container-3d').classList.remove('hidden');
+                document.getElementById('classroom-3d-selectors').classList.remove('hidden');
+                init3DClassroom();
+            }
+        }
+
+        let cScene, cCamera, cRenderer, cGroup, is3DInit = false;
+        function init3DClassroom() {
+            const container = document.getElementById('classroom-three-canvas');
+            if (!container || is3DInit) return;
+            cScene = new THREE.Scene();
+            cCamera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+            cCamera.position.z = 7;
+            cRenderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            cRenderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(cRenderer.domElement);
+            cScene.add(new THREE.AmbientLight(0xffffff, 0.9));
+            cGroup = new THREE.Group();
+            cScene.add(cGroup);
+            cGroup.add(new THREE.Mesh(new THREE.TorusKnotGeometry(1.5, 0.45, 100, 16), new THREE.MeshStandardMaterial({ color: 0xEF4444, roughness: 0.3 })));
+
+            function animate() {
+                requestAnimationFrame(animate);
+                cGroup.rotation.y += 0.008;
+                cRenderer.render(cScene, cCamera);
+            }
+            animate();
+            is3DInit = true;
+        }
+
+        function switch3DModel(type) {
+            if (!cGroup) return;
+            while (cGroup.children.length > 0) cGroup.remove(cGroup.children[0]);
+            if (type === 'heart') {
+                cGroup.add(new THREE.Mesh(new THREE.TorusKnotGeometry(1.5, 0.45, 100, 16), new THREE.MeshStandardMaterial({ color: 0xEF4444 })));
+            } else {
+                cGroup.add(new THREE.Mesh(new THREE.SphereGeometry(0.8, 32, 32), new THREE.MeshStandardMaterial({ color: 0xF59E0B })));
+            }
+        }
+
+        function recordVoice() {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SpeechRecognition) return;
+            const r = new SpeechRecognition();
+            r.lang = 'hi-IN';
+            r.onresult = (e) => { document.getElementById('chat-input').value = e.results[0][0].transcript; };
+            r.start();
+        }
+
+        function handleImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    base64Image = e.target.result;
+                    document.getElementById('image-preview-container').classList.remove('hidden');
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        function removeImage() {
+            base64Image = null;
+            document.getElementById('image-preview-container').classList.add('hidden');
+            document.getElementById('file-input').value = "";
+        }
+
+        function renderMathInElementCustom(el) {
+            if (window.renderMathInElement) {
+                renderMathInElement(el, { delimiters: [{left: '$$', right: '$$', display: true}, {left: '$', right: '$', display: false}], throwOnError: false });
+            }
+        }
+
+        async function sendDoubt() {
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text && !base64Image) return;
+
+            lastUserQuestion = text;
+            const container = document.getElementById('chat-messages');
+            container.innerHTML += `
+                <div class="flex justify-end">
+                    <div class="ink-navy text-white p-4 rounded-3xl rounded-tr-sm text-sm sm:text-base shadow-md max-w-[85%] font-medium">
+                        ${base64Image ? '<span class="block text-xs text-white/80 font-bold mb-1">📷 [Photo Attached]</span>' : ''}
+                        ${text}
+                    </div>
+                </div>
+            `;
+
+            input.value = "";
+            const currentImg = base64Image;
+            removeImage();
+            container.scrollTop = container.scrollHeight;
+
+            const loadingId = 'loading-' + Date.now();
+            container.innerHTML += `
+                <div id="${loadingId}" class="flex items-start space-x-3">
+                    <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                    <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium">Edu Sir (${currentStudentGoal}) कोटा वाले अंदाज़ में समझा रहे हैं...</div>
+                </div>
+            `;
+            lucide.createIcons();
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                let modeInstruction = currentTeachingMode === 'socratic'
+                    ? "[Instruction: Use Socratic/Hint mode. Do not give the direct answer immediately. Give a plain hint, ask guiding questions, and prompt the student to think. Once solved, give 4-5 practice questions.]"
+                    : "[Instruction: Use Direct Mode. Give a clear, step-by-step practical explanation with real-world Kota examples.]";
+
+                let userContent = `${modeInstruction} [Student Goal: ${currentStudentGoal}] ` + (text || "कृपया इस प्रश्न को हल करें।");
+
+                let messagePayload;
+                let selectedModel;
+
+                if (currentImg) {
+                    selectedModel = "llama-3.2-11b-vision-preview";
+                    messagePayload = { role: "user", content: [{ type: "text", text: userContent }, { type: "image_url", image_url: { url: currentImg } }] };
+                } else {
+                    selectedModel = "openai/gpt-oss-120b";
+                    messagePayload = { role: "user", content: userContent };
+                }
+
+                conversationHistory.push(messagePayload);
+
+                // API Request — relative URL, always matches same-origin Vercel deployment
+                const res = await fetch("/api/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userContent })
+                });
+
+                if (!res.ok) throw new Error(`Server Status ${res.status}`);
+
+                const data = await res.json();
+
+                if (!data.choices || data.choices.length === 0) {
+                    throw new Error("Invalid response from proxy server.");
+                }
+
+                let reply = data.choices[0].message.content.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+                conversationHistory.push({ role: "assistant", content: reply });
+
+                document.getElementById(loadingId).remove();
+
+                const messageId = 'msg-' + Date.now();
+                const plainTextForSpeech = reply.replace(/[*_#`$]/g, '');
+
+                container.innerHTML += `
+                    <div class="flex items-start space-x-3 max-w-3xl">
+                        <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                        <div class="space-y-3 w-full">
+                            <div id="${messageId}" class="bg-white border border-slate-200 chat-bubble p-5 sm:p-6 rounded-3xl rounded-tl-sm text-base sm:text-lg text-slate-900 shadow-xs leading-relaxed">
+                                ${marked.parse(reply)}
+                            </div>
+                            <div class="flex items-center gap-2 pt-1 flex-wrap">
+                                <button onclick="handleChatReaction('up', '${messageId}')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="thumbs-up" class="w-4 h-4 text-emerald-600"></i> Helpful</button>
+                                <button onclick="handleChatReaction('down', '${messageId}')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="thumbs-down" class="w-4 h-4 text-rose-600"></i> Not Satisfied</button>
+                                <button onclick="handleChatReaction('op', '${messageId}')" class="px-3.5 py-2 bg-amber-50 hover:bg-amber-100 text-amber-800 font-black text-xs rounded-lg transition flex items-center gap-1 border border-amber-200 shadow-2xs"><i data-lucide="zap" class="w-4 h-4"></i> OP 🔥</button>
+                                <button onclick="handleChatReaction('regen', '${messageId}')" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-xs rounded-lg transition flex items-center gap-1 shadow-2xs"><i data-lucide="rotate-cw" class="w-4 h-4 text-blue-600"></i> Regenerate</button>
+                                <button onclick='openNotesModal(document.getElementById("${messageId}").innerText)' class="px-3.5 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-black text-xs rounded-lg transition flex items-center gap-1 border border-indigo-200 shadow-2xs"><i data-lucide="pen-line" class="w-4 h-4"></i> हैंडरिटेन नोट्स 📝</button>
+                            </div>
+                            <button onclick="speakText('${plainTextForSpeech.replace(/'/g, "\\'")}')" class="inline-flex items-center gap-1.5 px-4.5 py-2.5 bg-slate-100 border border-slate-200 text-slate-800 hover:bg-slate-200 font-bold text-xs sm:text-sm rounded-xl transition shadow-2xs mt-1">
+                                <i data-lucide="volume-2" class="w-4 h-4"></i> Edu Sir को बोलकर सुनें
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                renderMathInElementCustom(document.getElementById(messageId));
+                lucide.createIcons();
+                container.scrollTop = container.scrollHeight;
+
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                container.innerHTML += `<div class="text-xs text-red-600 font-bold p-3 bg-red-50 rounded-2xl border border-red-200 mx-2">⚠️ Error: ${err.message}. (ध्यान दें: Render का फ्री सर्वर इनएक्टिव होने पर पहली रिक्वेस्ट पर 30-50 सेकंड ले सकता है, कृपया दोबारा प्रयास करें)।</div>`;
+            }
+        }
+
+        /* ================= EDUVA MEMORY ENGINE ================= */
+        const EDUVA_MEMORY_KEY = "eduva_student_memory_v1";
+        function getEduvaMemory() {
+            try { return JSON.parse(localStorage.getItem(EDUVA_MEMORY_KEY)) || { questions: 0, concepts: [], mistakes: [] }; }
+            catch(e) { return { questions: 0, concepts: [], mistakes: [] }; }
+        }
+        function saveEduvaMemory(m) { localStorage.setItem(EDUVA_MEMORY_KEY, JSON.stringify(m)); }
+        function updateMemoryDashboard() {
+            const m = getEduvaMemory();
+            const q = document.getElementById("mem-questions");
+            const mi = document.getElementById("mem-mistakes");
+            const c = document.getElementById("mem-concepts");
+            const g = document.getElementById("mem-goal");
+            if (q) q.textContent = m.questions || 0;
+            if (mi) mi.textContent = (m.mistakes || []).length;
+            if (c) c.textContent = (m.concepts || []).length;
+            if (g) g.textContent = currentStudentGoal;
+        }
+        function clearEduvaMemory() {
+            if (confirm("क्या आप EDUVA की memory साफ करना चाहते हैं?")) {
+                localStorage.removeItem(EDUVA_MEMORY_KEY);
+                updateMemoryDashboard();
+            }
+        }
+    </script>
 </body>
 </html>
