@@ -1,8 +1,9 @@
 {
   "version": 2,
+  "outputDirectory": "dist",
   "builds": [
-    { "src": "api/*.js", "use": "@vercel/node" },
-    { "src": "**", "use": "@vercel/static" }
+    { "src": "package.json", "use": "@vercel/static-build" },
+    { "src": "api/*.js", "use": "@vercel/node" }
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/$1" },
