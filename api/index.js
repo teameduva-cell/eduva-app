@@ -26,39 +26,51 @@ RULES:
     // ✅ Simple string format
     let userContent = message || '';
 
-    const groqResponse = await fetch(
-      'https://api.groq.com/openai/v1/chat/completions',
+    // === CHANGE: Gemini API ===
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    
+    const geminiResponse = await fetch(
+      'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_API_KEY,
       {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          model: 'openai/gpt-oss-120b',  // ✅ Latest working model
-          messages: [
-            { role: 'system', content: systemPrompt },
-            { role: 'user', content: userContent }
-          ],
-          temperature: 0.7
+          contents: [{
+            parts: [{ text: systemPrompt + '
+
+' + userContent }]
+          }],
+          generationConfig: {
+            maxOutputTokens: 500,
+            temperature: 0.7
+          }
         })
       }
     );
 
-    const data = await groqResponse.json();
+    const data = await geminiResponse.json();
 
-    if (!groqResponse.ok) {
-      console.error('Groq Error:', data);
-      return res.status(groqResponse.status).json({
-        error: data.error?.message || 'Groq API error'
+    if (!geminiResponse.ok) {
+      console.error('Gemini Error:', data);
+      return res.status(geminiResponse.status).json({
+        error: data.error?.message || 'Gemini API error'
       });
     }
+
+    // === CHANGE: Gemini Response Parse ===
+    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content.parts[0].text) {
+      throw new Error('No response from Gemini');
+    }
+
+    const reply = data.candidates[0].content.parts[0].text;
 
     res.status(200).json({
       choices: [
         {
           message: {
-            content: data.choices[0].message.content
+            content: reply
           }
         }
       ]
