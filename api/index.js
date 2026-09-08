@@ -23,10 +23,8 @@ RULES:
 4. Address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".
 5. Use Socratic method - give hints, not just answers.`;
 
-    // ✅ Simple string format
     let userContent = message || '';
 
-    // === CHANGE: Gemini API ===
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     
     const geminiResponse = await fetch(
@@ -59,7 +57,6 @@ RULES:
       });
     }
 
-    // === CHANGE: Gemini Response Parse ===
     if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content.parts[0].text) {
       throw new Error('No response from Gemini');
     }
