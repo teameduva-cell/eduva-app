@@ -1,0 +1,169 @@
+* {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  box-sizing: border-box;
+}
+.mono-font {
+  font-family: "JetBrains Mono", monospace;
+}
+
+/* DLP & Content Security: No download, no screenshot assistance, no text copying */
+.secure-content {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.bg-paper {
+  background-color: #f7f8fc;
+}
+.card-clean {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05),
+    0 8px 10px -6px rgba(15, 23, 42, 0.05);
+}
+.card-clean:hover {
+  border-color: #cbd5e1;
+}
+
+.ink-navy {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+.marigold-gradient {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+/* New Premium Logo Design */
+.logo-brand-box {
+  background: linear-gradient(135deg, #2563eb 0%, #4f46e5 50%, #7c3aed 100%);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.header-custom {
+  height: 72px;
+  background: linear-gradient(135deg, #0f172a, #1e293b, #2563eb);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 5px 20px rgba(20, 30, 120, 0.18);
+}
+
+.hero-custom {
+  border-radius: 26px;
+  overflow: hidden;
+  background: radial-gradient(
+      circle at 80% 20%,
+      rgba(116, 88, 255, 0.45),
+      transparent 35%
+    ),
+    linear-gradient(135deg, #11176f, #2528ad, #4b2ae5);
+  color: white;
+  min-height: 350px;
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 15px 35px rgba(36, 52, 216, 0.22);
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.chat-bubble {
+  font-size: 15.5px !important;
+  line-height: 1.8 !important;
+}
+.chat-bubble p {
+  margin-bottom: 0.75rem;
+}
+.chat-bubble p:last-child {
+  margin-bottom: 0;
+}
+.chat-bubble ul,
+.chat-bubble ol {
+  margin-left: 1.25rem;
+  margin-bottom: 0.75rem;
+  list-style-type: disc;
+}
+.chat-bubble strong {
+  color: #0f172a;
+  font-weight: 800;
+}
+.katex-display {
+  margin: 0.75rem 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fadeIn {
+  animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Clean Arrow-Only Back Button */
+.eduva-back-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 1.1rem;
+  font-weight: 900;
+  box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.35);
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+.eduva-back-btn:hover {
+  color: #2563eb;
+  border-color: #bfdbfe;
+  transform: translateX(-2px);
+}
+
+/* ===== Handwritten Notes Generator (Modal) ===== */
+#notes-modal textarea#notesText {
+  width: 100%;
+  height: 110px;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  resize: vertical;
+}
+#notes-modal .notes-canvas-wrap {
+  max-width: 100%;
+  max-height: 55vh;
+  overflow: auto;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+}
+#notes-modal canvas#notesCanvas {
+  max-width: 100%;
+  display: block;
+}
