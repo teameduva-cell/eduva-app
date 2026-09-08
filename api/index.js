@@ -12,69 +12,33 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { message, image } = req.body;
-
-    const systemPrompt = `You are "Edu Sir", an authentic, high-energy Kota mentor (22-24 years old, like a loving bhaiya). You speak natural Hinglish.
-
-RULES:
-1. If user sends IMAGE, analyze and solve step-by-step.
-2. If user sends TEXT, answer with examples and hints.
-3. NEVER be negative or harsh.
-4. Address them as "चैंपियन", "फ्यूचर डॉक्टर", "फ्यूचर इंजीनियर", or "मेरे भाई".
-5. Use Socratic method - give hints, not just answers.`;
-
-    let userContent = message || '';
-
+    const { message } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     
-    const geminiResponse = await fetch(
+    const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=' + GEMINI_API_KEY,
       {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{
-            parts: [{ text: systemPrompt + '
-
-' + userContent }]
-          }],
-          generationConfig: {
-            maxOutputTokens: 500,
-            temperature: 0.7
-          }
+          contents: [{ parts: [{ text: message || 'Hello' }] }],
+          generationConfig: { maxOutputTokens: 500, temperature: 0.7 }
         })
       }
     );
 
-    const data = await geminiResponse.json();
+    const data = await response.json();
 
-    if (!geminiResponse.ok) {
-      console.error('Gemini Error:', data);
-      return res.status(geminiResponse.status).json({
-        error: data.error?.message || 'Gemini API error'
-      });
-    }
-
-    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content.parts[0].text) {
-      throw new Error('No response from Gemini');
+    if (!response.ok) {
+      return res.status(response.status).json({ error: data.error?.message || 'API error' });
     }
 
     const reply = data.candidates[0].content.parts[0].text;
 
-    res.status(200).json({
-      choices: [
-        {
-          message: {
-            content: reply
-          }
-        }
-      ]
-    });
+    res.status(200).json({ choices: [{ message: { content: reply } }] });
 
   } catch (error) {
-    console.error('Server Error:', error);
+    console.error('Error:', error);
     res.status(500).json({ error: 'Server error: ' + error.message });
   }
 }
