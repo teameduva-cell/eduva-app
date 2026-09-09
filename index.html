@@ -44,10 +44,27 @@
             background: #FFFFFF;
             border: 1px solid #E2E8F0;
             box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
         }
-        .card-clean:hover { border-color: #CBD5E1; }
+        .card-clean:hover {
+            border-color: #BFDBFE;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px -8px rgba(37, 99, 235, 0.14), 0 8px 12px -6px rgba(15, 23, 42, 0.06);
+        }
 
-        .ink-navy { background-color: #0F172A; color: #F8FAFC; }
+        /* Gradient text — headings ke liye premium look */
+        .gradient-text {
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        .ink-navy { background-color: #0F172A; color: #F8FAFC; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        button.ink-navy:hover, a.ink-navy:hover { transform: scale(1.03); box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.4); }
+        button.ink-navy:active, a.ink-navy:active { transform: scale(0.97); }
         .marigold-gradient { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
 
         /* New Premium Logo Design */
@@ -127,6 +144,42 @@
         #notes-modal canvas#notesCanvas {
             max-width: 100%;
             display: block;
+        }
+
+        /* ===== Edu Sir Blackboard Teaching Scene ===== */
+        .blackboard-scene {
+            background: linear-gradient(160deg, #0f3d24 0%, #1a5c37 60%, #0f3d24 100%);
+            border: 10px solid #6b4226;
+            border-radius: 14px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.45), 0 12px 28px rgba(0,0,0,0.35);
+            position: relative;
+        }
+        .blackboard-scene::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 6px;
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 26px);
+            pointer-events: none;
+        }
+        .chalk-text {
+            font-family: 'Kalam', cursive;
+            color: #f5f5f0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        .chalk-title {
+            font-family: 'Kalam', cursive;
+            color: #ffe9a8;
+        }
+        .edu-sir-avatar {
+            font-size: 3.25rem;
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.45));
+        }
+        .duster-tray {
+            background: #6b4226;
+            height: 10px;
+            border-radius: 3px;
+            box-shadow: 0 3px 4px rgba(0,0,0,0.3);
         }
     </style>
 </head>
@@ -241,6 +294,9 @@
                     <button onclick="switchTab('spoken-english')" id="dtab-spoken-english" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="languages" class="w-5 h-5 text-sky-600"></i> Spoken English 🗣️
                     </button>
+                    <button onclick="switchTab('ncert-olympiad')" id="dtab-ncert-olympiad" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                        <i data-lucide="book-marked" class="w-5 h-5 text-rose-600"></i> NCERT/Olympiad Practice 📘
+                    </button>
                     <button onclick="switchTab('about')" id="dtab-about" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="info" class="w-5 h-5 text-blue-500"></i> About Us 📖
                     </button>
@@ -291,7 +347,8 @@
                         </button>
                     </div>
                 </div>
-<!-- QUICK STATS -->
+
+                <!-- QUICK STATS -->
                 <div class="grid grid-cols-3 gap-3">
                     <div class="card-clean p-4 rounded-2xl text-center bg-white cursor-pointer hover:border-blue-300 transition" onclick="switchTab('profile')">
                         <div class="text-xl font-black text-slate-900">🔥 12</div>
@@ -424,6 +481,10 @@
                         <i data-lucide="languages" class="w-5 h-5 mx-auto text-sky-600 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">Spoken English</p>
                     </button>
+                    <button onclick="switchTab('ncert-olympiad')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+                        <i data-lucide="book-marked" class="w-5 h-5 mx-auto text-rose-600 group-hover:scale-110 transition"></i>
+                        <p class="text-xs font-bold text-slate-900">NCERT/Olympiad</p>
+                    </button>
                 </div>
             </section>
 
@@ -435,7 +496,7 @@
                     <div class="flex items-center gap-2 text-slate-700">
                         <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
                         <span>पढ़ाने का तरीका (Teaching Mode):</span>
-</div>
+                    </div>
                     <div class="flex items-center gap-2">
                         <button onclick="sendUnsatisfiedToCommunity()" class="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="users" class="w-3.5 h-3.5"></i> कम्युनिटी में पूछें 👥</button>
                         <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault</button>
@@ -446,7 +507,7 @@
                     </div>
                 </div>
 
-                <div id="chat-messages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 hide-scrollbar">
+<div id="chat-messages" class="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4 hide-scrollbar">
                     <div class="flex items-start space-x-3 max-w-2xl">
                         <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">
                             ES
@@ -479,15 +540,21 @@
                             <span id="voice-mic-dot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse"></span>
                         </button>
 
-                        <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="फोटो खींचें (Camera)">
-                            <i data-lucide="camera" class="w-4 h-4"></i>
+                        <div class="relative">
+                            <button onclick="toggleAttachMenu()" id="attach-btn" class="p-2.5 text-slate-500 hover:text-blue-600 active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs cursor-pointer" title="फोटो जोड़ें">
+                                <i data-lucide="paperclip" class="w-4 h-4"></i>
+                            </button>
+                            <div id="attach-menu" class="hidden absolute bottom-full right-0 mb-2 bg-white border border-slate-200 rounded-xl shadow-lg overflow-hidden w-48 z-30">
+                                <button onclick="attachCamera()" class="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left">
+                                    <i data-lucide="camera" class="w-4 h-4"></i> फोटो खींचें (Camera)
+                                </button>
+                                <button onclick="attachGallery()" class="w-full flex items-center gap-2.5 px-4 py-3 text-xs font-bold text-slate-700 hover:bg-slate-50 transition cursor-pointer text-left border-t border-slate-100">
+                                    <i data-lucide="image" class="w-4 h-4"></i> गैलरी से चुनें
+                                </button>
+                            </div>
                             <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden" onchange="handleImage(this)">
-                        </label>
-
-                        <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="फोटो अपलोड करें (Gallery)">
-                            <i data-lucide="image" class="w-4 h-4"></i>
                             <input type="file" id="gallery-file-input" accept="image/*" class="hidden" onchange="handleImage(this)">
-                        </label>
+                        </div>
 
                         <button onclick="sendDoubt()" class="p-3 ink-navy text-white rounded-xl active:scale-95 shadow-md font-bold text-xs flex items-center justify-center transition cursor-pointer">
                             <i data-lucide="send" class="w-4 h-4"></i>
@@ -527,12 +594,13 @@
                             <span class="w-2 h-2 rounded-full bg-white"></span> EDU SIR LIVE VOICE CLASS
                         </div>
 
-                        <div id="avatar-video-screen" class="w-full h-72 sm:h-96 flex flex-col items-center justify-center p-6 text-center text-white relative bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900">
-                            <div id="avatar-speaker-icon" class="w-20 h-20 rounded-2xl bg-indigo-600/30 border border-indigo-400/30 flex items-center justify-center text-4xl mb-3 shadow-inner transition-transform duration-300">
+                        <div id="avatar-video-screen" class="blackboard-scene w-full h-72 sm:h-96 flex flex-col items-center justify-center p-6 text-center relative">
+                            <div id="avatar-speaker-icon" class="edu-sir-avatar mb-2 transition-transform duration-300">
                                 👨‍🏫
                             </div>
-                            <h3 id="avatar-lecture-title" class="text-lg sm:text-xl font-bold text-amber-300">Physics: Motion in a Straight Line</h3>
-                            <p id="avatar-lecture-step" class="text-sm sm:text-base text-slate-200 mt-2 max-w-lg leading-relaxed font-medium">
+                            <div class="duster-tray w-24 mb-3"></div>
+                            <h3 id="avatar-lecture-title" class="chalk-title text-lg sm:text-xl font-bold">Physics: Motion in a Straight Line</h3>
+                            <p id="avatar-lecture-step" class="chalk-text text-sm sm:text-base mt-2 max-w-lg leading-relaxed">
                                 "चैंपियन, आज हम सीखेंगे कि गति के समीकरण को ग्राफिकल मेथड से कैसे ड्राइव करते हैं। ध्यान से देखना!"
                             </p>
 
@@ -624,7 +692,8 @@
                     </div>
                 </div>
             </section>
-<!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
+
+            <!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
             <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -679,7 +748,7 @@
                         <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-black shadow-sm">📖</div>
                         <div>
                             <span class="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">Our Vision</span>
-                            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">About EDUVA — कोटा का स्मार्ट लर्निंग हब</h2>
+                            <h2 class="text-xl sm:text-2xl font-black gradient-text mt-1">About EDUVA — कोटा का स्मार्ट लर्निंग हब</h2>
                         </div>
                     </div>
 
@@ -861,7 +930,8 @@
                     </div>
                 </div>
             </section>
- <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
+
+            <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
             <section id="view-community" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -877,7 +947,7 @@
                         </div>
                     </div>
 
-                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
+<div class="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3 shadow-2xs">
                         <h3 class="text-xs font-black text-slate-900">अपना अनसुलझा सवाल कम्युनिटी में डालें:</h3>
                         <textarea id="community-new-doubt" rows="3" placeholder="यहाँ अपना सवाल लिखें..." class="w-full bg-white border border-slate-200 rounded-xl p-3.5 outline-none focus:border-blue-600 text-sm font-medium leading-relaxed"></textarea>
                         <button onclick="postCommunityDoubt()" class="px-5 py-3 ink-navy text-white font-bold text-xs rounded-xl shadow-sm transition">कम्युनिटी में पोस्ट करें 🚀</button>
@@ -1113,10 +1183,11 @@
                         <div id="subj-vedic-maths-progress" class="bg-orange-500 h-full transition-all duration-300" style="width: 20%"></div>
                     </div>
 
-                    <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-xl border border-slate-800 p-6 sm:p-8 text-center text-white space-y-3">
-                        <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-600/30 border border-orange-400/30 flex items-center justify-center text-3xl">🧑‍🏫</div>
-                        <span id="subj-vedic-maths-counter" class="text-xs font-black text-orange-300 mono-font block">Step 1 / 5</span>
-                        <p id="subj-vedic-maths-step" class="text-sm sm:text-base text-slate-200 max-w-lg mx-auto leading-relaxed font-medium"></p>
+                    <div class="blackboard-scene w-full p-6 sm:p-8 text-center space-y-2">
+                        <div class="edu-sir-avatar">🧑‍🏫</div>
+                        <div class="duster-tray w-20 mx-auto mb-1"></div>
+                        <span id="subj-vedic-maths-counter" class="chalk-title text-xs font-black mono-font block">Step 1 / 5</span>
+                        <p id="subj-vedic-maths-step" class="chalk-text text-sm sm:text-base max-w-lg mx-auto leading-relaxed"></p>
                     </div>
 
                     <div class="flex flex-wrap items-center justify-center gap-3">
@@ -1153,10 +1224,11 @@
                         <div id="subj-spoken-english-progress" class="bg-sky-500 h-full transition-all duration-300" style="width: 20%"></div>
                     </div>
 
-                    <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-xl border border-slate-800 p-6 sm:p-8 text-center text-white space-y-3">
-                        <div class="w-16 h-16 mx-auto rounded-2xl bg-sky-600/30 border border-sky-400/30 flex items-center justify-center text-3xl">🧑‍🏫</div>
-                        <span id="subj-spoken-english-counter" class="text-xs font-black text-sky-300 mono-font block">Step 1 / 5</span>
-                        <p id="subj-spoken-english-step" class="text-sm sm:text-base text-slate-200 max-w-lg mx-auto leading-relaxed font-medium"></p>
+                    <div class="blackboard-scene w-full p-6 sm:p-8 text-center space-y-2">
+                        <div class="edu-sir-avatar">🧑‍🏫</div>
+                        <div class="duster-tray w-20 mx-auto mb-1"></div>
+                        <span id="subj-spoken-english-counter" class="chalk-title text-xs font-black mono-font block">Step 1 / 5</span>
+                        <p id="subj-spoken-english-step" class="chalk-text text-sm sm:text-base max-w-lg mx-auto leading-relaxed"></p>
                     </div>
 
                     <div class="flex flex-wrap items-center justify-center gap-3">
@@ -1174,6 +1246,60 @@
                         </div>
                         <button onclick="sendCustomDoubt('Edu Sir, मुझे Spoken English में यह टॉपिक थोड़ा और practice करना है, कुछ आसान उदाहरण दो: ' + subjectModules['spoken-english'].steps[subjectModules['spoken-english'].idx])" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-black text-xs rounded-xl shadow-md transition cursor-pointer">Ask Edu Sir 🚀</button>
                     </div>
+                </div>
+            </section>
+
+            <!-- ================= NCERT & OLYMPIAD PRACTICE GENERATOR VIEW ================= -->
+            <section id="view-ncert-olympiad" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+                    <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl font-black shadow-sm">📘</div>
+                        <div>
+                            <span class="px-3 py-1 bg-rose-50 text-rose-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">Fresh AI-Generated Practice</span>
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">NCERT & Olympiad Practice सेट</h2>
+                        </div>
+                    </div>
+
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium">
+                        यहाँ Edu Sir आपके लिए हर बार <b>बिल्कुल नए, original सवाल</b> बनाकर देता है (NCERT/Olympiad level के हिसाब से) — किसी किताब से सीधे copy किए हुए सवाल नहीं, इसलिए हर सेट अलग और ताज़ा होगा।
+                    </p>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm font-bold">
+                        <div>
+                            <label class="block text-slate-700 mb-1.5 text-xs">Class चुनें</label>
+                            <select id="no-class" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-rose-600 text-sm">
+                                <option value="6">Class 6</option>
+                                <option value="7">Class 7</option>
+                                <option value="8">Class 8</option>
+                                <option value="9">Class 9</option>
+                                <option value="10" selected>Class 10</option>
+                                <option value="11">Class 11</option>
+                                <option value="12">Class 12</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 mb-1.5 text-xs">Subject चुनें</label>
+                            <select id="no-subject" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-rose-600 text-sm">
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Mathematics" selected>Mathematics</option>
+                                <option value="Biology">Biology</option>
+                                <option value="Science (General)">Science (General)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 mb-1.5 text-xs">Level चुनें</label>
+                            <select id="no-level" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-rose-600 text-sm">
+                                <option value="NCERT">NCERT Level</option>
+                                <option value="Olympiad">Olympiad Level</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="generateNcertOlympiadSet()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i> प्रैक्टिस सेट बनाएं (5 सवाल + उत्तर)
+                    </button>
                 </div>
             </section>
 
@@ -1232,7 +1358,7 @@
         </div>
     </div>
 
-    <!-- ================= EDUVA MEMORY & MISTAKE BOOK ================= -->
+ <!-- ================= EDUVA MEMORY & MISTAKE BOOK ================= -->
     <section id="view-memory" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
         <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -1652,7 +1778,8 @@
                             </div>
                         `).join('')}
                     </div>
-<div class="flex items-center gap-2.5 pt-2">
+
+                    <div class="flex items-center gap-2.5 pt-2">
                         <input type="text" id="ans-input-${index}" placeholder="इस डाउट का उत्तर लिखें..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-blue-600 font-medium">
                         <button onclick="submitCommunityAnswer(${index})" class="px-4.5 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition">उत्तर दें</button>
                     </div>
@@ -1923,6 +2050,16 @@
             switchTab('home');
         }
 
+        function generateNcertOlympiadSet() {
+            const cls = document.getElementById('no-class').value;
+            const subject = document.getElementById('no-subject').value;
+            const level = document.getElementById('no-level').value;
+
+            const prompt = `Edu Sir, मेरे लिए Class ${cls} ${subject} के ${level} स्तर के 5 practice questions बनाओ। ध्यान रखना — यह सवाल बिल्कुल नए और original होने चाहिए, किसी किताब से सीधे कॉपी किए हुए नहीं। हर सवाल के साथ step-by-step उत्तर भी दो।`;
+
+            sendCustomDoubt(prompt);
+        }
+
         function generateCustomTimetable() {
             const wake = document.getElementById('tt-wake').value;
             const sleep = document.getElementById('tt-sleep').value;
@@ -1972,6 +2109,26 @@
             document.getElementById('gallery-file-input').click();
         }
 
+        // Chat के अंदर वाले Camera/Gallery dropdown मेनू के लिए
+        function toggleAttachMenu() {
+            document.getElementById('attach-menu').classList.toggle('hidden');
+        }
+        function attachCamera() {
+            document.getElementById('attach-menu').classList.add('hidden');
+            document.getElementById('file-input').click();
+        }
+        function attachGallery() {
+            document.getElementById('attach-menu').classList.add('hidden');
+            document.getElementById('gallery-file-input').click();
+        }
+        document.addEventListener('click', (e) => {
+            const menu = document.getElementById('attach-menu');
+            const btn = document.getElementById('attach-btn');
+            if (menu && btn && !menu.classList.contains('hidden') && !menu.contains(e.target) && !btn.contains(e.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+
         /* ================= GENERIC AI SUBJECT TEACHER ENGINE ================= */
         // यह एक ही इंजन है जो Vedic Maths, Spoken English, और आगे कोई भी नया subject चला सकता है।
         // नया subject जोड़ना हो तो बस नीचे subjectModules में एक नई entry बना दें — बाकी सब अपने आप काम करेगा।
@@ -1986,7 +2143,8 @@
                     "बहुत बढ़िया चैंपियन! अब खुद प्रैक्टिस करो: 52×11, 38×11, 74×11 — जवाब निकालकर Edu Sir को बताना!"
                 ]
             },
-            'spoken-english': {
+
+spoken-english': {
                 idx: 0,
                 steps: [
                     "Hello Champion! जय श्री राम! आज हम रोज़मर्रा में इस्तेमाल होने वाले basic English sentences सीखेंगे, कोटा स्टाइल में, बिना झिझक के।",
@@ -2073,7 +2231,7 @@ RULES FOR EDU SIR:
                 try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
             }
 
-            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation', 'vedic-maths', 'spoken-english'].forEach(t => {
+            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation', 'vedic-maths', 'spoken-english', 'ncert-olympiad'].forEach(t => {
                 const el = document.getElementById(`view-${t}`);
                 if (el) el.classList.add('hidden');
 
@@ -2083,7 +2241,8 @@ RULES FOR EDU SIR:
 
             const activeEl = document.getElementById(`view-${tabId}`);
             if (activeEl) activeEl.classList.remove('hidden');
- const activeTab = document.getElementById(`tab-${tabId}`);
+
+            const activeTab = document.getElementById(`tab-${tabId}`);
             if (activeTab) { activeTab.classList.add('text-slate-900', 'font-extrabold'); activeTab.classList.remove('text-slate-500', 'font-bold'); }
 
             if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
@@ -2336,7 +2495,7 @@ RULES FOR EDU SIR:
                     </div>
                 `;
 
-                renderMathInElementCustom(document.getElementById(messageId));
+renderMathInElementCustom(document.getElementById(messageId));
                 lucide.createIcons();
                 container.scrollTop = container.scrollHeight;
 
