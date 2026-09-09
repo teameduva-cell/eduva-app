@@ -235,6 +235,12 @@
                     <button onclick="switchTab('timetable')" id="dtab-timetable" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="calendar" class="w-5 h-5 text-emerald-600"></i> AI टाइम टेबल जनरेटर
                     </button>
+                    <button onclick="switchTab('vedic-maths')" id="dtab-vedic-maths" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                        <i data-lucide="calculator" class="w-5 h-5 text-orange-600"></i> Vedic Maths 🧮
+                    </button>
+                    <button onclick="switchTab('spoken-english')" id="dtab-spoken-english" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                        <i data-lucide="languages" class="w-5 h-5 text-sky-600"></i> Spoken English 🗣️
+                    </button>
                     <button onclick="switchTab('about')" id="dtab-about" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="info" class="w-5 h-5 text-blue-500"></i> About Us 📖
                     </button>
@@ -259,7 +265,7 @@
             <!-- ================= 1. HOME DASHBOARD VIEW ================= -->
             <section id="view-home" class="space-y-6 animate-fadeIn">
 
- <!-- HERO CARD -->
+                <!-- HERO CARD -->
                 <div class="hero-custom p-6 sm:p-8 rounded-[26px] relative overflow-hidden flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <small class="font-extrabold uppercase tracking-widest opacity-90">WELCOME BACK, CHAMPION 👋</small>
@@ -285,8 +291,7 @@
                         </button>
                     </div>
                 </div>
-
-                <!-- QUICK STATS -->
+<!-- QUICK STATS -->
                 <div class="grid grid-cols-3 gap-3">
                     <div class="card-clean p-4 rounded-2xl text-center bg-white cursor-pointer hover:border-blue-300 transition" onclick="switchTab('profile')">
                         <div class="text-xl font-black text-slate-900">🔥 12</div>
@@ -303,11 +308,17 @@
                 </div>
 
                 <!-- SEARCH BAR -->
-                <div class="card-clean rounded-2xl p-3 flex items-center gap-3 bg-white border border-slate-200 transition shadow-xs">
+                <div class="card-clean rounded-2xl p-3 flex items-center gap-2 bg-white border border-slate-200 transition shadow-xs">
                     <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
                     <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }">
-                    <button onclick="switchTab('chat')" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer">
+                    <button onclick="homeGoToVoice()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="आवाज़ से पूछें">
                         <i data-lucide="mic" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="homeGoToCamera()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="फोटो खींचें">
+                        <i data-lucide="camera" class="w-4 h-4"></i>
+                    </button>
+                    <button onclick="homeGoToGallery()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="फोटो अपलोड करें">
+                        <i data-lucide="image" class="w-4 h-4"></i>
                     </button>
                 </div>
 
@@ -405,6 +416,14 @@
                         <i data-lucide="calendar" class="w-5 h-5 mx-auto text-emerald-600 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">टाइम टेबल</p>
                     </button>
+                    <button onclick="switchTab('vedic-maths')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+                        <i data-lucide="calculator" class="w-5 h-5 mx-auto text-orange-600 group-hover:scale-110 transition"></i>
+                        <p class="text-xs font-bold text-slate-900">Vedic Maths</p>
+                    </button>
+                    <button onclick="switchTab('spoken-english')" class="card-clean p-4 rounded-2xl text-center space-y-1 hover:border-slate-400 transition group cursor-pointer">
+                        <i data-lucide="languages" class="w-5 h-5 mx-auto text-sky-600 group-hover:scale-110 transition"></i>
+                        <p class="text-xs font-bold text-slate-900">Spoken English</p>
+                    </button>
                 </div>
             </section>
 
@@ -416,7 +435,7 @@
                     <div class="flex items-center gap-2 text-slate-700">
                         <i data-lucide="sliders" class="w-4 h-4 text-blue-600"></i>
                         <span>पढ़ाने का तरीका (Teaching Mode):</span>
-                    </div>
+</div>
                     <div class="flex items-center gap-2">
                         <button onclick="sendUnsatisfiedToCommunity()" class="px-3 py-1.5 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="users" class="w-3.5 h-3.5"></i> कम्युनिटी में पूछें 👥</button>
                         <button onclick="bookmarkCurrentChat()" class="px-3 py-1.5 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition flex items-center gap-1 text-[11px] cursor-pointer"><i data-lucide="bookmark" class="w-3.5 h-3.5"></i> Save to Vault</button>
@@ -460,9 +479,14 @@
                             <span id="voice-mic-dot" class="hidden absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-rose-600 animate-pulse"></span>
                         </button>
 
-                        <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="Upload Image">
+                        <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="फोटो खींचें (Camera)">
                             <i data-lucide="camera" class="w-4 h-4"></i>
-                            <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleImage(this)">
+                            <input type="file" id="file-input" accept="image/*" capture="environment" class="hidden" onchange="handleImage(this)">
+                        </label>
+
+                        <label class="p-2.5 text-slate-500 hover:text-blue-600 cursor-pointer active:scale-90 transition rounded-xl bg-white border border-slate-200 shadow-2xs" title="फोटो अपलोड करें (Gallery)">
+                            <i data-lucide="image" class="w-4 h-4"></i>
+                            <input type="file" id="gallery-file-input" accept="image/*" class="hidden" onchange="handleImage(this)">
                         </label>
 
                         <button onclick="sendDoubt()" class="p-3 ink-navy text-white rounded-xl active:scale-95 shadow-md font-bold text-xs flex items-center justify-center transition cursor-pointer">
@@ -472,7 +496,7 @@
                 </div>
             </section>
 
- <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW ================= -->
+            <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW ================= -->
             <section id="view-avatar-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -600,8 +624,7 @@
                     </div>
                 </div>
             </section>
-
-            <!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
+<!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
             <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -618,7 +641,7 @@
                         "चैंपियन, याद रखना—नंबर कम आना या मॉक टेस्ट में रैंक गिरना जिंदगी का अंत नहीं है। तेरा भाई (Edu Sir) हमेशा तेरे साथ है। कभी भी अकेलापन या तनाव महसूस हो, तो खुलकर बात करो।"
                     </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                         <div onclick="startCounselingSession('परीक्षा का डर और एंग्जायटी (Exam Fear)')" class="p-4 bg-slate-50 hover:bg-purple-50 border rounded-2xl cursor-pointer transition space-y-2 text-center group">
                             <div class="text-2xl">😰</div>
                             <p class="text-xs font-black text-slate-900">Exam Fear & Stress</p>
@@ -792,7 +815,7 @@
                         </div>
                     </div>
 
-<!-- Weekly Leaderboard Preview -->
+                    <!-- Weekly Leaderboard Preview -->
                     <div class="space-y-3 pt-2">
                         <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Weekly Leaderboard Rank</h3>
                         <div class="space-y-2">
@@ -838,8 +861,7 @@
                     </div>
                 </div>
             </section>
-
-            <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
+ <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
             <section id="view-community" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
@@ -1075,6 +1097,86 @@
                 </div>
             </section>
 
+            <!-- ================= VEDIC MATHS AI TEACHER VIEW ================= -->
+            <section id="view-vedic-maths" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+                    <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-black shadow-sm">🧮</div>
+                        <div>
+                            <span class="px-3 py-1 bg-orange-50 text-orange-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">AI Subject Teacher</span>
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Vedic Maths — तेज़ कैलकुलेशन ट्रिक्स</h2>
+                        </div>
+                    </div>
+
+                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border">
+                        <div id="subj-vedic-maths-progress" class="bg-orange-500 h-full transition-all duration-300" style="width: 20%"></div>
+                    </div>
+
+                    <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-xl border border-slate-800 p-6 sm:p-8 text-center text-white space-y-3">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-orange-600/30 border border-orange-400/30 flex items-center justify-center text-3xl">🧑‍🏫</div>
+                        <span id="subj-vedic-maths-counter" class="text-xs font-black text-orange-300 mono-font block">Step 1 / 5</span>
+                        <p id="subj-vedic-maths-step" class="text-sm sm:text-base text-slate-200 max-w-lg mx-auto leading-relaxed font-medium"></p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <button onclick="subjPrev('vedic-maths')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold transition cursor-pointer">◀ पिछला</button>
+                        <button onclick="subjSpeak('vedic-maths')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Play</button>
+                        <button onclick="subjPause()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">⏸ Pause</button>
+                        <button onclick="subjResume()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Resume</button>
+                        <button onclick="subjNext('vedic-maths')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold transition cursor-pointer">अगला ▶</button>
+                    </div>
+
+                    <div class="p-4 bg-orange-50 border border-orange-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-orange-600 text-white flex items-center justify-center font-bold text-sm">🤖</div>
+                            <p class="text-xs font-black text-orange-950">इस टॉपिक पर कोई डाउट है?</p>
+                        </div>
+                        <button onclick="sendCustomDoubt('Edu Sir, मुझे Vedic Maths का यह टॉपिक समझ नहीं आया, आसान भाषा में फिर से समझाओ: ' + subjectModules['vedic-maths'].steps[subjectModules['vedic-maths'].idx])" class="px-5 py-2.5 bg-orange-600 hover:bg-orange-700 text-white font-black text-xs rounded-xl shadow-md transition cursor-pointer">Ask Edu Sir 🚀</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ================= SPOKEN ENGLISH AI TEACHER VIEW ================= -->
+            <section id="view-spoken-english" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
+                    <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
+                        <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl font-black shadow-sm">🗣️</div>
+                        <div>
+                            <span class="px-3 py-1 bg-sky-50 text-sky-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">AI Subject Teacher</span>
+                            <h2 class="text-xl sm:text-2xl font-black text-slate-900 mt-1">Spoken English — रोज़ बोलने की प्रैक्टिस</h2>
+                        </div>
+                    </div>
+
+                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border">
+                        <div id="subj-spoken-english-progress" class="bg-sky-500 h-full transition-all duration-300" style="width: 20%"></div>
+                    </div>
+
+                    <div class="w-full bg-slate-950 rounded-3xl overflow-hidden shadow-xl border border-slate-800 p-6 sm:p-8 text-center text-white space-y-3">
+                        <div class="w-16 h-16 mx-auto rounded-2xl bg-sky-600/30 border border-sky-400/30 flex items-center justify-center text-3xl">🧑‍🏫</div>
+                        <span id="subj-spoken-english-counter" class="text-xs font-black text-sky-300 mono-font block">Step 1 / 5</span>
+                        <p id="subj-spoken-english-step" class="text-sm sm:text-base text-slate-200 max-w-lg mx-auto leading-relaxed font-medium"></p>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-3">
+                        <button onclick="subjPrev('spoken-english')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold transition cursor-pointer">◀ पिछला</button>
+                        <button onclick="subjSpeak('spoken-english')" class="px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Play</button>
+                        <button onclick="subjPause()" class="px-4 py-2.5 bg-amber-600 hover:bg-amber-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">⏸ Pause</button>
+                        <button onclick="subjResume()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-black shadow-md transition cursor-pointer">▶ Resume</button>
+                        <button onclick="subjNext('spoken-english')" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl text-xs font-bold transition cursor-pointer">अगला ▶</button>
+                    </div>
+
+                    <div class="p-4 bg-sky-50 border border-sky-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center font-bold text-sm">🤖</div>
+                            <p class="text-xs font-black text-sky-950">कोई sentence practice करनी है?</p>
+                        </div>
+                        <button onclick="sendCustomDoubt('Edu Sir, मुझे Spoken English में यह टॉपिक थोड़ा और practice करना है, कुछ आसान उदाहरण दो: ' + subjectModules['spoken-english'].steps[subjectModules['spoken-english'].idx])" class="px-5 py-2.5 bg-sky-600 hover:bg-sky-700 text-white font-black text-xs rounded-xl shadow-md transition cursor-pointer">Ask Edu Sir 🚀</button>
+                    </div>
+                </div>
+            </section>
+
             <section id="view-health" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200">
@@ -1115,7 +1217,8 @@
                     <p class="text-xs text-slate-500 font-medium">Edu Sir के जवाब को नोटबुक स्टाइल हैंडराइटिंग में पाएं</p>
                 </div>
             </div>
-     <textarea id="notesText" placeholder="यहाँ एआई का जवाब या अपना सवाल लिखें..."></textarea>
+
+            <textarea id="notesText" placeholder="यहाँ एआई का जवाब या अपना सवाल लिखें..."></textarea>
 
             <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-bold">
                 <label class="flex items-center gap-1.5 text-slate-700"><input type="checkbox" id="naturalTilt" checked> नेचुरल हाथ जैसा टिल्ट</label>
@@ -1508,7 +1611,7 @@
             }
         }
 
-function askEduSirAboutLecture() {
+        function askEduSirAboutLecture() {
             stopLecture();
             switchTab('chat');
             setPromptSuggestion(`Edu Sir, मैं अभी AI Lecture में "${currentAvatarTopic}" पढ़ रहा था। मुझे इसके इस स्टेप में थोड़ा डाउट है, इसे आसान भाषा में समझाओ: "${avatarSteps[currentAvatarStepIdx]}"`);
@@ -1549,8 +1652,7 @@ function askEduSirAboutLecture() {
                             </div>
                         `).join('')}
                     </div>
-
-                    <div class="flex items-center gap-2.5 pt-2">
+<div class="flex items-center gap-2.5 pt-2">
                         <input type="text" id="ans-input-${index}" placeholder="इस डाउट का उत्तर लिखें..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3.5 py-2.5 text-sm outline-none focus:border-blue-600 font-medium">
                         <button onclick="submitCommunityAnswer(${index})" class="px-4.5 py-2.5 bg-emerald-600 text-white font-bold text-sm rounded-xl hover:bg-emerald-700 transition">उत्तर दें</button>
                     </div>
@@ -1800,7 +1902,7 @@ function askEduSirAboutLecture() {
             return "Hello Future Innovator!";
         }
 
-function updateStudentGoal(goal) {
+        function updateStudentGoal(goal) {
             currentStudentGoal = goal;
             document.getElementById('sidebar-greeting-title').innerText = getGreetingTitle(goal);
             document.getElementById('sidebar-batch-label').innerText = goal;
@@ -1854,6 +1956,101 @@ function updateStudentGoal(goal) {
             document.getElementById('chat-input').focus();
         }
 
+        // Home page की search bar से सीधे chat पर जाकर voice/camera/gallery चालू करने के लिए
+        function homeGoToVoice() {
+            switchTab('chat');
+            recordVoice();
+        }
+
+        function homeGoToCamera() {
+            switchTab('chat');
+            document.getElementById('file-input').click();
+        }
+
+        function homeGoToGallery() {
+            switchTab('chat');
+            document.getElementById('gallery-file-input').click();
+        }
+
+        /* ================= GENERIC AI SUBJECT TEACHER ENGINE ================= */
+        // यह एक ही इंजन है जो Vedic Maths, Spoken English, और आगे कोई भी नया subject चला सकता है।
+        // नया subject जोड़ना हो तो बस नीचे subjectModules में एक नई entry बना दें — बाकी सब अपने आप काम करेगा।
+        const subjectModules = {
+            'vedic-maths': {
+                idx: 0,
+                steps: [
+                    "जय श्री राम, चैंपियन! आज हम सीखेंगे Vedic Maths की सबसे तेज़ ट्रिक — 'Ekadhikena Purvena', जिससे आप बड़ी-बड़ी गुणा (multiplication) सेकंडों में कर पाओगे।",
+                    "स्टेप 1: जब भी किसी संख्या को 11 से गुणा करना हो, तो अंकों को आपस में जोड़ते जाओ। जैसे 43 × 11 — पहले 4 और 3 को अलग रखो, बीच में 4+3=7 डालो, जवाब है 473!",
+                    "स्टेप 2: यह तरीका sequential digit addition कहलाता है — हर बार पास वाले दो अंकों को जोड़ते जाओ।",
+                    "स्टेप 3: अगर जोड़ 9 से ज़्यादा हो जाए (जैसे 67 × 11), तो carry अगले अंक में ले जाओ — बिल्कुल normal addition जैसे।",
+                    "बहुत बढ़िया चैंपियन! अब खुद प्रैक्टिस करो: 52×11, 38×11, 74×11 — जवाब निकालकर Edu Sir को बताना!"
+                ]
+            },
+            'spoken-english': {
+                idx: 0,
+                steps: [
+                    "Hello Champion! जय श्री राम! आज हम रोज़मर्रा में इस्तेमाल होने वाले basic English sentences सीखेंगे, कोटा स्टाइल में, बिना झिझक के।",
+                    "स्टेप 1: अपना परिचय देना सीखो — 'My name is [नाम]. I am from [शहर]. I am preparing for NEET/JEE.'",
+                    "स्टेप 2: किसी से मदद मांगना — 'Excuse me, could you please help me with this question?' यह politely पूछने का सही तरीका है।",
+                    "स्टेप 3: अपनी राय देना — 'I think this topic is a bit difficult, but I am trying my best.' रोज़ बोलने की practice करो, गलती होना ठीक है!",
+                    "शाबाश चैंपियन! अब आज रात सोने से पहले, इन तीनों sentences को आईने के सामने खड़े होकर ज़ोर से 5-5 बार बोलो!"
+                ]
+            }
+        };
+
+        function renderSubjectStep(key) {
+            const mod = subjectModules[key];
+            const stepEl = document.getElementById(`subj-${key}-step`);
+            const counterEl = document.getElementById(`subj-${key}-counter`);
+            const progressEl = document.getElementById(`subj-${key}-progress`);
+            if (stepEl) stepEl.innerText = `"${mod.steps[mod.idx]}"`;
+            if (counterEl) counterEl.innerText = `Step ${mod.idx + 1} / ${mod.steps.length}`;
+            if (progressEl) progressEl.style.width = `${((mod.idx + 1) / mod.steps.length) * 100}%`;
+        }
+
+        function subjSpeak(key) {
+            const mod = subjectModules[key];
+            if (!('speechSynthesis' in window)) {
+                alert("आपका ब्राउज़र वॉइस स्पीच सपोर्ट नहीं करता है।");
+                return;
+            }
+            window.speechSynthesis.cancel();
+            renderSubjectStep(key);
+            const utterance = new SpeechSynthesisUtterance(mod.steps[mod.idx]);
+            utterance.lang = 'hi-IN';
+            utterance.rate = 0.95;
+            const voice = pickEduSirVoice();
+            if (voice) utterance.voice = voice;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function subjNext(key) {
+            const mod = subjectModules[key];
+            window.speechSynthesis.cancel();
+            if (mod.idx < mod.steps.length - 1) {
+                mod.idx++;
+                subjSpeak(key);
+            }
+        }
+
+        function subjPrev(key) {
+            const mod = subjectModules[key];
+            window.speechSynthesis.cancel();
+            if (mod.idx > 0) {
+                mod.idx--;
+                subjSpeak(key);
+            }
+        }
+
+        function subjPause() {
+            if ('speechSynthesis' in window) window.speechSynthesis.pause();
+        }
+
+        function subjResume() {
+            if ('speechSynthesis' in window) window.speechSynthesis.resume();
+        }
+        /* ================= END GENERIC AI SUBJECT TEACHER ENGINE ================= */
+
         const BASE_SYSTEM_PROMPT = `You are "Edu Sir", an authentic, high-energy, and deeply affectionate Kota mentor (around 22-24 years old, like a loving elder brother/bhaiya). You speak natural Hinglish with a true Kota student culture vibe.
 RULES FOR EDU SIR:
 1. ABSOLUTELY NO NEGATIVITY, NO DEMOTIVATION, NO HARSH WORDS. Never use words like 'gadha', 'nalayak', 'ullu', or any abuse.
@@ -1876,7 +2073,7 @@ RULES FOR EDU SIR:
                 try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
             }
 
-            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation'].forEach(t => {
+            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation', 'vedic-maths', 'spoken-english'].forEach(t => {
                 const el = document.getElementById(`view-${t}`);
                 if (el) el.classList.add('hidden');
 
@@ -1886,8 +2083,7 @@ RULES FOR EDU SIR:
 
             const activeEl = document.getElementById(`view-${tabId}`);
             if (activeEl) activeEl.classList.remove('hidden');
-
-            const activeTab = document.getElementById(`tab-${tabId}`);
+ const activeTab = document.getElementById(`tab-${tabId}`);
             if (activeTab) { activeTab.classList.add('text-slate-900', 'font-extrabold'); activeTab.classList.remove('text-slate-500', 'font-bold'); }
 
             if (tabId === 'classroom') setTimeout(initWhiteboard, 50);
