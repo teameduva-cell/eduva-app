@@ -12,8 +12,27 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    const { message } = req.body;
+    const { message, image } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+    // हर request में एक टेक्स्ट part तो हमेशा भेजेंगे
+    const parts = [{ text: message || 'Hello' }];
+
+    // अगर फोटो आई है, तो उसे भी Gemini के लिए सही format में जोड़ेंगे
+    if (image) {
+      // frontend से image "data:image/jpeg;base64,....." इस फॉर्मेट में आती है
+      const match = image.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/);
+      if (match) {
+        const mimeType = match[1];
+        const base64Data = match[2];
+        parts.push({
+          inline_data: {
+            mime_type: mimeType,
+            data: base64Data
+          }
+        });
+      }
+    }
 
     const response = await fetch(
       'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-lite:generateContent?key=' + GEMINI_API_KEY,
@@ -21,8 +40,8 @@ module.exports = async function handler(req, res) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          contents: [{ parts: [{ text: message || 'Hello' }] }],
-          generationConfig: { maxOutputTokens: 500, temperature: 0.7 }
+          contents: [{ parts }],
+          generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
         })
       }
     );
