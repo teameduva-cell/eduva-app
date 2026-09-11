@@ -1,0 +1,9 @@
+{
+  "name": "eduva-app",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EDUVA - Kota Smart Learning Hub (PWA) — Edu Sir AI Mentor",
+  "scripts": {
+    "dev": "vercel dev"
+  }
+}
