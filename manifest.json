@@ -1,0 +1,27 @@
+{
+  "name": "EDUVA - Kota Smart Learning Hub",
+  "short_name": "EDUVA",
+  "description": "AI आधारित पढ़ाई का साथी — डाउट्स, नोट्स, मॉक टेस्ट, सब एक जगह",
+  "start_url": "/?source=pwa",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0f172a",
+  "theme_color": "#1e3a8a",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "share_target": {
+    "action": "/",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "shared_title",
+      "text": "shared_text",
+      "url": "shared_url"
+    }
+  }
+}
