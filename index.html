@@ -360,13 +360,14 @@
             .chat-bubble { font-size: 16.5px !important; }
         }
 
-        /* ===== Scroll Safety (touch scroll har jagah smooth) ===== */
-        html, body { overflow-x: hidden; }
-        body { -webkit-overflow-scrolling: touch; }
-        #chat-messages, #header-more-menu, .notes-canvas-wrap, .overflow-y-auto {
-            touch-action: pan-y;
+        /* ===== Scroll Safety v2 — CONSERVATIVE (ye fix REAL hai) =====
+           पिछले version में -webkit-overflow-scrolling: touch BODY पर था — वो property
+           सिर्फ scrollable divs के लिए है; body पर lagne से कई Android phones पर
+           पूरा page scroll BLOCK हो जाता है! अब: clip (scroll container नहीं बनता) */
+        html { overflow-x: clip; }
+        body { overflow-x: clip; }
+        #chat-messages, #header-more-menu, .notes-canvas-wrap {
             -webkit-overflow-scrolling: touch;
-            overscroll-behavior: contain;
         }
 
         /* ===== IMMERSIVE FULLSCREEN DOUBT/CHAT (mobile only) ===== */
