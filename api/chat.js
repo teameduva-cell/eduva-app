@@ -11,6 +11,23 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // 🛡️ RATE LIMIT: per IP — 40 requests / minute (abuse se AI cost bachane ke liye)
+  try {
+    const nowTs = Date.now();
+    globalThis.__eduvaRL = globalThis.__eduvaRL || {};
+    const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'local').toString().split(',')[0].trim();
+    globalThis.__eduvaRL[ip] = (globalThis.__eduvaRL[ip] || []).filter(ts => nowTs - ts < 60000);
+    if (globalThis.__eduvaRL[ip].length >= 40) {
+      return res.status(429).json({ error: 'Bahut zyada requests — thoda ruk kar 1 minute baad try karo.' });
+    }
+    globalThis.__eduvaRL[ip].push(nowTs);
+  } catch (e) { /* rate limit fail ho toh request allow */ }
+
+  // Size guard — 6MB se bada payload reject
+  if (req.body && req.body.image && req.body.image.length > 6000000) {
+    return res.status(413).json({ error: 'Photo bahut badi hai — 4MB se chhoti photo bhejo.' });
+  }
+
   // Edu Sir की personality + कड़ी भाषा-नियमावली (frontend के rules का backup)
   const SYSTEM_PROMPT = `तुम "Edu Sir" हो — कोटा का प्यार भरा, high-energy mentor (22-24 साल का बड़ा भाई)।
 कड़े नियम:
