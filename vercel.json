@@ -4,5 +4,8 @@
       "path": "/api/daily-report",
       "schedule": "0 13 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/chat.js": { "maxDuration": 60 }
+  }
 }
