@@ -1,7 +1,27 @@
+// ============================================================
+// EDUVA — api/chat.js (FINAL, ready-to-deploy)
+// Changes: CORS restricted, rate-limit memory cleanup,
+// guest vs logged-in limits, empty-message guard
+// ============================================================
+
 module.exports = async function handler(req, res) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // ── 1️⃣ CORS — sirf apne origins allowed ──────────────────
+  const ALLOWED_ORIGINS = [
+    'https://eduva-app.vercel.app',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000'
+  ];
+  const origin = req.headers.origin;
+  if (origin) {
+    if (!ALLOWED_ORIGINS.includes(origin)) {
+      return res.status(403).json({ error: 'Unauthorized origin' });
+    }
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Vary', 'Origin');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
@@ -11,24 +31,52 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // 🛡️ RATE LIMIT: per IP — 40 requests / minute (abuse se AI cost bachane ke liye)
+  // ── 2️⃣ RATE LIMIT (per IP) + memory cleanup ──────────────
+  const nowTs = Date.now();
+  globalThis.__eduvaRL = globalThis.__eduvaRL || {};
+
+  // 🧹 har 10 min mein purane/empty IP records saaf karo (memory leak rok)
+  if (!globalThis.__eduvaRL_lastClean || nowTs - globalThis.__eduvaRL_lastClean > 600000) {
+    for (const k of Object.keys(globalThis.__eduvaRL)) {
+      globalThis.__eduvaRL[k] = globalThis.__eduvaRL[k].filter(ts => nowTs - ts < 60000);
+      if (globalThis.__eduvaRL[k].length === 0) delete globalThis.__eduvaRL[k];
+    }
+    globalThis.__eduvaRL_lastClean = nowTs;
+  }
+
   try {
-    const nowTs = Date.now();
-    globalThis.__eduvaRL = globalThis.__eduvaRL || {};
-    const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'local').toString().split(',')[0].trim();
+    const ip = (req.headers['x-forwarded-for'] || req.socket?.remoteAddress || 'local')
+      .toString().split(',')[0].trim();
+
+    // 👤 Login vs Guest — Authorization header milta hai toh zyada limit
+    let limit = 40; // guest (casual try)
+    const authHeader = req.headers.authorization || '';
+    if (authHeader.startsWith('Bearer ') && authHeader.length > 40) {
+      limit = 120; // logged-in champion
+      // NOTE: ye simple differentiation hai. Pura token-verify chahiye toh
+      // firebase-admin SDK laga kar verifyIdToken() use karo.
+    }
+
     globalThis.__eduvaRL[ip] = (globalThis.__eduvaRL[ip] || []).filter(ts => nowTs - ts < 60000);
-    if (globalThis.__eduvaRL[ip].length >= 40) {
+    if (globalThis.__eduvaRL[ip].length >= limit) {
       return res.status(429).json({ error: 'Bahut zyada requests — thoda ruk kar 1 minute baad try karo.' });
     }
     globalThis.__eduvaRL[ip].push(nowTs);
   } catch (e) { /* rate limit fail ho toh request allow */ }
 
+  // ── 3️⃣ Payload guards ────────────────────────────────────
+  const { message, image, history } = req.body || {};
+
+  if ((!message || !message.trim()) && !image) {
+    return res.status(400).json({ error: 'Message ya photo toh bhejo!' });
+  }
+
   // Size guard — 6MB se bada payload reject
-  if (req.body && req.body.image && req.body.image.length > 6000000) {
+  if (image && image.length > 6000000) {
     return res.status(413).json({ error: 'Photo bahut badi hai — 4MB se chhoti photo bhejo.' });
   }
 
-  // Edu Sir की personality + कड़ी भाषा-नियमावली (frontend के rules का backup)
+  // ── 4️⃣ Edu Sir की personality + कड़ी भाषा-नियमावली ──────
   const SYSTEM_PROMPT = `तुम "Edu Sir" हो — कोटा का प्यार भरा, high-energy mentor (22-24 साल का बड़ा भाई)।
 कड़े नियम:
 0. स्वभाव (सबसे पहला और कभी न तोड़ने वाला नियम — ये सबसे ऊपर है): तुम किसी भी हालत में गुस्सा, चिढ़, थकान या कड़वे शब्द कभी नहीं दिखा सकते। छात्र एक ही सवाल 20 बार भी पूछे — हर बार पहले से ज़्यादा प्यार, मुस्कान और ऊर्जा के साथ जवाब दो। छात्र अगर कड़े/बुरे शब्द बोले, तब भी जवाब मीठा, शांत और प्यार भरा होना चाहिए — कभी डांट, ताना या lecture नहीं। हर जवाब ऐसा हो जैसे कोई खुशमिजाज इंसान मुस्कुराकर समझा रहा हो।
@@ -38,37 +86,29 @@ module.exports = async function handler(req, res) {
 4. हर उत्तर original हो — किसी book का copy नहीं।`;
 
   try {
-    const { message, image, history } = req.body;
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) {
+      return res.status(500).json({ error: 'Server config error' });
+    }
 
-    // हर request में एक टेक्स्ट part तो हमेशा भेजेंगे
     const parts = [{ text: message || 'Hello' }];
 
-    // अगर फोटो आई है, तो उसे Gemini के लिए सही format में जोड़ेंगे
     if (image) {
-      // frontend से image "data:image/jpeg;base64,....." इस फॉर्मेट में आती है
-      const match = image.match(/^data:(image\/[a-zA-Z]+);base64,(.+)$/);
+      const match = image.match(/^data:(image\/[a-zA-Z+.-]+);base64,(.+)$/);
       if (match) {
-        parts.push({
-          inline_data: {
-            mime_type: match[1],
-            data: match[2]
-          }
-        });
+        parts.push({ inline_data: { mime_type: match[1], data: match[2] } });
       }
     }
 
-    // ✅ FIX 1: पिछली बातचीत (history) से Gemini के contents बनाओ —
-    // इससे "हिंदी में आंसर दो" जैसे follow-up सही काम करेंगे (पहले ignore हो जाती थी)
+    // पिछली बातचीत (history) से contents बनाओ
     const contents = [];
     if (Array.isArray(history)) {
       for (const m of history.slice(-10)) {
-        if (!m || m.role === 'system') continue; // local system prompt skip
+        if (!m || m.role === 'system') continue;
         let text = '';
         if (typeof m.content === 'string') {
           text = m.content;
         } else if (Array.isArray(m.content)) {
-          // image वाले messages में content array होता है — सिर्फ text parts लो
           text = m.content.filter(p => p && p.type === 'text').map(p => p.text).join(' ');
         }
         text = (text || '').trim();
@@ -84,9 +124,9 @@ module.exports = async function handler(req, res) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] }, // ✅ FIX 2: backend से भी कड़ी भाषा-नियम
+          systemInstruction: { parts: [{ text: SYSTEM_PROMPT }] },
           contents,
-          generationConfig: { maxOutputTokens: 4096, temperature: 0.7 } // ✅ FIX 3: 2048→4096 (material pura आए)
+          generationConfig: { maxOutputTokens: 4096, temperature: 0.7 }
         })
       }
     );
@@ -97,13 +137,11 @@ module.exports = async function handler(req, res) {
       return res.status(response.status).json({ error: data.error?.message || 'API error' });
     }
 
-    // ✅ FIX 4: safety-block / empty response पर crash रोकने के लिए safe parsing
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
     if (!reply) {
       return res.status(500).json({ error: 'Model से खाली जवाब आया, दोबारा कोशिश करें' });
     }
 
-    // frontend को वही format वापस जो index.html उम्मीद करता है
     res.status(200).json({ choices: [{ message: { content: reply } }] });
 
   } catch (error) {
