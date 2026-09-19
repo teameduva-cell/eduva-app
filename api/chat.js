@@ -1,10 +1,10 @@
 // ============================================================
-// EDUVA — api/chat.js v3 (CACHE + FALLBACK CHAIN)
-// Gemini → (retry) → Groq → OpenRouter | Q&A Cache bhi
+// EDUVA — api/chat.js v3.2 (CACHE + FULL FALLBACK CHAIN)
+// Gemini → (retry) → Groq → OpenRouter | Q&A Cache
 // ============================================================
 const crypto = require('crypto');
 const FS_PROJECT = 'eduva-app-5ecec';
-const FS_KEY = 'AIzaSyDO_fAFk8PITh9opzWXPIM_g7wd1NzXsHw';
+const FS_KEY = process.env.FS_KEY || 'AIzaSyDO_fAFk8PITh9opzWXPIM_g7wd1NzXsHw';
 
 const SYSTEM_PROMPT = `तुम "Edu Sir" हो — कोटा का प्यार भरा, high-energy mentor (22-24 साल का बड़ा भाई)।
 कड़े नियम:
@@ -66,12 +66,37 @@ async function askGroq(message) {
   const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
-    body: JSON.stringify({ model: 'llama-3.3-70b-versatile', messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: message }], max_tokens: 2048, temperature: 0.7 })
+    body: JSON.stringify({
+      model: process.env.GROQ_MODEL || 'openai/gpt-oss-120b',
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: message }],
+      max_tokens: 2048,
+      temperature: 0.7,
+      reasoning_effort: 'low'
+    })
   });
   const d = await r.json();
   if (!r.ok) throw new Error('groq ' + r.status);
   const text = d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
   if (!text) throw new Error('groq empty');
+  return text;
+}
+async function askOpenRouter(message) {
+  const key = process.env.OPENROUTER_API_KEY;
+  if (!key) throw new Error('no openrouter key');
+  const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
+    body: JSON.stringify({
+      model: process.env.OR_MODEL || 'google/gemini-2.0-flash-001',
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: message }],
+      max_tokens: 2048,
+      temperature: 0.7
+    })
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error('openrouter ' + r.status);
+  const text = d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content;
+  if (!text) throw new Error('openrouter empty');
   return text;
 }
 async function askAny(message, image) {
@@ -81,6 +106,7 @@ async function askAny(message, image) {
   try { return await askGemini(message, image); } catch (e) { errors.push(e.message); }
   if (!image) {
     try { return await askGroq(message); } catch (e) { errors.push(e.message); }
+    try { return await askOpenRouter(message); } catch (e) { errors.push(e.message); }
   }
   throw new Error(errors.join(' | '));
 }
@@ -98,7 +124,6 @@ module.exports = async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
-  // Firebase token verify (bot-proof limits)
   let isVerifiedUser = false;
   try {
     const ah = req.headers.authorization || '';
@@ -108,7 +133,6 @@ module.exports = async function handler(req, res) {
     }
   } catch (e) {}
 
-  // Rate limit
   const nowTs = Date.now();
   globalThis.__eduvaRL = globalThis.__eduvaRL || {};
   if (!globalThis.__eduvaRL_lastClean || nowTs - globalThis.__eduvaRL_lastClean > 600000) {
@@ -126,14 +150,12 @@ module.exports = async function handler(req, res) {
     globalThis.__eduvaRL[ip].push(nowTs);
   } catch (e) {}
 
-  // Payload guards
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
   const { message, image } = body;
   if ((!message || !String(message).trim()) && !image) return res.status(400).json({ error: 'Message ya photo toh bhejo!' });
   if (image && image.length > 6000000) return res.status(413).json({ error: 'Photo bahut badi hai — 4MB se chhoti bhejo.' });
   const msg = String(message || '').trim();
 
-  // CACHE CHECK
   let cacheId = null;
   if (msg.length >= 10 && !image) {
     cacheId = cacheKey(msg);
