@@ -5246,7 +5246,7 @@ ${logText}
         const ABUSE_LIST = [
             // Hindi abuse
             'kutte','kutta','kamina','kamine','harami','madarchod','bhenchod','bhosdike','bhosdi',
-            'chutiya','chutye','gaand','gandu','gand','randi','lavde','laude','loda','bsdk','mc','bc',
+            'chutiya','chutye','gaand','gandu','gand','randi','lavde','laude','loda','bsdk',
             'chod','lund','choot','bhosdiki','rand','haraam',
             // English abuse
             'fuck','fuk','bitch','bastard','asshole','dick','cock','pussy','whore','slut','nigga',
@@ -5255,7 +5255,7 @@ ${logText}
             'vagina','penis','bra','panty','masturbate','orgasm','nude pic','hot pic'
         ];
 
-        function eduvaSafetyCheck(text) {
+        function eduvaSafetyCheck(text, countStrike) {
             const t = ' ' + text.toLowerCase().replace(/[\s\.\,\!\?]+/g, ' ') + ' ';
             const bad = ABUSE_LIST.some(w => t.includes(' ' + w + ' '));
             let st = {};
@@ -5279,6 +5279,7 @@ ${logText}
             }
 
             // गाली/गंदी बात मिली
+            if (countStrike === false) return { strike: true, msg: '' };
             st.strikes = (st.strikes || 0) + 1;
             st.lastBad = now;
 
@@ -9277,7 +9278,7 @@ RULES FOR EDU SIR:
             // 🚨 MODERATION: gaali/gandi baat bank mein KABHI nahi
             const checkText = ((entry.q || '') + ' ' + (entry.a || '')).trim();
             if (checkText) {
-                const s = eduvaSafetyCheck(checkText);
+                const s = eduvaSafetyCheck(checkText, false);
                 if (s.blocked || s.strike) { console.warn('bankSave: blocked'); return; }
             }
             // 🏅 contributor count
