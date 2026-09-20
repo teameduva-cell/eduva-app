@@ -1,6 +1,7 @@
 // ============================================================
-// EDUVA — api/chat.js v3.2 (CACHE + FULL FALLBACK CHAIN)
-// Gemini → (retry) → Groq → OpenRouter | Q&A Cache
+// EDUVA — api/chat.js v3.3 (CACHE + FULL FALLBACK CHAIN + FIXES)
+// Gemini → (retry) → Groq → OpenRouter | Photo: Gemini → OpenRouter-Vision
+// FIXES: (1) OpenRouter :free model default (2) photo fallback (3) cache TTL 30 din
 // ============================================================
 const crypto = require('crypto');
 const FS_PROJECT = 'eduva-app-5ecec';
@@ -28,6 +29,9 @@ async function cacheGet(id) {
     const r = await fetchT(`https://firestore.googleapis.com/v1/projects/${FS_PROJECT}/databases/(default)/documents/qaCache/${id}?key=${FS_KEY}`, {}, 3000);
     if (!r.ok) return null;
     const d = await r.json();
+    // FIX 3: cache TTL — 30 din purana jawab = miss (galat/purana content refresh hoga)
+    const t = d.fields && d.fields.t && Number(d.fields.t.integerValue);
+    if (t && Date.now() - t > 30 * 86400000) return null;
     return (d.fields && d.fields.a && d.fields.a.stringValue) || null;
   } catch (e) { return null; }
 }
@@ -80,15 +84,22 @@ async function askGroq(message) {
   if (!text) throw new Error('groq empty');
   return text;
 }
-async function askOpenRouter(message) {
+async function askOpenRouter(message, image) {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) throw new Error('no openrouter key');
+  // FIX 1: default ab ':free' model — bina credits ke bhi chalega
+  const model = process.env.OR_MODEL || 'google/gemini-2.0-flash-001:free';
+  let userContent = message;
+  if (image) {
+    // FIX 2: photo doubts ka bhi backup — vision model (dataURL direct bhejte hain)
+    userContent = [{ type: 'text', text: message }, { type: 'image_url', image_url: { url: image } }];
+  }
   const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({
-      model: process.env.OR_MODEL || 'google/gemini-2.0-flash-001',
-      messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: message }],
+      model: model,
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, { role: 'user', content: userContent }],
       max_tokens: 2048,
       temperature: 0.7
     })
@@ -106,8 +117,9 @@ async function askAny(message, image) {
   try { return await askGemini(message, image); } catch (e) { errors.push(e.message); }
   if (!image) {
     try { return await askGroq(message); } catch (e) { errors.push(e.message); }
-    try { return await askOpenRouter(message); } catch (e) { errors.push(e.message); }
   }
+  // Groq text-only hai — photo/text dono ke liye OpenRouter last resort (ab vision bhi)
+  try { return await askOpenRouter(message, image); } catch (e) { errors.push(e.message); }
   throw new Error(errors.join(' | '));
 }
 
