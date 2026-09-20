@@ -1500,7 +1500,7 @@
                 <div id="offline-qa-box"></div>
                 <div id="chat-messages" class="flex-1 overflow-y-auto px-3 sm:px-6 py-4 space-y-4 hide-scrollbar">
                     <div class="flex items-start space-x-3 max-w-2xl">
-                        <div class="w-8 h-8 rounded-full ink-navy text-white flex items-center justify-center shrink-0 font-bold text-[10px]">ES</div>
+                        <img src="/edu-sir.png" alt="Edu Sir" class="w-8 h-8 rounded-full ink-navy   shrink-0 object-cover">
                         <div class="space-y-2 min-w-0">
                             <div id="chat-welcome-msg" class="chat-bubble-gpt bg-slate-100 p-4 rounded-2xl rounded-tl-md text-sm sm:text-base text-slate-800 leading-relaxed">
                                 जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो — तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
@@ -5254,7 +5254,7 @@
             container.scrollTop = container.scrollHeight;
 
             const lid = 'pl-' + Date.now();
-            container.innerHTML += `<div id="${lid}" class="flex items-start space-x-3"><div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">ES</div><div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir hint सोच रहे हैं...</div></div>`;
+            container.innerHTML += `<div id="${lid}" class="flex items-start space-x-3"><img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 object-cover"><div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir hint सोच रहे हैं...</div></div>`;
             container.scrollTop = container.scrollHeight;
 
             try {
@@ -5307,7 +5307,7 @@ ${logText}
                 const counter = (practiceState && status !== 'CORRECT') ? ` • Hint ${practiceState.hintsUsed}/4 · Trials ${practiceState.wrong}/4` : '';
                 container.innerHTML += `
                     <div class="flex items-start space-x-3 max-w-3xl animate-fadeIn">
-                        <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 font-bold text-xs">ES</div>
+                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 object-cover">
                         <div class="space-y-3 w-full">
                             <span class="inline-block px-3 py-1 rounded-full text-[11px] font-black border ${colors[status] || colors.HINT}">${badges[status] || badges.HINT}${counter}</span>
                             <div id="${mid}" class="bg-white border border-slate-200 chat-bubble p-5 sm:p-6 rounded-3xl rounded-tl-sm text-base sm:text-lg text-slate-900 shadow-xs leading-relaxed">${mdParse(reply)}</div>
@@ -5383,7 +5383,7 @@ ${logText}
 
         function addEduSirSystemBubble(html) {
             const container = document.getElementById('chat-messages');
-            container.innerHTML += `<div class="flex items-start space-x-3 animate-fadeIn"><div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 font-bold text-xs shadow-md">ES</div><div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-amber-900 font-semibold max-w-[88%]">${html}</div></div>`;
+            container.innerHTML += `<div class="flex items-start space-x-3 animate-fadeIn"><img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0   shadow-md object-cover"><div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-amber-900 font-semibold max-w-[88%]">${html}</div></div>`;
             container.scrollTop = container.scrollHeight;
         }
         /* ================= END SAFETY ENGINE ================= */
@@ -7579,7 +7579,7 @@ RULES FOR EDU SIR:
             const holdId = 'ocr-hold-' + Date.now();
             container.innerHTML += `
                 <div id="${holdId}" class="flex items-start space-x-3">
-                    <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                    <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
                     <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> फोटो पढ़ रहा हूँ...</div>
                 </div>`;
             container.scrollTop = container.scrollHeight;
@@ -7603,7 +7603,7 @@ RULES FOR EDU SIR:
                 const prefill = typedText ? (readQ + '\n\n' + typedText) : readQ;
                 container.innerHTML += `
                     <div id="${confirmId}" class="flex items-start space-x-3 max-w-3xl">
-                        <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
                         <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-slate-800 font-medium w-full space-y-3">
                             <p class="font-black text-amber-900">📷 मैंने फोटो में ये सवाल पढ़ा है — सही है ना चैंपियन? ज़रूरत हो तो नीचे ठीक कर लो:</p>
                             <textarea id="${confirmId}-text" class="w-full border border-amber-300 rounded-xl p-3 text-sm font-medium bg-white outline-none" rows="3">${escHtml(prefill)}</textarea>
@@ -7704,7 +7704,7 @@ RULES FOR EDU SIR:
             const loadingId = 'loading-' + Date.now();
             container.innerHTML += `
                 <div id="${loadingId}" class="flex items-start space-x-3">
-                    <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                    <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
                     <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir लिख रहे हैं...</div>
                 </div>
             `;
@@ -7795,7 +7795,7 @@ RULES FOR EDU SIR:
 
                 container.innerHTML += `
                     <div class="flex items-start space-x-3 max-w-3xl">
-                        <div class="w-10 h-10 rounded-xl ink-navy text-white flex items-center justify-center shrink-0 shadow-md font-bold text-xs">ES</div>
+                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
                         <div class="space-y-3 w-full">
                             <div id="${messageId}" class="bg-white border border-slate-200 chat-bubble p-5 sm:p-6 rounded-3xl rounded-tl-sm text-base sm:text-lg text-slate-900 shadow-xs leading-relaxed">
                                 ${mdParse(reply)}
