@@ -1,0 +1,10 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "app.vercel.eduva_app.twa",
+      "sha256_cert_fingerprints": ["CB:69:D4:0D:91:38:8E:96:87:AB:07:BA:43:DA:36:92:A1:DB:02:00:56:57:10:8A:E7:29:7B:F9:8C:6C:3F:33"]
+    }
+  }
+]
