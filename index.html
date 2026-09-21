@@ -1500,7 +1500,7 @@
                 <div id="offline-qa-box"></div>
                 <div id="chat-messages" class="flex-1 overflow-y-auto px-3 sm:px-6 py-4 space-y-4 hide-scrollbar">
                     <div class="flex items-start space-x-3 max-w-2xl">
-                        <img src="/edu-sir.png" alt="Edu Sir" class="w-8 h-8 rounded-full ink-navy   shrink-0 object-cover">
+                        <div class="w-8 h-8 text-[10px] rounded-full bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                         <div class="space-y-2 min-w-0">
                             <div id="chat-welcome-msg" class="chat-bubble-gpt bg-slate-100 p-4 rounded-2xl rounded-tl-md text-sm sm:text-base text-slate-800 leading-relaxed">
                                 जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो — तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
@@ -1538,6 +1538,57 @@
                         <span style="font-size:18px;opacity:.7;">›</span>
                     </a>
                 </div>
+
+                <!-- 📓 Doubt Diary -->
+<div style="margin:10px 12px 0;">
+                    <button onclick="openDiary()" style="width:100%;display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#0f3c7d,#155e75);color:#fff;border:none;border-radius:14px;padding:11px 14px;cursor:pointer;text-align:left;">
+                        <span style="font-size:20px;">📓</span>
+                        <span style="flex:1;font-weight:800;font-size:14px;">Doubt Diary <span style="font-weight:400;font-size:11px;opacity:.85;">— tere pooche gaye doubts, hamesha yahan</span></span>
+                        <span id="diary-count" style="background:#ffd54a;color:#5a3d00;border-radius:14px;padding:2px 10px;font-size:12px;font-weight:900;">0</span>
+                    </button>
+                </div>
+                <script>
+                (function () {
+                    function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+                    function diaryList() { try { return JSON.parse(localStorage.getItem('eduva_doubt_diary_v1') || '[]'); } catch (e) { return []; } }
+                    window.updateDiaryBadge = function () { var b = document.getElementById('diary-count'); if (b) b.textContent = diaryList().length; };
+                    window.saveToDiary = function (q, a) {
+                        try {
+                            var d = diaryList();
+                            d.unshift({ q: String(q || '').slice(0, 300), a: String(a || '').slice(0, 4000), t: Date.now() });
+                            if (d.length > 100) d.length = 100;
+                            localStorage.setItem('eduva_doubt_diary_v1', JSON.stringify(d));
+                            window.updateDiaryBadge();
+                        } catch (e) {}
+                    };
+                    window.openDiary = function () {
+                        window.closeDiary();
+                        var d = diaryList();
+                        var items = d.length ? d.map(function (x) {
+                            var dt = new Date(x.t);
+                            var when = dt.getDate() + '/' + (dt.getMonth() + 1) + ' ' + dt.getHours() + ':' + (dt.getMinutes() < 10 ? '0' : '') + dt.getMinutes();
+                            return '<details style="background:#fff;border-radius:12px;margin:8px 0;box-shadow:0 2px 8px rgba(0,0,0,.12);overflow:hidden;">'
+                                + '<summary style="padding:12px 14px;font-weight:800;font-size:14px;color:#1c2333;cursor:pointer;">📌 ' + esc(x.q.slice(0, 120)) + ' <span style="float:right;font-weight:400;font-size:11px;color:#8a94ab;">' + when + '</span></summary>'
+                                + '<div style="padding:0 14px 12px;font-size:13px;color:#334155;white-space:pre-wrap;line-height:1.6;max-height:220px;overflow-y:auto;">' + esc(x.a) + '</div>'
+                                + '</details>';
+                        }).join('') : '<p style="color:#475569;text-align:center;padding:30px;">Abhi koi doubt nahi poocha — chat mein pehla doubt poochho!</p>';
+                        var overlay = document.createElement('div');
+                        overlay.id = 'doubt-diary-overlay';
+                        overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,15,35,.75);z-index:95;display:flex;align-items:center;justify-content:center;padding:16px;';
+                        overlay.innerHTML = '<div style="background:#f4f6fb;width:100%;max-width:560px;max-height:82vh;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;">'
+                            + '<div style="background:linear-gradient(135deg,#0f3c7d,#2b6de0);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;">'
+                            + '<strong style="font-size:17px;flex:1;">📓 Doubt Diary</strong>'
+                            + (d.length ? '<button onclick="clearDiary()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:10px;padding:6px 10px;font-size:12px;font-weight:700;cursor:pointer;">Sab saaf karo</button>' : '')
+                            + '<button onclick="closeDiary()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:10px;width:34px;height:34px;font-size:18px;cursor:pointer;">X</button></div>'
+                            + '<div style="overflow-y:auto;padding:10px 14px;flex:1;">' + items + '</div></div>';
+                        overlay.addEventListener('click', function (e) { if (e.target === overlay) window.closeDiary(); });
+                        document.body.appendChild(overlay);
+                    };
+                    window.closeDiary = function () { var o = document.getElementById('doubt-diary-overlay'); if (o) o.remove(); };
+                    window.clearDiary = function () { try { localStorage.removeItem('eduva_doubt_diary_v1'); } catch (e) {} window.updateDiaryBadge(); window.openDiary(); };
+                    window.updateDiaryBadge();
+                })();
+                </script>
 
                 <!-- Input bar -->
                 <div class="p-2.5 shrink-0">
@@ -4217,8 +4268,12 @@
             return DOMPurify.sanitize(html, {
                 ALLOWED_TAGS: ['p','br','strong','em','b','i','u','s','h1','h2','h3','h4',
                                'ul','ol','li','blockquote','code','pre','a','img','hr',
-                               'table','thead','tbody','tr','th','td','sup','sub','span'],
-                ALLOWED_ATTR: ['href','src','alt','title','class','target','rel','colspan','rowspan'],
+                               'table','thead','tbody','tr','th','td','sup','sub','span',
+                               'svg','g','line','circle','rect','polygon','polyline','path','text'],
+                ALLOWED_ATTR: ['href','src','alt','title','class','target','rel','colspan','rowspan',
+                               'viewBox','points','cx','cy','r','x','y','x1','y1','x2','y2',
+                               'd','fill','stroke','stroke-width','stroke-dasharray','width','height',
+                               'text-anchor','font-size','font-weight','opacity','transform'],
                 ALLOW_DATA_ATTR: false
             });
         }
@@ -5254,7 +5309,7 @@
             container.scrollTop = container.scrollHeight;
 
             const lid = 'pl-' + Date.now();
-            container.innerHTML += `<div id="${lid}" class="flex items-start space-x-3"><img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 object-cover"><div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir hint सोच रहे हैं...</div></div>`;
+            container.innerHTML += `<div id="${lid}" class="flex items-start space-x-3"><div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div><div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir hint सोच रहे हैं...</div></div>`;
             container.scrollTop = container.scrollHeight;
 
             try {
@@ -5307,7 +5362,7 @@ ${logText}
                 const counter = (practiceState && status !== 'CORRECT') ? ` • Hint ${practiceState.hintsUsed}/4 · Trials ${practiceState.wrong}/4` : '';
                 container.innerHTML += `
                     <div class="flex items-start space-x-3 max-w-3xl animate-fadeIn">
-                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 object-cover">
+                        <div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                         <div class="space-y-3 w-full">
                             <span class="inline-block px-3 py-1 rounded-full text-[11px] font-black border ${colors[status] || colors.HINT}">${badges[status] || badges.HINT}${counter}</span>
                             <div id="${mid}" class="bg-white border border-slate-200 chat-bubble p-5 sm:p-6 rounded-3xl rounded-tl-sm text-base sm:text-lg text-slate-900 shadow-xs leading-relaxed">${mdParse(reply)}</div>
@@ -5383,7 +5438,7 @@ ${logText}
 
         function addEduSirSystemBubble(html) {
             const container = document.getElementById('chat-messages');
-            container.innerHTML += `<div class="flex items-start space-x-3 animate-fadeIn"><img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0   shadow-md object-cover"><div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-amber-900 font-semibold max-w-[88%]">${html}</div></div>`;
+            container.innerHTML += `<div class="flex items-start space-x-3 animate-fadeIn"><div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div><div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-amber-900 font-semibold max-w-[88%]">${html}</div></div>`;
             container.scrollTop = container.scrollHeight;
         }
         /* ================= END SAFETY ENGINE ================= */
@@ -7579,7 +7634,7 @@ RULES FOR EDU SIR:
             const holdId = 'ocr-hold-' + Date.now();
             container.innerHTML += `
                 <div id="${holdId}" class="flex items-start space-x-3">
-                    <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
+                    <div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                     <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> फोटो पढ़ रहा हूँ...</div>
                 </div>`;
             container.scrollTop = container.scrollHeight;
@@ -7603,7 +7658,7 @@ RULES FOR EDU SIR:
                 const prefill = typedText ? (readQ + '\n\n' + typedText) : readQ;
                 container.innerHTML += `
                     <div id="${confirmId}" class="flex items-start space-x-3 max-w-3xl">
-                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
+                        <div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                         <div class="bg-amber-50 border border-amber-200 p-4 rounded-2xl text-sm sm:text-base text-slate-800 font-medium w-full space-y-3">
                             <p class="font-black text-amber-900">📷 मैंने फोटो में ये सवाल पढ़ा है — सही है ना चैंपियन? ज़रूरत हो तो नीचे ठीक कर लो:</p>
                             <textarea id="${confirmId}-text" class="w-full border border-amber-300 rounded-xl p-3 text-sm font-medium bg-white outline-none" rows="3">${escHtml(prefill)}</textarea>
@@ -7704,7 +7759,7 @@ RULES FOR EDU SIR:
             const loadingId = 'loading-' + Date.now();
             container.innerHTML += `
                 <div id="${loadingId}" class="flex items-start space-x-3">
-                    <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
+                    <div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                     <div class="bg-white border border-slate-200 p-4 rounded-2xl text-sm sm:text-base text-slate-700 font-medium"><span class="eduva-typing"><i></i><i></i><i></i></span> Edu Sir लिख रहे हैं...</div>
                 </div>
             `;
@@ -7783,6 +7838,8 @@ RULES FOR EDU SIR:
                     localStorage.setItem('eduva_offline_qa', JSON.stringify(qa.slice(0, 30)));
                 } catch (e) {}
                 renderOfflineBox();
+                // 📓 DOUBT DIARY — bachche ka personal doubt itihas
+                try { if (window.saveToDiary) saveToDiary(text, reply); } catch (e) {}
                 // 📚 CONTENT BANK: achha/substantial Q&A auto-save (tumhara material tayyar hota rahe)
                 if (text && text.length > 10 && reply.length > 150) {
                     bankSave({ type: 'qa', q: text.slice(0, 500), a: reply.slice(0, 4000), cls: (getStudentProfile().cls || ''), goal: currentStudentGoal, lang: currentLanguageId });
@@ -7795,7 +7852,7 @@ RULES FOR EDU SIR:
 
                 container.innerHTML += `
                     <div class="flex items-start space-x-3 max-w-3xl">
-                        <img src="/edu-sir.png" alt="Edu Sir" class="w-10 h-10 rounded-xl ink-navy   shrink-0 shadow-md object-cover">
+                        <div class="w-10 h-10 text-xs rounded-xl bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                         <div class="space-y-3 w-full">
                             <div id="${messageId}" class="bg-white border border-slate-200 chat-bubble p-5 sm:p-6 rounded-3xl rounded-tl-sm text-base sm:text-lg text-slate-900 shadow-xs leading-relaxed">
                                 ${mdParse(reply)}
@@ -11052,23 +11109,499 @@ LaTeX ($) बिल्कुल नहीं।`;
             '7':  [{ s: 'गणित', e: '🧮', ch: 'सरल समीकरण', c: '#2563eb' }, { s: 'विज्ञान', e: '🔬', ch: 'पोषण एवं श्वसन', c: '#059669' }, { s: 'English', e: '📖', ch: 'Active / Passive Voice', c: '#7c3aed' }],
             '8':  [{ s: 'गणित', e: '🧮', ch: 'घन एवं घनमूल', c: '#2563eb' }, { s: 'विज्ञान', e: '🔬', ch: 'बल एवं दाब', c: '#059669' }, { s: 'English', e: '📖', ch: 'Essay Writing', c: '#7c3aed' }],
             '9':  [{ s: 'गणित', e: '📐', ch: 'बहुपद (Polynomials)', c: '#2563eb' }, { s: 'विज्ञान', e: '⚗️', ch: 'गति एवं बल', c: '#059669' }, { s: 'सामाजिक विज्ञान', e: '🌍', ch: 'अंग्रेजों का शासन', c: '#d97706' }],
-            '10': [{ s: 'गणित', e: '📐', ch: 'द्विघात समीकरण', c: '#7c3aed' }, { s: 'विज्ञान', e: '⚗️', ch: 'रासायनिक अभिक्रियाएँ', c: '#059669' }, { s: 'सामाजिक विज्ञान', e: '🌍', ch: 'राष्ट्रवाद', c: '#d97706' }],
             '11': [{ s: 'भौतिकी', e: '⚛️', ch: 'गति की समीकरण', c: '#2563eb' }, { s: 'रसायन', e: '⚗️', ch: 'परमाणु संरचना', c: '#059669' }, { s: 'गणित', e: '📐', ch: 'त्रिकोणमितीय फलन', c: '#7c3aed' }],
             '12': [{ s: 'भौतिकी', e: '⚛️', ch: 'विद्युत धारा', c: '#2563eb' }, { s: 'रसायन', e: '⚗️', ch: 'विलयन', c: '#059669' }, { s: 'गणित', e: '📐', ch: 'समाकलन', c: '#7c3aed' }]
         };
+
+        // 📚 CLASS 10 — POORA CURRICULUM (Phase 1). Baaki classes Phase 2 mein expand hongi.
+        var CHAPTER_DATA = {
+            '6': {
+                'Maths': { e: '🧮', c: '#2563eb', chapters: [
+                    ['संख्याओं की जानकारी',' place value | round off'],
+                    ['पूर्णांक (Whole)','0,1,2,3... | number line'],
+                    ['संख्याओं से खेलना','HCF/LCM | divisibility'],
+                    ['ज्यामितीय आकृतियाँ','बिंदु, रेखा, कोण'],
+                    ['प्रारंभिक आकृतियाँ','त्रिभुज, चतुर्भुज प्रकार'],
+                    ['पूर्णांक (Integers)','+, − संख्याएँ | number line'],
+                    ['भिन्न','a/b रूप | equivalent'],
+                    ['दशमलव','place value | जोड़-घटाव'],
+                    ['आंकड़ों का प्रबंधन','bar graph | mean'],
+                    ['क्षेत्रमिति','perimeter, area'],
+                    ['बीजगणित','चर, व्यंजक'],
+                    ['अनुपात और समानुपात','a:b | unitary'],
+                    ['सममिति','line symmetry'],
+                    ['व्यावहारिक ज्यामिति','ruler-compass निर्माण']
+                ]},
+                'Science': { e: '🔬', c: '#059669', chapters: [
+                    ['भोजन कहाँ से आता है','sources | nutrients'],
+                    ['भोजन के घटक','carbs, proteins, vitamins'],
+                    ['तंतु से वस्त्र तक','natural/synthetic fibres'],
+                    ['पदार्थों के समूह','metal, non-metal'],
+                    ['पदार्थों का पृथक्करण','filtration, evaporation'],
+                    ['आसपास के परिवर्तन','reversible/irreversible'],
+                    ['पौधों को जानिए','parts | herbs, shrubs'],
+                    ['शरीर में गति','bones, joints'],
+                    ['सजीव एवं पर्यावरण','habitat, adaptation'],
+                    ['गति और दूरी मापन','speed = दूरी/समय'],
+                    ['प्रकाश-छाया-परावर्तन','shadow | ∠i=∠r'],
+                    ['विद्युत और परिपथ','conductor, insulator'],
+                    ['चुंबकों का आनंद','poles | attraction'],
+                    ['जल','cycle, conservation'],
+                    ['हवा','atmosphere layers'],
+                    ['कचरा संग्रहण','reduce, reuse, recycle']
+                ]},
+                'सामाजिक विज्ञान': { e: '🌍', c: '#d97706', chapters: [
+                    ['क्या, कब, कैसे','इतिहास की समझ'],
+                    ['मानवीय सभ्यताएँ','नदी घाटी'],
+                    ['राजाओं और धर्म','प्राचीन भारत'],
+                    ['भक्ति और सूफी','मध्यकाल'],
+                    ['विविधता और लोकतंत्र','समाज में मतभेद'],
+                    ['सरकार क्या करती है','कार्य और शाखाएँ'],
+                    ['सौरमंडल और ग्लोब','ग्रह, अक्षांश'],
+                    ['मानचित्र कैसे पढ़ें','symbols, scale'],
+                    ['भारत: भूमि और जल','स्थिति, पड़ोसी देश']
+                ]},
+                'English': { e: '📖', c: '#7c3aed', chapters: [
+                    ['A Tale of Two Birds','moral story'],
+                    ['The Friendly Mongoose','trust and fear'],
+                    ['Taro’s Reward','hard work pays']
+                ]},
+                'Hindi': { e: '📚', c: '#dc2626', chapters: [
+                    ['वह चिड़िया जो','निदा फ़ाज़ली'],
+                    ['बचपन','कुसुमाग्रज'],
+                    ['मीरा का पद','भक्ति काव्य']
+                ]}
+            },
+            '7': {
+                'Maths': { e: '🧮', c: '#2563eb', chapters: [
+                    ['पूर्णांक','add, subtract | number line'],
+                    ['भिन्न एवं दशमलव','operations | applications'],
+                    ['आंकड़ों का प्रबंधन','mean, median, mode'],
+                    ['सरल समीकरण','x + a = b हल'],
+                    ['रेखाएँ और कोण','types of angles'],
+                    ['त्रिभुज और गुणधर्म','angle sum = 180°'],
+                    ['तुलना करना','profit%, loss%'],
+                    ['परिमेय संख्याएँ','p/q रूप | number line'],
+                    ['परिमाप और क्षेत्रफल','rectangle, square'],
+                    ['बीजीय व्यंजक','terms, coefficients'],
+                    ['घातांक और घात','laws of exponents'],
+                    ['सममिति','rotational symmetry'],
+                    ['ठोस आकारों की कल्पना','nets | cube, cuboid']
+                ]},
+                'Science': { e: '🔬', c: '#059669', chapters: [
+                    ['पोषण','carbs, proteins'],
+                    ['अम्ल, क्षार, लवण','indicators, pH'],
+                    ['ऊष्मा','conduction, convection'],
+                    ['गति और समय','speed = d/t'],
+                    ['विद्युत','current, circuits'],
+                    ['रोशनी','reflection, images'],
+                    ['मानव तंत्र','organs, systems'],
+                    ['पौधे','photosynthesis'],
+                    ['मौसम और जलवायु','monsoon'],
+                    ['मिट्टी','types, crops'],
+                    ['श्वसन','aerobic, anaerobic'],
+                    ['परिवहन','blood, xylem'],
+                    ['उत्सर्जन','kidney, sweat']
+                ]},
+                'सामाजिक विज्ञान': { e: '🌍', c: '#d97706', chapters: [
+                    ['अध्याय 1: मध्यकाल','sources of history'],
+                    ['नई किंडम और साम्राज्य','राजपूत, चोल'],
+                    ['दिल्ली सल्तनत','administration'],
+                    ['मुगल साम्राज्य','Akbar की नीतियाँ'],
+                    ['लोकतंत्र के सिद्धांत','equality, justice'],
+                    ['विधानमंडल','Lok Sabha, Rajya Sabha'],
+                    ['भारत का वातावरण','climate, monsoon'],
+                    ['अंदरूनी जल','rivers, lakes'],
+                    ['बाजार के आसपास','trade, shops']
+                ]},
+                'English': { e: '📖', c: '#7c3aed', chapters: [
+                    ['Three Questions','Tolstoy ki kahani'],
+                    ['A Gift of Chappals','humour, kindness'],
+                    ['The Ashes That Made Trees Bloom','Japanese tale']
+                ]},
+                'Hindi': { e: '📚', c: '#dc2626', chapters: [
+                    ['हम पंछी उन्मुक्त गगन के','स्वतंत्रता की कविता'],
+                    ['दादी माँ','कुसुमाग्रज'],
+                    ['हिमालय की बेटियाँ','नारी शक्ति']
+                ]}
+            },
+            '8': {
+                'Maths': { e: '🧮', c: '#2563eb', chapters: [
+                    ['परिमेय संख्याएँ','closure, commutativity'],
+                    ['एक चर रेखिक समीकरण','ax + b = c'],
+                    ['चतुर्भुज','angles | parallelogram'],
+                    ['आंकड़ों का प्रबंधन','pie chart, histogram'],
+                    ['वर्ग और वर्गमूल','√ निकालना'],
+                    ['घन और घनमूल','cube roots'],
+                    ['तुलना करना','compound interest'],
+                    ['बीजीय व्यंजक और सर्वसमिकाएँ','(a+b)² family'],
+                    ['क्षेत्रमिति','trapezium, polygon'],
+                    ['घातांक और घात','negative exponents'],
+                    ['सीधा/व्युत्क्रम समानुपात','proportion'],
+                    ['गुणनखंड','common factors'],
+                    ['आलेखों से परिचय','line graph']
+                ]},
+                'Science': { e: '🔬', c: '#059669', chapters: [
+                    ['फसल उत्पादन','kharif, rabi'],
+                    ['सूक्ष्मजीव','virus, bacteria'],
+                    ['कोयला-पेट्रोल-ईंधन','fossil fuels'],
+                    ['ज्वालन (दहन)','flammable, ignition'],
+                    ['ऊष्मा','conductor, insulator'],
+                    ['बल और दाब','P = F/A'],
+                    ['घर्षण','types | uses'],
+                    ['ध्वनि','vibration | amplitude'],
+                    ['रासायनिक प्रभाव','electrolysis'],
+                    ['विद्युत','Ohm | circuits'],
+                    ['प्रकाश','reflection | mirrors'],
+                    ['प्राकृतिक परिघटनाएँ','lightning, earthquake']
+                ]},
+                'सामाजिक विज्ञान': { e: '🌍', c: '#d97706', chapters: [
+                    ['आधुनिक भारत','British rule शुरुआत'],
+                    ['1857 की क्रांति','causes, results'],
+                    ['समाज सुधार','Raja Ram Mohan Roy'],
+                    ['स्वतंत्रता आंदोलन','Gandhi era'],
+                    ['संविधान और न्याय','Preamble, courts'],
+                    ['संसद','functions, sessions'],
+                    ['संघवाद','centre-state'],
+                    ['भारत की जलवायु','monsoon mechanism'],
+                    ['कृषि और उद्योग','types, zones']
+                ]},
+                'English': { e: '📖', c: '#7c3aed', chapters: [
+                    ['The Best Christmas Present','moral story'],
+                    ['The Ant and the Cricket','poem: hard work'],
+                    ['The Tsunami','courage, humanity']
+                ]},
+                'Hindi': { e: '📚', c: '#dc2626', chapters: [
+                    ['लाख की चूड़ियाँ','रामकुमार वर्मा'],
+                    ['बस की यात्रा','हरिशंकर परसाई'],
+                    ['दीवानों की हस्ती','कबीर के दोहे']
+                ]}
+            },
+            '9': {
+                'Maths': { e: '📐', c: '#2563eb', chapters: [
+                    ['वास्तविक संख्याएँ','irrational numbers'],
+                    ['बहुपद','zeroes, factor theorem'],
+                    ['निर्देशांक ज्यामिति','axes, quadrants'],
+                    ['दो चर रेखिक समीकरण','ax + by + c = 0'],
+                    ['रेखाएँ और कोण','linear pair | vertically opposite'],
+                    ['त्रिभुज','congruence rules'],
+                    ['चतुर्भुज','parallelogram properties'],
+                    ['वृत्त','chord, arc, angle'],
+                    ['हीरोन का सूत्र','area = √[s(s−a)...]'],
+                    ['पृष्ठीय क्षेत्रफल-आयतन','cube, cylinder, cone'],
+                    ['सांख्यिकी','mean, median, mode']
+                ]},
+                'Science': { e: '⚗️', c: '#059669', chapters: [
+                    ['पदार्थ की अवस्थाएँ','solid, liquid, gas'],
+                    ['पदार्थ शुद्ध हैं?','mixtures, solutions'],
+                    ['परमाणु और अणु','mole concept'],
+                    ['परमाणु की संरचना','electron shells'],
+                    ['जीवन की मौलिक इकाई','cell, organelles'],
+                    ['ऊतक','plant, animal tissues'],
+                    ['गति','v = s/t | graphs'],
+                    ['बल और गति के नियम','Newton ke niyam'],
+                    ['गुरुत्वाकर्षण','g = 9.8 m/s²'],
+                    ['कार्य और ऊर्जा','W = F×s | joule'],
+                    ['ध्वनि','waves | frequency'],
+                    ['खाद्य संसाधन','crops, improvement']
+                ]},
+                'सामाजिक विज्ञान': { e: '🌍', c: '#d97706', chapters: [
+                    ['फ्रांसीसी क्रांति','1789 | causes'],
+                    ['समाजवाद','Russia | USSR'],
+                    ['नाज़ीवाद','Hitler ka utthaan'],
+                    ['रूसी क्रांति','1917'],
+                    ['लोकतंत्र क्या, क्यों?','features'],
+                    ['संविधानिक रचना','rights, duties'],
+                    ['चुनाव','process, fairness'],
+                    ['भारत: स्थिति और विस्तार','location'],
+                    ['भौतिक स्वरूप','mountains, plains'],
+                    ['गरीबी और भोजन','PDS, schemes']
+                ]},
+                'English': { e: '📖', c: '#7c3aed', chapters: [
+                    ['The Fun They Had','future vs past schools'],
+                    ['The Sound of Music','Evelyn Glennie'],
+                    ['The Little Girl','Kezia aur papa']
+                ]},
+                'Hindi': { e: '📚', c: '#dc2626', chapters: [
+                    ['दो बैलों की कथा','प्रेमचंद'],
+                    ['ल्हासा की ओर','राहुल सांकृत्यायन'],
+                    ['रैदास के पद','भक्ति काव्य']
+                ]}
+            },
+            '10': {
+                'Maths': { e: '📐', c: '#7c3aed', chapters: [
+                    ['वास्तविक संख्याएँ', 'HCF×LCM = a×b | यूक्लिड: a = bq + r'],
+                    ['बहुपद', 'α+β = −b/a | αβ = c/a'],
+                    ['रेखिक समीकरण युग्म', 'अद्वितीय हल: a₁/a₂ ≠ b₁/b₂'],
+                    ['द्विघात समीकरण', 'x = [−b±√(b²−4ac)]/2a | D = b²−4ac'],
+                    ['समांतर श्रेणी (AP)', 'aₙ = a+(n−1)d | Sₙ = n/2[2a+(n−1)d]'],
+                    ['त्रिभुज', 'BPT: DE∥BC ⇒ AD/DB = AE/EC'],
+                    ['निर्देशांक ज्यामिति', 'दूरी = √[(x₂−x₁)²+(y₂−y₁)²]'],
+                    ['त्रिकोणमिति', 'sin²θ+cos²θ = 1'],
+                    ['त्रिकोणमिति के अनुप्रयोग', 'tanθ = लंब/आधार'],
+                    ['वृत्त', 'स्पर्श-रेखा ⊥ त्रिज्या | PA = PB'],
+                    ['वृत्त के क्षेत्रफल', 'त्रिज्यखंड = (θ/360)×πr²'],
+                    ['पृष्ठीय क्षेत्रफल और आयतन', 'बेलन V=πr²h | शंकु V=(1/3)πr²h'],
+                    ['सांख्यिकी', 'Mode = 3M − 2x̄'],
+                    ['प्रायिकता', 'P(E) = अनुकूल/कुल | 0≤P≤1']
+                ]},
+                'Science': { e: '⚗️', c: '#059669', chapters: [
+                    ['रासायनिक अभिक्रियाएँ', 'संयोजन/वियोजन/विस्थापन + संतुलन'],
+                    ['अम्ल, क्षार और लवण', 'pH<7 अम्ल | अम्ल+क्षार→लवण+जल'],
+                    ['धातु और अधातु', 'क्रियाशीलता श्रेणी | रेडॉक्स'],
+                    ['कार्बन के यौगिक', 'समावयवता | साबुनीकरण'],
+                    ['जीवन की प्रक्रियाएँ', 'श्वसन, पोषण, परिवहन, उत्सर्जन'],
+                    ['नियंत्रण और समन्वय', 'प्रतिवर्त | हॉर्मोन'],
+                    ['जनन', 'अलैंगिक/लैंगिक | मानव जनन तंत्र'],
+                    ['आनुवंशिकता', 'मेंडल 3:1 | जीन और DNA'],
+                    ['प्रकाश', '1/v+1/u=1/f | ∠i=∠r'],
+                    ['मानव नेत्र', 'मायोपिया→अवतल | हाइपर→उत्तल'],
+                    ['विद्युत', 'V=IR | P=VI | श्रेणी/समांतर'],
+                    ['चुंबकीय प्रभाव', 'फ्लेमिंग वाम-हस्त (मोटर)'],
+                    ['हमारा पर्यावरण', 'पोषी स्तर | 10% ऊर्जा नियम']
+                ]},
+                'सामाजिक विज्ञान': { e: '🌍', c: '#d97706', chapters: [
+                    ['राष्ट्रवाद यूरोप में', '1789 फ्रांस क्रांति → 1871 जर्मनी'],
+                    ['भारत में राष्ट्रवाद', '1915→1947: गाँधी युग की timeline'],
+                    ['वैश्विक विश्व का निर्माण', 'रेशम/मसाला मार्ग, उपनिवेश'],
+                    ['मुद्रण संस्कृति', 'पुस्तकों ने जनमत बनाया'],
+                    ['संसाधन और विकास', 'भूमि-उपयोग वर्ग | जल-अभाव'],
+                    ['कृषि', 'खरीफ/रबी | जूट, चाय, कपास'],
+                    ['शक्ति की साझेदारी', 'संघ/राज्य/समवर्ती सूची'],
+                    ['राजनीतिक दल', 'राष्ट्रीय/क्षेत्रीय | चुनाव चिह्न'],
+                    ['विकास', 'GDP, HDI, सतत विकास'],
+                    ['वैश्वीकरण', 'MNC, उदारीकरण, WTO']
+                ]},
+                'English': { e: '📖', c: '#2563eb', chapters: [
+                    ['A Letter to God', 'Faith, irony, Lencho ka hailstorm'],
+                    ['Nelson Mandela', 'Freedom, apartheid, sacrifice'],
+                    ['Glimpses of India', 'Goa, Assam, Karnataka की कहानियाँ'],
+                    ['Amanda! (poem)', 'Imagination vs parental nagging'],
+                    ['A Tiger in the Zoo', 'Freedom vs captivity (imagery)']
+                ]},
+                'Hindi': { e: '📚', c: '#dc2626', chapters: [
+                    ['बड़े भाई साथ (प्रेमचंद)', 'संघर्ष, त्याग, परिवार'],
+                    ['डायरी का एक पन्ना', 'आत्मनिरीक्षण की शैली'],
+                    ['तीसरी कसम (शैलेंद्र)', 'हीरा की कहानी — वादा और मर्यादा'],
+                    ['कारतूस (हबीब तनवीर)', '1857 की पृष्ठभूमि'],
+                    ['बिहारी के दोहे', 'रस, अलंकार, लोक-जीवन']
+                ]}
+            },
+            '11': {
+                'Physics': { e: '⚛️', c: '#2563eb', chapters: [
+                    ['मात्रक और मापन','SI units | errors'],
+                    ['सरल रेखा में गति','v = u + at'],
+                    ['तल में गति','projectile'],
+                    ['गति के नियम','F = ma'],
+                    ['कार्य, ऊर्जा और शक्ति','W = F·s'],
+                    ['कणों का तंत्र और घूर्णी गति','torque'],
+                    ['गुरुत्वाकर्षण','GMm/r²'],
+                    ['ठोसों के यांत्रिक गुण','elasticity'],
+                    ['द्रवों के यांत्रिक गुण','pressure, Bernoulli'],
+                    ['द्रव्य की तापीय गुण','expansion'],
+                    ['उष्मागतिकी','laws of thermodynamics'],
+                    ['गैसों का अगुणित सिद्धांत','PV = nRT'],
+                    ['दोलन','SHM | T = 2π√(l/g)'],
+                    ['तरंगें','v = fλ']
+                ]},
+                'Chemistry': { e: '⚗️', c: '#059669', chapters: [
+                    ['रसायन की मूल अवधारणाएँ','mole concept'],
+                    ['परमाणु की संरचना','orbitals'],
+                    ['तत्त्वों का वर्गीकरण','periodic trends'],
+                    ['रासायनिक आबंधन','ionic, covalent'],
+                    ['उष्मागतिकी','ΔH, entropy'],
+                    ['साम्य','Kc, Le Chatelier'],
+                    ['रेडॉक्स अभिक्रियाएँ','oxidation number'],
+                    ['कार्बनिक रसायन के मूल सिद्धांत','IUPAC'],
+                    ['हाइड्रोकार्बन','alkane, alkene, alkyne']
+                ]},
+                'Maths': { e: '📐', c: '#7c3aed', chapters: [
+                    ['समुच्चय','union, intersection'],
+                    ['संबंध और फलन','domain, range'],
+                    ['त्रिकोणमितीय फलन','identities'],
+                    ['सम्मिश्र संख्याएँ','i² = −1'],
+                    ['रेखीय असमिकाएँ','number line'],
+                    ['क्रमचय और संचय','nCr, nPr'],
+                    ['द्विपद प्रमेय','(a+b)ⁿ'],
+                    ['अनुक्रम और श्रेणी','AP, GP'],
+                    ['सरल रेखाएँ','slope'],
+                    ['शंकु परिच्छेद','circle, parabola'],
+                    ['त्रि-आयामी ज्यामिति','direction ratios'],
+                    ['सीमा और अवकलज','dy/dx'],
+                    ['सांख्यिकी','mean, SD'],
+                    ['प्रायिकता','P(E)']
+                ]},
+                'Biology': { e: '🧬', c: '#dc2626', chapters: [
+                    ['जीव जगत','classification'],
+                    ['वानस्पतिक वर्गीकरण','plant kingdom'],
+                    ['प्राणी जगत','animal kingdom'],
+                    ['पुष्पी पादपों का आकारिकी','morphology'],
+                    ['पादपों का शारीरक','anatomy'],
+                    ['जंतुओं में संरचनात्मक संगठन','tissues'],
+                    ['जीवन की इकाई — कोशिका','cell organelles'],
+                    ['जैव-अणु','proteins, DNA'],
+                    ['कोशिका चक्र और विभाजन','mitosis, meiosis'],
+                    ['पादपों में परिवहन','xylem, phloem'],
+                    ['खनिज पोषण','N, P, K'],
+                    ['प्रकाश संश्लेषण','Calvin cycle'],
+                    ['पादप श्वसन','glycolysis'],
+                    ['मानव श्वसन','lungs'],
+                    ['तंत्रिका नियंत्रण','reflex arc']
+                ]},
+                'English': { e: '📖', c: '#d97706', chapters: [
+                    ['The Portrait of a Lady','Khushwant Singh'],
+                    ['We’re Not Afraid to Die','courage at sea'],
+                    ['Discovering Tut','history mystery']
+                ]},
+                'Hindi': { e: '📚', c: '#0891b2', chapters: [
+                    ['कबीर के दोहे','भक्ति रस'],
+                    ['मीरा के पद','कृष्ण-भक्ति'],
+                    ['रहीम के दोहे','लोकजीवन']
+                ]}
+            },
+            '12': {
+                'Physics': { e: '⚛️', c: '#2563eb', chapters: [
+                    ['वैद्युत आवेश और क्षेत्र','Coulomb: F = kq₁q₂/r²'],
+                    ['स्थिरवैद्युत विभव','V = kq/r'],
+                    ['धारा विद्युत','Ohm | R = ρl/A'],
+                    ['गतिशील आवेश और चुंबकत्व','F = qvB'],
+                    ['चुंबकत्व और द्रव्य','dipole'],
+                    ['विद्युत-चुंबकीय प्रेरण','Faraday ka niyam'],
+                    ['प्रत्यावर्ती धारा','RMS value'],
+                    ['विद्युत-चुंबकीय तरंगें','EM spectrum'],
+                    ['किरण प्रकाशिकी','mirror/lens formula'],
+                    ['तरंग प्रकाशिकी','interference'],
+                    ['विकिरण का द्वैत स्वभाव','photoelectric'],
+                    ['परमाणु','Bohr model'],
+                    ['नाभिक','E = mc²'],
+                    ['अर्धचालक इलेक्ट्रॉनिक्स','diode, transistor']
+                ]},
+                'Chemistry': { e: '⚗️', c: '#059669', chapters: [
+                    ['विलयन','molarity, molality'],
+                    ['विद्युत रसायन','Faraday ke niyam'],
+                    ['रासायनिक बलगतिकी','rate laws'],
+                    ['d- और f-ब्लॉक तत्त्व','transition metals'],
+                    ['उपसहसंयोजन यौगिक','coordination'],
+                    ['हैलोएल्केन और हैलोऐरीन','SN1, SN2'],
+                    ['एल्कोहॉल, फीनॉल, ईथर','reactions'],
+                    ['एल्डिहाइड और कीटोन','oxidation-reduction'],
+                    ['ऐमाइन','basicity'],
+                    ['जैव-अणु','carbs, proteins']
+                ]},
+                'Maths': { e: '📐', c: '#7c3aed', chapters: [
+                    ['संबंध और फलन','types'],
+                    ['प्रतिलोम त्रिकोणमितीय फलन','domains'],
+                    ['आव्यूह','operations | inverse'],
+                    ['सारणिक','|A| properties'],
+                    ['सांतत्य और अवकलनीयता','dy/dx rules'],
+                    ['अवकलज के अनुप्रयोग','maxima-minima'],
+                    ['समाकलन','∫ techniques'],
+                    ['समाकलन के अनुप्रयोग','area under curve'],
+                    ['अवकल समीकरण','dy/dx = f(x,y)'],
+                    ['सदिश बीजगणित','dot, cross'],
+                    ['त्रि-आयामी ज्यामिती','planes, lines'],
+                    ['रैखिक प्रोग्रामन','LPP'],
+                    ['प्रायिकता','Bayes theorem']
+                ]},
+                'Biology': { e: '🧬', c: '#dc2626', chapters: [
+                    ['पुष्पी पादपों में लैंगिक जनन','pollination'],
+                    ['मानव जनन','reproductive system'],
+                    ['जनन स्वास्थ्य','contraception'],
+                    ['वंशागति के सिद्धांत','Mendel ke niyam'],
+                    ['वंशागति का आणविक आधार','DNA replication'],
+                    ['उद्भव','evolution'],
+                    ['मानव स्वास्थ्य और रोग','immunity'],
+                    ['मानव कल्याण में सूक्ष्मजीव','antibiotics'],
+                    ['जैव-प्रौद्योगिकी: सिद्धांत','PCR, cloning'],
+                    ['जैव-प्रौद्योगिकी के अनुप्रयोग','GMO, insulin'],
+                    ['जीव और समष्टियाँ','population'],
+                    ['पारिस्थितिक तंत्र','food chain'],
+                    ['जैव-विविधता','hotspots']
+                ]},
+                'English': { e: '📖', c: '#d97706', chapters: [
+                    ['The Last Lesson','Franco-Prussian war'],
+                    ['Lost Spring','child labour'],
+                    ['Deep Water','fear of water'],
+                    ['Indigo','Gandhi in Champaran']
+                ]},
+                'Hindi': { e: '📚', c: '#0891b2', chapters: [
+                    ['आरोह के काव्यांश','आधुनिक कविता'],
+                    ['उपन्यास के अंश','कथ्य और शिल्प'],
+                    ['संस्मरण के अंश','अनुभव-लेखन']
+                ]}
+            }
+        };
+
+        // 🧠 Chapter button
+        };
+
+        // ▶ Video: chapter ke liye YouTube search kholta hai (zero-maintenance)
+        window.watchChapter = function (cls, subj, ch) {
+            try {
+                var q = encodeURIComponent('Class ' + cls + ' ' + subj + ' ' + ch + ' NCERT Hindi');
+                window.open('https://www.youtube.com/results?search_query=' + q, '_blank');
+            } catch (e) {}
+        };
+
+        // 🧠 Chapter button: chat kholta hai, prompt prefilled
+        window.askChapter = function (cls, subj, ch, mode) {
+            try {
+                if (typeof switchTab === 'function') switchTab('chat');
+                setTimeout(function () {
+                    var input = document.getElementById('chat-input');
+                    if (!input) return;
+                    input.value = (mode === 'full')
+                        ? 'Class ' + cls + ' ' + subj + ' — ' + ch + ': key concepts aur important formulas step-by-step Hindi mein samjhao.'
+                        : 'Class ' + cls + ' ' + subj + ' (' + ch + '): ';
+                    input.focus();
+                }, 400);
+            } catch (e) {}
+        };
+
         function getCls() {
             try {
                 var p = JSON.parse(localStorage.getItem('eduva_student_profile_v1') || '{}');
-                if (p.cls && CLASS_DATA[p.cls]) return p.cls;
+                if (p.cls && (CHAPTER_DATA[p.cls] || CLASS_DATA[p.cls])) return p.cls;
             } catch (e) {}
             return '10';
         }
+
         window.renderContinueLearning = function () {
             var box = document.getElementById('continue-learning-body');
             if (!box) return;
             var cls = getCls();
             var prog = {};
             try { prog = JSON.parse(localStorage.getItem('eduva_subject_progress_v1') || '{}'); } catch (e) {}
+
+            // 🆕 Naya: Class 10 (aur jahan CHAPTER_DATA ho) → full chapter accordion
+            var CD = CHAPTER_DATA[cls];
+            if (CD) {
+                box.innerHTML = Object.keys(CD).map(function (sub) {
+                    var d = CD[sub];
+                    var pct = Math.min(100, Math.max(0, prog[sub] || 0));
+                    var rows = d.chapters.map(function (ch) {
+                        return '<div class="flex items-center gap-2 py-2 border-b border-slate-100 last:border-0">'
+                            + '<div class="flex-1 min-w-0"><strong class="text-[13px] text-slate-900 block truncate">' + ch[0] + '</strong>'
+                            + '<span class="text-[10px] text-slate-500 block truncate">' + ch[1] + '</span></div>'
+                            + '<button onclick="askChapter(\'' + cls + '\',\'' + sub + '\',\'' + ch[0].replace(/'/g, '') + '\',\'full\')" class="px-2.5 py-1.5 rounded-lg text-[11px] font-black text-white shrink-0" style="background:' + d.c + '">🧠 Samjho</button>'
+                            + '<button onclick="askChapter(\'' + cls + '\',\'' + sub + '\',\'' + ch[0].replace(/'/g, '') + '\',\'doubt\')" class="px-2.5 py-1.5 rounded-lg text-[11px] font-black bg-slate-900 text-white shrink-0">📸 Doubt</button>'
+                            + '<button onclick="watchChapter(\'' + cls + '\',\'' + sub + '\',\'' + ch[0].replace(/'/g, '') + '\')" class="px-2 py-1.5 rounded-lg text-[11px] font-black bg-red-600 text-white shrink-0" title="Video lessons">▶</button>'
+                            + '</div>';
+                    }).join('');
+                    return '<details class="bg-slate-50 rounded-2xl border border-slate-100 overflow-hidden mb-2">'
+                        + '<summary class="flex items-center gap-3.5 p-3.5 cursor-pointer list-none">'
+                        + '<div class="w-11 h-11 rounded-xl flex items-center justify-center font-bold text-lg shrink-0" style="background:' + d.c + '18;color:' + d.c + '">' + d.e + '</div>'
+                        + '<div class="flex-1"><strong class="text-sm block text-slate-900">' + sub + ' <span class="text-[10px] text-slate-400 font-bold">(Class ' + cls + ')</span></strong>'
+                        + '<div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden mt-2"><div class="h-full rounded-full" style="width:' + pct + '%;background:' + d.c + '"></div></div></div>'
+                        + '<b class="text-xs font-black shrink-0" style="color:' + d.c + '">' + (pct === 0 ? 'शुरू करें' : pct + '%') + '</b>'
+                        + '</summary>'
+                        + '<div class="px-3.5 pb-2 bg-white">' + rows + '</div>'
+                        + '</details>';
+                }).join('');
+                return;
+            }
+
+            // ⬇️ Purana: baaki classes (6-9, 11-12) ke liye demo cards
             box.innerHTML = CLASS_DATA[cls].map(function (sub) {
                 var pct = Math.min(100, Math.max(0, prog[sub.s] || 0));
                 var badge = pct === 0 ? '<b class="text-xs text-emerald-600 font-black">शुरू करें →</b>'
@@ -11083,10 +11616,6 @@ LaTeX ($) बिल्कुल नहीं।`;
         };
         if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.renderContinueLearning);
         else window.renderContinueLearning();
-        if (window.saveProfileEdit) {
-            var __o = window.saveProfileEdit;
-            window.saveProfileEdit = function () { __o.apply(this, arguments); setTimeout(window.renderContinueLearning, 300); };
-        }
     })();
     </script>
 
