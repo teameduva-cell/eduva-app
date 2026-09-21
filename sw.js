@@ -1,69 +1,39 @@
-// EDUVA — Service Worker (v2)
-// मकसद:
-// 1) Android Chrome ऐप को "installable PWA" माने — Web Share Target (WhatsApp/Chrome के
-//    Share sheet में EDUVA दिखाने) के लिए ज़रूरी शर्त।
-// 2) Offline support — internet चले जाने पर भी ऐप खुले और बेसिक पेज दिखें।
-//
-// नियम: /api/* (AI chat) कभी cache नहीं — हमेशा fresh network से।
-
-const CACHE = 'eduva-v2';
-
-// ऐप की ज़रूरी files पहले से cache में — internet गया तो भी ऐप खुलेगी
-const PRECACHE = ['/', '/index.html', '/manifest.json', '/icon-192.png', '/icon-512.png'];
-
-self.addEventListener('install', (event) => {
-    event.waitUntil(
-        caches.open(CACHE).then((c) => c.addAll(PRECACHE)).then(() => self.skipWaiting())
-    );
+// EDUVA Service Worker — Offline-first (v2)
+const CACHE = 'eduva-static-v2';
+const CORE = [
+  '/',
+  '/index.html',
+  '/features.html',
+  '/class-10-maths-formulas.html',
+  '/class-10-science-reactions.html',
+  '/class-10-sst-important-dates.html',
+  '/class-10-maths-chapters.html',
+  '/class-10-science-chapters.html'
+];
+self.addEventListener('install', (e) => {
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
 });
-
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        caches.keys()
-            .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
-            .then(() => self.clients.claim())
-    );
+self.addEventListener('activate', (e) => {
+  e.waitUntil(caches.keys().then((keys) =>
+    Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))
+  ).then(() => self.clients.claim()));
 });
-
-self.addEventListener('fetch', (event) => {
-    const req = event.request;
-    if (req.method !== 'GET') return;
-
-    const url = new URL(req.url);
-
-    // AI/API calls: सिर्फ network (कभी cache नहीं — fresh answers चाहिए)
-    if (url.pathname.startsWith('/api/')) return;
-
-    // पेज खोलना (navigation): network-first, offline हो तो cache की index.html दिखाओ
-    if (req.mode === 'navigate') {
-        event.respondWith(
-            fetch(req).then((res) => {
-                const copy = res.clone();
-                caches.open(CACHE).then((c) => c.put('/index.html', copy));
-                return res;
-            }).catch(() => caches.match('/index.html'))
-        );
-        return;
-    }
-
-    // CDN files (Tailwind, fonts): cache-first, background में update होती रहें
-    if (url.origin !== self.location.origin) {
-        event.respondWith(
-            caches.open(CACHE).then((c) =>
-                c.match(req).then((hit) => {
-                    const network = fetch(req).then((res) => {
-                        if (res && res.status === 200 && (res.type === 'basic' || res.type === 'cors')) {
-                            c.put(req, res.clone());
-                        }
-                        return res;
-                    }).catch(() => hit);
-                    return hit || network;
-                })
-            )
-        );
-        return;
-    }
-
-    // बाकी same-origin files (icons, manifest): cache-first
-    event.respondWith(caches.match(req).then((hit) => hit || fetch(req)));
+self.addEventListener('fetch', (e) => {
+  const url = new URL(e.request.url);
+  // API + external: network-first, cache fallback nahi (fresh AI jawab chahiye)
+  if (url.pathname.startsWith('/api/') || url.origin !== location.origin) return;
+  if (e.request.method !== 'GET') return;
+  // Static pages/assets: cache-first, baad mein background refresh
+  e.respondWith(
+    caches.match(e.request).then((cached) => {
+      const fetched = fetch(e.request).then((res) => {
+        if (res && res.ok && (url.pathname.endsWith('.html') || url.pathname === '/' || /\.(png|css|js|xml)$/.test(url.pathname))) {
+          const clone = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, clone));
+        }
+        return res;
+      }).catch(() => cached);
+      return cached || fetched;
+    })
+  );
 });

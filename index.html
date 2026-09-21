@@ -1590,6 +1590,123 @@
                 })();
                 </script>
 
+                <!-- 📅 Revision Queue + 👨‍👩‍👦 Parent Report -->
+<div style="margin:10px 12px 0;display:flex;gap:8px;">
+                    <button onclick="openRevision()" style="flex:1;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#065f46,#0d9488);color:#fff;border:none;border-radius:14px;padding:11px 12px;cursor:pointer;text-align:left;">
+                        <span style="font-size:19px;">📅</span>
+                        <span style="font-weight:800;font-size:13px;line-height:1.25;">Aaj ka Revision<br><span style="font-weight:400;font-size:10px;opacity:.85;">roz 5 minute, marks pakke</span></span>
+                    </button>
+                    <button onclick="openParentReport()" style="flex:1;display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#7c2d12,#c2410c);color:#fff;border:none;border-radius:14px;padding:11px 12px;cursor:pointer;text-align:left;">
+                        <span style="font-size:19px;">👨‍👩‍👦</span>
+                        <span style="font-weight:800;font-size:13px;line-height:1.25;">Parent Report<br><span style="font-weight:400;font-size:10px;opacity:.85;">hafte ka hisaab, WhatsApp pe</span></span>
+                    </button>
+                </div>
+                <script>
+                (function () {
+                    function esc2(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+                    function getDiary() { try { return JSON.parse(localStorage.getItem('eduva_doubt_diary_v1') || '[]'); } catch (e) { return []; } }
+                    function getProg() { try { return JSON.parse(localStorage.getItem('eduva_subject_progress_v1') || '{}'); } catch (e) { return {}; } }
+                    function modal(html) {
+                        closeModal();
+                        var o = document.createElement('div');
+                        o.id = 'eduva-modal-overlay';
+                        o.style.cssText = 'position:fixed;inset:0;background:rgba(10,15,35,.75);z-index:96;display:flex;align-items:center;justify-content:center;padding:16px;';
+                        o.innerHTML = '<div style="background:#f4f6fb;width:100%;max-width:560px;max-height:82vh;border-radius:18px;overflow:hidden;display:flex;flex-direction:column;">' + html + '</div>';
+                        o.addEventListener('click', function (e) { if (e.target === o) closeModal(); });
+                        document.body.appendChild(o);
+                    }
+                    window.closeModal = function () { var o = document.getElementById('eduva-modal-overlay'); if (o) o.remove(); };
+                    function head(title, extra) {
+                        return '<div style="background:linear-gradient(135deg,#0f3c7d,#2b6de0);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;">'
+                            + '<strong style="font-size:17px;flex:1;">' + title + '</strong>' + (extra || '')
+                            + '<button onclick="closeModal()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:10px;width:34px;height:34px;font-size:18px;cursor:pointer;">X</button></div>';
+                    }
+
+                    // 📅 #1 — Aaj ka Revision: diary + weak subjects + formula-of-day + paper
+                    window.openRevision = function () {
+                        var items = [];
+                        var diary = getDiary();
+                        var twoDays = 2 * 86400000;
+                        var old = diary.filter(function (x) { return Date.now() - x.t > twoDays; }).slice(0, 2);
+                        old.forEach(function (x) {
+                            items.push({ icon: '📌', title: 'Ye doubt dobara solve kar:', sub: x.q.slice(0, 70), act: 'diary' });
+                        });
+                        var prog = getProg();
+                        var weak = Object.keys(prog).filter(function (k) { return prog[k] < 40; });
+                        if (!Object.keys(prog).length) weak = ['Maths', 'Science'];
+                        weak.slice(0, 2).forEach(function (s) {
+                            items.push({ icon: '📚', title: s + ' — practice shuru kar', sub: 'Pehla chapter khol aur Samjho dabao', act: 'chapter', subj: s });
+                        });
+                        var formulas = [
+                            ['🧮', 'Quadratic formula: x = [−b±√(b²−4ac)]/2a'],
+                            ['🔺', 'sin²θ + cos²θ = 1 | 1+tan²θ = sec²θ'],
+                            ['➗', 'AP: aₙ = a+(n−1)d | Sₙ = n/2(a+l)'],
+                            ['⭕', 'त्रिज्यखंड = (θ/360) × πr²'],
+                            ['📦', 'बेलन V=πr²h | शंकु V=(1/3)πr²h'],
+                            ['📊', 'Mode = 3 Median − 2 Mean'],
+                            ['🎯', 'P(E) = अनुकूल/कुल | 0 ≤ P ≤ 1']
+                        ];
+                        var f = formulas[new Date().getDay()];
+                        items.push({ icon: f[0], title: 'Formula of the day:', sub: f[1], act: 'formula' });
+                        items.push({ icon: '📄', title: 'Paper practice:', sub: 'CBSE 2026 Maths Standard — timed solve kar', act: 'paper' });
+                        items = items.slice(0, 5);
+
+                        var rows = items.map(function (it) {
+                            return '<button onclick="revAct(\'' + it.act + '\',\'' + (it.subj || '').replace(/'/g, '') + '\')" style="width:100%;display:flex;align-items:center;gap:12px;background:#fff;border:none;border-radius:12px;padding:13px 14px;margin:7px 0;box-shadow:0 2px 8px rgba(0,0,0,.08);cursor:pointer;text-align:left;">'
+                                + '<span style="font-size:24px;">' + it.icon + '</span>'
+                                + '<span style="flex:1;"><strong style="display:block;font-size:14px;color:#1c2333;">' + esc2(it.title) + '</strong>'
+                                + '<span style="font-size:12px;color:#64748b;">' + esc2(it.sub) + '</span></span>'
+                                + '<span style="color:#2b6de0;font-size:20px;">›</span></button>';
+                        }).join('');
+                        modal(head('📅 Aaj ka Revision <span style="font-size:11px;font-weight:400;opacity:.8;">— 5 minute, roz</span>')
+                            + '<div style="overflow-y:auto;padding:12px 14px;flex:1;">' + rows + '</div>');
+                    };
+                    window.revAct = function (act, subj) {
+                        closeModal();
+                        if (act === 'diary') { if (window.openDiary) openDiary(); }
+                        else if (act === 'chapter') { switchTab('home'); setTimeout(function () { try { var el = document.querySelector('#continue-learning-body details summary'); if (el) el.click(); } catch (e) {} }, 300); }
+                        else if (act === 'formula') { window.location.href = '/class-10-maths-formulas.html'; }
+                        else if (act === 'paper') { window.location.href = '/cbse-class-10-maths-standard-2026-solved.html'; }
+                    };
+
+                    // 👨‍👩‍👦 #2 — Parent Weekly Report
+                    window.openParentReport = function () {
+                        var diary = getDiary();
+                        var prog = getProg();
+                        var subjects = Object.keys(prog);
+                        var done = subjects.filter(function (k) { return prog[k] > 0; }).length;
+                        var weekAgo = Date.now() - 7 * 86400000;
+                        var weekDoubts = diary.filter(function (x) { return x.t > weekAgo; }).length;
+                        var top = diary.slice(0, 3).map(function (x) { return '- ' + x.q.slice(0, 60); }).join('\n');
+                        var txt = '*EDUVA — Bachche ka Weekly Report*\n'
+                            + 'Hafta: ' + new Date().toLocaleDateString('hi-IN') + '\n'
+                            + '----------------------------------\n'
+                            + 'Is hafte doubts poochhe: ' + weekDoubts + '\n'
+                            + 'Total doubts (diary mein): ' + diary.length + '\n'
+                            + 'Subjects mein practice: ' + done + '/' + (subjects.length || 5) + '\n'
+                            + (top ? '\nRecent doubts:\n' + top + '\n' : '')
+                            + '\nApp FREE hai — 1 saal tak (31 Dec 2026)\neduva-app.vercel.app';
+                        var html = head('👨‍👩‍👦 Parent Report')
+                            + '<div style="overflow-y:auto;padding:14px;flex:1;">'
+                            + '<pre id="parent-report-text" style="white-space:pre-wrap;background:#fff;border-radius:12px;padding:14px;font-size:13px;color:#1c2333;line-height:1.6;box-shadow:0 2px 8px rgba(0,0,0,.08);font-family:inherit;">' + esc2(txt) + '</pre>'
+                            + '<div style="display:flex;gap:8px;margin-top:12px;">'
+                            + '<button onclick="copyReport()" style="flex:1;background:#0f3c7d;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">📋 Copy karo</button>'
+                            + '<button onclick="shareReport()" style="flex:1;background:#16a34a;color:#fff;border:none;border-radius:12px;padding:12px;font-weight:800;font-size:14px;cursor:pointer;">📤 WhatsApp pe bhejo</button>'
+                            + '</div>'
+                            + '<p style="font-size:11px;color:#8a94ab;text-align:center;margin-top:10px;">Report copy karke apne mummy-papa ko bhej do — unhe pata chalega tu padh raha hai!</p></div>';
+                        modal(html);
+                        window.__report = txt;
+                    };
+                    window.copyReport = function () {
+                        try { navigator.clipboard.writeText(window.__report || ''); } catch (e) {}
+                        alert('Report copy ho gayi! Ab WhatsApp mein paste kar do.');
+                    };
+                    window.shareReport = function () {
+                        window.open('https://wa.me/?text=' + encodeURIComponent(window.__report || ''), '_blank');
+                    };
+                })();
+                </script>
+
                 <!-- Input bar -->
                 <div class="p-2.5 shrink-0">
                     <div class="flex items-end gap-1.5 bg-slate-100 rounded-[26px] px-2 py-1.5 focus-within:bg-white focus-within:ring-2 focus-within:ring-slate-900/10 focus-within:shadow-md transition">
@@ -3929,7 +4046,7 @@
     <div style="margin:4px 0 8px;text-align:center;">
             <a href="https://www.cbse.gov.in/cbsenew/question-paper.html" target="_blank" style="font-size:12px;font-weight:700;color:#2b6de0;text-decoration:none;">📎 सभी आधिकारिक प्रश्न-पत्र: CBSE की वेबसाइट (cbse.gov.in) ↗</a>
         </div>
-        <div style="margin:16px 0 4px;font-size:13px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE BOARD PAPERS — SOLVED (FREE)</div>
+        <div style="margin:16px 0 4px;font-size:13px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE BOARD PAPERS — SOLVED + VERIFIED</div>
         <!-- 📄 CBSE 2026 Solved Papers -->
                 <div style="margin:10px 12px 0;display:flex;flex-direction:column;gap:8px;">
                     <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
@@ -11533,7 +11650,6 @@ LaTeX ($) बिल्कुल नहीं।`;
         };
 
         // 🧠 Chapter button
-        };
 
         // ▶ Video: chapter ke liye YouTube search kholta hai (zero-maintenance)
         window.watchChapter = function (cls, subj, ch) {
