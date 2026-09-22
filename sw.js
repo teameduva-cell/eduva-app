@@ -1,5 +1,5 @@
-// EDUVA Service Worker — Offline-first (v2)
-const CACHE = 'eduva-static-v2';
+// EDUVA Service Worker — Offline-first + FCM Push (v3)
+const CACHE = 'eduva-static-v3';
 const CORE = [
   '/',
   '/index.html',
@@ -20,10 +20,8 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // API + external: network-first, cache fallback nahi (fresh AI jawab chahiye)
   if (url.pathname.startsWith('/api/') || url.origin !== location.origin) return;
   if (e.request.method !== 'GET') return;
-  // Static pages/assets: cache-first, baad mein background refresh
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetched = fetch(e.request).then((res) => {
@@ -34,6 +32,32 @@ self.addEventListener('fetch', (e) => {
         return res;
       }).catch(() => cached);
       return cached || fetched;
+    })
+  );
+});
+
+// 🔔 FCM Push — notification dikhao
+self.addEventListener('push', (e) => {
+  let data = {};
+  try { data = e.data ? e.data.json() : {}; } catch (_) {}
+  const n = data.notification || {};
+  const title = n.title || data.title || 'EDUVA';
+  const opts = {
+    body: n.body || data.body || 'Naya update aaya hai!',
+    icon: '/icon-192.png',
+    badge: '/icon-192.png',
+    data: { url: (data.data && data.data.url) || data.url || '/' }
+  };
+  e.waitUntil(self.registration.showNotification(title, opts));
+});
+// Tap pe app kholo
+self.addEventListener('notificationclick', (e) => {
+  e.notification.close();
+  const url = (e.notification.data && e.notification.data.url) || '/';
+  e.waitUntil(
+    clients.matchAll({ type: 'window', includeUncontrolled: true }).then((list) => {
+      for (const c of list) { if ('focus' in c) { c.navigate(url); return c.focus(); } }
+      return clients.openWindow(url);
     })
   );
 });
