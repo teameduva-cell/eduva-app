@@ -55,6 +55,7 @@
 
     function enforceTab(tab) {
         var cfg = getCfg();
+        if (!cfg.pinHash) return true; // Parent Mode set hi nahi hua → kuch block mat karo
         if (cfg.communityOff && tab === 'community') { toast('👥 Community parent ने OFF की है'); return false; }
         if (inLockHours(cfg)) {
             var nl = cfg.nightLock || {};

@@ -23,13 +23,10 @@
         document.querySelectorAll('#view-home button').forEach(function (b) {
             if ((b.textContent || '').indexOf('Teacher हो?') !== -1 || (b.textContent || '').indexOf('Teacher ho?') !== -1) hide(b);
         });
-        // 5. Home pe doubt ki 3 entries → sirf Snap & Solve (golden) rakho
+        // 5. Snap & Solve hatao — doubt ka 1 rasta: hero ka पहला सवाल button
         document.querySelectorAll('#view-home button').forEach(function (b) {
-            var t = b.textContent || '';
-            if (t.indexOf('पहला सवाल') !== -1 && (b.getAttribute('onclick') || '').indexOf('chat') !== -1) hide(b);
+            if ((b.getAttribute('onclick') || '').indexOf('snapAndSolve') !== -1) hide(b);
         });
-        var si = document.getElementById('home-search-input');
-        if (si) { var bar = si.closest('.card-clean'); if (bar) hide(bar); }
     }
     function init() { run(); setTimeout(run, 1500); setTimeout(run, 4000); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
