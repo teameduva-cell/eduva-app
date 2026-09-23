@@ -45,7 +45,7 @@
 
     function gbButton() {
         var b = document.createElement('button');
-        b.className = 'gb-btn mt-1.5 px-3 py-1.5 rounded-full text-[11px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:scale-105 transition cursor-pointer inline-flex items-center gap-1';
+        b.className = 'gb-btn mt-2 px-2.5 py-1 rounded-full text-[10px] font-black bg-gradient-to-r from-amber-500 to-orange-500 text-white shadow-sm hover:scale-105 transition cursor-pointer inline-flex items-center gap-1';
         b.innerHTML = '🎭 Golu-Bolu से समझाओ';
         b.onclick = function () { runGoluBolu(b); };
         return b;
