@@ -91,6 +91,181 @@
         box.scrollTop = box.scrollHeight;
     }
 
+    function sanitizeLatex(s) {
+        if (!s) return s;
+        return String(s)
+            .replace(/\\frac\{([^}]*)\}\{([^}]*)\}/g, '($1)/($2)')
+            .replace(/\\sqrt\[?\]?\s*\{?([^}\\$]*)\}?/g, '\u221A($1)')
+            .replace(/\^\{\\circ\}/g, '\u00B0')
+            .replace(/\\circ/g, '\u00B0')
+            .replace(/\^\{?2\}?/g, '\u00B2')
+            .replace(/\^\{?3\}?/g, '\u00B3')
+            .replace(/\^\{([^}]*)\}/g, '^$1')
+            .replace(/\\times/g, '\u00D7')
+            .replace(/\\div/g, '\u00F7')
+            .replace(/\\pi/g, '\u03C0')
+            .replace(/\\theta/g, '\u03B8')
+            .replace(/\\alpha/g, '\u03B1')
+            .replace(/\\beta/g, '\u03B2')
+            .replace(/\\sum/g, '\u03A3')
+            .replace(/\\Delta/g, '\u0394')
+            .replace(/\\angle/g, '\u2220')
+            .replace(/\\therefore/g, '\u2234')
+            .replace(/\\$/g, '')
+            .replace(/\$/g, '');
+    }
+
+    function langToggleBtns(prefix, cur) {
+        return '<button type="button" onclick="set' + (prefix === 'pg' ? 'Pg' : 'Dp') + 'Lang(\'hi\')" class="px-2.5 py-1 rounded-full text-[10px] font-black cursor-pointer ' + (cur === 'hi' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500') + '">🇮🇳 Hindi</button>'
+            + '<button type="button" onclick="set' + (prefix === 'pg' ? 'Pg' : 'Dp') + 'Lang(\'en\')" class="px-2.5 py-1 rounded-full text-[10px] font-black cursor-pointer ' + (cur === 'en' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-500') + '">🇬🇧 English</button>';
+    }
+    function injectLangToggles() {
+        [['pg-topic-chips', 'pg-lang-wrap', 'pg'], ['dp-topic-chips', 'dp-lang-wrap', 'dp']].forEach(function (cfg) {
+            var chips = document.getElementById(cfg[0]);
+            if (!chips) return;
+            var label = chips.previousElementSibling;
+            if (!label || document.getElementById(cfg[1])) return;
+            var span = document.createElement('span');
+            span.id = cfg[1];
+            span.className = 'float-right inline-flex items-center gap-1 bg-slate-100 rounded-full p-0.5 ml-2';
+            span.innerHTML = langToggleBtns(cfg[2], 'hi');
+            label.appendChild(span);
+        });
+    }
+
+
+    function secSpec(marks, lang) {
+        var parts = [];
+        function add(label, id, defM) {
+            var c = readCount(id);
+            if (c > 0) parts.push('- ' + label + ': ' + c + (lang === 'en' ? ' questions' : ' सवाल') + (defM ? ' (~' + defM + ' marks each)' : ''));
+        }
+        add(lang === 'en' ? 'MCQ' : 'MCQ', 'pg-c-mcq', 1);
+        add(lang === 'en' ? 'Very Short (1-2 lines)' : 'Very Short (1-2 line)', 'pg-c-vs', 2);
+        add(lang === 'en' ? 'Short Answer' : 'Short Answer', 'pg-c-s', 3);
+        add(lang === 'en' ? 'Long Answer' : 'Long Answer', 'pg-c-l', 5);
+        add(lang === 'en' ? 'Case Study / Passage based' : 'Case Study / Passage based', 'pg-c-cs', 4);
+        add(lang === 'en' ? 'Match the Following' : 'Match the Following', 'pg-c-m', 5);
+        add(lang === 'en' ? 'Compare / Differentiate' : 'Compare / Differentiate', 'pg-c-c', 3);
+        add(lang === 'en' ? 'Assertion-Reason' : 'Assertion-Reason', 'pg-c-ar', 1);
+        if (!parts.length) parts.push(lang === 'en' ? '- (teacher gave no breakdown — create balanced sections yourself)' : '- (teacher ने breakdown नहीं दिया — तुम अपने हिसाब से balanced sections बनाओ)');
+        var head = lang === 'en' ? 'SECTION BREAKDOWN (teacher request):\n' : 'SECTION BREAKDOWN (teacher की माँग):\n';
+        return head + parts.join('\n') + (lang === 'en'
+            ? '\n- Total marks: ' + marks + ' — adjust sections so total is EXACTLY ' + marks + ' marks.'
+            : '\n- कुल Marks: ' + marks + ' — sections को ऐसे adjust करो कि total EXACTLY ' + marks + ' marks बने।');
+    }
+    function buildGenPrompt(o) {
+        var en = o.lang === 'en';
+        var lvl = en
+            ? { easy: 'EASY — every average student can solve, basic concepts, confidence-building paper',
+                moderate: 'MODERATE — above-average students, board-exam level, mix of standard questions',
+                hard: 'HARD — toughest, topper-level, JEE/NEET/Olympiad pattern, depth in every question' }[pgLevel]
+            : { easy: 'EASY — हर average बच्चा solve कर पाए, basic concepts, confidence-building paper',
+                moderate: 'MODERATE — average से ऊपर के बच्चों के लिए, board-exam level, mix of standard questions',
+                hard: 'HARD — toughest, topper-level, JEE/NEET/Olympiad pattern, हर सवाल में depth' }[pgLevel];
+        var fmt = o.mcqMode === 'all' ? (en ? 'Only MCQ — 4 options (a)-(d) per question' : 'सिर्फ MCQ — हर सवाल के 4 options (a)-(d)')
+            : o.mcqMode === 'mixed' ? (en ? 'Mixed — MCQ + descriptive sections' : 'Mixed — MCQ + descriptive sections')
+            : (en ? 'Descriptive — with sections' : 'Descriptive — sections में');
+        if (en) return [
+            'You are EDUVA\'s senior paper setter with 20 years of experience at Kota\'s best coaching. Create an exam paper for a teacher.',
+            '',
+            'SPECIFICATIONS:',
+            '- Class: ' + o.cls + ' | Subject: ' + o.subj,
+            '- Topics: ' + o.selTopics.join(', '),
+            '- Total marks: ' + o.marks + ' | Time limit: ' + o.time + ' minutes',
+            '- Difficulty: ' + lvl,
+            secSpec(o.marks, 'en'),
+            '- Format: ' + fmt,
+            (o.negMarking ? '- Negative marking: yes — state clearly in header (e.g. -0.25 or -1 for MCQ)' : '- Negative marking: no'),
+            '',
+            'STRICT RULES:',
+            '1. Every question must be 100% correct and solvable — no ambiguous, wrong-data or misprint questions. Your reputation is at stake.',
+            '2. Sensible marks distribution — easy questions fewer marks, hard questions more.',
+            '3. Clean printable format: Header (Class, Subject, Time, Max Marks, General Instructions), then sections, marks in front of each question.',
+            '4. Do NOT include an answer key — it is generated separately.',
+            '5. All questions must be ORIGINAL — not copied from any book or paper.',
+            '6. Last line exactly in this format: Estimated time: X minutes',
+            '',
+            'Give the complete paper now.'
+        ].join('\n');
+        return [
+            'तुम EDUVA के senior paper setter हो — कोटा के best coaching का 20 साल का experience। एक teacher के लिए exam paper बनाओ।',
+            '',
+            'SPECIFICATIONS:',
+            '- Class: ' + o.cls + ' | Subject: ' + o.subj,
+            '- Topics: ' + o.selTopics.join(', '),
+            '- कुल Marks: ' + o.marks + ' | Time limit: ' + o.time + ' मिनट',
+            '- Difficulty: ' + lvl,
+            secSpec(o.marks, 'hi'),
+            '- Format: ' + fmt,
+            (o.negMarking ? '- Negative marking: हाँ — header में साफ लिखो (MCQ में -0.25 या -1)' : '- Negative marking: नहीं'),
+            '',
+            'कड़े नियम:',
+            '1. हर सवाल 100% सही और solvable हो — कोई ambiguous, गलत-data या misprint वाला सवाल नहीं। तुम्हारी reputation दाव पर है।',
+            '2. Marks distribution sensible हो — आसान सवाल कम marks, कठिन ज़्यादा।',
+            '3. साफ printable format: Header (Class, Subject, Time, Max Marks, General Instructions), फिर sections, हर सवाल के आगे marks।',
+            '4. Answer key इसमें मत डालो — वो अलग से generate होगी।',
+            '5. सारे सवाल ORIGINAL बनाओ — किसी book/paper की copy नहीं।',
+            '6. आखिरी line ठीक इस format में: ⏱️ अनुमानित समय: X मिनट',
+            '',
+            'पूरा paper अभी दो।'
+        ].join('\n');
+    }
+    function buildDpPrompt(o) {
+        var en = o.lang === 'en';
+        var lvl = en
+            ? { easy: 'EASY — concept reinforcement, every student can do',
+                moderate: 'MODERATE — daily revision level, some effort for average students',
+                hard: 'HARD — topper practice, depth in every question' }[dpLevel]
+            : { easy: 'EASY — concept reinforcement, हर बच्चा कर पाए',
+                moderate: 'MODERATE — daily revision level, average बच्चे के लिए थोड़ा effort',
+                hard: 'HARD — topper practice, हर सवाल में depth' }[dpLevel];
+        var fmt = o.mcqMode === 'all' ? (en ? 'Only MCQ (4 options)' : 'सिर्फ MCQ (4 options)')
+            : o.mcqMode === 'mixed' ? (en ? 'Mixed — some MCQ + some short' : 'Mixed — कुछ MCQ + कुछ short')
+            : (en ? 'Short answer (1-3 lines each)' : 'Short answer (1-3 lines each)');
+        var head = en
+            ? ('Daily Practice — Class ' + o.cls + ' | ' + o.subj + ' | ' + o.selTopics.join(', '))
+            : ('Daily Practice — Class ' + o.cls + ' | ' + o.subj + ' | ' + o.selTopics.join(', '));
+        if (en) return [
+            'You are EDUVA\'s senior educator. Create a DAILY PRACTICE SHEET (worksheet) for a teacher to give students as homework/revision.',
+            '',
+            'SPECIFICATIONS:',
+            '- Class: ' + o.cls + ' | Subject: ' + o.subj,
+            '- Topics: ' + o.selTopics.join(', '),
+            '- Total questions: ' + o.numQ,
+            '- Difficulty: ' + lvl,
+            '- Format: ' + fmt,
+            o.withAnswers ? '- Include a short answer below every question (teacher reference copy)' : '- Do NOT include answers — clean printable sheet for students',
+            '',
+            'STRICT RULES:',
+            '1. Every question must be 100% correct — no ambiguous or wrong-data questions.',
+            '2. Keep the sheet short and focused — it is daily practice, not an exam paper. Header: "' + head + '".',
+            '3. Number the questions Q1, Q2... Printable format.',
+            '4. All questions ORIGINAL.',
+            '',
+            'Give the complete sheet now.'
+        ].join('\n');
+        return [
+            'तुम EDUVA के senior educator हो। एक teacher के लिए DAILY PRACTICE SHEET (worksheet) बनाओ — जो teacher हर रोज़ बच्चों को homework/revision के लिए देता है।',
+            '',
+            'SPECIFICATIONS:',
+            '- Class: ' + o.cls + ' | Subject: ' + o.subj,
+            '- Topics: ' + o.selTopics.join(', '),
+            '- कुल सवाल: ' + o.numQ,
+            '- Difficulty: ' + lvl,
+            '- Format: ' + fmt,
+            o.withAnswers ? '- हर सवाल के नीचे उसका छोटा answer भी दो (teacher के reference के लिए)' : '- सवालों के answers मत दो — साफ printable sheet बच्चों को देने के लिए',
+            '',
+            'कड़े नियम:',
+            '1. हर सवाल 100% सही हो — कोई ambiguous या गलत-data वाला सवाल नहीं।',
+            '2. Sheet छोटी और focused हो — daily practice के लिए, exam paper नहीं। Header में लिखो: "' + head + '"।',
+            '3. सवालों के आगे Q1, Q2... नंबर लगाओ। Printable format।',
+            '4. सारे सवाल ORIGINAL बनाओ।',
+            '',
+            'पूरी sheet अभी दो।'
+        ].join('\n');
+    }
+
     function renderTyping(containerId, label) {
         var box = $(containerId);
         if (!box) return null;
@@ -324,11 +499,18 @@
     var pgLevel = 'moderate';
     var pgTopics = [];
 
+    var pgLang = 'hi';
+    window.setPgLang = function (l) {
+        pgLang = l;
+        var wrap = $('pg-lang-wrap');
+        if (wrap) wrap.innerHTML = langToggleBtns('pg', l);
+        renderPgTopicChips();
+    };
     window.loadPgTopics = function () {
         var cls = $('pg-class').value;
         var subj = $('pg-subject').value;
-        var raw = (window.PG_TOPICS && window.PG_TOPICS[cls] && window.PG_TOPICS[cls][subj]) || ['पूरा syllabus'];
-        pgTopics = raw.map(function (t) { return { name: t, sel: false }; });
+        var raw = (window.PG_TOPICS_BI && window.PG_TOPICS_BI[cls] && window.PG_TOPICS_BI[cls][subj]) || [['पूरा syllabus', 'Full syllabus']];
+        pgTopics = raw.map(function (t) { return { hi: t[0], en: t[1], sel: false }; });
         renderPgTopicChips();
     };
 
@@ -338,7 +520,7 @@
         if (!pgTopics.length) { el.innerHTML = '<span class="text-[11px] text-slate-400 font-bold">Topics load हो रहे हैं...</span>'; return; }
         el.innerHTML = pgTopics.map(function (t, i) {
             return '<button type="button" onclick="togglePgTopic(' + i + ')" class="px-3 py-1.5 rounded-full text-[11px] font-black border-2 transition cursor-pointer ' +
-                (t.sel ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400') + '">' + esc(t.name) + '</button>';
+                (t.sel ? 'bg-indigo-600 text-white border-indigo-600' : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400') + '">' + esc(pgLang === 'en' ? t.en : t.hi) + '</button>';
         }).join('');
     }
     window.togglePgTopic = function (i) { pgTopics[i].sel = !pgTopics[i].sel; renderPgTopicChips(); };
@@ -346,7 +528,7 @@
     window.addPgTopic = function () {
         var v = $('pg-custom-topic').value.trim();
         if (!v) return;
-        pgTopics.push({ name: v, sel: true, custom: true });
+        pgTopics.push({ hi: v, en: v, sel: true, custom: true });
         $('pg-custom-topic').value = '';
         renderPgTopicChips();
     };
@@ -386,7 +568,7 @@
         var time = $('pg-time').value || '180';
         var mcqMode = $('pg-mcq').value;
         var negMarking = $('pg-neg').checked;
-        var selTopics = pgTopics.filter(function (t) { return t.sel; }).map(function (t) { return t.name; });
+        var selTopics = pgTopics.filter(function (t) { return t.sel; }).map(function (t) { return pgLang === 'en' ? t.en : t.hi; });
         if (!selTopics.length) { alert('कम से कम एक topic select करो (या ऊपर से "पूरा syllabus")।'); return; }
 
         var lvlHi = {
@@ -395,28 +577,7 @@
             hard: 'HARD — toughest, topper-level, JEE/NEET/Olympiad pattern, हर सवाल में depth'
         }[pgLevel];
 
-        var prompt = [
-            'तुम EDUVA के senior paper setter हो — कोटा के best coaching का 20 साल का experience। एक teacher के लिए exam paper बनाओ।',
-            '',
-            'SPECIFICATIONS:',
-            '- Class: ' + cls + ' | Subject: ' + subj,
-            '- Topics: ' + selTopics.join(', '),
-            '- कुल Marks: ' + marks + ' | Time limit: ' + time + ' मिनट',
-            '- Difficulty: ' + lvlHi,
-            buildSectionSpec(marks),
-            '- Format: ' + (mcqMode === 'all' ? 'सिर्फ MCQ — हर सवाल के 4 options (a)-(d)' : mcqMode === 'mixed' ? 'Mixed — MCQ + descriptive sections' : 'Descriptive — sections में'),
-            (negMarking ? '- Negative marking: हाँ — MCQ में -0.25 या -1 (साफ लिखो header में)' : '- Negative marking: नहीं'),
-            '',
-            'कड़े नियम:',
-            '1. हर सवाल 100% सही और solvable हो — कोई ambiguous, गलत-data या misprint वाला सवाल नहीं। तुम्हारी reputation दाव पर है।',
-            '2. Marks distribution sensible हो — आसान सवाल कम marks, कठिन ज़्यादा।',
-            '3. साफ printable format: Header (Class, Subject, Time, Max Marks, General Instructions), फिर sections, हर सवाल के आगे marks।',
-            '4. Answer key इसमें मत डालो — वो अलग से generate होगी।',
-            '5. सारे सवाल ORIGINAL बनाओ — किसी book/paper की copy नहीं।',
-            '6. आखिरी line ठीक इस format में: ⏱️ अनुमानित समय: X मिनट',
-            '',
-            'पूरा paper अभी दो।'
-        ].join('\n');
+        var prompt = buildGenPrompt({ cls: cls, subj: subj, marks: marks, time: time, mcqMode: mcqMode, negMarking: negMarking, selTopics: selTopics, lang: pgLang });
 
         var btn = $('pg-btn');
         btn.disabled = true; btn.textContent = '⏳ पेपर बन रहा है... 20-40 sec';
@@ -434,7 +595,7 @@
             $('pg-time-estimate').textContent = est
                 ? '⏱️ AI estimate: यह पेपर ' + est[1] + ' मिनट में होने योग्य है (आपकी limit: ' + time + ' min)' + (parseInt(est[1],10) > parseInt(time,10) ? '  ⚠️ Estimate limit से ज़्यादा है!' : '')
                 : '⏱️ आपकी time limit: ' + time + ' मिनट';
-            $('pg-paper-content').textContent = reply;
+            $('pg-paper-content').textContent = sanitizeLatex(reply);
             $('pg-result').innerHTML = '';   // typing cleanup safety
             $('pg-result-wrap').classList.remove('hidden');
             $('pg-status').textContent = '✅ पेपर तैयार! नीचे Save / Audit / Answer Key / Solution।';
@@ -513,14 +674,21 @@
        PART C — 📄 DAILY PRACTICE SHEET
        ============================================================ */
     var dpLevel = 'moderate';
+    var dpLang = 'hi';
     var dpTopics = [];
     var dpSheetText = '';
+    window.setDpLang = function (l) {
+        dpLang = l;
+        var wrap = $('dp-lang-wrap');
+        if (wrap) wrap.innerHTML = langToggleBtns('dp', l);
+        renderDpTopicChips();
+    };
 
     window.loadDpTopics = function () {
         var cls = $('dp-class').value;
         var subj = $('dp-subject').value;
-        var raw = (window.PG_TOPICS && window.PG_TOPICS[cls] && window.PG_TOPICS[cls][subj]) || ['पूरा syllabus'];
-        dpTopics = raw.map(function (t) { return { name: t, sel: false }; });
+        var raw = (window.PG_TOPICS_BI && window.PG_TOPICS_BI[cls] && window.PG_TOPICS_BI[cls][subj]) || [['पूरा syllabus', 'Full syllabus']];
+        dpTopics = raw.map(function (t) { return { hi: t[0], en: t[1], sel: false }; });
         renderDpTopicChips();
     };
     function renderDpTopicChips() {
@@ -528,14 +696,14 @@
         if (!el) return;
         el.innerHTML = dpTopics.map(function (t, i) {
             return '<button type="button" onclick="toggleDpTopic(' + i + ')" class="px-3 py-1.5 rounded-full text-[11px] font-black border-2 transition cursor-pointer ' +
-                (t.sel ? 'bg-teal-600 text-white border-teal-600' : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400') + '">' + esc(t.name) + '</button>';
+                (t.sel ? 'bg-teal-600 text-white border-teal-600' : 'bg-white text-slate-500 border-slate-200 hover:border-slate-400') + '">' + esc(dpLang === 'en' ? t.en : t.hi) + '</button>';
         }).join('');
     }
     window.toggleDpTopic = function (i) { dpTopics[i].sel = !dpTopics[i].sel; renderDpTopicChips(); };
     window.addDpTopic = function () {
         var v = $('dp-custom-topic').value.trim();
         if (!v) return;
-        dpTopics.push({ name: v, sel: true, custom: true });
+        dpTopics.push({ hi: v, en: v, sel: true, custom: true });
         $('dp-custom-topic').value = '';
         renderDpTopicChips();
     };
@@ -553,7 +721,7 @@
         var numQ = $('dp-num').value || '12';
         var mcqMode = $('dp-mcq').value;
         var withAnswers = $('dp-with-ans').checked;   // printable sheet (bina answers) ya with-answers
-        var selTopics = dpTopics.filter(function (t) { return t.sel; }).map(function (t) { return t.name; });
+        var selTopics = dpTopics.filter(function (t) { return t.sel; }).map(function (t) { return dpLang === 'en' ? t.en : t.hi; });
         if (!selTopics.length) { alert('कम से कम एक topic select करो।'); return; }
 
         var lvlHi = {
@@ -562,25 +730,7 @@
             hard: 'HARD — topper practice, हर सवाल में depth'
         }[dpLevel];
 
-        var prompt = [
-            'तुम EDUVA के senior educator हो। एक teacher के लिए DAILY PRACTICE SHEET (worksheet) बनाओ — जो teacher हर रोज़ बच्चों को homework/revision के लिए देता है।',
-            '',
-            'SPECIFICATIONS:',
-            '- Class: ' + cls + ' | Subject: ' + subj,
-            '- Topics: ' + selTopics.join(', '),
-            '- कुल सवाल: ' + numQ,
-            '- Difficulty: ' + lvlHi,
-            '- Format: ' + (mcqMode === 'all' ? 'सिर्फ MCQ (4 options)' : mcqMode === 'mixed' ? 'Mixed — कुछ MCQ + कुछ short' : 'Short answer (1-3 lines each)'),
-            withAnswers ? '- हर सवाल के नीचे उसका छोटा answer भी दो (teacher के reference के लिए)' : '- सवालों के answers मत दो — साफ printable sheet बच्चों को देने के लिए',
-            '',
-            'कड़े नियम:',
-            '1. हर सवाल 100% सही हो — कोई ambiguous या गलत-data वाला सवाल नहीं।',
-            '2. Sheet छोटी और focused हो — daily practice के लिए, exam paper नहीं। Header में लिखो: "Daily Practice — Class ' + cls + ' | ' + subj + ' | ' + selTopics.join(', ') + '"।',
-            '3. सवालों के आगे Q1, Q2... नंबर लगाओ। Printable format।',
-            '4. सारे सवाल ORIGINAL बनाओ।',
-            '',
-            'पूरी sheet अभी दो।'
-        ].join('\n');
+        var prompt = buildDpPrompt({ cls: cls, subj: subj, numQ: numQ, mcqMode: mcqMode, withAnswers: withAnswers, selTopics: selTopics, lang: dpLang });
 
         var btn = $('dp-btn');
         btn.disabled = true; btn.textContent = '⏳ Sheet बन रही है... 15-30 sec';
@@ -592,7 +742,7 @@
             dpSheetText = reply;
             window.__dpAt = Date.now();
             try { sessionStorage.setItem('eduva_dp_sheet', JSON.stringify({ t: Date.now(), data: reply })); } catch (e) {}
-            $('dp-sheet-content').textContent = reply;
+            $('dp-sheet-content').textContent = sanitizeLatex(reply);
             $('dp-result-wrap').classList.remove('hidden');
             $('dp-status').textContent = '✅ Sheet तैयार! Download / Copy / Answer Key / Solution।';
         } catch (e) {
@@ -641,8 +791,9 @@
     };
 
     // Init
-    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ loadPgTopics(); loadDpTopics(); });
-    else { loadPgTopics(); loadDpTopics(); }
+    function initTp() { loadPgTopics(); loadDpTopics(); injectLangToggles(); }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTp);
+    else initTp();
 
     console.log('🧑‍🏫 EDUVA Teacher Panel loaded');
 })();
