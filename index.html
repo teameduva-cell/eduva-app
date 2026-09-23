@@ -3073,8 +3073,8 @@
      🧑‍🏫 EDUVA TEACHER PANEL — view-teacher section
      Ye section apne <main> ke andar baaki views ke saath paste karo.
      Saath mein 2 file include karni hain (head ya body end):
-       <script src="/teacher-topics.js"></script>
-       <script src="/teacher-panel.js"></script>
+       
+       
      ============================================================ -->
 <section id="view-teacher" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
     <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
@@ -6545,7 +6545,7 @@ ${logText}
             let score = 0, correct = 0, incorrect = 0;
             currentMockQs.forEach((q, idx) => {
                 if (userAnswers[idx] === q.ans) { score += 4; correct++; }
-                else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; }
+                else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; try { addToRevQueue(q.q, (q.options && q.options[userAnswers[idx]]) || ''); } catch (e) {} }
             });
             const timeTakenSec = testStartTimestamp ? Math.max(0, Math.round((Date.now() - testStartTimestamp) / 1000)) : 0;
             document.getElementById('test-score-summary').innerText = `कुल अंक: ${score} / 20 (सही: ${correct}, गलत: ${incorrect})`;
@@ -12288,5 +12288,6 @@ LaTeX ($) बिल्कुल नहीं।`;
 <!-- 🧑‍🏫 EDUVA Teacher Panel -->
 <script src="/teacher-topics.js"></script>
 <script src="/teacher-panel.js"></script>
+<script src="/student-phase2.js"></script>
 </body>
 </html>
