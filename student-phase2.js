@@ -22,6 +22,12 @@
         return r.trim();
     }
 
+    function getUQ() {
+        try { if (typeof lastUserQuestion !== 'undefined' && lastUserQuestion) return String(lastUserQuestion); } catch (e) {}
+        try { var el = document.getElementById('chat-input'); if (el && el.value) return el.value; } catch (e) {}
+        return '';
+    }
+
     /* ================= (1) GOLU-BOLU MODE ================= */
     var GB_SYSTEM = [
         'तुम Golu और Bolu हो — EDUVA के mascot दोस्त (Class 6-12 के बच्चों के दोस्त जैसे)।',
@@ -46,7 +52,7 @@
     }
 
     async function runGoluBolu(btn) {
-        var q = (window.lastUserQuestion || '').trim();
+        var q = getUQ().trim();
         if (!q) { alert('पहले कोई सवाल पूछो, फिर Golu-Bolu समझाएंगे! 😄'); return; }
         btn.disabled = true; btn.innerHTML = '⏳ Golu-Bolu आ रहे हैं...';
         try {
@@ -72,13 +78,17 @@
         if (!box) return;
         var kids = box.children;
         if (!kids.length) return;
-        var last = kids[kids.length - 1];
-        if (last.querySelector && last.querySelector('.gb-btn')) return;
-        var txt = last.textContent || '';
-        var uq = (window.lastUserQuestion || '').slice(0, 25);
-        if (txt.length > 120 && !(uq && txt.indexOf(uq) !== -1)) {
-            var target = last.querySelector('.chat-bubble') || last;
-            target.appendChild(gbButton());
+        var uq = getUQ().slice(0, 25);
+        for (var i = kids.length - 1; i >= 0 && i >= kids.length - 2; i--) {
+            var last = kids[i];
+            if (!last.querySelector) continue;
+            if (last.querySelector('.gb-btn')) continue;
+            var txt = (last.textContent || '').trim();
+            if (txt.length > 80 && !(uq && txt.indexOf(uq) !== -1)) {
+                var target = last.querySelector('.chat-bubble') || last;
+                if (target.querySelector('.gb-btn')) continue;
+                try { target.appendChild(gbButton()); } catch (e) {}
+            }
         }
     }
     var gbObs = null;
@@ -129,7 +139,9 @@
         o.addEventListener('click', function (e) { if (e.target === o) closeModal(); });
         document.body.appendChild(o);
     }
-    window.closeModal = function () { var o = $('eduva-p2-overlay'); if (o) o.remove(); };
+    window.closeModal = function () {
+        ['eduva-p2-overlay', 'eduva-modal-overlay'].forEach(function (id) { var o = $(id); if (o) o.remove(); });
+    };
 
     function radarRevise(concept) {
         modal('<div style="background:linear-gradient(135deg,#7c2d12,#c2410c);color:#fff;padding:14px 16px;display:flex;align-items:center;gap:10px;">' +
@@ -180,6 +192,7 @@
         // rev queue badalne pe radar refresh
         var _s = Object.getOwnPropertyDescriptor(Storage.prototype, 'localStorage');
         setInterval(function () { renderRadar(false); }, 60000);
+        setInterval(attachGB, 2500);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
