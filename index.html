@@ -768,6 +768,9 @@
                     <button onclick="switchTab('profile'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="user" class="w-4 h-4 text-slate-500"></i> My Profile
                     </button>
+                    <button onclick="switchTab('teacher'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
+                        <span class="text-base leading-none">🧑‍🏫</span> Teacher Panel — Paper बनाओ & Audit
+                    </button>
                     <button onclick="toggleDarkMode(); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="moon" class="w-4 h-4 text-slate-500"></i> Dark Mode
                     </button>
@@ -1001,6 +1004,9 @@
                     <button onclick="switchTab('study-material')" id="dtab-study-material" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="library" class="w-5 h-5 text-fuchsia-600"></i> Study Material (NCERT) 📚
                     </button>
+                    <button onclick="switchTab('teacher')" id="dtab-teacher" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                        <i data-lucide="user-check" class="w-5 h-5 text-indigo-600"></i> 🧑‍🏫 Teacher Panel
+                    </button>
                     <button onclick="switchTab('ncert-olympiad')" id="dtab-ncert-olympiad" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="book-marked" class="w-5 h-5 text-rose-600"></i> NCERT/Olympiad Practice 📘
                     </button>
@@ -1125,6 +1131,16 @@
                     <div class="flex-1">
                         <p class="text-white font-black text-sm sm:text-base">ALL INDIA EDUVA TEST — 3 JANUARY 2027</p>
                         <p class="text-white/90 text-xs font-bold mt-0.5">25 MCQ • 50 min • Class-wise Rank • सभी को Certificate • Top 100: 1 साल FREE • Top 5: 3 साल FREE!</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
+                </button>
+
+                <!-- 🧑‍🏫 TEACHER PANEL — teacher acquisition card -->
+                <button onclick="switchTab('teacher')" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-xl" style="background: linear-gradient(135deg, #312e81 0%, #6d28d9 100%);">
+                    <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 text-3xl">🧑‍🏫</div>
+                    <div class="flex-1">
+                        <p class="text-white font-black text-sm sm:text-base">Teacher हो? Question Paper FREE बनाओ & Audit करो</p>
+                        <p class="text-white/85 text-xs font-semibold mt-0.5">Paper Generator • Daily Practice • 2 घंटे में auto-delete — 100% private 🔒</p>
                     </div>
                     <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
                 </button>
@@ -3052,6 +3068,292 @@
                     <button onclick="switchTab('counseling')" class="w-full py-3.5 bg-purple-600 hover:bg-purple-700 text-white font-black text-xs rounded-xl transition cursor-pointer">💜 Stress है? Counseling + Calm Session खोलो</button>
                 </div>
             </section>
+
+<!-- ============================================================
+     🧑‍🏫 EDUVA TEACHER PANEL — view-teacher section
+     Ye section apne <main> ke andar baaki views ke saath paste karo.
+     Saath mein 2 file include karni hain (head ya body end):
+       <script src="/teacher-topics.js"></script>
+       <script src="/teacher-panel.js"></script>
+     ============================================================ -->
+<section id="view-teacher" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+    <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+
+    <!-- Header -->
+    <div class="card-clean p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-violet-900 text-white flex items-center justify-between gap-4">
+        <div>
+            <span class="px-3 py-1 bg-white/15 border border-white/25 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">🧑‍🏫 Teachers Only</span>
+            <h2 class="text-xl sm:text-2xl font-black mt-2">Teacher Panel</h2>
+            <p class="text-xs sm:text-sm text-slate-300 font-semibold mt-1">Question paper बनाओ • Audit करो • Answer key & Solution — सब FREE, सब private</p>
+        </div>
+        <div class="text-4xl hidden sm:block">📝</div>
+    </div>
+
+    <!-- Trust banner — short & honest -->
+    <div class="p-3.5 rounded-2xl bg-emerald-50 border-2 border-emerald-200 space-y-1.5">
+        <p class="text-xs font-black text-emerald-900">🔒 आपका पेपर 100% सुरक्षित — बेफिक्र होकर काम करिए</p>
+        <p class="text-[11px] font-semibold text-emerald-800 leading-relaxed">
+            ✓ पेपर सिर्फ AI-processing के लिए जाता है — कहीं store/share नहीं होता<br>
+            ✓ <b>2 घंटे बाद system से पूरी तरह हटा दिया जाता है</b> (नीचे live countdown चलता है)<br>
+            ✓ EDUVA पर आपका पेपर हमेशा सिर्फ आपका है
+        </p>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex items-center bg-slate-100 rounded-2xl p-1 text-xs font-black">
+        <button onclick="setTeacherTab('audit')" id="ttab-audit" class="flex-1 py-3 rounded-xl ink-navy text-white cursor-pointer">🧾 Paper Audit</button>
+        <button onclick="setTeacherTab('generate')" id="ttab-generate" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📝 Paper Generator</button>
+        <button onclick="setTeacherTab('practice')" id="ttab-practice" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📄 Daily Practice</button>
+    </div>
+
+    <!-- ══════════ TAB 1: PAPER AUDIT ══════════ -->
+    <div id="teacher-audit-tab" class="card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div>
+                <h3 class="text-base font-black text-slate-900">अपना बनाया पेपर Audit करो</h3>
+                <p class="text-[11px] text-slate-500 font-semibold mt-0.5">गलत सवाल • गलत answer key • grammar • ambiguity • marks distribution — सब पकड़ा जाएगा</p>
+            </div>
+            <span id="paper-delete-countdown" class="text-[10px] font-black text-rose-500"></span>
+        </div>
+
+        <!-- Language -->
+        <div class="flex items-center gap-2">
+            <span class="text-[10px] font-black text-slate-400 uppercase">Report language:</span>
+            <span class="flex items-center bg-slate-100 rounded-full p-0.5">
+                <button onclick="setPaperCheckLang('hi')" id="pcl-hi" class="px-3 py-1.5 rounded-full text-[10px] font-black bg-white shadow-sm cursor-pointer">🇮🇳 Hindi</button>
+                <button onclick="setPaperCheckLang('en')" id="pcl-en" class="px-3 py-1.5 rounded-full text-[10px] font-black text-slate-500 cursor-pointer">🇬🇧 English</button>
+            </span>
+        </div>
+
+        <!-- Attach -->
+        <div class="space-y-2">
+            <div class="flex flex-wrap items-center gap-2">
+                <button onclick="document.getElementById('pc-file').click()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl cursor-pointer">📷 Paper की photos जोड़ो</button>
+                <button onclick="pcClearAll()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-black rounded-xl cursor-pointer">🗑️ साफ करो</button>
+                <input type="file" id="pc-file" accept="image/*" multiple class="hidden" onchange="pcAttachPhotos(this)">
+            </div>
+            <div id="pc-pages" class="flex flex-wrap items-center gap-2"></div>
+            <p class="text-[10px] font-bold text-slate-400">💡 कई pages हैं तो सभी जोड़ो (एक-एक करके) — AI पूरा paper क्रम में पढ़ेगा</p>
+        </div>
+
+        <textarea id="pc-note" rows="2" placeholder="कोई खास निर्देश? (optional) — जैसे: 'Class 10 CBSE board pattern का paper है, ज़्यादा ध्यान numericals पर दो'" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-medium outline-none focus:border-blue-500"></textarea>
+
+        <button onclick="runPaperAudit()" id="pc-run-btn" class="w-full py-4 bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">🧾 पेपर Audit करो (30-60 sec)</button>
+
+        <!-- Result -->
+        <div id="pc-result" class="space-y-3"></div>
+
+        <!-- Post-audit action cards -->
+        <div id="pc-extra-cards" class="hidden space-y-3">
+            <div class="p-4 rounded-2xl border-2 border-dashed border-indigo-300 bg-indigo-50/50 space-y-3">
+                <p class="text-[10px] font-black text-indigo-500 uppercase tracking-widest text-center">📋 Audit हो गई — अब आगे क्या चाहिए?</p>
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="pcGenerateExtra('solution')" id="pc-sol-btn" class="p-3.5 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-700 text-white font-black text-xs shadow-md hover:scale-[1.02] transition cursor-pointer">📘 Full Paper Solution<br><span class="text-[9px] opacity-75 font-bold">हर सवाल का step-by-step हल</span></button>
+                    <button onclick="pcGenerateExtra('key')" id="pc-key-btn" class="p-3.5 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white font-black text-xs shadow-md hover:scale-[1.02] transition cursor-pointer">🔑 Answer Key Only<br><span class="text-[9px] opacity-75 font-bold">सिर्फ सही answers</span></button>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+                <button onclick="pcSaveToDevice()" class="py-3 bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-black rounded-xl cursor-pointer">📥 पेपर अपने device पर save करो</button>
+                <button onclick="pcSaveToAccount()" class="py-3 bg-slate-50 border border-slate-200 text-slate-700 text-xs font-black rounded-xl cursor-pointer">🗂️ सिर्फ मेरे EDUVA account में save करो (optional)</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════ TAB 2: PAPER GENERATOR ══════════ -->
+    <div id="teacher-generate-tab" class="hidden card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-4">
+        <div>
+            <h3 class="text-base font-black text-slate-900">📝 नया Question Paper बनाओ</h3>
+            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">Class + Subject चुनो → Topics आ जाएँगे → बाकी भरो → पेपर तैयार!</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">🏫 Class</label>
+                <select id="pg-class" onchange="loadPgTopics()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-indigo-500">
+                    <option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option>
+                    <option value="9">Class 9</option><option value="10" selected>Class 10</option>
+                    <option value="11">Class 11</option><option value="12">Class 12</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">📚 Subject</label>
+                <select id="pg-subject" onchange="loadPgTopics()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-indigo-500">
+                    <option>Mathematics</option><option>Physics</option><option>Chemistry</option>
+                    <option>Biology</option><option>Science</option><option>English</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Topics -->
+        <div>
+            <label class="block text-[10px] font-black text-slate-500 uppercase mb-1.5">🎯 Topics (tap करके select करो — अपना topic भी जोड़ सकते हो)</label>
+            <div id="pg-topic-chips" class="flex flex-wrap gap-2 min-h-[36px]"></div>
+            <div class="flex gap-2 mt-2">
+                <input id="pg-custom-topic" placeholder="अपना topic लिखो..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-indigo-500">
+                <button onclick="addPgTopic()" class="px-4 bg-slate-800 hover:bg-slate-900 text-white text-xs font-black rounded-xl cursor-pointer shrink-0">+ जोड़ो</button>
+            </div>
+        </div>
+
+        <!-- Marks / Time / MCQ / Neg -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">🎯 कुल Marks</label>
+                <input id="pg-marks" type="number" value="80" min="10" max="300" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-indigo-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">⏱️ Time (min)</label>
+                <input id="pg-time" type="number" value="180" min="20" max="360" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-indigo-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">❓ MCQ</label>
+                <select id="pg-mcq" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold outline-none focus:border-indigo-500">
+                    <option value="no" selected>नहीं — Descriptive</option>
+                    <option value="mixed">Mixed</option>
+                    <option value="all">सिर्फ MCQ</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">➖ Negative</label>
+                <label class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-3 cursor-pointer">
+                    <input type="checkbox" id="pg-neg" class="w-4 h-4 accent-rose-600"> <span class="text-xs font-bold text-slate-600">हाँ</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Question-type breakdown -->
+        <div>
+            <label class="block text-[10px] font-black text-slate-500 uppercase mb-1.5">🧩 Question-type Breakdown (जो खाली/0 छोड़ोगे वो AI अपने हिसाब से balance करेगा)</label>
+            <div class="grid grid-cols-4 sm:grid-cols-8 gap-2">
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">MCQ</p><input id="pg-c-mcq" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">V.Short</p><input id="pg-c-vs" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Short</p><input id="pg-c-s" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Long</p><input id="pg-c-l" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Case</p><input id="pg-c-cs" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Match</p><input id="pg-c-m" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Compare</p><input id="pg-c-c" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+                <div><p class="text-[9px] font-black text-slate-400 text-center mb-1">Assert</p><input id="pg-c-ar" type="number" min="0" value="0" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-center text-xs font-bold"></div>
+            </div>
+        </div>
+
+        <!-- Difficulty -->
+        <div>
+            <label class="block text-[10px] font-black text-slate-500 uppercase mb-1.5">💪 Difficulty</label>
+            <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="setPgLevel('easy')" id="pgl-easy" class="py-3 rounded-xl text-xs font-black bg-emerald-100 text-emerald-700 border-2 border-emerald-300 cursor-pointer">🟢 Easy<span class="block text-[9px] font-bold opacity-70">हर बच्चा कर पाए</span></button>
+                <button type="button" onclick="setPgLevel('moderate')" id="pgl-moderate" class="py-3 rounded-xl text-xs font-black bg-amber-100 text-amber-700 border-2 border-amber-300 cursor-pointer" style="outline:3px solid #312e81">🟡 Moderate<span class="block text-[9px] font-bold opacity-70">Board level</span></button>
+                <button type="button" onclick="setPgLevel('hard')" id="pgl-hard" class="py-3 rounded-xl text-xs font-black bg-rose-100 text-rose-700 border-2 border-rose-300 cursor-pointer">🔴 Hard<span class="block text-[9px] font-bold opacity-70">Toughest</span></button>
+            </div>
+        </div>
+
+        <button onclick="generateTeacherPaper()" id="pg-btn" class="w-full py-4 bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">📝 पेपर बनाओ (20-40 sec)</button>
+        <p id="pg-status" class="text-xs font-bold text-center min-h-[16px]"></p>
+
+        <!-- Generated paper -->
+        <div id="pg-result-wrap" class="hidden space-y-3">
+            <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl space-y-1">
+                <p id="pg-time-estimate" class="text-xs font-black text-indigo-800"></p>
+                <p class="text-[10px] font-bold text-rose-500">🔒 यह पेपर 2 घंटे बाद सिस्टम से अपने आप delete हो जाएगा — पहले save कर लो। EDUVA पर कोई copy नहीं रखता।</p>
+            </div>
+            <div id="pg-result" class="space-y-3"></div>
+            <div class="p-5 bg-white border border-slate-200 rounded-2xl max-h-[60vh] overflow-y-auto hide-scrollbar">
+                <pre id="pg-paper-content" class="text-sm text-slate-800 whitespace-pre-wrap font-medium leading-relaxed" style="font-family:inherit"></pre>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="pgDownload()" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl cursor-pointer">📥 Download</button>
+                <button onclick="pgCopy()" class="py-3 bg-slate-700 hover:bg-slate-800 text-white text-xs font-black rounded-xl cursor-pointer">📋 Copy</button>
+                <button onclick="pgAnswerKey()" id="pg-key-btn" class="py-3 bg-teal-600 hover:bg-teal-700 text-white text-xs font-black rounded-xl cursor-pointer">🔑 Answer Key</button>
+                <button onclick="pgSolution()" id="pg-sol-btn" class="py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl cursor-pointer">📘 Full Solution</button>
+            </div>
+            <button onclick="pgAuditSelf()" id="pg-audit-btn" class="w-full py-3.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-black rounded-xl cursor-pointer">🧾 अपने पेपर की Audit करो (गलतियाँ पकड़ो)</button>
+        </div>
+    </div>
+
+    <!-- ══════════ TAB 3: DAILY PRACTICE SHEET ══════════ -->
+    <div id="teacher-practice-tab" class="hidden card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-4">
+        <div>
+            <h3 class="text-base font-black text-slate-900">📄 Daily Practice Sheet बनाओ</h3>
+            <p class="text-[11px] text-slate-500 font-semibold mt-0.5">रोज़ की homework/revision sheet — topic चुनो, 15-30 second में तैयार</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">🏫 Class</label>
+                <select id="dp-class" onchange="loadDpTopics()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-teal-500">
+                    <option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option>
+                    <option value="9">Class 9</option><option value="10" selected>Class 10</option>
+                    <option value="11">Class 11</option><option value="12">Class 12</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">📚 Subject</label>
+                <select id="dp-subject" onchange="loadDpTopics()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-teal-500">
+                    <option>Mathematics</option><option>Physics</option><option>Chemistry</option>
+                    <option>Biology</option><option>Science</option><option>English</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-[10px] font-black text-slate-500 uppercase mb-1.5">🎯 Topics (tap करके select करो — अपना भी जोड़ सकते हो)</label>
+            <div id="dp-topic-chips" class="flex flex-wrap gap-2 min-h-[36px]"></div>
+            <div class="flex gap-2 mt-2">
+                <input id="dp-custom-topic" placeholder="अपना topic लिखो..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold outline-none focus:border-teal-500">
+                <button onclick="addDpTopic()" class="px-4 bg-slate-800 hover:bg-slate-900 text-white text-xs font-black rounded-xl cursor-pointer shrink-0">+ जोड़ो</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">🔢 कितने सवाल</label>
+                <input id="dp-num" type="number" value="12" min="5" max="50" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-sm font-bold outline-none focus:border-teal-500">
+            </div>
+            <div>
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">❓ Format</label>
+                <select id="dp-mcq" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-bold outline-none focus:border-teal-500">
+                    <option value="no" selected>Short answer</option>
+                    <option value="mixed">Mixed (MCQ + Short)</option>
+                    <option value="all">सिर्फ MCQ</option>
+                </select>
+            </div>
+            <div class="col-span-2">
+                <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">📋 Sheet टाइप</label>
+                <label class="flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-xl p-3 cursor-pointer">
+                    <input type="checkbox" id="dp-with-ans" class="w-4 h-4 accent-teal-600">
+                    <span class="text-xs font-bold text-slate-600">Teacher copy (हर सवाल का answer साथ में)</span>
+                </label>
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-[10px] font-black text-slate-500 uppercase mb-1.5">💪 Difficulty</label>
+            <div class="grid grid-cols-3 gap-2">
+                <button type="button" onclick="setDpLevel('easy')" id="dpl-easy" class="py-3 rounded-xl text-xs font-black bg-emerald-100 text-emerald-700 border-2 border-emerald-300 cursor-pointer">🟢 Easy<span class="block text-[9px] font-bold opacity-70">Concept practice</span></button>
+                <button type="button" onclick="setDpLevel('moderate')" id="dpl-moderate" class="py-3 rounded-xl text-xs font-black bg-amber-100 text-amber-700 border-2 border-amber-300 cursor-pointer" style="outline:3px solid #134e4a">🟡 Moderate<span class="block text-[9px] font-bold opacity-70">Daily revision</span></button>
+                <button type="button" onclick="setDpLevel('hard')" id="dpl-hard" class="py-3 rounded-xl text-xs font-black bg-rose-100 text-rose-700 border-2 border-rose-300 cursor-pointer">🔴 Hard<span class="block text-[9px] font-bold opacity-70">Topper practice</span></button>
+            </div>
+        </div>
+
+        <button onclick="generateDailyPractice()" id="dp-btn" class="w-full py-4 bg-gradient-to-r from-teal-600 to-emerald-700 hover:from-teal-700 hover:to-emerald-800 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">📄 Practice Sheet बनाओ (15-30 sec)</button>
+        <p id="dp-status" class="text-xs font-bold text-center min-h-[16px]"></p>
+
+        <div id="dp-result-wrap" class="hidden space-y-3">
+            <div class="p-4 bg-teal-50 border border-teal-200 rounded-2xl">
+                <p class="text-[10px] font-bold text-rose-500">🔒 यह sheet भी 2 घंटे बाद system से अपने आप delete हो जाएगी — पहले save कर लो।</p>
+            </div>
+            <div id="dp-result" class="space-y-3"></div>
+            <div class="p-5 bg-white border border-slate-200 rounded-2xl max-h-[60vh] overflow-y-auto hide-scrollbar">
+                <pre id="dp-sheet-content" class="text-sm text-slate-800 whitespace-pre-wrap font-medium leading-relaxed" style="font-family:inherit"></pre>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                <button onclick="dpDownload()" class="py-3 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black rounded-xl cursor-pointer">📥 Download</button>
+                <button onclick="dpCopy()" class="py-3 bg-slate-700 hover:bg-slate-800 text-white text-xs font-black rounded-xl cursor-pointer">📋 Copy</button>
+                <button onclick="dpAnswerKey()" id="dp-key2-btn" class="py-3 bg-teal-600 hover:bg-teal-700 text-white text-xs font-black rounded-xl cursor-pointer">🔑 Answer Key</button>
+                <button onclick="dpSolution()" id="dp-sol2-btn" class="py-3 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl cursor-pointer">📘 Solutions</button>
+            </div>
+        </div>
+    </div>
+</section>
+
 
         </main>
     </div>
@@ -11983,5 +12285,8 @@ LaTeX ($) बिल्कुल नहीं।`;
     })();
 
 </script>
+<!-- 🧑‍🏫 EDUVA Teacher Panel -->
+<script src="/teacher-topics.js"></script>
+<script src="/teacher-panel.js"></script>
 </body>
 </html>
