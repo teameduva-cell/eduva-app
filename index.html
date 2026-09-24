@@ -7931,7 +7931,7 @@ RULES FOR EDU SIR:
             document.body.classList.toggle('chat-immersive', tabId === 'chat');
             if (tabId === 'chat') setTimeout(renderOfflineBox, 200);
             if (tabId === 'flashcards') setTimeout(() => { const fc = document.getElementById('fc-content'); if (fc) renderMathInElementCustom(fc); }, 100);
-            window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+            try { window.scrollTo({ top: 0, behavior: 'instant' }); } catch (e) { window.scrollTo(0, 0); };
             // browser tab title bhi update ho (history mein achha dikhta hai)
             document.title = tabId.charAt(0).toUpperCase() + tabId.slice(1).replace(/-/g, ' ') + ' – EDUVA';
             // feature usage tracker (founder dashboard ke liye)
