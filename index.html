@@ -732,6 +732,7 @@
             .hero-custom { min-height: 0 !important; padding: 22px !important; }
         }
 
+        html { scroll-behavior: auto !important; }
         /* ===== DARK MODE POLISH ===== */
         body.dark-mode .hero-custom {
             background: radial-gradient(circle at 80% 20%, rgba(139,92,246,.4), transparent 40%), linear-gradient(135deg,#1e1b4b,#312e81,#1e40af) !important;
@@ -12510,6 +12511,13 @@ LaTeX ($) बिल्कुल नहीं।`;
                 }
             } catch (e) {}
         }, 3000);
+    })();
+    </script>
+    <!-- 🔒 EDUVA scroll fix — page hamesha top se khule -->
+    <script>
+    (function () {
+        try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
+        window.addEventListener('load', function () { try { window.scrollTo(0, 0); } catch (e) {} });
     })();
     </script>
 </body>
