@@ -44,6 +44,17 @@
     <link rel="apple-touch-icon" href="/icon-192.png">
 
     <!-- Tailwind CSS & Lucide Icons -->
+    <!-- 🛡️ EMERGENCY FALLBACK — agar Tailwind CDN fail ho to bhi app chale -->
+    <style>
+    .hidden{display:none!important}
+    .block{display:block}.inline-block{display:inline-block}.inline{display:inline}
+    .flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}
+    .w-full{width:100%}.h-full{height:100%}
+    .fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky,.sticky-top{position:sticky}
+    .overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overflow-x-auto{overflow-x:auto}
+    .text-center{text-align:center}.text-left{text-align:left}.text-right{text-align:right}
+    .items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
