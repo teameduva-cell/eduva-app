@@ -768,6 +768,9 @@
                     <button onclick="switchTab('profile'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="user" class="w-4 h-4 text-slate-500"></i> My Profile
                     </button>
+                    <button onclick="switchTab('teacher'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
+                        <span class="text-base leading-none">🧑‍🏫</span> Teacher Panel — Paper बनाओ & Audit
+                    </button>
                     <button onclick="toggleDarkMode(); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="moon" class="w-4 h-4 text-slate-500"></i> Dark Mode
                     </button>
@@ -786,87 +789,12 @@
                         <i data-lucide="message-circle-heart" class="w-4 h-4 text-amber-500"></i> Feedback भेजें 💬
                     </button>
                     <div class="border-t border-slate-100 pt-1.5 mt-1">
-                        <p class="text-[10px] font-black text-slate-400 uppercase px-2 pt-1">📚 Padhai Quick Links</p>
-                        <button onclick="switchTab('homework'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-orange-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🏠</span> Daily Homework
-                        </button>
+                        <p class="text-[10px] font-black text-slate-400 uppercase px-2 pt-1">📚 Study</p>
                         <button onclick="switchTab('mocktest'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-rose-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                             <span class="text-base leading-none">⏱️</span> Mock Test
                         </button>
-                        <button onclick="switchTab('ait'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-amber-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🏆</span> All India Test (FREE)
-                        </button>
-                        <button onclick="switchTab('avatar-lectures'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-rose-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🎥</span> Video Lectures
-                        </button>
-                        <button onclick="switchTab('study-material'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-fuchsia-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📚</span> Study Material
-                        </button>
                         <button onclick="switchTab('olympiad'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-amber-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                             <span class="text-base leading-none">🏆</span> Olympiad Guide
-                        </button>
-                        <button onclick="switchTab('courses'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-emerald-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🎯</span> Courses & AI DPPs
-                        </button>
-                        <button onclick="switchTab('health'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-red-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">❤️</span> Health Guide
-                        </button>
-                        <button onclick="switchTab('upload'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-cyan-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📤</span> Upload Notes
-                        </button>
-                        <button onclick="switchTab('qbank'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🗂️</span> Question Bank
-                        </button>
-                        <button onclick="switchTab('certificates'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-amber-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📜</span> Certificates
-                        </button>
-                        <button onclick="switchTab('flashcards'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-amber-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🃏</span> Flashcards
-                        </button>
-                        <button onclick="switchTab('vedic-maths'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-orange-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🧮</span> Vedic Maths
-                        </button>
-                        <button onclick="switchTab('abacus'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-amber-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🧮</span> Abacus
-                        </button>
-                        <button onclick="switchTab('computer-ai'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-cyan-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">💻</span> Computer & AI
-                        </button>
-                        <button onclick="switchTab('spoken-english'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-sky-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🗣️</span> Spoken English
-                        </button>
-                        <button onclick="switchTab('timetable'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-emerald-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📅</span> AI Time Table
-                        </button>
-                        <button onclick="switchTab('parent-report'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-teal-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">👨‍👩‍👧</span> Parent Report
-                        </button>
-                        <button onclick="switchTab('battle'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-red-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">⚔️</span> AI Battle Mode
-                        </button>
-                        <button onclick="switchTab('predictor'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-purple-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🔮</span> Paper Predictor
-                        </button>
-                        <button onclick="switchTab('viva'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-teal-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🎤</span> Viva Examiner
-                        </button>
-                        <button onclick="switchTab('league'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-yellow-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🏆</span> My League
-                        </button>
-                        <button onclick="switchTab('spin'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-pink-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🎡</span> Daily Spin
-                        </button>
-                        <button onclick="switchTab('tree'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-green-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🌱</span> Mera Ped
-                        </button>
-                        <button onclick="switchTab('hunt'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-red-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">🐛</span> Galti Pakdo
-                        </button>
-                        <button onclick="switchTab('story'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-violet-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📖</span> Kota Chronicles
-                        </button>
-                        <button onclick="switchTab('wrapped'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                            <span class="text-base leading-none">📊</span> Weekly Wrapped
                         </button>
                     </div>
                 </div>
@@ -1073,7 +1001,7 @@
                 <div class="hero-custom p-6 sm:p-8 rounded-[26px] relative overflow-hidden flex flex-col justify-between">
                     <div class="flex items-center justify-between">
                         <small class="font-extrabold uppercase tracking-widest opacity-90">🧑‍🏫 Edu Sir — तुम्हारा अपना AI Teacher</small>
-                        <button onclick="openTestCampaign()" class="bg-amber-400/90 hover:bg-amber-300 text-amber-950 px-3.5 py-1.5 rounded-xl text-xs font-black transition cursor-pointer">🏆 All India Test</button>
+                        
                     </div>
                     <h1 class="premium-heading text-3xl sm:text-4xl font-black mt-3 leading-tight">
                         📸 सवाल की Photo भेजो<br>
@@ -1087,9 +1015,7 @@
                         <button onclick="switchTab('chat')" class="relative bg-white text-blue-700 px-6 py-4 rounded-xl font-black text-sm shadow-lg hover:scale-105 transition cursor-pointer">
                             🚀 अपना पहला सवाल पूछो (FREE)
                         </button>
-                        <button onclick="openTestCampaign()" class="border-2 border-amber-300 bg-amber-500/25 text-white px-5 py-4 rounded-xl font-black text-sm hover:bg-amber-500/40 transition cursor-pointer">
-                            🏆 All India Test — FREE Register
-                        </button>
+                        
                     </div>
                     <div class="flex items-center gap-3 mt-3 z-10">
                         <button onclick="eduvaInstallApp()" class="bg-white/15 hover:bg-white/25 border border-white/40 text-white px-4 py-2.5 rounded-xl font-black text-xs transition cursor-pointer flex items-center gap-1.5">
@@ -1128,6 +1054,17 @@
                     <div class="flex-1">
                         <p class="text-white font-black text-sm sm:text-base">ALL INDIA EDUVA TEST — 3 JANUARY 2027</p>
                         <p class="text-white/90 text-xs font-bold mt-0.5">25 MCQ • 50 min • Class-wise Rank • सभी को Certificate • Top 100: 1 साल FREE • Top 5: 3 साल FREE!</p>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
+                </button>
+
+                <!-- 📐 GANITA MANJARI — Class 9 new NCERT banner -->
+                <button onclick="window.location.href='/cbse-class-9-ganita-manjari-2-2026.html'" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-xl relative overflow-hidden" style="background: linear-gradient(135deg, #B45309 0%, #F59E0B 50%, #FCD34D 100%);">
+                    <span class="absolute top-3 right-3 px-2.5 py-0.5 bg-white/90 text-amber-800 rounded-full text-[9px] font-black">NEW 🔥</span>
+                    <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center shrink-0 text-3xl">📐</div>
+                    <div class="flex-1">
+                        <p class="text-white font-black text-sm sm:text-base">Class 9 — Ganita Manjari 2 (New NCERT) आ गई!</p>
+                        <p class="text-white/90 text-xs font-bold mt-0.5">Chapters 9-14 • Official PDF + Important Questions — FREE</p>
                     </div>
                     <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
                 </button>
@@ -1274,31 +1211,9 @@
                 </div>
 
                 <!-- SEARCH BAR -->
-                <div class="card-clean rounded-2xl p-3 flex items-center gap-2 bg-white border border-slate-200 transition shadow-xs">
-                    <i data-lucide="search" class="w-5 h-5 text-slate-400 ml-2"></i>
-                    <input type="text" id="home-search-input" placeholder="Ask Edu Sir anything... (कोटा स्टाइल में सवाल पूछें)" class="flex-1 bg-transparent text-sm outline-none font-semibold text-slate-900 placeholder:text-slate-400" onkeydown="if(event.key==='Enter') { switchTab('chat'); document.getElementById('chat-input').value = this.value; sendDoubt(); }" onclick="openGlobalSearch()">
-                    <button onclick="homeGoToVoice()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="आवाज़ से पूछें">
-                        <i data-lucide="mic" class="w-4 h-4"></i>
-                    </button>
-                    <button onclick="homeGoToCamera()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="फोटो खींचें">
-                        <i data-lucide="camera" class="w-4 h-4"></i>
-                    </button>
-                    <button onclick="homeGoToGallery()" class="p-2.5 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition cursor-pointer" title="फोटो अपलोड करें">
-                        <i data-lucide="image" class="w-4 h-4"></i>
-                    </button>
-                </div>
+                
 
-                <!-- SNAP & SOLVE BANNER (Doubtnut-style instant photo solve) -->
-                <button onclick="snapAndSolve()" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);">
-                    <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center shrink-0">
-                        <i data-lucide="camera" class="w-7 h-7 text-white"></i>
-                    </div>
-                    <div class="flex-1">
-                        <p class="text-white font-black text-sm sm:text-base flex items-center gap-1.5">📸 Snap &amp; Solve <span class="text-[10px] bg-white/25 px-2 py-0.5 rounded-full font-bold uppercase">Instant</span></p>
-                        <p class="text-white/90 text-xs font-semibold mt-0.5">किसी भी सवाल की फोटो खींचो — Edu Sir तुरंत हल बता देगा, कुछ टाइप करने की ज़रूरत नहीं!</p>
-                    </div>
-                    <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
-                </button>
+                
 
                 <!-- Continue Learning Section -->
                 <div class="card-clean p-5 sm:p-6 rounded-3xl bg-white space-y-4">
@@ -1425,10 +1340,6 @@
                         <i data-lucide="trophy" class="w-5 h-5 text-yellow-500 shrink-0 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">My League</p>
                     </button>
-                    <button onclick="switchTab('ait')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
-                        <i data-lucide="award" class="w-5 h-5 text-amber-500 shrink-0 group-hover:scale-110 transition"></i>
-                        <p class="text-xs font-bold text-slate-900">All India Test</p>
-                    </button>
                     <button onclick="switchTab('certificates')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
                         <i data-lucide="award" class="w-5 h-5 text-amber-600 shrink-0 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">Certificates</p>
@@ -1540,9 +1451,9 @@
                         <div class="w-8 h-8 text-[10px] rounded-full bg-slate-900 text-white flex items-center justify-center font-black shrink-0">ES</div>
                         <div class="space-y-2 min-w-0">
                             <div id="chat-welcome-msg" class="chat-bubble-gpt bg-slate-100 p-4 rounded-2xl rounded-tl-md text-sm sm:text-base text-slate-800 leading-relaxed">
-                                जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो — तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
+                                नमस्ते, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b>। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो — तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?
                             </div>
-                            <button onclick="speakText('जय श्री राम, चैंपियन! मैं हूँ आपका अपना एडू सर। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो, तेरा भाई हर तरह से तैयार है!')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-bold text-[11px] rounded-full transition cursor-pointer">
+                            <button onclick="speakText('नमस्ते, चैंपियन! मैं हूँ आपका अपना एडू सर। चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो, तेरा भाई हर तरह से तैयार है!')" class="inline-flex items-center gap-1.5 px-3 py-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 font-bold text-[11px] rounded-full transition cursor-pointer">
                                 🔊 Edu Sir को सुनें
                             </button>
                         </div>
@@ -4400,6 +4311,10 @@
                 <div style="margin:10px 12px 0;display:flex;flex-direction:column;gap:8px;">
                     <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
                     <div style="display:flex;gap:8px;">
+                        <a href="/cbse-class-9-ganita-manjari-2-2026.html" style="display:block;background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">🆕 NEW NCERT • CLASS 9 • 2026-27</div>
+                            <div style="font-weight:800;font-size:13px;">Ganita Manjari 2 — Chapters, PDF Link + Solved Questions 🔥</div>
+                        </a>
                         <a href="/cbse-class-10-maths-standard-2026-solved.html" style="flex:1;background:linear-gradient(135deg,#0f3c7d,#2b6de0);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;">
                             <div style="font-size:10px;opacity:.85;">CBSE 2026 • Class 10</div>
                             <div style="font-weight:800;font-size:13px;">Maths Standard</div>
@@ -6532,7 +6447,7 @@ ${logText}
             let score = 0, correct = 0, incorrect = 0;
             currentMockQs.forEach((q, idx) => {
                 if (userAnswers[idx] === q.ans) { score += 4; correct++; }
-                else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; }
+                else if (userAnswers[idx] !== undefined) { score -= 1; incorrect++; try { addToRevQueue(q.q, (q.options && q.options[userAnswers[idx]]) || ''); } catch (e) {} }
             });
             const timeTakenSec = testStartTimestamp ? Math.max(0, Math.round((Date.now() - testStartTimestamp) / 1000)) : 0;
             document.getElementById('test-score-summary').innerText = `कुल अंक: ${score} / 20 (सही: ${correct}, गलत: ${incorrect})`;
@@ -6661,7 +6576,7 @@ ${logText}
             const welcomeEl = document.getElementById('chat-welcome-msg');
             if (welcomeEl) {
                 let titleGreet = getGreetingTitle(goal);
-                welcomeEl.innerHTML = `जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b> (${goal}).<br><b>${titleGreet}</b> चाहे 20 बार पूछ, तेरा भाई हर बार प्यार से समझाएगा!`;
+                welcomeEl.innerHTML = `नमस्ते, चैंपियन! मैं हूँ आपका अपना <b>Edu Sir</b> (${goal}).<br><b>${titleGreet}</b> चाहे 20 बार पूछ, तेरा भाई हर बार प्यार से समझाएगा!`;
             }
         }
 
@@ -7444,7 +7359,7 @@ ${message}
             'vedic-maths': {
                 idx: 0,
                 steps: [
-                    "जय श्री राम, चैंपियन! आज हम सीखेंगे Vedic Maths की सबसे तेज़ ट्रिक — 'Ekadhikena Purvena', जिससे आप बड़ी-बड़ी गुणा (multiplication) सेकंडों में कर पाओगे।",
+                    "नमस्ते, चैंपियन! आज हम सीखेंगे Vedic Maths की सबसे तेज़ ट्रिक — 'Ekadhikena Purvena', जिससे आप बड़ी-बड़ी गुणा (multiplication) सेकंडों में कर पाओगे।",
                     "स्टेप 1: जब भी किसी संख्या को 11 से गुणा करना हो, तो अंकों को आपस में जोड़ते जाओ। जैसे 43 × 11 — पहले 4 और 3 को अलग रखो, बीच में 4+3=7 डालो, जवाब है 473!",
                     "स्टेप 2: यह तरीका sequential digit addition कहलाता है — हर बार पास वाले दो अंकों को जोड़ते जाओ।",
                     "स्टेप 3: अगर जोड़ 9 से ज़्यादा हो जाए (जैसे 67 × 11), तो carry अगले अंक में ले जाओ — बिल्कुल normal addition जैसे।",
@@ -7471,7 +7386,7 @@ ${message}
             'computer-ai': {
                 idx: 0,
                 steps: [
-                    "जय श्री राम चैंपियन! आज हम सीखेंगे Computer और AI की दुनिया — डरना नहीं, बिल्कुल आसान भाषा में!",
+                    "नमस्ते चैंपियन! आज हम सीखेंगे Computer और AI की दुनिया — डरना नहीं, बिल्कुल आसान भाषा में!",
                     "स्टेप 1: Computer क्या है? — एक मशीन जो इंसान के दिए निर्देशों (instructions) पर काम करती है। ये निर्देश 'program' कहलाते हैं।",
                     "स्टेप 2: Computer के 4 main हिस्से — Input (keyboard/mouse), CPU (दिमाग 🧠), Memory (याददाश्त), Output (screen/speaker)।",
                     "स्टेप 3: Software vs Hardware — Hardware को छू सकते हो (जैसे keyboard), Software दिखता नहीं (जैसे EDUVA app!)।",
@@ -7487,7 +7402,7 @@ ${message}
             'spoken-english': {
                 idx: 0,
                 steps: [
-                    "Hello Champion! जय श्री राम! आज हम रोज़मर्रा में इस्तेमाल होने वाले basic English sentences सीखेंगे, कोटा स्टाइल में, बिना झिझक के।",
+                    "Hello Champion! नमस्ते! आज हम रोज़मर्रा में इस्तेमाल होने वाले basic English sentences सीखेंगे, कोटा स्टाइल में, बिना झिझक के।",
                     "स्टेप 1: अपना परिचय देना सीखो — 'My name is [नाम]. I am from [शहर]. I am preparing for NEET/JEE.'",
                     "स्टेप 2: किसी से मदद मांगना — 'Excuse me, could you please help me with this question?' यह politely पूछने का सही तरीका है।",
                     "स्टेप 3: अपनी राय देना — 'I think this topic is a bit difficult, but I am trying my best.' रोज़ बोलने की practice करो, गलती होना ठीक है!",
@@ -7629,7 +7544,7 @@ RULES FOR EDU SIR:
             gappu: { name: "Genie Gappu", emoji: "🧞", tagline: "जिन — हर doubt की wish पूरी", styleNote: "PERSONA STYLE: जिन की तरह — 'मैंने कहा था ना — तुम्हारी हर doubt-wish पूरी होगी!'", pitch: 1.0, rate: 0.95 },
             appu: { name: "Astronaut Appu", emoji: "🧑‍🚀", tagline: "space से पढ़ाने वाले astronaut", styleNote: "PERSONA STYLE: space theme — 'अर्थ से 400km ऊपर से भी ये formula दिख रहा है!'", pitch: 1.1, rate: 0.95 },
             dabbu: { name: "Detective Dabbu", emoji: "🕵️", tagline: "जासूस — clues देकर सुलझाते हैं", styleNote: "PERSONA STYLE: detective style — 'क्लू नंबर 1 मिला... अब तुम बताओ आगे क्या होगा?'", pitch: 0.95, rate: 0.9 },
-            bhakt: { name: "Bhakt Bhaiya", emoji: "🚩", tagline: "संस्कारी अंदाज़ — जय श्री राम के साथ पढ़ाई", styleNote: "PERSONA STYLE: हर उत्तर की शुरुआत 'जय श्री राम, चैंपियन!' से करो। संस्कारी, प्यार भरे और भक्तिमय अंदाज़ में समझाओ — पर concepts हमेशा सटीक और scientific रखो।", pitch: 1.0, rate: 0.95 },
+            bhakt: { name: "Bhakt Bhaiya", emoji: "🚩", tagline: "संस्कारी अंदाज़ — नमस्ते के साथ पढ़ाई", styleNote: "PERSONA STYLE: हर उत्तर की शुरुआत 'नमस्ते, चैंपियन!' से करो। संस्कारी, प्यार भरे और भक्तिमय अंदाज़ में समझाओ — पर concepts हमेशा सटीक और scientific रखो।", pitch: 1.0, rate: 0.95 },
             kota: { name: "Kota Bhaiya", emoji: "☕", tagline: "चाय-समोसे वाला motivational कोटा भाईया", styleNote: "PERSONA STYLE: कोटा की तपती गलियों, हॉस्टल और chai tapri की याद दिलाते हुए पढ़ाओ। मज़ाक करो — 'चैंपियन, DPP complete किया क्या? Mess की सब्जी खराब थी तो क्या हुआ, selection अच्छा होना चाहिए!' जैसी बातें, rank, test series और चाय-समोसा घुसेड़ो — पर concepts सटीक रखो।", pitch: 1.0, rate: 1.0 }
         });
 
@@ -7675,7 +7590,7 @@ RULES FOR EDU SIR:
 
         /* ================= LANGUAGE SELECTOR ================= */
         const eduSirLanguages = {
-            hinglish: { label: "Hinglish", emoji: "🇮🇳", speechLang: "hi-IN", instruction: "", welcome: "जय श्री राम, चैंपियन! मैं हूँ आपका अपना <b>{name}</b> {emoji}।<br>चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो—तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?" },
+            hinglish: { label: "Hinglish", emoji: "🇮🇳", speechLang: "hi-IN", instruction: "", welcome: "नमस्ते, चैंपियन! मैं हूँ आपका अपना <b>{name}</b> {emoji}।<br>चाहे डायरेक्ट आंसर लो या हिंट लेकर खुद सॉल्व करना सीखो—तेरा भाई हर तरह से तैयार है! बोल, आज का सवाल क्या है?" },
             hindi: { label: "हिंदी", emoji: "🇮🇳", speechLang: "hi-IN", instruction: "LANGUAGE INSTRUCTION: Reply only in pure, simple Hindi (Devanagari script), avoiding English words as much as possible.", welcome: "नमस्ते, चैंपियन! मैं हूँ आपका अपना <b>{name}</b> {emoji}।<br>आज किस विषय पर बात करनी है, बताइए।" },
             english: { label: "English", emoji: "🇬🇧", speechLang: "en-IN", instruction: "LANGUAGE INSTRUCTION: Reply only in simple, clear English.", welcome: "Hello, champion! I am your <b>{name}</b> {emoji}.<br>Whether you want a direct answer or a guided hint, I'm ready. What's today's question?" },
             tamil: { label: "தமிழ்", emoji: "🇮🇳", speechLang: "ta-IN", instruction: "LANGUAGE INSTRUCTION: Reply only in Tamil (தமிழ்), explaining concepts clearly in Tamil script.", welcome: "வணக்கம், சாம்பியன்! நான் உங்கள் <b>{name}</b> {emoji}.<br>இன்று என்ன கேள்வி?" },
@@ -12275,5 +12190,57 @@ LaTeX ($) बिल्कुल नहीं।`;
 <!-- 🧑‍🏫 EDUVA Teacher Panel (SAFE MODE - sirf ye feature) -->
 <script src="/teacher-topics.js"></script>
 <script src="/teacher-panel.js"></script>
+    <!-- 💬 Chat polish (professional tools card) — INLINE, no extra file -->
+    <script>
+    (function () {
+        'use strict';
+        function build() {
+            var chat = document.getElementById('view-chat');
+            if (!chat || document.getElementById('chat-tools-card')) return;
+            var hit = [];
+            Array.prototype.forEach.call(chat.querySelectorAll(':scope > div'), function (c) {
+                if (c.querySelector && (c.querySelector('a[href="/features.html"]')
+                    || c.querySelector('[onclick="openDiary()"]')
+                    || c.querySelector('[onclick="openRevision()"]'))) hit.push(c);
+            });
+            if (!hit.length) return;
+            var anchor = hit[0];
+            var card = document.createElement('div');
+            card.id = 'chat-tools-card';
+            card.style.cssText = 'margin:8px 12px 0;';
+            card.innerHTML =
+                '<button id="chat-tools-toggle" style="width:100%;display:flex;align-items:center;gap:8px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:14px;padding:9px 14px;font-size:12px;font-weight:800;color:#334155;cursor:pointer;">'
+                + '<span>📌</span><span style="flex:1;text-align:left;">Study Tools (Diary • Revision • Parent Report)</span>'
+                + '<span id="chat-tools-arrow" style="transition:.2s;">▾</span></button>'
+                + '<div id="chat-tools-body" style="display:none;grid-template-columns:1fr 1fr;gap:8px;padding:10px 2px 2px;"></div>';
+            anchor.parentElement.insertBefore(card, anchor);
+            var body = document.getElementById('chat-tools-body');
+            [['📓', 'Doubt Diary', "openDiary()", '#0f3c7d'],
+             ['📅', 'Aaj ka Revision', "openRevision()", '#065f46'],
+             ['👨‍👩‍👦', 'Parent Report', "openParentReport()", '#7c2d12'],
+             ['⚡', 'All Features', "window.location.href='/features.html'", '#4f46e5']
+            ].forEach(function (t) {
+                var b = document.createElement('button');
+                b.style.cssText = 'display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:10px 12px;font-size:12px;font-weight:800;color:#1c2333;cursor:pointer;text-align:left;box-shadow:0 2px 6px rgba(15,23,42,.05);';
+                b.innerHTML = '<span style="font-size:16px;">' + t[0] + '</span>' + t[1];
+                b.setAttribute('onclick', t[2]);
+                body.appendChild(b);
+            });
+            document.getElementById('chat-tools-toggle').onclick = function () {
+                var open = body.style.display === 'grid';
+                body.style.display = open ? 'none' : 'grid';
+                document.getElementById('chat-tools-arrow').style.transform = open ? '' : 'rotate(180deg)';
+            };
+            hit.forEach(function (c) { c.style.display = 'none'; });
+        }
+        function init() { build(); setTimeout(build, 2000); }
+        if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
+        else init();
+    })();
+    </script>
+<!-- 🚀 EDUVA Features (NO parent-lock) -->
+<script src="/student-phase2.js"></script>
+<script src="/professional.js"></script>
+<script src="/ui-translate.js"></script>
 </body>
 </html>

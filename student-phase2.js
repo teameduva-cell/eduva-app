@@ -185,9 +185,101 @@
     }
     window.__radarRevise = radarRevise;
 
+
+    /* ================= (1b) GOLU-BOLU STUDY MODE (toggle) ================= */
+    var GB_MODE_KEY = 'eduva_gb_mode';
+    function gbModeOn() { try { return localStorage.getItem(GB_MODE_KEY) === '1'; } catch (e) { return false; } }
+    window.toggleGbMode = function () {
+        var on = !gbModeOn();
+        try { localStorage.setItem(GB_MODE_KEY, on ? '1' : '0'); } catch (e) {}
+        var b = document.getElementById('gb-mode-btn');
+        if (b) {
+            b.style.background = on ? 'linear-gradient(135deg,#f59e0b,#ea580c)' : '#f1f5f9';
+            b.style.color = on ? '#fff' : '#334155';
+            b.innerHTML = '🎭 Golu-Bolu: ' + (on ? 'ON' : 'OFF');
+        }
+        if (window.eduvaToast) eduvaToast(on ? '🎭 Golu-Bolu mode ON — अब हर जवाब Golu-Bolu style में!' : '🎭 Golu-Bolu mode OFF');
+    };
+    function injectGbToggle() {
+        if (document.getElementById('gb-mode-btn')) return;
+        var tabs = document.querySelector('#view-chat .flex.items-center.gap-1\\.5');
+        if (!tabs) return;
+        var on = gbModeOn();
+        var b = document.createElement('button');
+        b.id = 'gb-mode-btn';
+        b.className = 'px-2.5 py-1 rounded-full text-[10px] font-black cursor-pointer shrink-0 transition';
+        b.style.cssText = on ? 'background:linear-gradient(135deg,#f59e0b,#ea580c);color:#fff;'
+                             : 'background:#f1f5f9;color:#334155;';
+        b.innerHTML = '🎭 Golu-Bolu: ' + (on ? 'ON' : 'OFF');
+        b.onclick = function () { window.toggleGbMode(); };
+        tabs.parentElement.insertBefore(b, tabs.nextSibling);
+    }
+
+    function p2Bubble(role, html) {
+        var box = document.getElementById('chat-messages');
+        if (!box) return;
+        var wrap = document.createElement('div');
+        if (role === 'user') {
+            wrap.className = 'flex justify-end animate-fadeIn';
+            wrap.innerHTML = '<div class="ink-navy text-white p-3.5 rounded-2xl rounded-br-md max-w-[85%] text-sm leading-relaxed chat-bubble">' + html + '</div>';
+        } else {
+            wrap.className = 'flex items-start space-x-3 max-w-2xl animate-fadeIn';
+            wrap.innerHTML = '<div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-black text-[10px] shrink-0">GB</div>'
+                + '<div class="bg-gradient-to-br from-amber-50 to-orange-50 border-2 border-amber-200 p-4 rounded-2xl rounded-tl-md text-sm sm:text-base text-slate-800 leading-relaxed chat-bubble" style="min-width:0">' + html + '</div>';
+        }
+        box.appendChild(wrap);
+        box.scrollTop = box.scrollHeight;
+    }
+
+    function wrapSendDoubt() {
+        if (window.__gbWrapped || typeof window.sendDoubt !== 'function') return;
+        window.__gbWrapped = true;
+        var orig = window.sendDoubt;
+        window.sendDoubt = function () {
+            if (!gbModeOn()) return orig.apply(this, arguments);
+            var input = document.getElementById('chat-input');
+            var q = (input && input.value || '').trim();
+            var img = window.base64Image || null;
+            if (!q && !img) return orig.apply(this, arguments);
+            p2Bubble('user', esc(q || '📷 Photo doubt'));
+            input.value = '';
+            window.lastUserQuestion = q;
+            if (typeof window.eduvaBumpGlobalDoubtCount === 'function') { try { eduvaBumpGlobalDoubtCount(); } catch (e) {} }
+            var typing = document.createElement('div');
+            typing.id = 'gb-typing';
+            typing.className = 'p-3.5 bg-slate-100 rounded-2xl text-xs font-bold text-slate-500 w-fit';
+            typing.innerHTML = '<span class="eduva-typing"><i></i><i></i><i></i></span> Golu-Bolu जवाब सोच रहे हैं...';
+            var box = document.getElementById('chat-messages');
+            if (box) { box.appendChild(typing); box.scrollTop = box.scrollHeight; }
+            var body = { message: 'सवाल: ' + (q || '(photo में दिया गया सवाल)'), system: GB_SYSTEM };
+            if (img) body.image = 'data:image/jpeg;base64,' + img;
+            if (window.removeImage) { try { removeImage(); } catch (e) {} }
+            fetch('/api/chat', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+                .then(function (r) { return r.json(); })
+                .then(function (d) {
+                    var t = document.getElementById('gb-typing'); if (t) t.remove();
+                    var reply = (d.choices && d.choices[0] && d.choices[0].message && d.choices[0].message.content) || '⚠️ जवाब नहीं आया — दोबारा try करो।';
+                    p2Bubble('ai', md(reply));
+                    if (typeof window.saveToDiary === 'function') { try { saveToDiary(q || 'Photo doubt', reply); } catch (e) {} }
+                    attachGB();
+                })
+                .catch(function (e) {
+                    var t = document.getElementById('gb-typing'); if (t) t.remove();
+                    p2Bubble('ai', '⚠️ Network issue — दोबारा try करो।');
+                });
+        };
+    }
+
+    function initGbMode() {
+        injectGbToggle();
+        wrapSendDoubt();
+        setTimeout(function () { injectGbToggle(); wrapSendDoubt(); }, 1500);
+    }
+
     /* ================= INIT ================= */
     function init() {
         startGBObserver();
+        initGbMode();
         renderRadar(false);
         // rev queue badalne pe radar refresh
         var _s = Object.getOwnPropertyDescriptor(Storage.prototype, 'localStorage');
