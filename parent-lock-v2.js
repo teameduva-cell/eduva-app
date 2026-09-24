@@ -264,6 +264,29 @@
         applySideEffects();
         renderDashboard();
     };
+    window.__plChangePin = function () {
+        askPin(function () {
+            var o = document.createElement('div');
+            o.id = 'pl-cp-ov';
+            o.style.cssText = 'position:fixed;inset:0;background:rgba(10,15,35,.8);z-index:100001;display:flex;align-items:center;justify-content:center;padding:20px;';
+            o.innerHTML = '<div style="background:#fff;border-radius:22px;padding:24px;width:100%;max-width:320px;text-align:center;">'
+                + '<div style="font-size:32px">🔑</div><h3 style="font-weight:900;font-size:16px;color:#0f172a;margin:6px 0;">नया Parent PIN बनाओ</h3>'
+                + '<input id="pl-cp1" type="password" inputmode="numeric" maxlength="4" placeholder="नया PIN (4 digits)" style="width:100%;padding:13px;font-size:18px;text-align:center;border:2px solid #e2e8f0;border-radius:14px;margin:8px 0;outline:none;">'
+                + '<input id="pl-cp2" type="password" inputmode="numeric" maxlength="4" placeholder="दोबारा लिखो" style="width:100%;padding:13px;font-size:18px;text-align:center;border:2px solid #e2e8f0;border-radius:14px;outline:none;">'
+                + '<p id="pl-cp-err" style="color:#dc2626;font-size:12px;font-weight:700;min-height:16px"></p>'
+                + '<button id="pl-cp-go" style="width:100%;padding:13px;background:#0f172a;color:#fff;border:none;border-radius:14px;font-weight:900;font-size:14px;cursor:pointer;">PIN बदलो ✅</button></div>';
+            document.body.appendChild(o);
+            document.getElementById('pl-cp-go').onclick = function () {
+                var p1 = document.getElementById('pl-cp1').value, p2 = document.getElementById('pl-cp2').value;
+                if (!/^\d{4}$/.test(p1)) { document.getElementById('pl-cp-err').textContent = '❌ PIN 4 digits का होना चाहिए'; return; }
+                if (p1 !== p2) { document.getElementById('pl-cp-err').textContent = '❌ दोनों PIN मिल नहीं रहे'; return; }
+                var cfg = getCfg(); cfg.pinHash = hashPin(p1); setCfg(cfg);
+                o.remove();
+                try { if (typeof eduvaToast !== 'undefined') eduvaToast('🔑 Parent PIN बदल गया!'); } catch (e) {}
+                renderDashboard();
+            };
+        });
+    };
     window.__plClose = closeOv;
     window.openParentMode = openParentMode;
 
