@@ -282,9 +282,11 @@
         $('teacher-audit-tab').classList.toggle('hidden', t !== 'audit');
         $('teacher-generate-tab').classList.toggle('hidden', t !== 'generate');
         $('teacher-practice-tab').classList.toggle('hidden', t !== 'practice');
+        var ccTab = $('teacher-copy-tab'); if (ccTab) ccTab.classList.toggle('hidden', t !== 'copy');
         $('ttab-audit').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'audit' ? 'ink-navy text-white' : 'text-slate-600');
         $('ttab-generate').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'generate' ? 'ink-navy text-white' : 'text-slate-600');
         $('ttab-practice').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'practice' ? 'ink-navy text-white' : 'text-slate-600');
+        var ttC = $('ttab-copy'); if (ttC) ttC.className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'copy' ? 'ink-navy text-white' : 'text-slate-600');
     };
 
     /* ============================================================

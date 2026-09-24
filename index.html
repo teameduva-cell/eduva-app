@@ -63,7 +63,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import {
             getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
-            onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail, deleteUser, EmailAuthProvider, reauthenticateWithCredential, updatePassword,
+            onAuthStateChanged, signOut, updateProfile, sendPasswordResetEmail, deleteUser,
             GoogleAuthProvider, signInWithPopup
         } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import {
@@ -184,6 +184,17 @@
             return snap.docs.map(d => ({ id: d.id, ...d.data() }));
         };
 
+        // 🤝 PARTNER LEADS — coaching/school/organisation B2B enquiries
+        window.eduvaSavePartnerLead = async function (data) {
+            await addDoc(collection(db, "partnerLeads"), { ...data, at: serverTimestamp() });
+        };
+
+        // 🤝 PARTNER LEADS — read (founder dashboard)
+        window.eduvaGetPartnerLeads = async function () {
+            const snap = await getDocs(collection(db, "partnerLeads"));
+            return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+        };
+
         // 📚 CONTENT BANK — bachchon ke acche Q&A / homework auto-save (material library banane ke liye)
         window.eduvaSaveToContentBank = async function (entry) {
             await addDoc(collection(db, "contentBank"), { ...entry, at: serverTimestamp() });
@@ -295,17 +306,6 @@
                 localStorage.setItem('eduva_doubt_count_v2', String(local));
                 if (typeof window.eduvaRenderDoubtCount === 'function') window.eduvaRenderDoubtCount();
             } catch (e) {}
-        };
-
-        // 🔑 CHANGE PASSWORD (logged-in user: current password + new password)
-        window.eduvaAuthChangePassword = async function (currentPw, newPw) {
-            const user = auth.currentUser;
-            if (!user) throw new Error('Pehle login karo.');
-            if (!user.email) throw new Error('Google login wale password change नहीं कर सकते।');
-            const cred = EmailAuthProvider.credential(user.email, currentPw);
-            await reauthenticateWithCredential(user, cred);
-            await updatePassword(user, newPw);
-            return true;
         };
 
         onAuthStateChanged(auth, (user) => {
@@ -731,7 +731,31 @@
             .hero-custom h1 { font-size: 26px !important; }
             .hero-custom { min-height: 0 !important; padding: 22px !important; }
         }
-        /* ===== END POLISH ===== */
+
+        /* ===== DARK MODE POLISH ===== */
+        body.dark-mode .hero-custom {
+            background: radial-gradient(circle at 80% 20%, rgba(139,92,246,.4), transparent 40%), linear-gradient(135deg,#1e1b4b,#312e81,#1e40af) !important;
+            border: 1px solid #4338ca;
+        }
+        body.dark-mode .hero-custom .bg-white,
+        body.dark-mode .hero-custom button.bg-white { background:#F8FAFC !important; color:#1e3a8a !important; }
+        body.dark-mode .hero-custom .text-white { color:#F8FAFC !important; }
+        body.dark-mode .gradient-text { background:linear-gradient(135deg,#60A5FA,#A78BFA); -webkit-background-clip:text; background-clip:text; }
+        body.dark-mode #nzd-card { background:#0F1420 !important; border-color:#b45309 !important; }
+        body.dark-mode #nzd-card p { color:#E2E8F0 !important; }
+        body.dark-mode #view-home .bg-amber-50, body.dark-mode #view-home .bg-blue-50,
+        body.dark-mode #view-home .bg-purple-50, body.dark-mode #view-home .bg-emerald-50,
+        body.dark-mode #view-home .bg-rose-50, body.dark-mode #view-home .bg-indigo-50,
+        body.dark-mode #view-home .bg-fuchsia-50, body.dark-mode #view-home .bg-cyan-50,
+        body.dark-mode #view-home .bg-teal-50, body.dark-mode #view-home .bg-sky-50,
+        body.dark-mode #view-home .bg-orange-50, body.dark-mode #view-home .bg-pink-50,
+        body.dark-mode #view-home .bg-violet-50, body.dark-mode #view-home .bg-green-50,
+        body.dark-mode #view-home .bg-yellow-50, body.dark-mode #view-home .bg-red-50 { background-color:#1A2233 !important; }
+        body.dark-mode #view-home .mono-font { color:#94A3B8; }
+        body.dark-mode #chat-tools-toggle { background:#1A2233 !important; color:#CBD5E1 !important; border-color:#2A3448 !important; }
+        body.dark-mode #chat-tools-body button { background:#0F1420 !important; color:#E2E8F0 !important; border-color:#2A3448 !important; }
+        body.dark-mode .eduva-back-btn { background:#0F1420 !important; color:#CBD5E1 !important; border-color:#2A3448 !important; }
+        /* ===== END DARK POLISH ===== */
     </style>
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
@@ -810,9 +834,6 @@
                     </button>
                     <button onclick="openLanguageModal(); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="languages" class="w-4 h-4 text-slate-500"></i> भाषा चुनें
-                    </button>
-                    <button onclick="openSettings(); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-indigo-50 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
-                        <i data-lucide="settings" class="w-4 h-4 text-indigo-500"></i> ⚙️ Settings
                     </button>
                     <button onclick="switchTab('help'); toggleHeaderMoreMenu();" class="w-full flex items-center gap-2.5 px-3 py-2.5 bg-slate-50 hover:bg-slate-100 rounded-xl text-xs font-bold text-slate-700 text-left cursor-pointer">
                         <i data-lucide="life-buoy" class="w-4 h-4 text-sky-500"></i> Help & Support 🆘
@@ -1110,7 +1131,7 @@
                 </div>
 
                 <!-- 🏠 DAILY HOMEWORK BANNER -->
-                <button onclick="switchTab('homework')" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);">
+                <button onclick="switchTab('homework')" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background: linear-gradient(135deg, #F97316 0%, #F59E0B 100%);">
                     <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center shrink-0 text-2xl">🏠</div>
                     <div class="flex-1">
                         <p class="text-white font-black text-sm sm:text-base">आज का Homework</p>
@@ -1120,7 +1141,7 @@
                 </button>
 
                 <!-- 🎡 DAILY SPIN BANNER -->
-                <button onclick="switchTab('spin')" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background: linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%);">
+                <button onclick="switchTab('spin')" class="w-full p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background: linear-gradient(135deg, #EC4899 0%, #8B5CF6 100%);">
                     <div class="w-12 h-12 rounded-2xl bg-white/25 flex items-center justify-center shrink-0 text-2xl">🎡</div>
                     <div class="flex-1">
                         <p class="text-white font-black text-sm sm:text-base">Daily Spin — आज का इनाम लो!</p>
@@ -1195,7 +1216,7 @@
                         </div>
                         <input type="date" id="exam-date-input" onchange="setExamDate(this.value)" class="bg-white border border-red-200 rounded-xl p-2 text-xs font-bold text-slate-700 outline-none focus:border-red-500">
                     </div>
-                    <p class="text-[11px] font-bold text-red-700" id="countdown-motivation">Bhai, exam date bata de — roz yahan countdown dikhunga!</p>
+                    <p class="text-[11px] font-bold text-red-700" id="countdown-motivation">अपनी exam date चुनो — रोज़ यहाँ countdown दिखेगा!</p>
                 </div>
 
                 <!-- 🧠 AJ KA CONCEPT -->
@@ -1274,6 +1295,16 @@
                             <div class="w-12 h-12 mx-auto rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="layers" class="w-6 h-6"></i></div>
                             <p class="text-xs font-black text-slate-900">Flashcards</p>
                             <p class="text-[11px] text-slate-500 font-semibold">1-Min रिवीजन कार्ड्स</p>
+                        </div>
+                        <div onclick="openSettings()" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+                            <div class="w-12 h-12 mx-auto rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="settings" class="w-6 h-6"></i></div>
+                            <p class="text-xs font-black text-slate-900">Settings</p>
+                            <p class="text-[11px] text-slate-500 font-semibold">Dark mode • Password • भाषा</p>
+                        </div>
+                        <div onclick="switchTab('faq')" class="card-clean p-5 rounded-3xl text-center space-y-2 hover:border-slate-400 cursor-pointer transition group">
+                            <div class="w-12 h-12 mx-auto rounded-2xl bg-blue-50 text-blue-600 flex items-center justify-center group-hover:scale-110 transition"><i data-lucide="help-circle" class="w-6 h-6"></i></div>
+                            <p class="text-xs font-black text-slate-900">FAQs</p>
+                            <p class="text-[11px] text-slate-500 font-semibold">अक्सर पूछे जाने वाले सवाल</p>
                         </div>
                     </div>
                 </div>
@@ -1404,6 +1435,14 @@
                 <div class="space-y-2">
                     <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">🤝 Support</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+                    <button onclick="switchTab('about')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
+                        <i data-lucide="info" class="w-5 h-5 text-blue-500 shrink-0 group-hover:scale-110 transition"></i>
+                        <p class="text-xs font-bold text-slate-900">About Us</p>
+                    </button>
+                    <button onclick="switchTab('contact')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
+                        <i data-lucide="mail" class="w-5 h-5 text-emerald-500 shrink-0 group-hover:scale-110 transition"></i>
+                        <p class="text-xs font-bold text-slate-900">Contact Us</p>
+                    </button>
                     <button onclick="switchTab('health')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
                         <i data-lucide="heart-pulse" class="w-5 h-5 text-red-500 shrink-0 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">Health Guide</p>
@@ -1432,7 +1471,23 @@
                     </a>
                 </div>
                 <p class="text-center text-[11px] text-slate-400 font-semibold pb-1">🎭 Golu-Bolu ke saath bana — <b style="color:#4f46e5;">EDUVA</b> • Padhai ka apna dost 🔥</p>
-            </section>
+            
+    <!-- ══════════ TAB 4: COPY CHECK (faculty + student) ══════════ -->
+    <div id="teacher-copy-tab" class="hidden card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-3">
+        <h3 class="text-base font-black text-slate-900">📷 Copy Check — बच्चे की copy की photo, AI से check</h3>
+        <p class="text-[11px] text-slate-500 font-semibold">Handwritten copies की photos जोड़ो (एक-एक page) — AI हर answer पढ़ेगा। <b>Faculty mode:</b> सिर्फ गलतियाँ पकड़ो (marks खुद दो) या AI से marks भी लो। <b>Student mode:</b> गलतियाँ + marks + grade। 🔒 Copies 2 घंटे में auto-delete।</p>
+        <div class="grid grid-cols-2 gap-3">
+            <button onclick="openCopyCheck('check')" class="p-4 rounded-2xl bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-left cursor-pointer transition">
+                <p class="text-sm font-black text-slate-800">🔍 Only Check</p>
+                <p class="text-[10px] font-bold text-slate-500 mt-0.5">सिर्फ गलतियाँ — marks नहीं</p>
+            </button>
+            <button onclick="openCopyCheck('marks')" class="p-4 rounded-2xl bg-slate-50 hover:bg-indigo-50 border-2 border-slate-200 hover:border-indigo-300 text-left cursor-pointer transition">
+                <p class="text-sm font-black text-slate-800">✅ Check + Marks</p>
+                <p class="text-[10px] font-bold text-slate-500 mt-0.5">गलतियाँ + marks + grade + tips</p>
+            </button>
+        </div>
+    </div>
+</section>
 
             <!-- ================= 2. AI CHAT VIEW ================= -->
             <section id="view-chat" class="hidden flex-1 flex flex-col card-clean rounded-3xl overflow-hidden h-[calc(100vh-100px)] animate-fadeIn border border-slate-100 bg-white">
@@ -2065,9 +2120,56 @@
                         <div class="p-4 bg-violet-50 border border-violet-200 rounded-2xl text-center space-y-1">
                             <div class="text-2xl">🤝</div>
                             <p class="text-xs font-black text-violet-800">School / Coaching Partner</p>
-                            <p class="text-[10px] font-semibold text-violet-700">अपने संस्थान के लिए EDUVA जोड़ना हो तो लिखो</p>
+                            <p class="text-[10px] font-semibold text-violet-700">Form नीचे भरो — 48 घंटे में call आएगी</p>
                         </div>
                     </div>
+
+                    <!-- 🤝 B2B PARTNERSHIP FORM -->
+                    <div class="mt-2 p-5 bg-gradient-to-r from-indigo-50 to-violet-50 border-2 border-indigo-200 rounded-2xl space-y-3">
+                        <div class="text-center space-y-1">
+                            <p class="text-base font-black text-indigo-900">🤝 अपने School / Coaching के लिए EDUVA लाओ — FREE</p>
+                            <p class="text-[11px] font-semibold text-indigo-700">Form भरो — <b>48 घंटे के अंदर EDUVA की team खुद call करेगी</b>। पूरे batch के लिए setup, branded reports — सब FREE।</p>
+                        </div>
+                        <div class="grid sm:grid-cols-2 gap-2.5 text-xs font-bold">
+                            <input id="pl-org" placeholder="🏫 Organisation का नाम *" class="sm:col-span-2 bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                            <input id="pl-person" placeholder="👤 आपका नाम *" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                            <input id="pl-phone" type="tel" placeholder="📱 Phone / WhatsApp *" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                            <select id="pl-type" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                                <option>Coaching Institute</option><option>School</option><option>NGO / Trust</option><option>Private Tutor</option><option>Other</option>
+                            </select>
+                            <select id="pl-size" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                                <option>Students: 1-50</option><option>Students: 50-200</option><option>Students: 200-500</option><option>Students: 500+</option>
+                            </select>
+                            <input id="pl-city" placeholder="📍 City *" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                            <input id="pl-email" type="email" placeholder="✉️ Email (optional)" class="bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500">
+                            <textarea id="pl-msg" rows="2" placeholder="💬 क्या चाहते हो? (batch setup / test series / doubt support...)" class="sm:col-span-2 bg-white border border-indigo-200 rounded-xl p-3 outline-none focus:border-indigo-500 resize-none"></textarea>
+                        </div>
+                        <p id="pl-form-msg" class="text-xs font-bold min-h-[16px] text-center"></p>
+                        <button onclick="submitPartnerLead(this)" class="w-full py-3.5 bg-gradient-to-r from-indigo-600 to-violet-700 hover:from-indigo-700 hover:to-violet-800 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">🚀 Request भेजो — FREE Partnership Call बुक करो</button>
+                        <p class="text-[10px] text-center font-semibold text-indigo-500">🔒 Details सिर्फ EDUVA की founder team तक जाती हैं</p>
+                    </div>
+                    <script>
+                    window.submitPartnerLead = async function (btn) {
+                        var g = function (id) { return (document.getElementById(id) || {}).value || ''; };
+                        var msg = document.getElementById('pl-form-msg');
+                        var d = { org: g('pl-org').trim(), person: g('pl-person').trim(), phone: g('pl-phone').trim(), type: g('pl-type'), size: g('pl-size'), city: g('pl-city').trim(), email: g('pl-email').trim(), message: g('pl-msg').trim() };
+                        if (!d.org || !d.person || !d.phone || !d.city) { msg.textContent = '❌ नाम, phone, city और organisation ज़रूरी है'; msg.style.color = '#dc2626'; return; }
+                        var digits = d.phone.replace(/\D/g, '');
+                        if (digits.length < 10) { msg.textContent = '❌ सही 10-digit phone number डालो'; msg.style.color = '#dc2626'; return; }
+                        btn.disabled = true; btn.textContent = '⏳ भेजा जा रहा है...';
+                        msg.textContent = '';
+                        try {
+                            if (typeof eduvaSavePartnerLead !== 'function') throw new Error('Internet check karo');
+                            await eduvaSavePartnerLead(d);
+                            msg.textContent = '✅ मिल गई! EDUVA team 48 घंटे में call करेगी — ' + d.person + ' जी'; msg.style.color = '#059669';
+                            btn.textContent = '✅ Request मिल गई!';
+                            ['pl-org','pl-person','pl-phone','pl-city','pl-email','pl-msg'].forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ''; });
+                        } catch (e) {
+                            msg.textContent = '❌ नहीं गया — दोबारा try करो या team.eduva@gmail.com पे mail करो'; msg.style.color = '#dc2626';
+                            btn.disabled = false; btn.textContent = '🚀 Request भेजो — FREE Partnership Call बुक करो';
+                        }
+                    };
+                    </script>
 
                     <div class="p-4 bg-blue-50 border border-blue-200 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3">
                         <p class="text-xs sm:text-sm font-bold text-blue-900">💬 जल्दी बात करनी है? सीधे <b>Feedback</b> भेजो — founder तक पहुँचता है!</p>
@@ -2208,6 +2310,7 @@
                     <div class="flex justify-between items-center gap-3 p-3.5 bg-slate-50 border border-slate-200 rounded-2xl">
                         <p class="text-[11px] font-bold text-slate-500">⚙️ Account settings</p>
                         <div class="flex items-center gap-2">
+                            <button onclick="openSettings()" class="px-3.5 py-2 bg-indigo-50 border border-indigo-200 text-indigo-700 font-black text-[11px] rounded-xl hover:bg-indigo-100 transition cursor-pointer">⚙️ Settings</button>
                             <button onclick="toggleLiteMode()" class="lite-toggle-btn px-3.5 py-2 bg-amber-50 border border-amber-200 text-amber-700 font-black text-[11px] rounded-xl hover:bg-amber-100 transition cursor-pointer">⚡ Lite Mode (fast)</button>
                             <button onclick="deleteMyAccount()" class="px-3.5 py-2 bg-rose-50 border border-rose-200 text-rose-600 font-black text-[11px] rounded-xl hover:bg-rose-100 transition cursor-pointer">🗑️ Delete</button>
                         </div>
@@ -3020,6 +3123,7 @@
         <button onclick="setTeacherTab('audit')" id="ttab-audit" class="flex-1 py-3 rounded-xl ink-navy text-white cursor-pointer">🧾 Paper Audit</button>
         <button onclick="setTeacherTab('generate')" id="ttab-generate" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📝 Paper Generator</button>
         <button onclick="setTeacherTab('practice')" id="ttab-practice" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📄 Daily Practice</button>
+        <button onclick="setTeacherTab('copy')" id="ttab-copy" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📷 Copy Check</button>
     </div>
 
     <!-- ══════════ TAB 1: PAPER AUDIT ══════════ -->
@@ -3044,9 +3148,11 @@
         <!-- Attach -->
         <div class="space-y-2">
             <div class="flex flex-wrap items-center gap-2">
-                <button onclick="document.getElementById('pc-file').click()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl cursor-pointer">📷 Paper की photos जोड़ो</button>
+                <button onclick="document.getElementById('pc-file-cam').click()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-xs font-black rounded-xl cursor-pointer">📸 Camera से खींचो</button>
+                <button onclick="document.getElementById('pc-file').click()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-black rounded-xl cursor-pointer">🖼️ Gallery से</button>
                 <button onclick="pcClearAll()" class="px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-black rounded-xl cursor-pointer">🗑️ साफ करो</button>
                 <input type="file" id="pc-file" accept="image/*" multiple class="hidden" onchange="pcAttachPhotos(this)">
+                <input type="file" id="pc-file-cam" accept="image/*" capture="environment" class="hidden" onchange="pcAttachPhotos(this)">
             </div>
             <div id="pc-pages" class="flex flex-wrap items-center gap-2"></div>
             <p class="text-[10px] font-bold text-slate-400">💡 कई pages हैं तो सभी जोड़ो (एक-एक करके) — AI पूरा paper क्रम में पढ़ेगा</p>
@@ -3646,6 +3752,14 @@
                 </div>
             </div>
             <p class="text-xs sm:text-sm text-slate-600 font-medium">हर दिन 3 नए सवाल मिलेंगे — उत्तर लिखकर submit करो। Edu Sir खुद जाँचकर <b>marks देंगे (हर सवाल 10 में से)</b>। रोज़ submit करने से streak बढ़ेगी! 🔥</p>
+                <button onclick="openCopyCheck('marks')" class="w-full p-4 rounded-2xl flex items-center gap-3 text-left cursor-pointer transition hover:scale-[1.01] border-2 border-indigo-200 bg-indigo-50/50">
+                    <div class="w-11 h-11 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-xl shrink-0">📷</div>
+                    <div class="flex-1">
+                        <p class="text-sm font-black text-slate-900">Haath से लिखा answer? Photo khheencho!</p>
+                        <p class="text-[11px] font-bold text-slate-500">AI copy check करेगा — galtiyan + marks + grade 🎯</p>
+                    </div>
+                    <span class="text-indigo-400 text-lg">›</span>
+                </button>
             <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 <div>
                     <label class="block text-[10px] font-black text-slate-500 uppercase mb-1">📚 Subject</label>
@@ -3713,6 +3827,22 @@
                 <button onclick="forwardInboxToFounder()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold rounded-xl cursor-pointer">📤 Email पर भेजें</button>
             </div>
             <div id="founder-inbox" class="space-y-2"></div>
+        </div>
+
+        <div class="card-clean p-5 sm:p-6 rounded-3xl border-2 border-indigo-200 space-y-3 bg-gradient-to-r from-indigo-50/60 to-white">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+                <div>
+                    <h3 class="font-black text-slate-800 text-sm">🤝 Partner Leads — Coaching / School B2B Enquiries</h3>
+                    <p class="text-[11px] text-slate-500 font-semibold mt-0.5">Contact Us page का form यहाँ आता है। <b>48 घंटे में call करना है!</b></p>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span id="pl-count-badge" class="px-3 py-1.5 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-black">0 leads</span>
+                    <button onclick="renderPartnerLeads()" class="px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl cursor-pointer">🔄 Refresh</button>
+                </div>
+            </div>
+            <div id="founder-partner-leads" class="space-y-2">
+                <p class="text-sm text-slate-400 text-center py-3">Founder dashboard खोलते ही leads load होंगी...</p>
+            </div>
         </div>
 
         <div class="card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-3">
@@ -4329,6 +4459,26 @@
                 <div style="margin:10px 12px 0;display:flex;flex-direction:column;gap:8px;">
                     <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
                     <div style="display:flex;gap:8px;">
+                        <a href="/ai-question-paper-generator-teachers.html" style="display:block;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">🧑‍🏫 TEACHERS • FREE • PRIVATE</div>
+                            <div style="font-weight:800;font-size:13px;">AI Paper Generator + Audit + Copy Check — 2 min में paper</div>
+                        </a>
+                        <a href="/parental-controls-study-app.html" style="display:block;background:linear-gradient(135deg,#0d9488,#14b8a6);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">👨‍👩‍👧 PARENTS • FREE</div>
+                            <div style="font-weight:800;font-size:13px;">Parental Controls — Night Lock, Daily Report, Safe Mode</div>
+                        </a>
+                        <a href="/free-doubt-solving-app.html" style="display:block;background:linear-gradient(135deg,#11176f,#4b2ae5);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">🤖 FREE • CLASS 6-12 • HINDI</div>
+                            <div style="font-weight:800;font-size:13px;">EDUVA Doubt Solver — Photo भेजो, Instant Solution पाओ ⚡</div>
+                        </a>
+                        <a href="/jee-main-2027-free-mock.html" style="display:block;background:linear-gradient(135deg,#1e3a8a,#3b82f6);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">🎯 JEE 2027 • MAIN + ADVANCED • FREE</div>
+                            <div style="font-weight:800;font-size:13px;">JEE Pattern Practice — Original Questions + NTA Links</div>
+                        </a>
+                        <a href="/neet-ug-2027-free-mock.html" style="display:block;background:linear-gradient(135deg,#065f46,#14b8a6);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                            <div style="font-size:10px;opacity:.9;">🩺 NEET UG 2027 • FREE</div>
+                            <div style="font-weight:800;font-size:13px;">NEET Pattern Practice — Biology + NCERT Strategy</div>
+                        </a>
                         <a href="/cbse-class-9-ganita-manjari-2-2026.html" style="display:block;background:linear-gradient(135deg,#b45309,#f59e0b);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
                             <div style="font-size:10px;opacity:.9;">🆕 NEW NCERT • CLASS 9 • 2026-27</div>
                             <div style="font-weight:800;font-size:13px;">Ganita Manjari 2 — Chapters, PDF Link + Solved Questions 🔥</div>
@@ -8399,7 +8549,7 @@ RULES FOR EDU SIR:
                 card.innerHTML = `
                     <h3 class="font-black text-sm sm:text-base text-slate-900 flex items-center gap-1.5">🎯 Weakness Detector</h3>
                     <p class="text-xs sm:text-sm text-slate-600">अभी subject-wise data नहीं है। Results सेक्शन में अपने Offline Test marks डालो, फिर यहाँ दिखेगा तुम्हारा सबसे कमजोर subject।</p>
-                    <button onclick="openOfflineTestModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs rounded-xl transition cursor-pointer">Test Result bata do 👇</button>
+                    <button onclick="openOfflineTestModal()" class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs rounded-xl transition cursor-pointer">Test Result जोड़ें</button>
                 `;
                 return;
             }
@@ -12261,21 +12411,23 @@ LaTeX ($) बिल्कुल नहीं।`;
 <script src="/ui-translate.js"></script>
 <script src="/parent-lock-v2.js"></script>
 <script src="/no-zero-day.js"></script>
+<script src="/padhai-calendar.js"></script>
+<script src="/copy-check.js"></script>
     <!-- ⚙️ EDUVA SETTINGS -->
     <div id="settings-modal" class="hidden fixed inset-0 z-[98] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 max-w-md w-full space-y-3 relative max-h-[88vh] overflow-y-auto hide-scrollbar">
             <button onclick="closeSettings()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 font-black text-sm cursor-pointer">✕</button>
             <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">⚙️ Settings</h3>
-            <div class="space-y-2 text-sm font-bold" id="settings-main">
+            <div class="space-y-2 text-sm font-bold">
                 <button onclick="toggleDarkMode(); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🌙</span> Dark Mode</button>
                 <button onclick="toggleLiteMode(); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>⚡</span> Lite Mode (fast)</button>
                 <button onclick="openLanguageModal(); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🌐</span> भाषा / Language</button>
                 <button onclick="enablePush(); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🔔</span> Notifications</button>
-                <button onclick="document.getElementById(\'settings-pw\').classList.remove(\'hidden\');" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🔑</span> Change Password</button>
-                <button onclick="switchTab(\'help\'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🆘</span> Help &amp; Support</button>
-                <button onclick="switchTab(\'about\'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>📖</span> About Us</button>
-                <button onclick="switchTab(\'contact\'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>✉️</span> Contact Us</button>
-                <button onclick="if(confirm(\'Pakka account delete karna hai?\')) { deleteMyAccount(); }" class="w-full flex items-center gap-3 p-3.5 bg-rose-50 hover:bg-rose-100 rounded-2xl text-left cursor-pointer text-rose-600"><span>🗑️</span> Delete Account</button>
+                <button onclick="showPwSection()" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🔑</span> Change Password</button>
+                <button onclick="switchTab('help'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🆘</span> Help &amp; Support</button>
+                <button onclick="switchTab('about'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>📖</span> About Us</button>
+                <button onclick="switchTab('contact'); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>✉️</span> Contact Us</button>
+                <button onclick="askDeleteAccount()" class="w-full flex items-center gap-3 p-3.5 bg-rose-50 hover:bg-rose-100 rounded-2xl text-left cursor-pointer text-rose-600"><span>🗑️</span> Delete Account</button>
             </div>
             <div id="settings-pw" class="hidden space-y-2 pt-2 border-t border-slate-200">
                 <p class="text-xs font-black text-slate-500 uppercase tracking-wide">🔑 Change Password</p>
@@ -12285,16 +12437,19 @@ LaTeX ($) बिल्कुल नहीं।`;
                 <p id="pw-msg" class="text-xs font-bold min-h-[16px]"></p>
                 <div class="flex gap-2">
                     <button onclick="submitPwChange()" class="flex-1 py-3 ink-navy text-white font-black text-xs rounded-xl cursor-pointer">Change Password 🚀</button>
-                    <button onclick="document.getElementById(\'settings-pw\').classList.add(\'hidden\')" class="px-4 py-3 bg-slate-100 text-slate-600 font-black text-xs rounded-xl cursor-pointer">Back</button>
+                    <button onclick="hidePwSection()" class="px-4 py-3 bg-slate-100 text-slate-600 font-black text-xs rounded-xl cursor-pointer">Back</button>
                 </div>
-                <p class="text-[10px] text-slate-400 font-semibold">Google से login किया है? Password change नहीं हो सकता — नया account बनाओ email से.</p>
+                <p class="text-[10px] text-slate-400 font-semibold">Google से login किया है? Password change नहीं हो सकता — email से नया account बनाओ.</p>
             </div>
-            <p class="text-center text-[10px] text-slate-400 font-bold pt-1">EDUVA • Kota Smart Hub • v9</p>
+            <p class="text-center text-[10px] text-slate-400 font-bold pt-1">EDUVA • Kota Smart Hub • v10</p>
         </div>
     </div>
     <script>
     window.openSettings = function () { document.getElementById('settings-modal').classList.remove('hidden'); };
     window.closeSettings = function () { document.getElementById('settings-modal').classList.add('hidden'); };
+    window.showPwSection = function () { document.getElementById('settings-pw').classList.remove('hidden'); };
+    window.hidePwSection = function () { document.getElementById('settings-pw').classList.add('hidden'); };
+    window.askDeleteAccount = function () { if (confirm('Pakka account delete karna hai?')) { deleteMyAccount(); } };
     window.submitPwChange = async function () {
         var msg = document.getElementById('pw-msg');
         var c = document.getElementById('pw-current').value, n = document.getElementById('pw-new').value, n2 = document.getElementById('pw-confirm').value;
@@ -12311,6 +12466,51 @@ LaTeX ($) बिल्कुल नहीं।`;
             msg.textContent = '❌ ' + (e.message || 'Failed — current password सही है?'); msg.style.color = '#dc2626';
         }
     };
+    </script>
+    <!-- 🤝 Partner Leads renderer (founder dashboard) -->
+    <script>
+    (function () {
+        var lastRender = 0;
+        window.renderPartnerLeads = async function () {
+            var box = document.getElementById('founder-partner-leads');
+            var badge = document.getElementById('pl-count-badge');
+            if (!box) return;
+            box.innerHTML = '<p class="text-sm text-slate-400 text-center py-3">⏳ Loading...</p>';
+            try {
+                if (typeof eduvaGetPartnerLeads !== 'function') throw new Error('Firebase not ready');
+                var leads = await eduvaGetPartnerLeads();
+                leads.sort(function (a, b) { return ((b.at && b.at.seconds) || 0) - ((a.at && a.at.seconds) || 0); });
+                if (badge) badge.textContent = leads.length + ' leads';
+                if (!leads.length) { box.innerHTML = '<p class="text-sm text-slate-400 text-center py-3">Abhi koi lead nahi — Contact Us page ka form test karke dekho 🙏</p>'; return; }
+                box.innerHTML = leads.map(function (l) {
+                    var when = l.at && l.at.seconds ? new Date(l.at.seconds * 1000).toLocaleString('hi-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
+                    var phone = (l.phone || '').replace(/\D/g, '');
+                    var wa = phone.length >= 10 ? 'https://wa.me/91' + phone.slice(-10) : null;
+                    return '<div class="p-3.5 bg-white border border-indigo-100 rounded-2xl shadow-2xs space-y-1.5">'
+                        + '<div class="flex flex-wrap items-center justify-between gap-2">'
+                        + '<p class="text-sm font-black text-slate-900">🏫 ' + (l.org || '-') + ' <span class="text-[10px] font-bold text-indigo-500">(' + (l.type || '') + ' • ' + (l.size || '') + ')</span></p>'
+                        + '<span class="text-[10px] font-bold text-slate-400">' + when + '</span></div>'
+                        + '<p class="text-xs font-bold text-slate-600">👤 ' + (l.person || '-') + ' &nbsp;|&nbsp; 📍 ' + (l.city || '-') + (l.email ? ' &nbsp;|&nbsp; ✉️ ' + l.email : '') + '</p>'
+                        + (l.message ? '<p class="text-xs font-semibold text-slate-500">💬 ' + l.message + '</p>' : '')
+                        + '<div class="flex gap-2 pt-1">'
+                        + (wa ? '<a href="' + wa + '" target="_blank" rel="noopener" class="px-3 py-1.5 bg-emerald-600 text-white text-[11px] font-black rounded-lg">📱 WhatsApp (' + phone.slice(-10) + ')</a>' : '<span class="text-xs text-slate-400">📱 ' + (l.phone || '-') + '</span>')
+                        + '<a href="tel:' + phone + '" class="px-3 py-1.5 bg-slate-800 text-white text-[11px] font-black rounded-lg">📞 Call</a>'
+                        + '</div></div>';
+                }).join('');
+            } catch (e) {
+                box.innerHTML = '<p class="text-sm text-rose-500 font-bold text-center py-3">❌ Load nahi hua — ' + (e.message || 'error') + ' (Refresh try karo)</p>';
+            }
+        };
+        setInterval(function () {
+            try {
+                var v = document.getElementById('view-founder');
+                if (v && !v.classList.contains('hidden') && Date.now() - lastRender > 30000) {
+                    lastRender = Date.now();
+                    window.renderPartnerLeads();
+                }
+            } catch (e) {}
+        }, 3000);
+    })();
     </script>
 </body>
 </html>
