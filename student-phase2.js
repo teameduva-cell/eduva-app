@@ -96,7 +96,7 @@
         var box = $('chat-messages');
         if (!box || gbObs) { attachGB(); return; }
         gbObs = new MutationObserver(function () { setTimeout(attachGB, 300); });
-        gbObs.observe(box, { childList: true });
+        try { gbObs.observe(box, { childList: true }); } catch(e) {}
     }
 
     /* ================= (2) FORGETTING RADAR ================= */
@@ -278,13 +278,13 @@
 
     /* ================= INIT ================= */
     function init() {
-        startGBObserver();
-        initGbMode();
+        try { startGBObserver(); } catch(e) {}
+        try { initGbMode(); } catch(e) {}
         renderRadar(false);
         // rev queue badalne pe radar refresh
         var _s = Object.getOwnPropertyDescriptor(Storage.prototype, 'localStorage');
-        setInterval(function () { renderRadar(false); }, 60000);
-        setInterval(attachGB, 2500);
+        setInterval(function () { try { renderRadar(false); } catch(e){} }, 60000);
+        setInterval(function(){ try { attachGB(); } catch(e){} }, 2500);
     }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();

@@ -114,7 +114,7 @@
     }
     var applied = null;
     function walk(root, lang) {
-        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+        try {(root, NodeFilter.SHOW_TEXT, {
             acceptNode: function (node) {
                 if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
                 var p = node.parentElement;
@@ -139,6 +139,7 @@
                 if (node.__hiOrig !== undefined) { node.nodeValue = node.__hiOrig; }
             }
         });
+        } catch(e) {}
     }
     function apply() {
         var lang = currentLang();
@@ -157,7 +158,7 @@
             if (window.setDpLang) window.setDpLang(lang);
         } catch (e) {}
     }
-    function init() { apply(); setInterval(apply, 2000); }
+    function init() { try { apply(); } catch(e){} setInterval(function(){ try { apply(); } catch(e){} }, 2000); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
     else init();
     console.log('🌐 EDUVA UI Translator v1 loaded');
