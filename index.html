@@ -2,7 +2,7 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
     <meta name="description" content="EDUVA – 100% FREE AI study app for Class 6-12 (Hindi). Instant doubt solving with photo, AI handwritten solutions, daily homework with marks, mock tests, Olympiad guide, video lectures. No ads, no fees — Best free padhai app!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
@@ -32,7 +32,7 @@
       "applicationCategory": "EducationalApplication",
       "operatingSystem": "Any (Web/PWA)",
       "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
-      "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.9", "ratingCount": "500" },
+      
       "description": "100% FREE AI study app for Class 6-12 students in Hindi. Doubt solving by photo, AI handwritten solutions, daily homework with marks, mock tests, olympiad guidance."
     }
     </script>
@@ -56,12 +56,12 @@
     .items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/lucide@0.454.0"></script>
 
     <!-- Three.js ab lazy-load hota hai (sirf 3D classroom khulne par) -->
 
     <!-- Markdown & LaTeX Engine -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.1.6/dist/purify.min.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
     <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
@@ -176,6 +176,15 @@
             const user = auth.currentUser;
             if (user) {
                 try { await deleteDoc(doc(db, "students", user.uid)); } catch (e) {}
+                // AUDIT FIX: saare related collections bhi saaf karo
+                try {
+                    const cols = ['aitRegistrations', 'aitResults', 'refRewards'];
+                    for (const c of cols) {
+                        const q = query(collection(db, c), where("uid", "==", user.uid));
+                        const s = await getDocs(q);
+                        for (const d of s.docs) { try { await deleteDoc(doc(db, c, d.id)); } catch (e2) {} }
+                    }
+                } catch (e) {}
                 await deleteUser(user);
             }
         };
@@ -3125,7 +3134,7 @@
         <p class="text-xs font-black text-emerald-900">🔒 आपका पेपर 100% सुरक्षित — बेफिक्र होकर काम करिए</p>
         <p class="text-[11px] font-semibold text-emerald-800 leading-relaxed">
             ✓ पेपर सिर्फ AI-processing के लिए जाता है — कहीं store/share नहीं होता<br>
-            ✓ <b>2 घंटे बाद system से पूरी तरह हटा दिया जाता है</b> (नीचे live countdown चलता है)<br>
+            ✓ <b>2 घंटे बाद हटाने के लिए designed</b> — processing के अलावा कहीं नहीं रुकता (नीचे live countdown चलता है)<br>
             ✓ EDUVA पर आपका पेपर हमेशा सिर्फ आपका है
         </p>
     </div>
@@ -4469,9 +4478,7 @@
         <div style="margin:16px 0 4px;font-size:13px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE BOARD PAPERS — SOLVED + VERIFIED</div>
         <!-- 📄 CBSE 2026 Solved Papers -->
                 <div style="margin:10px 12px 0;display:flex;flex-direction:column;gap:8px;">
-                    <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
-                    <div style="display:flex;gap:8px;">
-                        <a href="/ai-question-paper-generator-teachers.html" style="display:block;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+<a href="/ai-question-paper-generator-teachers.html" style="display:block;background:linear-gradient(135deg,#6d28d9,#a855f7);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
                             <div style="font-size:10px;opacity:.9;">🧑‍🏫 TEACHERS • FREE • PRIVATE</div>
                             <div style="font-weight:800;font-size:13px;">AI Paper Generator + Audit + Copy Check — 2 min में paper</div>
                         </a>
@@ -4495,6 +4502,8 @@
                             <div style="font-size:10px;opacity:.9;">🆕 NEW NCERT • CLASS 9 • 2026-27</div>
                             <div style="font-weight:800;font-size:13px;">Ganita Manjari 2 — Chapters, PDF Link + Solved Questions 🔥</div>
                         </a>
+                                            <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
+                    <div style="display:flex;gap:8px;">
                         <a href="/cbse-class-10-maths-standard-2026-solved.html" style="flex:1;background:linear-gradient(135deg,#0f3c7d,#2b6de0);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;">
                             <div style="font-size:10px;opacity:.85;">CBSE 2026 • Class 10</div>
                             <div style="font-weight:800;font-size:13px;">Maths Standard</div>
@@ -5143,7 +5152,7 @@
 
         // 🧹 Logout pe sensitive student data localStorage se mita do (shared-device safety)
         function eduvaWipeSensitiveLocalData() {
-            const KEEP = ['eduva_dark_mode', 'eduva_lite', 'eduva_analytics_v1', 'eduva_safety_v2', 'eduva_doubt_count_v2', 'eduva_bank_local', 'eduva_feature_usage', 'eduva_feedback_inbox', 'eduva_homework_history', 'eduva_test_history_v1', 'eduva_total_opens', 'eduva_student_profile_v1', 'eduva_hindi_mode', 'eduva_lite', 'eduva_subject_progress_v1']; // stats/analytics/UI sab bache — sirf sensitive session data wipe
+            const KEEP = ['eduva_dark_mode', 'eduva_lite', 'eduva_analytics_v1', 'eduva_safety_v2', 'eduva_doubt_count_v2', 'eduva_bank_local', 'eduva_feature_usage', '', 'eduva_homework_history', 'eduva_test_history_v1', 'eduva_total_opens', 'eduva_student_profile', 'eduva_hindi_mode', 'eduva_lite', 'eduva_subject_progress_v1']; // stats/analytics/UI sab bache — sirf sensitive session data wipe
             try {
                 const keys = [];
                 for (let i = 0; i < localStorage.length; i++) {
@@ -6773,9 +6782,9 @@ ${logText}
 
             // 1) Founder inbox mein save karo (founder dashboard par dikhega)
             let inbox = [];
-            try { inbox = JSON.parse(localStorage.getItem('eduva_feedback_inbox') || '[]'); } catch (e) {}
+            try { inbox = JSON.parse(localStorage.getItem('') || '[]'); } catch (e) {}
             inbox.unshift({ date: when, name, email: byEmail, uid: byUid, cat, msg: message });
-            localStorage.setItem('eduva_feedback_inbox', JSON.stringify(inbox.slice(0, 100)));
+            localStorage.setItem('', JSON.stringify(inbox.slice(0, 100)));
 
             // 2) Email se seedha founder ke paas bhejo
             const mailSubject = encodeURIComponent(`📩 EDUVA Feedback — ${name} (${cat})`);
@@ -7953,7 +7962,7 @@ RULES FOR EDU SIR:
                 try { history.pushState({ eduva: true, tab: tabId }, '', location.href); } catch (_) {}
             }
 
-            ['home', 'chat', 'classroom', 'feedback', 'timetable', 'health', 'counseling', 'about', 'contact', 'courses', 'flashcards', 'mocktest', 'vault', 'community', 'faq', 'learning', 'profile', 'avatar-lectures', 'memory', 'motivation', 'vedic-maths', 'spoken-english', 'ncert-olympiad', 'study-material', 'pomodoro', 'homework', 'founder', 'computer-ai', 'help', 'olympiad', 'upload', 'qbank', 'certificates', 'battle', 'predictor', 'viva', 'league', 'spin', 'ait', 'legal', 'pyq', 'room', 'tree', 'hunt', 'story', 'wrapped', 'parent-report', 'video-lectures', 'results'].forEach(t => {
+            Array.from(document.querySelectorAll('section[id^="view-"]')).map(v => v.id.replace('view-', '')).forEach(t => {
                 const el = document.getElementById(`view-${t}`);
                 if (el) el.classList.add('hidden');
 
@@ -9134,7 +9143,7 @@ RULES FOR EDU SIR:
         }
 
         function forwardInboxToFounder() {
-            const inbox = JSON.parse(localStorage.getItem('eduva_feedback_inbox') || '[]');
+            const inbox = JSON.parse(localStorage.getItem('') || '[]');
             if (inbox.length === 0) { alert('Inbox khali hai.'); return; }
             let text = '📬 *EDUVA Feedback Inbox*\n\n';
             inbox.slice(0, 20).forEach((f, i) => {
@@ -9160,7 +9169,7 @@ RULES FOR EDU SIR:
             const hwHist = getHomeworkHistory();
             const safety = JSON.parse(localStorage.getItem(EDUVA_SAFETY_KEY) || '{}');
             const tests = getTestHistory();
-            const inbox = JSON.parse(localStorage.getItem('eduva_feedback_inbox') || '[]');
+            const inbox = JSON.parse(localStorage.getItem('') || '[]');
             const prof = getStudentProfile();
 
             const card = (label, value, color) => `<div class="card-clean p-4 rounded-2xl"><p class="text-[11px] font-bold text-slate-500">${label}</p><p class="text-xl font-black ${color} mt-1">${value}</p></div>`;
@@ -10760,7 +10769,7 @@ LaTeX ($) बिल्कुल नहीं।`;
             slot.innerHTML = `
                 <div class="card-clean p-4 rounded-3xl bg-gradient-to-r from-blue-700 to-indigo-700 text-white flex items-center gap-3 animate-fadeIn">
                     <span class="text-2xl">📲</span>
-                    <div class="flex-1"><p class="text-sm font-black">EDUVA App Install करो!</p><p class="text-[11px] font-semibold text-blue-100">1-tap open • offline bhi chalti hai • notifications milegi</p></div>
+                    <div class="flex-1"><p class="text-sm font-black">EDUVA App Install करो!</p><p class="text-[11px] font-semibold text-blue-100">1-tap open • saved चीज़ें offline भी • notifications milegi</p></div>
                     <button onclick="installApp()" class="px-4 py-2.5 bg-white text-blue-700 font-black text-xs rounded-xl cursor-pointer shrink-0">Install</button>
                 </div>`;
         }
@@ -12121,7 +12130,7 @@ LaTeX ($) बिल्कुल नहीं।`;
 
         function getCls() {
             try {
-                var p = JSON.parse(localStorage.getItem('eduva_student_profile_v1') || '{}');
+                var p = JSON.parse(localStorage.getItem('eduva_student_profile') || '{}');
                 if (p.cls && (CHAPTER_DATA[p.cls] || CLASS_DATA[p.cls])) return p.cls;
             } catch (e) {}
             return '10';
