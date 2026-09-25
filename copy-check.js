@@ -93,18 +93,40 @@
         el.textContent = '🔒 ' + m + ' min में delete';
         setTimeout(tick, 30000);
     }
+    function compressFile(file, cb) {
+        try {
+            var img = new Image();
+            var url = URL.createObjectURL(file);
+            img.onload = function () {
+                try {
+                    var maxW = 1600;
+                    var scale = Math.min(1, maxW / img.width);
+                    var c = document.createElement('canvas');
+                    c.width = Math.round(img.width * scale); c.height = Math.round(img.height * scale);
+                    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+                    URL.revokeObjectURL(url);
+                    cb(c.toDataURL('image/jpeg', 0.72).split(',')[1]);
+                } catch (e) { cb(null); }
+            };
+            img.onerror = function () { try { URL.revokeObjectURL(url); } catch (e) {} cb(null); };
+            img.src = url;
+        } catch (e) { cb(null); }
+    }
+    function pushImg(b64) {
+        if (!b64) return;
+        imgs.push(b64);
+        if (!attachedAt) attachedAt = Date.now();
+        try { sessionStorage.setItem(KEY_IMG, JSON.stringify({ t: Date.now(), data: imgs })); } catch (e) {}
+        renderPages(); tick();
+    }
     function addFiles(inp) {
         var files = inp.files;
         if (!files || !files.length) return;
         Array.prototype.forEach.call(files, function (f) {
-            var r = new FileReader();
-            r.onload = function (ev) {
-                imgs.push(String(ev.target.result).split(',')[1]);
-                if (!attachedAt) attachedAt = Date.now();
-                try { sessionStorage.setItem(KEY_IMG, JSON.stringify({ t: Date.now(), data: imgs })); } catch (e) {}
-                renderPages(); tick();
-            };
-            r.readAsDataURL(f);
+            compressFile(f, function (b64) {
+                if (b64) pushImg(b64);
+                else { var r = new FileReader(); r.onload = function (ev) { pushImg(String(ev.target.result).split(',')[1]); }; r.readAsDataURL(f); }
+            });
         });
         inp.value = '';
     }

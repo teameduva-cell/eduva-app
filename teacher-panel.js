@@ -283,10 +283,13 @@
         $('teacher-generate-tab').classList.toggle('hidden', t !== 'generate');
         $('teacher-practice-tab').classList.toggle('hidden', t !== 'practice');
         var ccTab = $('teacher-copy-tab'); if (ccTab) ccTab.classList.toggle('hidden', t !== 'copy');
+        var poolTab = $('teacher-pool-tab'); if (poolTab) poolTab.classList.toggle('hidden', t !== 'pool');
+        if (t === 'pool' && !window.__poolInit) { window.__poolInit = true; try { window.__tpPoolInit(); } catch (e) {} }
         $('ttab-audit').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'audit' ? 'ink-navy text-white' : 'text-slate-600');
         $('ttab-generate').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'generate' ? 'ink-navy text-white' : 'text-slate-600');
         $('ttab-practice').className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'practice' ? 'ink-navy text-white' : 'text-slate-600');
         var ttC = $('ttab-copy'); if (ttC) ttC.className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'copy' ? 'ink-navy text-white' : 'text-slate-600');
+        var ttP = $('ttab-pool'); if (ttP) ttP.className = 'flex-1 py-3 rounded-xl cursor-pointer text-xs font-black ' + (t === 'pool' ? 'ink-navy text-white' : 'text-slate-600');
     };
 
     /* ============================================================
@@ -367,25 +370,51 @@
     }
 
     // Photo attach (multi-page)
+    function compressImage(file, cb) {
+        try {
+            var img = new Image();
+            var url = URL.createObjectURL(file);
+            img.onload = function () {
+                try {
+                    var maxW = 1600;
+                    var scale = Math.min(1, maxW / img.width);
+                    var w = Math.round(img.width * scale), hgt = Math.round(img.height * scale);
+                    var c = document.createElement('canvas');
+                    c.width = w; c.height = hgt;
+                    c.getContext('2d').drawImage(img, 0, 0, w, hgt);
+                    URL.revokeObjectURL(url);
+                    cb(c.toDataURL('image/jpeg', 0.72).split(',')[1]);
+                } catch (e) { cb(null); }
+            };
+            img.onerror = function () { try { URL.revokeObjectURL(url); } catch (e) {} cb(null); };
+            img.src = url;
+        } catch (e) { cb(null); }
+    }
     window.pcAttachPhotos = function (input) {
         var files = input.files;
         if (!files || !files.length) return;
         Array.prototype.forEach.call(files, function (f) {
-            var reader = new FileReader();
-            reader.onload = function (ev) {
-                var b64 = String(ev.target.result).split(',')[1];
-                paperImages.push(b64);
+            compressImage(f, function (b64) {
+                if (b64) paperImages.push(b64);
+                else {
+                    var reader = new FileReader();
+                    reader.onload = function (ev) { paperImages.push(String(ev.target.result).split(',')[1]); afterPush(); };
+                    reader.readAsDataURL(f);
+                    return;
+                }
+                afterPush();
+            });
+        });
+        input.value = '';
+    }
+    function afterPush() {
                 if (!paperAttachedAt) {
                     paperAttachedAt = Date.now();
                     startDeleteCountdown();
                 }
                 try { sessionStorage.setItem('eduva_pc_images', JSON.stringify({ t: Date.now(), data: paperImages })); } catch (e) {}
                 renderPcPages();
-            };
-            reader.readAsDataURL(f);
-        });
-        input.value = '';
-    };
+    }
 
     function renderPcPages() {
         var el = $('pc-pages');
@@ -793,6 +822,72 @@
     };
 
     // Init
+
+    /* ================= PART E — 🗂️ QUESTION POOL (faculty ke liye) ================= */
+    var poolCls = '10', poolSubj = 'Mathematics', poolLevel = 'moderate', poolTopic = '';
+    window.__tpPoolInit = function () {
+        var cSel = $('pool-class'), sSel = $('pool-subject');
+        if (!cSel) return;
+        [6, 7, 8, 9, 10, 11, 12].forEach(function (c) {
+            var o = document.createElement('option'); o.value = c; o.textContent = 'Class ' + c; cSel.appendChild(o);
+        });
+        cSel.value = poolCls;
+        window.__tpPoolSubjects();
+    };
+    window.__tpPoolSubjects = function () {
+        var sSel = $('pool-subject'); if (!sSel) return;
+        poolCls = $('pool-class').value;
+        sSel.innerHTML = '';
+        Object.keys(window.PG_TOPICS_BI[poolCls]).forEach(function (sj) {
+            var o = document.createElement('option'); o.textContent = sj; sSel.appendChild(o);
+        });
+        window.__tpPoolTopics();
+    };
+    window.__tpPoolTopics = function () {
+        poolSubj = $('pool-subject').value;
+        var wrap = $('pool-topics'); if (!wrap) return;
+        poolTopic = '';
+        var topics = (window.PG_TOPICS_BI[poolCls] && window.PG_TOPICS_BI[poolCls][poolSubj]) || [['Full syllabus', 'Full syllabus']];
+        wrap.innerHTML = topics.map(function (t) {
+            var nm = t[1] || t[0];
+            return '<button type="button" onclick="window.__tpPoolTopic(this, \'' + String(nm).replace(/'/g, '') + '\')" class="pool-tpc px-2.5 py-1.5 rounded-full text-[10px] font-black border-2 bg-white text-slate-600 border-slate-200 cursor-pointer">' + esc(nm) + '</button>';
+        }).join('');
+    };
+    window.__tpPoolTopic = function (btn, t) {
+        poolTopic = t;
+        document.querySelectorAll('.pool-tpc').forEach(function (b) { b.className = 'pool-tpc px-2.5 py-1.5 rounded-full text-[10px] font-black border-2 bg-white text-slate-600 border-slate-200 cursor-pointer'; });
+        btn.className = 'pool-tpc px-2.5 py-1.5 rounded-full text-[10px] font-black border-2 bg-amber-500 text-white border-amber-500 cursor-pointer';
+        var go = $('pool-go'); if (go) go.textContent = '🎯 "' + t.slice(0, 25) + '" ke 10 Questions lao';
+    };
+    window.__tpPoolLevel = function (l) {
+        poolLevel = l;
+        ['easy', 'moderate', 'hard'].forEach(function (x) {
+            var b = $('poolv-' + x); if (b) b.style.outline = (x === l) ? '3px solid #92400e' : 'none';
+        });
+    };
+    window.__tpPoolGo = async function () {
+        if (!poolTopic) { alert('पहले एक topic select करो।'); return; }
+        var btn = $('pool-go'), st = $('pool-status');
+        btn.disabled = true; btn.textContent = '⏳ Questions ban rahe hain... 20-40 sec';
+        var lvl = { easy: 'EASY', moderate: 'MODERATE (board level)', hard: 'HARD (Olympiad/JEE-NEET level)' }[poolLevel];
+        var prompt = 'Class ' + poolCls + ' • ' + poolSubj + ' • Topic: ' + poolTopic + ' • ' + lvl + '.\n'
+            + '10 exam-quality QUESTIONS banao (mix MCQ + short) — sirf questions, numbering ke saath. Alag section mein Answers (एक line में each). Hindi में। सब original हों।';
+        try {
+            var reply = await eduvaAI(prompt, null);
+            window.__poolLast = reply;
+            $('pool-result').innerHTML = '<pre style="white-space:pre-wrap;font-family:inherit;font-size:13.5px;line-height:1.7;color:#1c2333;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;max-height:50vh;overflow-y:auto;">' + esc(reply) + '</pre>';
+            $('pool-actions').classList.remove('hidden');
+            st.textContent = '✅ Ready! Ab 📋 Copy karke apne paper mein paste karo, ya question-bank mein se chuno.';
+        } catch (e) {
+            st.textContent = '⚠️ ' + e.message + ' — दोबारा try करो।';
+        }
+        btn.disabled = false; btn.textContent = '🎯 10 naye Questions lao';
+    };
+    window.__tpPoolCopy = function () {
+        try { navigator.clipboard.writeText(window.__poolLast || ''); alert('✅ Questions copy ho gaye! Ab inhe apne paper mein arrange करो।'); }
+        catch (e) { alert('Copy nahi hua — manually select karke copy karo.'); }
+    };
+
     function initTp() { loadPgTopics(); loadDpTopics(); injectLangToggles(); }
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTp);
     else initTp();

@@ -215,6 +215,16 @@
             return snap.docs.map(d => ({ id: d.id, ...d.data() }));
         };
 
+        // ✍️ CONTENT CREATOR registration leads
+        window.eduvaSaveCreatorLead = async function (data) {
+            await addDoc(collection(db, "creatorLeads"), { ...data, at: serverTimestamp() });
+        };
+
+        window.eduvaGetCreatorLeads = async function () {
+            const snap = await getDocs(collection(db, "creatorLeads"));
+            return snap.docs.map(d => ({ id: d.id, ...d.data(), _creator: true }));
+        };
+
         // 📚 CONTENT BANK — bachchon ke acche Q&A / homework auto-save (material library banane ke liye)
         window.eduvaSaveToContentBank = async function (entry) {
             await addDoc(collection(db, "contentBank"), { ...entry, at: serverTimestamp() });
@@ -1002,6 +1012,9 @@
                     <button onclick="switchTab('study-material')" id="dtab-study-material" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="library" class="w-5 h-5 text-fuchsia-600"></i> Study Material (NCERT) 📚
                     </button>
+                    <button onclick="switchTab('jeeneet')" id="dtab-jeeneet" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                        <i data-lucide="target" class="w-5 h-5 text-blue-600"></i> 🎯 JEE / NEET Zone
+                    </button>
                     <button onclick="switchTab('teacher')" id="dtab-teacher" class="w-full flex items-center gap-3.5 px-4 py-3.5 rounded-2xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
                         <i data-lucide="user-check" class="w-5 h-5 text-indigo-600"></i> 🧑‍🏫 Teacher Panel
                     </button>
@@ -1506,6 +1519,29 @@
                 <p class="text-sm font-black text-slate-800">✅ Check + Marks</p>
                 <p class="text-[10px] font-bold text-slate-500 mt-0.5">गलतियाँ + marks + grade + tips</p>
             </button>
+        </div>
+    </div>
+
+    <!-- ══════════ TAB 5: QUESTION POOL (faculty) ══════════ -->
+    <div id="teacher-pool-tab" class="hidden card-clean p-5 sm:p-6 rounded-3xl bg-white border border-slate-200 space-y-3">
+        <h3 class="text-base font-black text-slate-900">🗂️ Question Pool — paper ke liye tayyar questions</h3>
+        <p class="text-[11px] text-slate-500 font-semibold">Class → Subject → Topic chuno, 10 exam-quality questions lo, 📋 Copy karke apne question paper mein daal do. Jitni baar dabao, utne naye questions!</p>
+        <div class="grid grid-cols-2 gap-2.5">
+            <select id="pool-class" onchange="__tpPoolSubjects()" class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold"></select>
+            <select id="pool-subject" onchange="__tpPoolTopics()" class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 text-xs font-bold"></select>
+        </div>
+        <div id="pool-topics" class="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto hide-scrollbar"></div>
+        <div class="grid grid-cols-3 gap-2">
+            <button type="button" onclick="__tpPoolLevel('easy')" id="poolv-easy" class="py-2.5 rounded-xl text-xs font-black bg-emerald-100 text-emerald-700 border-2 border-emerald-300 cursor-pointer">🟢 Easy</button>
+            <button type="button" onclick="__tpPoolLevel('moderate')" id="poolv-moderate" class="py-2.5 rounded-xl text-xs font-black bg-amber-100 text-amber-700 border-2 border-amber-300 cursor-pointer" style="outline:3px solid #92400e">🟡 Moderate</button>
+            <button type="button" onclick="__tpPoolLevel('hard')" id="poolv-hard" class="py-2.5 rounded-xl text-xs font-black bg-rose-100 text-rose-700 border-2 border-rose-300 cursor-pointer">🔴 Hard</button>
+        </div>
+        <button onclick="__tpPoolGo()" id="pool-go" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-amber-600 to-orange-600 text-white font-black text-sm cursor-pointer">👆 पहले topic select करो</button>
+        <p id="pool-status" class="text-xs font-bold text-center min-h-[16px]"></p>
+        <div id="pool-result"></div>
+        <div id="pool-actions" class="hidden flex gap-2">
+            <button onclick="__tpPoolCopy()" class="flex-1 py-3 bg-slate-900 text-white text-xs font-black rounded-xl cursor-pointer">📋 Questions Copy करो</button>
+            <button onclick="__tpPoolGo()" class="flex-1 py-3 bg-amber-600 text-white text-xs font-black rounded-xl cursor-pointer">🔄 10 aur naye</button>
         </div>
     </div>
 </section>
@@ -3145,6 +3181,7 @@
         <button onclick="setTeacherTab('generate')" id="ttab-generate" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📝 Paper Generator</button>
         <button onclick="setTeacherTab('practice')" id="ttab-practice" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📄 Daily Practice</button>
         <button onclick="setTeacherTab('copy')" id="ttab-copy" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">📷 Copy Check</button>
+        <button onclick="setTeacherTab('pool')" id="ttab-pool" class="flex-1 py-3 rounded-xl text-slate-600 cursor-pointer">🗂️ Pool</button>
     </div>
 
     <!-- ══════════ TAB 1: PAPER AUDIT ══════════ -->
@@ -4307,6 +4344,53 @@
             </label>
             <button onclick="submitNotesUpload()" id="upload-submit-btn" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">📤 Edu Sir को Check करवाओ</button>
             <div id="upload-result" class="space-y-3"></div>
+
+                <!-- ✍️ CONTENT CREATOR REGISTRATION -->
+                <div class="mt-5 p-5 bg-gradient-to-r from-violet-50 to-fuchsia-50 border-2 border-violet-200 rounded-2xl space-y-3">
+                    <div class="text-center space-y-1">
+                        <p class="text-base font-black text-violet-900">✍️ Material LIKHNA chahte ho? Content Creator bano!</p>
+                        <p class="text-[11px] font-semibold text-violet-700">Students ke liye <b>notes, formula sheets, chapter guides</b> likho — tumhara naam EDUVA ke material pe dikhega + future mein perks. <b>Register karo — team contact karegi.</b></p>
+                    </div>
+                    <div class="grid sm:grid-cols-2 gap-2.5 text-xs font-bold">
+                        <input id="cr-name" placeholder="👤 Aapka naam *" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                        <input id="cr-phone" type="tel" placeholder="📱 Phone / WhatsApp *" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                        <input id="cr-city" placeholder="📍 City *" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                        <select id="cr-qual" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                            <option>Student (Class 11-12)</option><option>Dropper / JEE-NEET</option><option>College student</option><option>Teacher / Tutor</option><option>Graduate</option>
+                        </select>
+                        <select id="cr-subject" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                            <option>Maths</option><option>Physics</option><option>Chemistry</option><option>Biology</option><option>Science (6-10)</option><option>SST / Hindi / English</option><option>Multiple subjects</option>
+                        </select>
+                        <select id="cr-class" class="bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                            <option>Class 6-8</option><option>Class 9-10</option><option>Class 11-12</option><option>JEE / NEET</option><option>All classes</option>
+                        </select>
+                        <input id="cr-sample" placeholder="🔗 Sample work link (optional — notes/photo)" class="sm:col-span-2 bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500">
+                        <textarea id="cr-why" rows="2" placeholder="💬 Kyun likhna chahte ho? (2 lines)" class="sm:col-span-2 bg-white border border-violet-200 rounded-xl p-3 outline-none focus:border-violet-500 resize-none"></textarea>
+                    </div>
+                    <p id="cr-msg" class="text-xs font-bold min-h-[16px] text-center"></p>
+                    <button onclick="submitCreatorLead(this)" class="w-full py-3.5 bg-gradient-to-r from-violet-600 to-fuchsia-700 hover:from-violet-700 hover:to-fuchsia-800 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">🚀 Creator Register करो — EDUVA Team contact करेगी</button>
+                    <p class="text-[10px] text-center font-semibold text-violet-500">🔒 Details sirf founder team tak • By-line milega (naam tumhara, padhai sabki!)</p>
+                </div>
+                <script>
+                window.submitCreatorLead = async function (btn) {
+                    var g = function (id) { return (document.getElementById(id) || {}).value || ''; };
+                    var msg = document.getElementById('cr-msg');
+                    var d = { name: g('cr-name').trim(), phone: g('cr-phone').trim(), city: g('cr-city').trim(), qual: g('cr-qual'), subject: g('cr-subject'), classRange: g('cr-class'), sample: g('cr-sample').trim(), why: g('cr-why').trim() };
+                    if (!d.name || !d.phone || !d.city) { msg.textContent = '❌ नाम, phone और city ज़रूरी है'; msg.style.color = '#dc2626'; return; }
+                    if (d.phone.replace(/\D/g, '').length < 10) { msg.textContent = '❌ सही 10-digit phone डालो'; msg.style.color = '#dc2626'; return; }
+                    btn.disabled = true; btn.textContent = '⏳ भेजा जा रहा है...'; msg.textContent = '';
+                    try {
+                        if (typeof eduvaSaveCreatorLead !== 'function') throw new Error('Internet check karo');
+                        await eduvaSaveCreatorLead(d);
+                        msg.textContent = '✅ Register ho gaye! EDUVA team tumse jald contact karegi — ' + d.name; msg.style.color = '#059669';
+                        btn.textContent = '✅ Registered!';
+                        ['cr-name','cr-phone','cr-city','cr-sample','cr-why'].forEach(function (id) { var e = document.getElementById(id); if (e) e.value = ''; });
+                    } catch (e) {
+                        msg.textContent = '❌ नहीं गया — दोबारा try करो'; msg.style.color = '#dc2626';
+                        btn.disabled = false; btn.textContent = '🚀 Creator Register करो — EDUVA Team contact करेगी';
+                    }
+                };
+                </script>
         </div>
     </section>
 
@@ -4502,7 +4586,11 @@
                             <div style="font-size:10px;opacity:.9;">🆕 NEW NCERT • CLASS 9 • 2026-27</div>
                             <div style="font-weight:800;font-size:13px;">Ganita Manjari 2 — Chapters, PDF Link + Solved Questions 🔥</div>
                         </a>
-                                            <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
+                                            <a href="/all-olympiads-guide-2026.html" style="display:block;background:linear-gradient(135deg,#92400e,#f59e0b);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;margin:0 0 8px;">
+                        <div style="font-size:10px;opacity:.9;">🏆 ALL OLYMPIADS 2026-27 • GOVT + PRIVATE • FREE</div>
+                        <div style="font-weight:800;font-size:13px;">NSEJS • IOQM • NMTC • SOF — Questions + Notes + Strategy</div>
+                    </a>
+                    <div style="font-size:11px;font-weight:800;color:#64748b;letter-spacing:.5px;">📄 CBSE 2026 SOLVED PAPERS — FREE</div>
                     <div style="display:flex;gap:8px;">
                         <a href="/cbse-class-10-maths-standard-2026-solved.html" style="flex:1;background:linear-gradient(135deg,#0f3c7d,#2b6de0);color:#fff;border-radius:12px;padding:10px 12px;text-decoration:none;">
                             <div style="font-size:10px;opacity:.85;">CBSE 2026 • Class 10</div>
@@ -12434,6 +12522,10 @@ LaTeX ($) बिल्कुल नहीं।`;
 <script src="/no-zero-day.js"></script>
 <script src="/padhai-calendar.js"></script>
 <script src="/copy-check.js"></script>
+<script src="/question-bank.js"></script>
+<script src="/jeeneet-zone.js"></script>
+<script src="/writing-pad.js"></script>
+<script src="/revision-sheets.js"></script>
     <!-- ⚙️ EDUVA SETTINGS -->
     <div id="settings-modal" class="hidden fixed inset-0 z-[98] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 max-w-md w-full space-y-3 relative max-h-[88vh] overflow-y-auto hide-scrollbar">
@@ -12500,6 +12592,7 @@ LaTeX ($) बिल्कुल नहीं।`;
             try {
                 if (typeof eduvaGetPartnerLeads !== 'function') throw new Error('Firebase not ready');
                 var leads = await eduvaGetPartnerLeads();
+                try { if (typeof eduvaGetCreatorLeads === 'function') leads = leads.concat(await eduvaGetCreatorLeads()); } catch (e2) {}
                 leads.sort(function (a, b) { return ((b.at && b.at.seconds) || 0) - ((a.at && a.at.seconds) || 0); });
                 if (badge) badge.textContent = leads.length + ' leads';
                 if (!leads.length) { box.innerHTML = '<p class="text-sm text-slate-400 text-center py-3">Abhi koi lead nahi — Contact Us page ka form test karke dekho 🙏</p>'; return; }
@@ -12507,6 +12600,18 @@ LaTeX ($) बिल्कुल नहीं।`;
                     var when = l.at && l.at.seconds ? new Date(l.at.seconds * 1000).toLocaleString('hi-IN', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '';
                     var phone = (l.phone || '').replace(/\D/g, '');
                     var wa = phone.length >= 10 ? 'https://wa.me/91' + phone.slice(-10) : null;
+                    if (l._creator) {
+                        return '<div class="p-3.5 bg-white border border-fuchsia-200 rounded-2xl shadow-2xs space-y-1.5">'
+                            + '<div class="flex flex-wrap items-center justify-between gap-2">'
+                            + '<p class="text-sm font-black text-slate-900">✍️ ' + (l.name || '-') + ' <span class="text-[10px] font-bold text-fuchsia-500">(CREATOR — ' + (l.subject || '') + ' • ' + (l.classRange || '') + ')</span></p>'
+                            + '<span class="text-[10px] font-bold text-slate-400">' + when + '</span></div>'
+                            + '<p class="text-xs font-bold text-slate-600">🎓 ' + (l.qual || '-') + ' &nbsp;|&nbsp; 📍 ' + (l.city || '-') + (l.sample ? ' &nbsp;|&nbsp; 🔗 <a href="' + esc(l.sample) + '" target="_blank" class="text-blue-600 underline">Sample</a>' : '') + '</p>'
+                            + (l.why ? '<p class="text-xs font-semibold text-slate-500">💬 ' + esc(l.why) + '</p>' : '')
+                            + '<div class="flex gap-2 pt-1">'
+                            + (wa ? '<a href="' + wa + '" target="_blank" rel="noopener" class="px-3 py-1.5 bg-emerald-600 text-white text-[11px] font-black rounded-lg">📱 WhatsApp (' + phone.slice(-10) + ')</a>' : '<span class="text-xs text-slate-400">📱 ' + esc(l.phone || '-') + '</span>')
+                            + '<a href="tel:' + phone + '" class="px-3 py-1.5 bg-slate-800 text-white text-[11px] font-black rounded-lg">📞 Call</a>'
+                            + '</div></div>';
+                    }
                     return '<div class="p-3.5 bg-white border border-indigo-100 rounded-2xl shadow-2xs space-y-1.5">'
                         + '<div class="flex flex-wrap items-center justify-between gap-2">'
                         + '<p class="text-sm font-black text-slate-900">🏫 ' + (l.org || '-') + ' <span class="text-[10px] font-bold text-indigo-500">(' + (l.type || '') + ' • ' + (l.size || '') + ')</span></p>'
