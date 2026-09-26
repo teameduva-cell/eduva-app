@@ -40,8 +40,9 @@
     <!-- PWA: Manifest + Install + Web Share Target (ताकि WhatsApp/Chrome के Share sheet में "EDUVA" दिखे) -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#1e3a8a">
-    <link rel="icon" href="/icon-192.png">
-    <link rel="apple-touch-icon" href="/icon-192.png">
+    <link rel="icon" href="/favicon-32.png" sizes="32x32">
+    <link rel="icon" href="/icon-192.png" sizes="192x192">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 
     <!-- Tailwind CSS & Lucide Icons -->
     <!-- 🛡️ EMERGENCY FALLBACK — agar Tailwind CDN fail ho to bhi app chale -->
@@ -5240,7 +5241,7 @@
 
         // 🧹 Logout pe sensitive student data localStorage se mita do (shared-device safety)
         function eduvaWipeSensitiveLocalData() {
-            const KEEP = ['eduva_dark_mode', 'eduva_lite', 'eduva_analytics_v1', 'eduva_safety_v2', 'eduva_doubt_count_v2', 'eduva_bank_local', 'eduva_feature_usage', '', 'eduva_homework_history', 'eduva_test_history_v1', 'eduva_total_opens', 'eduva_student_profile', 'eduva_hindi_mode', 'eduva_lite', 'eduva_subject_progress_v1']; // stats/analytics/UI sab bache — sirf sensitive session data wipe
+            const KEEP = ['eduva_dark_mode', 'eduva_lite', 'eduva_analytics_v1', 'eduva_safety_v2', 'eduva_doubt_count_v2', 'eduva_bank_local', 'eduva_feature_usage', '', 'eduva_homework_history', 'eduva_test_history_v1', 'eduva_total_opens', '', 'eduva_hindi_mode', 'eduva_lite', 'eduva_subject_progress_v1']; // stats/analytics/UI sab bache — sirf sensitive session data wipe
             try {
                 const keys = [];
                 for (let i = 0; i < localStorage.length; i++) {
@@ -10845,7 +10846,7 @@ LaTeX ($) बिल्कुल नहीं।`;
         let deferredInstallPrompt = null;
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
-            deferredInstallPrompt = e;
+            window.__eduvaInstallPrompt = e;
             renderInstallBanner();
         });
         function renderInstallBanner() {
@@ -11431,7 +11432,7 @@ LaTeX ($) बिल्कुल नहीं।`;
 
     // ---------- 6. install ----------
     let deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', (e) => { deferredPrompt = e; });
+    window.addEventListener('beforeinstallprompt', (e) => { window.__eduvaInstallPrompt = e; });
     document.addEventListener('click', (e) => {
         const b = e.target.closest("[onclick*='installApp'], [id*='install']");
         if (b && deferredPrompt) { trackEvent('install', { via: 'prompt' }); }
@@ -12651,6 +12652,16 @@ LaTeX ($) बिल्कुल नहीं।`;
         document.addEventListener('click', function () {
             setTimeout(function () { try { window.scrollTo(0, 0); } catch (e) {} }, 60);
             setTimeout(function () { try { window.scrollTo(0, 0); } catch (e) {} }, 350);
+        }, true);
+    })();
+    </script>
+    <!-- 🔒 EDUVA scroll guard — <details> clicks pe page top pe mat jao -->
+    <script>
+    (function () {
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.closest && e.target.closest('summary, details')) return;
+            setTimeout(function () { try { window.scrollTo(0, 0); } catch (x) {} }, 60);
+            setTimeout(function () { try { window.scrollTo(0, 0); } catch (x) {} }, 350);
         }, true);
     })();
     </script>
