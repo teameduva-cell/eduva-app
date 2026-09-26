@@ -24,7 +24,7 @@ function fetchT(url, opts, ms) {
   return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
 }
 function cacheKey(text) {
-  const norm = String(text).toLowerCase().replace(/[^a-z0-9\u0900-\u097F]+/g, ' ').trim().slice(0, 300);
+  const norm = String(text).toLowerCase().replace(/[^a-z0-9\u0900-\u097F]+/g, ' ').trim(); // FIX: full text hash — no slice (boilerplate prefix used to hide the actual question)
   return crypto.createHash('sha256').update(norm).digest('hex').slice(0, 40);
 }
 async function cacheGet(id) {
