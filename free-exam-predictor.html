@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Exam Score Predictor — Predict Your Board/NEET Score in 30 Seconds | EDUVA</title>
+<meta name="description" content="Free score predictor: enter your last 3 mock test scores and get your predicted board exam result in 30 seconds. No sign-up. Share and compare with friends!">
+<meta name="keywords" content="exam score predictor, board exam predictor free, predict my grades, mock test score calculator, neet score predictor free">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://eduva-app.vercel.app/free-exam-predictor.html">
+<link rel="icon" href="/favicon-32.png">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Plus Jakarta Sans',system-ui,sans-serif}
+body{background:linear-gradient(135deg,#11176f,#4b2ae5);min-height:100vh;padding:16px;color:#fff}
+.wrap{max-width:480px;margin:0 auto}
+.card{background:#fff;color:#1c2333;border-radius:22px;padding:22px;margin-bottom:14px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+h1{font-size:22px;font-weight:900;line-height:1.3}
+.tag{display:inline-block;background:#eef2ff;color:#4338ca;font-size:11px;font-weight:800;padding:4px 12px;border-radius:99px;margin-bottom:10px}
+label{font-size:13px;font-weight:800;display:block;margin:14px 0 6px;color:#334155}
+input{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:14px;font-size:16px;font-weight:800;outline:none}
+input:focus{border-color:#4f46e5}
+select{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:14px;font-size:15px;font-weight:700;outline:none;background:#fff}
+button.cta{width:100%;padding:16px;background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;border:none;border-radius:16px;font-size:16px;font-weight:900;cursor:pointer;margin-top:18px}
+.big{font-size:52px;font-weight:900;text-align:center;color:#4f46e5}
+.center{text-align:center}
+.sub{color:#64748b;font-size:13px;font-weight:600}
+.bar{height:14px;background:#e2e8f0;border-radius:99px;overflow:hidden;margin:14px 0 6px}
+.bar>div{height:100%;background:linear-gradient(90deg,#4f46e5,#7c3aed);border-radius:99px;transition:width 1s ease}
+.verdict{font-size:15px;font-weight:800;text-align:center;padding:12px;border-radius:14px;margin-top:12px}
+.share-btn{width:100%;padding:15px;background:#16a34a;color:#fff;border:none;border-radius:14px;font-size:15px;font-weight:900;cursor:pointer;margin-top:12px}
+.app-btn{width:100%;padding:15px;background:#0f172a;color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;margin-top:8px}
+.disclaimer{font-size:11px;color:#94a3b8;text-align:center;margin-top:10px}
+.logo-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.logo-row img{width:44px;height:44px;border-radius:12px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="card">
+<div class="logo-row"><img src="/icon-192.png" alt="EDUVA"><div><b style="font-size:17px">EDUVA Score Predictor</b><br><span class="sub">🎯 Predict your exam score • FREE • No sign-up</span></div></div>
+<h1>Enter your mock test scores — see your predicted exam result! 🔮</h1>
+<p class="sub" style="margin-top:8px">30 seconds • just 3 mock test results needed</p>
+</div>
+<div class="card" id="input-card">
+<label>📚 Which exam?</label>
+<select id="exam"><option>School Board Exam</option><option>NEET UG</option><option>JEE Main</option></select>
+<label>📝 Mock Test 1 score (%)</label><input type="number" id="m1" placeholder="e.g. 62" min="0" max="100">
+<label>📝 Mock Test 2 score (%)</label><input type="number" id="m2" placeholder="e.g. 68" min="0" max="100">
+<label>📝 Mock Test 3 score (%)</label><input type="number" id="m3" placeholder="e.g. 74" min="0" max="100">
+<button class="cta" onclick="predict()">🔮 Predict My Score — FREE!</button>
+<p class="disclaimer">Estimate is trend-based only — your real result depends on your effort 💪</p>
+</div>
+<div class="card" id="result-card" style="display:none">
+<p class="center sub">🎯 YOUR PREDICTED SCORE</p>
+<p class="big" id="pred-num">--%</p>
+<p class="center sub" id="pred-range"></p>
+<div class="bar"><div id="pred-bar" style="width:0%"></div></div>
+<div class="verdict" id="verdict"></div>
+<p class="center" style="margin-top:14px;font-size:14px;font-weight:800" id="trend-txt"></p>
+<button class="share-btn" onclick="shareWA()">📤 Share on WhatsApp — "I got X%! What's yours?"</button>
+<button class="app-btn" onclick="location.href='https://eduva-app.vercel.app'">🚀 Improve your score — open EDUVA free</button>
+<p class="disclaimer">Sharing is optional — nothing personal is sent 😄</p>
+</div>
+<div class="card" style="text-align:center">
+<p style="font-size:13px;font-weight:800">📸 Snap a photo of any question → step-by-step solution in 2 min</p>
+<p class="sub" style="margin-top:6px">100,000+ questions • Mock tests • Homework checker — all free</p>
+</div>
+</div>
+<script>
+function predict(){
+  var a=parseFloat(document.getElementById('m1').value),b=parseFloat(document.getElementById('m2').value),c=parseFloat(document.getElementById('m3').value);
+  if(isNaN(a)||isNaN(b)||isNaN(c)){alert('Please enter all 3 mock test scores! 🙏');return;}
+  var avg=(a+b+c)/3, improving=(c>a), trendBoost=improving?(c-avg)*0.25:0;
+  var pred=Math.round(Math.min(99,Math.max(20,avg+4+trendBoost)));
+  document.getElementById('pred-num').textContent=pred+'%';
+  document.getElementById('pred-range').textContent='Expected range: '+Math.max(0,pred-5)+'% – '+Math.min(100,pred+4)+'%';
+  document.getElementById('pred-bar').style.width=pred+'%';
+  var v=document.getElementById('verdict');
+  var vs=[[85,'🌟 EXCELLENT! Topper zone — just keep the consistency!'],[70,'💪 SOLID! A bit more practice and 85+ is yours!'],[50,'📈 GROWTH ZONE! Fix weak topics — try the free mistake book!'],[0,'🚀 STARTING POINT! 5 minutes a day — see the difference in 3 months!']];
+  for(var i=0;i<vs.length;i++){if(pred>=vs[i][0]){v.textContent=vs[i][1];v.style.background=pred>=70?'#ecfdf5':'#fffbeb';v.style.color=pred>=70?'#065f46':'#92400e';break;}}
+  document.getElementById('trend-txt').textContent=improving?'📈 Trend: improving! (bonus applied)':'📊 Trend: steady — jump coming in test 4!';
+  document.getElementById('input-card').style.display='none';
+  document.getElementById('result-card').style.display='block';
+  window.__shareTxt='🎯 I predicted my exam score on EDUVA: *'+pred+'%*! 🔮\nTrend: '+(improving?'improving 📈':'steady 📊')+'\n\nWhat will YOU get? Check in 30 seconds — FREE, no sign-up:\n👉 https://eduva-app.vercel.app/free-exam-predictor.html\n\n#ScorePredictor #ExamPrep #EDUVA';
+}
+function shareWA(){window.open('https://wa.me/?text='+encodeURIComponent(window.__shareTxt||'Free exam score predictor! https://eduva-app.vercel.app/free-exam-predictor.html'),'_blank');}
+</script>
+</body>
+</html>
