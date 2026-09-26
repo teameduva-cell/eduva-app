@@ -796,9 +796,7 @@
     <header class="header-custom" id="app-header">
         <div class="flex items-center space-x-3">
             <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')" onmousedown="founderPressStart()" onmouseup="founderPressEnd()" onmouseleave="founderPressEnd()" ontouchstart="founderPressStart()" ontouchend="founderPressEnd()">
-                <div class="w-11 h-11 logo-brand-box rounded-2xl flex items-center justify-center text-white shadow-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
-                </div>
+                <img src="/icon-192.png" alt="EDUVA" class="w-11 h-11 rounded-2xl shadow-lg shrink-0">
                 <div>
                     <h1 class="text-xl font-black tracking-wider leading-none flex items-center gap-1.5">
                         EDUVA
@@ -3514,7 +3512,7 @@
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 relative shadow-2xl animate-fadeIn max-h-[92vh] overflow-y-auto hide-scrollbar">
             <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
             <div class="text-center space-y-2">
-                <div class="w-12 h-12 mx-auto logo-brand-box rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-md">✨</div>
+                <img src="/icon-192.png" alt="EDUVA" class="w-12 h-12 mx-auto rounded-2xl shadow-md">
                 <h3 id="auth-modal-title" class="text-xl font-black text-slate-900">EDUVA में आपका स्वागत है</h3>
                 <p class="text-xs text-slate-500 font-medium">अपना ईमेल और पासवर्ड डालकर लॉगिन करें</p>
             </div>
@@ -8037,6 +8035,7 @@ RULES FOR EDU SIR:
         }
 
         function switchTab(tabId, isBackAction = false) {
+        try { window.__eduvaViewSwitch = Date.now(); } catch (e) {}
             document.body.classList.toggle('chat-immersive', tabId === 'chat');
             if (tabId === 'chat') setTimeout(renderOfflineBox, 200);
             if (tabId === 'flashcards') setTimeout(() => { const fc = document.getElementById('fc-content'); if (fc) renderMathInElementCustom(fc); }, 100);
@@ -12639,13 +12638,6 @@ LaTeX ($) बिल्कुल नहीं।`;
         }, 3000);
     })();
     </script>
-    <!-- 🔒 EDUVA scroll fix — page hamesha top se khule -->
-    <script>
-    (function () {
-        try { if ('scrollRestoration' in history) history.scrollRestoration = 'manual'; } catch (e) {}
-        window.addEventListener('load', function () { try { window.scrollTo(0, 0); } catch (e) {} });
-    })();
-    </script>
     <!-- ✅ EDUVA scroll guard — har click ke baad page top pe -->
     <script>
     (function () {
@@ -12655,13 +12647,20 @@ LaTeX ($) बिल्कुल नहीं।`;
         }, true);
     })();
     </script>
-    <!-- 🔒 EDUVA scroll guard — <details> clicks pe page top pe mat jao -->
+    <!-- 🔒 EDUVA scroll manager v3 — sirf view-switch pe top, details pe kabhi nahi -->
     <script>
     (function () {
+        window.__eduvaViewSwitch = 0;
         document.addEventListener('click', function (e) {
-            if (e.target && e.target.closest && e.target.closest('summary, details')) return;
-            setTimeout(function () { try { window.scrollTo(0, 0); } catch (x) {} }, 60);
-            setTimeout(function () { try { window.scrollTo(0, 0); } catch (x) {} }, 350);
+            var t = e.target;
+            if (t && t.closest && t.closest('summary, details, a[href="#"]')) return; // in-page toggle/links — haath mat laga
+            // view switch hua hai toh hi top pe jaao (switchTab ne flag set kiya hoga)
+            setTimeout(function () {
+                if (Date.now() - window.__eduvaViewSwitch < 800) { try { window.scrollTo(0, 0); } catch (x) {} }
+            }, 60);
+            setTimeout(function () {
+                if (Date.now() - window.__eduvaViewSwitch < 800) { try { window.scrollTo(0, 0); } catch (x) {} }
+            }, 350);
         }, true);
     })();
     </script>
