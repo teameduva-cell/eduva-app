@@ -276,10 +276,55 @@
         setTimeout(function () { injectGbToggle(); wrapSendDoubt(); }, 1500);
     }
 
+
+    /* ================= (1c) 📋 COPY SOLUTION BUTTON ================= */
+    window.copyChatAnswer = function (btn) {
+        var bubble = btn.closest('.chat-bubble') || btn.parentElement;
+        if (!bubble) return;
+        var clone = bubble.cloneNode(true);
+        clone.querySelectorAll('button, a, svg, input, audio').forEach(function (e) { e.remove(); });
+        var text = (clone.innerText || clone.textContent || '').trim();
+        if (!text) return;
+        text += '\n\n— via EDUVA (Free AI Study App)';
+        function ok() { btn.textContent = '✅'; setTimeout(function () { btn.textContent = '📋'; }, 1500); try { if (typeof eduvaToast !== 'undefined') eduvaToast('📋 Solution copy ho gaya!'); } catch (e) {} }
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(ok).catch(function () { fallback(); });
+        } else fallback();
+        function fallback() {
+            var ta = document.createElement('textarea');
+            ta.value = text; document.body.appendChild(ta); ta.select();
+            try { document.execCommand('copy'); ok(); } catch (e) { alert('Copy nahi hua — manually select kar lo.'); }
+            ta.remove();
+        }
+    };
+    function addCopyButtons() {
+        var box = document.getElementById('chat-messages');
+        if (!box) return;
+        var bubbles = box.querySelectorAll('.chat-bubble');
+        for (var i = 0; i < bubbles.length; i++) {
+            var b = bubbles[i];
+            if (b.querySelector('.eduva-copy-btn')) continue;
+            var wrap = b.closest('div');
+            // user bubbles (ink-navy) skip karo — sirf AI answers pe copy
+            var container = b.parentElement;
+            if (container && container.className && container.className.indexOf('ink-navy') !== -1) continue;
+            if (!b.style.position) b.style.position = 'relative';
+            var btn = document.createElement('button');
+            btn.className = 'eduva-copy-btn';
+            btn.textContent = '📋';
+            btn.title = 'Solution copy karo';
+            btn.setAttribute('onclick', 'event.stopPropagation(); copyChatAnswer(this)');
+            btn.style.cssText = 'position:absolute;top:6px;right:8px;z-index:5;background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:3px 7px;font-size:12px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.08);opacity:.75;';
+            b.appendChild(btn);
+        }
+    }
+
     /* ================= INIT ================= */
     function init() {
         try { startGBObserver(); } catch(e) {}
         try { initGbMode(); } catch(e) {}
+        try { addCopyButtons(); } catch(e) {}
+        setInterval(function(){ try { addCopyButtons(); } catch(e){} }, 2500);
         renderRadar(false);
         // rev queue badalne pe radar refresh
         var _s = Object.getOwnPropertyDescriptor(Storage.prototype, 'localStorage');

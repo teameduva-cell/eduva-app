@@ -353,7 +353,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Handwriting Font for Notes Generator -->
-    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
     <style>
         * { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
@@ -1596,12 +1596,9 @@
                     </div>
                 </div>
 
-                <!-- Quick action chips (ChatGPT style) -->
+                <!-- Quick action chips (clean) -->
                 <div class="flex gap-2 px-3 pb-1.5 overflow-x-auto hide-scrollbar shrink-0">
-                    <button onclick="snapAndSolve()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[11px] font-bold text-slate-700 transition cursor-pointer whitespace-nowrap">📷 Photo से पूछो</button>
-                    <button onclick="recordVoice()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[11px] font-bold text-slate-700 transition cursor-pointer whitespace-nowrap">🎤 आवाज़ से</button>
-                    <button onclick="generateTopicNotes()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[11px] font-bold text-slate-700 transition cursor-pointer whitespace-nowrap">📝 हैंडरिटेन नोट्स</button>
-                    <button onclick="generateHandwrittenSolution()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[11px] font-bold text-slate-700 transition cursor-pointer whitespace-nowrap">✍️ हैंडरिटेन सॉल्यूशन</button>
+                    <button onclick="generateHandwrittenSolution()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 rounded-full text-[11px] font-bold text-slate-700 transition cursor-pointer whitespace-nowrap">📝 हैंडरिटेन नोट्स</button>
                 </div>
 
                 <!-- Features link banner -->
@@ -3585,7 +3582,7 @@
             <textarea id="notesText" placeholder="यहाँ एआई का जवाब या अपना सवाल लिखें..."></textarea>
 
             <div class="flex flex-wrap items-center justify-center gap-3 text-xs font-bold">
-                <label class="flex items-center gap-1.5 text-slate-700"><input type="checkbox" id="naturalTilt" checked> नेचुरल हाथ जैसा टिल्ट</label>
+                <label class="flex items-center gap-1.5 text-slate-700"><input type="checkbox" id="naturalTilt"> नेचुरल हाथ जैसा टिल्ट</label>
                 <button onclick="generateNotes()" class="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl transition cursor-pointer">हैंडरिटेन नोट बनाएं</button>
                 <button id="downloadBtn" onclick="downloadNotes()" class="px-4 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition cursor-pointer">नोट्स डाउनलोड करें (PNG)</button>
                 <button id="downloadPdfBtn" onclick="downloadNotesPDF()" class="px-4 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl transition cursor-pointer">📄 PDF में डाउनलोड करें</button>
@@ -5399,7 +5396,7 @@
         const NOTES_LINE_HEIGHT = 40;
         const NOTES_BOTTOM_PADDING = 40;
         const NOTES_FONT_SIZE = 28;
-        const NOTES_FONT = `${NOTES_FONT_SIZE}px "Kalam", cursive`;
+        const NOTES_FONT = `${NOTES_FONT_SIZE}px "Patrick Hand","Kalam",cursive`;
 
         async function openNotesModal(prefillText) {
             document.getElementById('notes-modal').classList.remove('hidden');
@@ -5466,6 +5463,8 @@
         function cleanNotesText(raw) {
             if (!raw) return '';
             let t = String(raw)
+                .replace(/<svg[\s\S]*?<\/svg>/gi, ' [diagram] ')   // FIX: raw SVG code notes se hatao
+                .replace(/<\/?[a-zA-Z][^>]{0,120}>/g, '')
                 .replace(/\r\n?/g, '\n')
                 .replace(/[\u200B\u200C\u200D\uFEFF\u00AD]/g, '');
 
@@ -5553,11 +5552,35 @@
             return lines;
         }
 
+        function eduvaSvgToImg(svg) {
+            return new Promise(function (res) {
+                try {
+                    let s = String(svg);
+                    const vb = s.match(/viewBox="([^"]+)"/);
+                    let w = 320, hg = 220;
+                    if (vb) { const p = vb[1].trim().split(/[\s,]+/); if (p.length === 4) { w = +p[2] || 320; hg = +p[3] || 220; } }
+                    if (!/width\s*=/.test(s)) s = s.replace(/<svg/i, '<svg width="' + w + '" height="' + hg + '"');
+                    if (!/xmlns/.test(s)) s = s.replace(/<svg/i, '<svg xmlns="http://www.w3.org/2000/svg"');
+                    const url = URL.createObjectURL(new Blob([s], { type: 'image/svg+xml;charset=utf-8' }));
+                    const img = new Image();
+                    img.onload = function () { URL.revokeObjectURL(url); res(img); };
+                    img.onerror = function () { URL.revokeObjectURL(url); res(null); };
+                    img.src = url;
+                } catch (e) { res(null); }
+            });
+        }
+
         function generateNotes() {
+            const rawVal = document.getElementById('notesText').value;
+            const __svgBlocks = [];
+            const __withPh = String(rawVal).replace(/<svg[\s\S]*?<\/svg>/gi, function (m) { __svgBlocks.push(m); return '\n\u00A7\u00A7SVG' + (__svgBlocks.length - 1) + '\u00A7\u00A7\n'; });
+            Promise.all(__svgBlocks.map(eduvaSvgToImg)).then(function (__imgs) { eduvaRenderNotes(__imgs, __withPh); });
+        }
+        function eduvaRenderNotes(svgImgs, preText) {
             const canvas = document.getElementById('notesCanvas');
             const ctx = canvas.getContext('2d');
             const textarea = document.getElementById('notesText');
-            const text = cleanNotesText(textarea.value);
+            const text = cleanNotesText(preText);
             textarea.value = text;
             const naturalTilt = document.getElementById('naturalTilt').checked;
             const W = NOTES_CANVAS_WIDTH;
@@ -5585,10 +5608,14 @@
             }
             const figureRequested = /diagram|figure|चित्र|आकृति|triangle|त्रिभुज|circle|वृत्त|square|वर्ग|rectangle|आयत/i.test(text) && /\d+\s*(cm|mm|metre|meter|मीटर|सेमी|सेंटी)/i.test(text);
             ctx.font = NOTES_FONT;
-            const qLines = wrapNotesText(ctx, questionLines.join('\n'), maxW);
-            const sLines = wrapNotesText(ctx, solutionLines.join('\n'), maxW);
-            const stepGap = 14;
-            const FIG_H = figureRequested ? 380 : 0;
+            const stepGap = 8;
+            const realSvgs = (svgImgs || []).filter(Boolean);
+            let diagStackH = 0;
+            realSvgs.forEach(function (im) { let ih2 = 360 * (im.height / im.width); if (ih2 > 320) { ih2 = 320; } diagStackH += ih2 + 24; });
+            const textColW = realSvgs.length ? (maxW - 390) : maxW;
+            const qLines = wrapNotesText(ctx, questionLines.join('\n'), textColW);
+            const sLines = wrapNotesText(ctx, solutionLines.join('\n'), textColW);
+            const FIG_H = realSvgs.length ? Math.max(0, diagStackH - sLines.length * (NOTES_LINE_HEIGHT + stepGap)) : (figureRequested ? 380 : 0);
             let height = 150 + 60 + qLines.length * NOTES_LINE_HEIGHT + 60
                 + 50 + sLines.length * (NOTES_LINE_HEIGHT + stepGap)
                 + (figureRequested ? 40 + FIG_H : 0) + 60 + 70 + 60 + 150;
@@ -5597,21 +5624,32 @@
             drawNotesRuledLines(ctx, canvas);
             ctx.fillStyle = INK;
             let y = 150;
+            function drawInlineDiagram(l, x, yPos) {
+                const ph = String(l).match(/\u00A7\u00A7SVG(\d+)\u00A7\u00A7/);
+                if (!ph || !svgImgs || !svgImgs[+ph[1]]) return 0;
+                const im = svgImgs[+ph[1]];
+                let iw = Math.min(maxW - 40, 340);
+                let ih = iw * (im.height / im.width);
+                if (ih > 280) { ih = 280; iw = ih * (im.width / im.height); }
+                ctx.drawImage(im, x + 20, yPos - 16, iw, ih);
+                return ih + 26;
+            }
             function writeLine(str, x, y, bold) {
                 ctx.save();
                 ctx.font = bold ? 'bold ' + NOTES_FONT : NOTES_FONT;
                 ctx.fillStyle = INK;
                 if (naturalTilt) {
-                    const angle = (Math.random() * 1.6 - 0.8) * (Math.PI / 180);
-                    ctx.translate(x, y + Math.random() * 3 - 1.5);
+                    const angle = (Math.random() * 0.7 - 0.35) * (Math.PI / 180);
+                    ctx.translate(x, y + Math.random() * 1.2 - 0.6);
                     ctx.rotate(angle);
-                    ctx.fillText(str, Math.random() * 2, 0);
+                    ctx.fillText(str, Math.random() * 0.7, 0);
                 } else { ctx.fillText(str, x, y); }
                 ctx.restore();
             }
             // Topic-notes mode: lambey detailed notes flowing document ki tarah render karo
             if (text.length > 500 || /Topic:|📌 |📖 /.test(text)) {
                 wrapNotesText(ctx, text, maxW).forEach(function (l) {
+                    { var dH = drawInlineDiagram(l, M, y); if (dH) { y += dH; return; } }
                     var isHead = (l.length < 70 && /:$/.test(l)) || /^📌|^📖|^🔑|^💡|^⚠|^✍|^Q\.|^Solution|^उत्तर/.test(l);
                     writeLine(l, M + (isHead ? 0 : 14), y, isHead);
                     y += NOTES_LINE_HEIGHT + (isHead ? 8 : 3);
@@ -5621,51 +5659,40 @@
                 drawNotesWatermark(ctx, canvas);
                 return;
             }
-            writeLine('EDUVA Notes — Kota Smart Hub', M, 78, true);
-            writeLine('Subject: ______________     Date: ______________', M, 114, false);
-            ctx.strokeStyle = 'rgba(30,58,138,0.4)'; ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(M, 132); ctx.lineTo(W - 60, 132); ctx.stroke();
-            y = 172;
-            writeLine('प्रश्न (Question):', M, y, true);
-            y += NOTES_LINE_HEIGHT;
-            const qBoxH = qLines.length * NOTES_LINE_HEIGHT + 26;
-            ctx.strokeStyle = 'rgba(30,58,138,0.55)'; ctx.lineWidth = 2.5;
-            ctx.strokeRect(M - 14, y - 28, maxW + 28, qBoxH);
-            qLines.forEach(l => { writeLine(l, M, y, false); y += NOTES_LINE_HEIGHT; });
-            y += 44;
-            writeLine('हल (Solution):', M, y, true);
-            y += NOTES_LINE_HEIGHT + 10;
-            let stepNo = 1;
+            writeLine('Solution:', M, 92, true);
+            ctx.strokeStyle = 'rgba(30,58,138,0.75)'; ctx.lineWidth = 2.5;
+            { const hw = ctx.measureText('Solution:').width; ctx.beginPath(); ctx.moveTo(M, 100); ctx.lineTo(M + hw + 6, 100); ctx.stroke(); }
+            y = 92 + NOTES_LINE_HEIGHT + 10;
+            // right-column floating diagrams (ChatGPT style)
+            let diagY = y + 4;
+            realSvgs.forEach(function (im) {
+                let iw = Math.min(370, 360);
+                let ih = iw * (im.height / im.width);
+                if (ih > 330) { ih = 330; iw = ih * (im.width / im.height); }
+                ctx.drawImage(im, M + textColW + 30, diagY, iw, ih);
+                diagY += ih + 26;
+            });
+            // question as plain text (no box — ChatGPT style)
+            if (questionLines.join(' ').trim().length > 2) {
+                qLines.forEach(l => { const dH = drawInlineDiagram(l, M, y); if (dH) { y += dH; } else { writeLine(l, M, y, false); y += NOTES_LINE_HEIGHT - 6; } });
+                y += 6;
+            }
+            // solution body — flowing text, no forced numbering
             sLines.forEach(l => {
                 const t = l.trim();
-                const alreadyNumbered = /^\(?\d+\)|^\d+\.|^step\s*\d/i.test(t);
-                const prefix = alreadyNumbered ? '' : '(' + stepNo + ') ';
-                if (!alreadyNumbered) stepNo++;
-                writeLine(prefix + t, M + 12, y, false);
+                const dH = drawInlineDiagram(t, M, y);
+                if (dH) { y += dH; return; }
+                writeLine(t, M, y, false);
                 y += NOTES_LINE_HEIGHT + stepGap;
             });
-            y += 16;
-            if (figureRequested) {
-                writeLine('चित्र (Figure):', M, y, true);
-                y += 34;
-                drawSmartFigure(ctx, M + 60, y, maxW - 120, FIG_H - 50, questionLines.join(' ') + ' ' + solutionLines.join(' '));
-                y += FIG_H;
-            }
-            const ansMatch = text.match(/(hence|therefore|thus|अतः|इसलिए|इस प्रकार)[^.\n]*[.\n]?/i);
-            y += 24;
-            ctx.strokeStyle = 'rgba(30,58,138,0.55)'; ctx.lineWidth = 2.5;
-            ctx.strokeRect(M - 14, y - 30, maxW + 28, 64);
-            writeLine('उत्तर (Answer): ' + (ansMatch ? ansMatch[0].replace(/\n/g, ' ').slice(0, 90) : '✔ पूरी तरह सत्यापित (Verified by Edu Sir)'), M, y + 10, true);
-            y += 100;
-            writeLine('स्वयं अभ्यास करो:', M, y, true);
-            y += NOTES_LINE_HEIGHT;
-            ctx.strokeStyle = 'rgba(30,58,138,0.35)'; ctx.lineWidth = 1.5;
-            for (let i = 0; i < 2; i++) {
-                ctx.beginPath(); ctx.moveTo(M, y - 6); ctx.lineTo(W - 60, y - 6); ctx.stroke();
-                y += NOTES_LINE_HEIGHT;
-            }
-            y += 30;
-            writeLine('— Edu Sir', W - 250, y, true);
+            y += 20;
+            // boxed final answer
+            const ansMatch = text.match(/(hence|therefore|thus|अतः|इसलिए|इस प्रकार)[^\n]*[.\n]?/i);
+            ctx.strokeStyle = 'rgba(30,58,138,0.6)'; ctx.lineWidth = 2.5;
+            ctx.strokeRect(M - 12, y - 28, maxW + 24, 60);
+            writeLine('Answer: ' + (ansMatch ? ansMatch[0].replace(/\n/g, ' ').replace(/^[.,\s]+/, '').slice(0, 80) : '\u2714 Verified by Edu Sir'), M, y + 8, true);
+            y += 92;
+            writeLine('\u2014 Edu Sir', W - 260, y, true);
             drawNotesWatermark(ctx, canvas);
         }
 
