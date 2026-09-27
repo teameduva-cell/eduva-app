@@ -1,0 +1,453 @@
+    .hidden{display:none!important}
+    .block{display:block}.inline-block{display:inline-block}.inline{display:inline}
+    .flex{display:flex}.inline-flex{display:inline-flex}.grid{display:grid}
+    .w-full{width:100%}.h-full{height:100%}
+    .fixed{position:fixed}.absolute{position:absolute}.relative{position:relative}.sticky,.sticky-top{position:sticky}
+    .overflow-hidden{overflow:hidden}.overflow-y-auto{overflow-y:auto}.overflow-x-auto{overflow-x:auto}
+    .text-center{text-align:center}.text-left{text-align:left}.text-right{text-align:right}
+    .items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:space-between}
+    
+        /* ===== CLEAN UI POLISH (spacing/shadow consistency — features untouched) ===== */
+        .card-clean, [class*="rounded-3xl"] { box-shadow: 0 1px 3px rgba(15,23,42,.05); }
+        button, a { -webkit-tap-highlight-color: transparent; }
+        section[id^="view-"] { scroll-behavior: smooth; }
+        h1, h2, h3 { letter-spacing: -0.01em; }
+        input, textarea, select { transition: border-color .15s ease; }
+        ::placeholder { color: #94a3b8; opacity: .8; }
+        
+
+/* ================= */
+
+        * { font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; box-sizing: border-box; }
+        .mono-font { font-family: 'JetBrains Mono', monospace; }
+
+        /* DLP & Content Security: No download, no screenshot assistance, no text copying */
+        .secure-content {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .bg-paper { background-color: #f7f8fc; }
+        .card-clean {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.05);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        .card-clean:hover {
+            border-color: #BFDBFE;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 32px -8px rgba(37, 99, 235, 0.14), 0 8px 12px -6px rgba(15, 23, 42, 0.06);
+        }
+
+        /* Gradient text — headings ke liye premium look */
+        .gradient-text {
+            background: linear-gradient(135deg, #2563EB 0%, #7C3AED 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* ===== Dark Mode (Neon Night-Study Theme) ===== */
+        body.dark-mode { background-color: #05070D; color: #E2E8F0; }
+        body.dark-mode .bg-paper { background-color: #05070D; }
+        body.dark-mode .bg-white,
+        body.dark-mode .card-clean,
+        body.dark-mode .bg-slate-50 { background-color: #0F1420 !important; }
+        body.dark-mode .border-slate-200,
+        body.dark-mode .border-slate-100,
+        body.dark-mode .card-clean { border-color: #1E2536 !important; }
+        body.dark-mode .text-slate-900 { color: #F1F5F9 !important; }
+        body.dark-mode .text-slate-800,
+        body.dark-mode .text-slate-700 { color: #CBD5E1 !important; }
+        body.dark-mode .text-slate-600,
+        body.dark-mode .text-slate-500 { color: #94A3B8 !important; }
+        body.dark-mode .text-slate-400 { color: #64748B !important; }
+
+        /* Neon glow on hover — cards हल्के amber-gold से चमकेंगे */
+        body.dark-mode .card-clean {
+            box-shadow: 0 0 0 rgba(251, 191, 36, 0);
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+        body.dark-mode .card-clean:hover {
+            border-color: #F59E0B !important;
+            box-shadow: 0 0 24px -4px rgba(251, 191, 36, 0.25), 0 16px 32px -8px rgba(0,0,0,0.5) !important;
+        }
+
+        body.dark-mode input,
+        body.dark-mode textarea,
+        body.dark-mode select { background-color: #131A2A !important; color: #E2E8F0 !important; border-color: #2A3448 !important; }
+        body.dark-mode input:focus,
+        body.dark-mode textarea:focus { border-color: #F59E0B !important; box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.15); }
+
+        /* Primary बटनों पर हल्की neon glow */
+        body.dark-mode .ink-navy { background-color: #1E293B; box-shadow: 0 0 16px -4px rgba(59, 130, 246, 0.3); }
+        body.dark-mode button.ink-navy:hover, body.dark-mode a.ink-navy:hover {
+            box-shadow: 0 0 24px -2px rgba(59, 130, 246, 0.5);
+        }
+
+        /* Header/Hero — पहले से ही dark gradient है, बस थोड़ा neon border चाहिए */
+        body.dark-mode .header-custom { box-shadow: 0 2px 20px rgba(245, 158, 11, 0.08); }
+
+        body.dark-mode #dark-mode-toggle-btn i { color: #FCD34D; filter: drop-shadow(0 0 4px rgba(252, 211, 77, 0.6)); }
+
+        .ink-navy { background-color: #0F172A; color: #F8FAFC; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        button.ink-navy:hover, a.ink-navy:hover { transform: scale(1.03); box-shadow: 0 8px 20px -6px rgba(15, 23, 42, 0.4); }
+        button.ink-navy:active, a.ink-navy:active { transform: scale(0.97); }
+        .marigold-gradient { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+
+        /* New Premium Logo Design */
+        .logo-brand-box {
+            background: linear-gradient(135deg, #2563EB 0%, #4F46E5 50%, #7C3AED 100%);
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .header-custom {
+            height: 72px;
+            background: linear-gradient(135deg, #0F172A, #1E293B, #2563EB);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 22px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 5px 20px rgba(20, 30, 120, .18);
+        }
+
+        .hero-custom {
+            border-radius: 26px;
+            overflow: hidden;
+            background: radial-gradient(circle at 80% 20%, rgba(116,88,255,.45), transparent 35%), linear-gradient(135deg, #11176f, #2528ad, #4b2ae5);
+            color: white;
+            min-height: 350px;
+            padding: 30px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(36,52,216,.22);
+        }
+
+        /* ===== PREMIUM POLISH: gold accent system (Kota-elite feel) ===== */
+        :root {
+            --gold: #C9A227;
+            --gold-light: #F2D98A;
+            --gold-deep: #8A6C10;
+        }
+
+        .header-custom {
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, transparent, var(--gold-light), var(--gold), var(--gold-light), transparent) 1;
+        }
+
+        .hero-custom::before {
+            content: "";
+            position: absolute; inset: 0;
+            background: repeating-linear-gradient(115deg, rgba(201,162,39,0.12) 0px, rgba(201,162,39,0.12) 60px, transparent 60px, transparent 240px);
+            animation: heroSheen 8s linear infinite;
+            pointer-events: none;
+        }
+        .hero-custom::after {
+            content: "";
+            position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold-light), transparent);
+            opacity: 0.7;
+        }
+
+        .logo-brand-box { position: relative; }
+        .logo-brand-box::after {
+            content: "";
+            position: absolute; inset: -2px;
+            border-radius: inherit;
+            border: 1px solid var(--gold-light);
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Premium gold badge with subtle shine sweep */
+        .premium-badge {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 45%, var(--gold-light) 100%);
+            color: #241a02;
+            box-shadow: 0 3px 10px -2px rgba(201,162,39,0.55);
+            border: 1px solid rgba(255,255,255,0.35);
+        }
+        .premium-badge::after {
+            content: "";
+            position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255,255,255,0.65), transparent);
+            transform: skewX(-20deg);
+            animation: premiumShine 3.2s ease-in-out infinite;
+        }
+        @keyframes premiumShine {
+            0% { left: -60%; }
+            45% { left: 130%; }
+            100% { left: 130%; }
+        }
+
+        /* Refined primary button: subtle inner top highlight = premium depth */
+        .ink-navy {
+            background-color: #0F172A;
+            background-image: linear-gradient(180deg, rgba(255,255,255,0.08), transparent 40%);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 10px 20px -8px rgba(15,23,42,0.5);
+        }
+
+        /* Premium heading treatment for hero title */
+        .premium-heading {
+            letter-spacing: -0.02em;
+            text-shadow: 0 2px 18px rgba(0,0,0,0.25);
+        }
+        /* ===== END PREMIUM POLISH ===== */
+
+        @keyframes heroSheen { from { background-position: 0 0; } to { background-position: 240px 0; } }
+        @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+        /* ===== ULTRA PREMIUM POLISH (2026) ===== */
+        .logo-brand-box {
+            background: linear-gradient(135deg, #2563EB, #4F46E5, #7C3AED, #2563EB);
+            background-size: 300% 300%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        /* Premium gradient ring on card hover */
+        .card-clean { position: relative; }
+        .card-clean::before {
+            content: ""; position: absolute; inset: 0; border-radius: inherit; padding: 1.5px;
+            background: linear-gradient(135deg, rgba(37,99,235,.45), rgba(124,58,237,.45), rgba(245,158,11,.45));
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor; mask-composite: exclude;
+            opacity: 0; transition: opacity .3s ease; pointer-events: none;
+        }
+        .card-clean:hover::before { opacity: 1; }
+
+        /* Premium scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #2563EB, #7C3AED); border-radius: 8px; }
+        body.dark-mode ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #F59E0B, #7C3AED); }
+
+        /* ===== AI Material Watermark (DLP protection) ===== */
+        .watermark-layer { position: absolute; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+        .watermark-inner { position: absolute; top: -60%; left: -60%; width: 220%; height: 220%; transform: rotate(-30deg); display: flex; flex-wrap: wrap; align-content: space-around; justify-content: space-around; opacity: 0.09; }
+        .watermark-item { font-weight: 900; font-size: 15px; letter-spacing: 2px; color: #1e3a8a; white-space: nowrap; padding: 30px 24px; }
+        body.dark-mode .watermark-item { color: #93c5fd; }
+        body.dark-mode #material-content { color: #E2E8F0 !important; }
+        /* ===== UX Polish: typing dots + confetti ===== */
+        @keyframes eduvaDots { 0%,80%,100% { opacity:.25; transform:translateY(0); } 40% { opacity:1; transform:translateY(-4px); } }
+        .eduva-typing { display:inline-flex; align-items:center; margin-right:6px; }
+        .eduva-typing i { display:inline-block; width:8px; height:8px; border-radius:50%; background:#2563EB; margin:0 2px; animation:eduvaDots 1.2s infinite; }
+        .eduva-typing i:nth-child(2) { animation-delay:.15s; }
+        .eduva-typing i:nth-child(3) { animation-delay:.3s; }
+        #confetti-canvas { position:fixed; inset:0; z-index:9999; pointer-events:none; }
+
+        /* ===== ⚡ EDUVA LITE MODE (slow net/purane phone ke liye) ===== */
+        body.lite-mode * { animation-duration: 0.001s !important; transition-duration: 0.001s !important; }
+        body.lite-mode .hero-custom::before { display: none; }
+        body.lite-mode .card-clean::before { display: none; }
+        body.lite-mode .logo-brand-box { animation: none; }
+        body.lite-mode #spin-canvas { display: none; }
+        body.lite-mode .premium-badge::after { display: none; }
+        /* Heavy features — HAR jagah se hide (sidebar, More menu, home grid, kahin bhi) */
+        body.lite-mode [onclick*="switchTab('battle')"],
+        body.lite-mode [onclick*="switchTab('predictor')"],
+        body.lite-mode [onclick*="switchTab('viva')"],
+        body.lite-mode [onclick*="switchTab('avatar-lectures')"],
+        body.lite-mode [onclick*="switchTab('classroom')"],
+        body.lite-mode [onclick*="switchTab('avatar-lectures')"],
+        body.lite-mode [onclick*="switchTab('story')"],
+        body.lite-mode [onclick*="switchTab('spin')"],
+        body.lite-mode [onclick*="switchTab('tree')"],
+        body.lite-mode [onclick*="switchTab('wrapped')"],
+        body.lite-mode [onclick*="switchTab('hunt')"],
+        body.lite-mode [onclick*="switchTab('courses')"] { display: none !important; }
+
+        /* ===== END ULTRA PREMIUM POLISH ===== */
+
+        /* ===== Mobile Comfort: bada aur saaf text ===== */
+        html { font-size: 17px; }
+        .chat-bubble { font-size: 17.5px !important; line-height: 1.85 !important; }
+        #chat-input, #community-new-doubt, textarea { font-size: 15.5px !important; }
+        @media (max-width: 640px) {
+            .chat-bubble { font-size: 16.5px !important; }
+        }
+
+        /* ===== Scroll Safety v3 — FINAL =====
+           v2 में overflow-x: clip लगाया था — पर कुछ phones (MIUI/Xiaomi/OPPO) के
+           browsers में clip buggy है और page के LAST तक scroll नहीं हो पाता!
+           FINAL RULE: body/html पर कोई overflow property NAHI — scroll hamesha
+           viewport से हो, kabhi block nahi hoga। */
+        #chat-messages, #header-more-menu, .notes-canvas-wrap {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* ===== IMMERSIVE FULLSCREEN DOUBT/CHAT (mobile only) ===== */
+        @media (max-width: 1023px) {
+            body.chat-immersive #app-header,
+            body.chat-immersive #mobile-bottom-nav { display: none !important; }
+
+            body.chat-immersive #app-main-wrapper {
+                padding: 0 !important;
+                max-width: 100% !important;
+            }
+
+            body.chat-immersive #view-chat {
+                height: 100vh !important;
+                border-radius: 0 !important;
+                border: none !important;
+            }
+        }
+
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .chat-bubble { font-size: 15.5px !important; line-height: 1.8 !important; }
+        .chat-bubble p { margin-bottom: 0.75rem; }
+        .chat-bubble p:last-child { margin-bottom: 0; }
+        .chat-bubble pre { overflow-x: auto; background: #0f172a0d; border-radius: 12px; padding: 12px 14px; margin-bottom: 0.75rem; }
+        .chat-bubble pre code { font-size: 0.85em; line-height: 1.5; }
+        .chat-bubble ul, .chat-bubble ol { margin-left: 1.25rem; margin-bottom: 0.75rem; list-style-type: disc; }
+        .chat-bubble strong { color: #0F172A; font-weight: 800; }
+        .katex-display { margin: 0.75rem 0 !important; overflow-x: auto; overflow-y: hidden; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fadeIn { animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Clean Arrow-Only Back Button */
+        .eduva-back-btn {
+            display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; border-radius: 12px;
+            background: #fff; border: 1px solid #E2E8F0; color: #475569; font-size: 1.1rem; font-weight: 900;
+            box-shadow: 0 4px 14px -8px rgba(15, 23, 42, 0.35); cursor: pointer; transition: 0.18s ease;
+        }
+        .eduva-back-btn:hover { color: #2563EB; border-color: #BFDBFE; transform: translateX(-2px); }
+
+        /* ===== Handwritten Notes Generator (Modal) ===== */
+        #notes-modal textarea#notesText {
+            width: 100%;
+            height: 110px;
+            padding: 10px;
+            font-size: 14px;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            resize: vertical;
+        }
+        #notes-modal .notes-canvas-wrap {
+            max-width: 100%;
+            max-height: 55vh;
+            overflow: auto;
+            border-radius: 10px;
+            border: 1px solid #E2E8F0;
+        }
+        #notes-modal canvas#notesCanvas {
+            max-width: 100%;
+            display: block;
+        }
+
+        /* ===== Edu Sir Blackboard Teaching Scene ===== */
+        .blackboard-scene {
+            background: linear-gradient(160deg, #0f3d24 0%, #1a5c37 60%, #0f3d24 100%);
+            border: 10px solid #6b4226;
+            border-radius: 14px;
+            box-shadow: inset 0 0 50px rgba(0,0,0,0.45), 0 12px 28px rgba(0,0,0,0.35);
+            position: relative;
+        }
+        .blackboard-scene::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 6px;
+            background: repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 26px);
+            pointer-events: none;
+        }
+        .chalk-text {
+            font-family: 'Kalam', cursive;
+            color: #f5f5f0;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        /* ===== ChatGPT-style premium chat ===== */
+        #view-chat { background: #ffffff; border: none !important; box-shadow: 0 4px 24px -8px rgba(15,23,42,.08) !important; }
+        body.dark-mode #view-chat { background: #171717; }
+        .chat-bubble-gpt { border: none !important; box-shadow: none !important; }
+        #chat-messages > div { max-width: 100% !important; }
+        #chat-messages .bg-white.border-slate-200,
+        #chat-messages [class*="rounded-3xl rounded-tl-sm"] { background: #f4f4f5 !important; border: none !important; border-radius: 16px !important; border-top-left-radius: 4px !important; box-shadow: none !important; }
+        body.dark-mode #chat-messages .bg-white { background: #2a2a2c !important; }
+        #chat-messages .ink-navy.text-white.p-4,
+        #chat-messages .ink-navy.rounded-3xl { border-radius: 16px !important; border-bottom-right-radius: 4px !important; }
+        body.dark-mode #chat-messages .ink-navy { background: #0d0d0f !important; }
+        #chat-messages .shadow-xs { box-shadow: none !important; }
+        #view-chat input, #view-chat textarea { font-size: 15px !important; }
+        #view-chat > div:first-child {
+            position: sticky; top: 0; z-index: 30;
+            background: rgba(255,255,255,0.94);
+            backdrop-filter: blur(8px);
+            padding-bottom: 10px;
+        }
+        body.dark-mode #view-chat > div:first-child { background: rgba(15,20,32,0.94); }
+        .chalk-title {
+            font-family: 'Kalam', cursive;
+            color: #ffe9a8;
+        }
+        .edu-sir-avatar {
+            font-size: 3.25rem;
+            filter: drop-shadow(0 6px 8px rgba(0,0,0,0.45));
+        }
+        .duster-tray {
+            background: #6b4226;
+            height: 10px;
+            border-radius: 3px;
+            box-shadow: 0 3px 4px rgba(0,0,0,0.3);
+        }
+
+        /* ===== EDUVA PROFESSIONAL POLISH (static, JS-free) ===== */
+        #view-home { display: flex; flex-direction: column; gap: 14px; }
+        #view-home > * { margin-bottom: 0 !important; }
+        #view-home .card-clean, #view-home > button { border-radius: 20px !important; }
+        #view-home > button { box-shadow: 0 6px 18px rgba(15,23,42,.08) !important; }
+        #view-home .card-clean { box-shadow: 0 4px 14px rgba(15,23,42,.05) !important; }
+        #view-home .grid { gap: 10px !important; }
+        #view-home .grid.grid-cols-2.sm\:grid-cols-4 .p-4 { padding: 12px 8px !important; }
+        #view-home h3 { letter-spacing: -.01em; }
+        #view-chat .min-w-0 > p { white-space: nowrap !important; }
+        #view-chat .min-w-0 > p:first-child { font-size: 12px !important; }
+        @media (max-width: 640px) {
+            .hero-custom h1 { font-size: 26px !important; }
+            .hero-custom { min-height: 0 !important; padding: 22px !important; }
+        }
+
+        html { scroll-behavior: auto !important; }
+        /* ===== DARK MODE POLISH ===== */
+        body.dark-mode .hero-custom {
+            background: radial-gradient(circle at 80% 20%, rgba(139,92,246,.4), transparent 40%), linear-gradient(135deg,#1e1b4b,#312e81,#1e40af) !important;
+            border: 1px solid #4338ca;
+        }
+        body.dark-mode .hero-custom .bg-white,
+        body.dark-mode .hero-custom button.bg-white { background:#F8FAFC !important; color:#1e3a8a !important; }
+        body.dark-mode .hero-custom .text-white { color:#F8FAFC !important; }
+        body.dark-mode .gradient-text { background:linear-gradient(135deg,#60A5FA,#A78BFA); -webkit-background-clip:text; background-clip:text; }
+        body.dark-mode #nzd-card { background:#0F1420 !important; border-color:#b45309 !important; }
+        body.dark-mode #nzd-card p { color:#E2E8F0 !important; }
+        body.dark-mode #view-home .bg-amber-50, body.dark-mode #view-home .bg-blue-50,
+        body.dark-mode #view-home .bg-purple-50, body.dark-mode #view-home .bg-emerald-50,
+        body.dark-mode #view-home .bg-rose-50, body.dark-mode #view-home .bg-indigo-50,
+        body.dark-mode #view-home .bg-fuchsia-50, body.dark-mode #view-home .bg-cyan-50,
+        body.dark-mode #view-home .bg-teal-50, body.dark-mode #view-home .bg-sky-50,
+        body.dark-mode #view-home .bg-orange-50, body.dark-mode #view-home .bg-pink-50,
+        body.dark-mode #view-home .bg-violet-50, body.dark-mode #view-home .bg-green-50,
+        body.dark-mode #view-home .bg-yellow-50, body.dark-mode #view-home .bg-red-50 { background-color:#1A2233 !important; }
+        body.dark-mode #view-home .mono-font { color:#94A3B8; }
+        body.dark-mode #chat-tools-toggle { background:#1A2233 !important; color:#CBD5E1 !important; border-color:#2A3448 !important; }
+        body.dark-mode #chat-tools-body button { background:#0F1420 !important; color:#E2E8F0 !important; border-color:#2A3448 !important; }
+        body.dark-mode .eduva-back-btn { background:#0F1420 !important; color:#CBD5E1 !important; border-color:#2A3448 !important; }
+        /* ===== END DARK POLISH ===== */
+    
