@@ -47,7 +47,7 @@
                 if (req.type === 'solution') {
                     prompt = persona + langLine + 'Edu Sir, नीचे दिए सवाल का पूरा solution एक school copy की तरह सुंदर ढंग से लिखो। सख्त format:\n\nQ. ' + req.q + '\nGiven : <दी गई जानकारी>\nFind : <क्या निकालना है>\nSolution :\n<step-by-step, हर step (1) (2) (3) numbering से, नई line पर>\nHence, <अंतिम उत्तर> ✅\n\nनियम: LaTeX ($...$, \\frac) बिल्कुल मत use करो — सादा text (a^2, x/2, √5)। Format सख्ती से ऐसा रखो: सीधे Solution : से शुरू करो — Q./Given:/Find: sections बिल्कुल मत लिखो। फिर flowing explanation — 2-4 line के natural paragraphs, जैसे कोई होनहार student अपनी copy में लिखता है; (1)(2)(3) जैसी numbering मत करो। ज़रूरी values अलग lines पर लिखो, जैसे — Vertical side = x (bracket में reason)। Working में हर equation अलग line पर, fractions साफ़ inline (जैसे x = L/√2)। आखिर में सिर्फ एक line — Hence, <कथन> | <अंतिम उत्तर>। अगर सवाल में कोई आकृति/shape बनता है, तो solution के बीच में अलग line पर एक छोटा SVG diagram भी दो — सादा 2D line drawing, stroke #1e3a8a, stroke-width 3, fill none, viewBox 0 0 400 300, ज़रूरी labels <text> में। कभी भी [diagram] जैसा text placeholder मत लिखो।';
                 } else {
-                    prompt = persona + langLine + 'Edu Sir, नीचे दिए TOPIC पर बहुत DETAILED exam-ready NOTES बनाओ, सादा text — LaTeX बिल्कुल मत। Rule: छोटे bullet-fragments बिल्कुल मत लिखो — पूर्ण वाक्यों में, विस्तार से, कम से कम 350-500 शब्द। Format:\n\n📌 Topic: <topic का नाम>\n📖 Detailed Explanation: <2-3 पूरे paragraphs — हर paragraph 3-4 lines, आसान भाषा, रोज़मर्रा के examples के साथ>\n🔑 Important Formulas / Points: <complete list, सादे text में>\n💡 Solved Example: <step-by-step, पूरा>\n⚠️ Common Mistakes: <2-3, explain करके>\n\nTOPIC (सवाल से): ' + req.q;
+                    prompt = persona + langLine + 'Edu Sir, नीचे दिए TOPIC पर बहुत DETAILED exam-ready NOTES बनाओ, सादा text — LaTeX बिल्कुल मत। Rule: छोटे bullet-fragments बिल्कुल मत लिखो — पूर्ण वाक्यों में, विस्तार से, कम से कम 350-500 शब्द। अगर topic में कोई आकृति/shape (जैसे त्रिभुज, वृत्त, कोण) important है, तो notes के बीच में अलग line पर एक छोटा SVG diagram भी दो — सादा 2D line drawing, stroke #1e3a8a, stroke-width 3, fill none, viewBox 0 0 400 300, labels <text> में। Format:\n\n📌 Topic: <topic का नाम>\n📖 Detailed Explanation: <2-3 पूरे paragraphs — हर paragraph 3-4 lines, आसान भाषा, रोज़मर्रा के examples के साथ>\n🔑 Important Formulas / Points: <complete list, सादे text में>\n💡 Solved Example: <step-by-step, पूरा>\n⚠️ Common Mistakes: <2-3, explain करके>\n\nTOPIC (सवाल से): ' + req.q;
                 }
                 const payload = { message: prompt };
                 if (req.photo) payload.image = req.photo;
@@ -116,6 +116,9 @@
 
         // टेक्स्ट को \n पर पैराग्राफ में तोड़ो, फिर हर पैराग्राफ को word-wrap करो
         function wrapNotesText(ctx, text, maxWidth) {
+            // ✅ pehle font set karo — warna default 10px font se measure hota hai aur lines overflow karti hain
+            ctx.save();
+            ctx.font = NOTES_FONT;
             const paragraphs = text.split('\n');
             const lines = [];
 
@@ -159,8 +162,8 @@
                 lines.push(line.trim());
             });
 
-            return lines;
-        }
+            ctx.restore();
+            return lines;}
 
         function eduvaSvgToImg(svg) {
             return new Promise(function (res) {
@@ -232,10 +235,11 @@
             if (textColW < 300) textColW = maxW; // narrow canvas — columns skip karo, diagram neeche
             const qLines = wrapNotesText(ctx, questionLines.join('\n'), textColW);
             const sLines = wrapNotesText(ctx, solutionLines.join('\n'), textColW);
+            const topicSvgH = realSvgs.length ? realSvgs.reduce(function (a, im) { let ih = 430 * (im.height / im.width); if (ih > 340) ih = 340; return a + ih + 28; }, 0) : 0;
             const FIG_H = realSvgs.length ? Math.max(0, diagStackH - sLines.length * (NOTES_LINE_HEIGHT + stepGap)) : (figureRequested ? 380 : 0);
             let height = 150 + 60 + qLines.length * NOTES_LINE_HEIGHT + 60
                 + 50 + sLines.length * (NOTES_LINE_HEIGHT + stepGap)
-                + (figureRequested ? 40 + FIG_H : 0) + 60 + 70 + 60 + 150;
+                + (figureRequested ? 40 + FIG_H : 0) + topicSvgH + 60 + 70 + 60 + 150;
             canvas.height = Math.max(1250, height);
             drawNotesPaperBackground(ctx, canvas);
             drawNotesRuledLines(ctx, canvas);
@@ -285,7 +289,14 @@
                     y += NOTES_LINE_HEIGHT + (isHead ? 8 : 3);
                 });
                 y += 34;
-                
+                // ✅ topic notes mein bhi SVG diagram (content ke neeche, full width)
+                realSvgs.forEach(function (im) {
+                    let iw = Math.min(430, maxW);
+                    let ih = iw * (im.height / im.width);
+                    if (ih > 340) { ih = 340; iw = ih * (im.width / im.height); }
+                    ctx.drawImage(im, M, y, iw, ih);
+                    y += ih + 28;
+                });
                 drawNotesWatermark(ctx, canvas);
                 return;
             }
@@ -513,7 +524,7 @@
         window.__notesReq = { type: 'notes', q: q };
         try {
             var persona = (typeof personaLine === 'function') ? personaLine() : '';
-            var prompt = persona + 'Edu Sir, नीचे दिए TOPIC पर बहुत DETAILED exam-ready NOTES बनाओ (हिंदी में, सादा text — LaTeX बिल्कुल मत)। Rule: छोटे bullet-fragments बिल्कुल मत लिखो — पूर्ण वाक्यों में, विस्तार से, कम से कम 350-500 शब्द। Format:\n\n📌 Topic: <topic का नाम>\n📖 Detailed Explanation: <2-3 पूरे paragraphs — हर paragraph 3-4 lines, आसान भाषा, रोज़मर्रा के examples के साथ>\n🔑 Important Formulas / Points: <complete list, सादे text में>\n💡 Solved Example: <step-by-step, पूरा>\n⚠️ Common Mistakes: <2-3, explain करके>\n\nTOPIC (सवाल से): ' + q;
+            var prompt = persona + 'Edu Sir, नीचे दिए TOPIC पर बहुत DETAILED exam-ready NOTES बनाओ (हिंदी में, सादा text — LaTeX बिल्कुल मत)। Rule: छोटे bullet-fragments बिल्कुल मत लिखो — पूर्ण वाक्यों में, विस्तार से, कम से कम 350-500 शब्द। अगर topic में कोई आकृति/shape (जैसे त्रिभुज, वृत्त, कोण) important है, तो notes के बीच में अलग line पर एक छोटा SVG diagram भी दो — सादा 2D line drawing, stroke #1e3a8a, stroke-width 3, fill none, viewBox 0 0 400 300, labels <text> में। Format:\n\n📌 Topic: <topic का नाम>\n📖 Detailed Explanation: <2-3 पूरे paragraphs — हर paragraph 3-4 lines, आसान भाषा, रोज़मर्रा के examples के साथ>\n🔑 Important Formulas / Points: <complete list, सादे text में>\n💡 Solved Example: <step-by-step, पूरा>\n⚠️ Common Mistakes: <2-3, explain करके>\n\nTOPIC (सवाल से): ' + q;
             var res = await fetch('/api/chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
