@@ -49,6 +49,8 @@
             + '<button onclick="window.__qbLoad()" id="qb-load" class="w-full py-3.5 rounded-2xl font-black text-sm text-white cursor-pointer transition ' + (topic ? 'bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600' : 'bg-slate-300 cursor-not-allowed') + '">'
             + (topic ? '🎯 Set ' + (setNo + 1) + ' lao — 10 Questions + Solutions' : '👆 Pehle ek topic select karo') + '</button>'
             + '<p id="qb-status" class="text-xs font-bold text-center min-h-[16px]"></p>'
+            + '<button onclick="window.__qbBank()" class="w-full py-2.5 rounded-2xl font-black text-xs bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer transition">🌐 Community Question Bank — sab bachon ke saved questions</button>'
+            + '<div id="qb-bank-view" class="space-y-2"></div>'
             + '<div id="qb-result" class="space-y-2"></div>'
             + '</div>';
     }
@@ -57,6 +59,88 @@
     window.__qbTopic = function (t) { topic = t; setNo = 0; clearRes(); renderBank(); };
     window.__qbLevel = function (l) { level = l; clearRes(); renderBank(); };
     function clearRes() { var r = $('qb-result'), st = $('qb-status'); if (r) r.innerHTML = ''; if (st) st.textContent = ''; }
+
+    function qbParseSet(reply) {
+        var solSplit = String(reply).split(/---\s*SOLUTIONS\s*---/i);
+        var qPart = solSplit[0] || '', sPart = solSplit[1] || '';
+        var sBlocks = {};
+        sPart.split(/(?=^Q\d+[.:])/m).forEach(function (b) {
+            var m = b.match(/^Q(\d+)/);
+            if (m) sBlocks[m[1]] = b.replace(/^Q\d+[.:]\s*/, '').trim();
+        });
+        return qPart.split(/(?=^Q\d+[.:])/m)
+            .filter(function (b) { return /^Q\d+/m.test(b); })
+            .map(function (b) { var m = b.match(/^Q(\d+)/); return { num: m[1], q: b.trim(), s: sBlocks[m[1]] || '' }; })
+            .filter(function (x) { return x.q.length > 20; });
+    }
+    function qbHash(t) {
+        var h = 5381;
+        t = String(t).toLowerCase().replace(/[^a-z0-9\u0900-\u097F]/g, '');
+        for (var i = 0; i < t.length; i++) h = ((h << 5) + h + t.charCodeAt(i)) >>> 0;
+        return 'q' + h.toString(36);
+    }
+    window.__qbDb = function () {
+        if (!window.EDUVA_FIREBASE_CONFIG) return null;
+        try {
+            if (!firebase.apps.length) firebase.initializeApp(window.EDUVA_FIREBASE_CONFIG);
+            if (!window.__fbDb) window.__fbDb = firebase.firestore();
+            return window.__fbDb;
+        } catch (e) { return null; }
+    };
+    // ✅ Save: dedup (hash) + shared Firestore bank (fallback: local bank)
+    function qbSaveShared(reply) {
+        var items = qbParseSet(reply);
+        if (!items.length) return Promise.resolve(null);
+        var seen = {};
+        try { seen = JSON.parse(localStorage.getItem('qb_seen') || '{}'); } catch (e) {}
+        var db = window.__qbDb();
+        var saved = 0, repeat = 0;
+        var chain = Promise.resolve();
+        items.forEach(function (it) {
+            chain = chain.then(function () {
+                var h = qbHash(it.q);
+                if (seen[h]) { repeat++; return; }
+                if (db) {
+                    return db.collection('qbank').doc(h).get().then(function (snap) {
+                        if (snap.exists) { repeat++; seen[h] = 1; return; }
+                        return db.collection('qbank').doc(h).set({
+                            q: it.q, a: it.s, cls: String(cls), subj: subj, topic: topic, level: level, ts: Date.now()
+                        }).then(function () { seen[h] = 1; saved++; });
+                    }).catch(function () { seen[h] = 1; saved++; });
+                }
+                try {
+                    var lb = JSON.parse(localStorage.getItem('qb_local_bank') || '[]');
+                    lb.push({ h: h, q: it.q, a: it.s, cls: String(cls), subj: subj, topic: topic, ts: Date.now() });
+                    localStorage.setItem('qb_local_bank', JSON.stringify(lb.slice(-500)));
+                } catch (e) {}
+                seen[h] = 1; saved++;
+            });
+        });
+        return chain.then(function () {
+            try { localStorage.setItem('qb_seen', JSON.stringify(seen)); } catch (e) {}
+            return { saved: saved, repeat: repeat };
+        });
+    }
+    // 🌐 Community bank viewer: is chapter ke sab saved questions
+    window.__qbBank = async function () {
+        var r = $('qb-bank-view'); if (!r) return;
+        var db = window.__qbDb();
+        if (!topic) { r.innerHTML = '<p class="text-xs font-bold text-slate-400">Pehle ek topic select karo 👆</p>'; return; }
+        if (!db) { r.innerHTML = '<p class="text-xs font-bold text-amber-600">⚙️ Shared bank ke liye Firebase config pending hai — tab tak questions is device pe locally save ho rahe hain 📱</p>'; return; }
+        r.innerHTML = '<p class="text-xs font-bold text-slate-500">⏳ Community bank load ho raha hai...</p>';
+        try {
+            var snap = await db.collection('qbank').where('topic', '==', topic).limit(50).get();
+            if (snap.empty) { r.innerHTML = '<p class="text-xs font-bold text-slate-400">Is chapter mein abhi koi saved question nahi — "Set lao" dabao, pehle save tum karo! 🚀</p>'; return; }
+            var docs = []; snap.forEach(function (d) { docs.push(d.data()); });
+            docs.sort(function (a, b) { return (b.ts || 0) - (a.ts || 0); });
+            r.innerHTML = '<p class="text-[10px] font-black text-emerald-700 uppercase tracking-wide">🌐 Community Bank — ' + docs.length + ' saved questions (' + topic + ')</p>'
+                + docs.map(function (d) {
+                    return '<div class="bg-white border border-slate-200 rounded-xl p-3"><p class="text-xs font-bold text-slate-800 whitespace-pre-wrap leading-relaxed">' + esc(d.q) + '</p>'
+                        + '<button onclick="this.nextElementSibling.classList.toggle(\'hidden\')" class="mt-1.5 text-[10px] font-black text-indigo-600 cursor-pointer">👀 Solution dekho</button>'
+                        + '<p class="hidden mt-1 text-[11px] font-semibold text-slate-600 whitespace-pre-wrap">' + esc(d.a || 'Solution: Edu Sir se pooch lo — handwritten solution maang sakte ho!') + '</p></div>';
+                }).join('');
+        } catch (e) { r.innerHTML = '<p class="text-xs font-bold text-rose-500">⚠️ ' + e.message + '</p>'; }
+    };
 
     window.__qbLoad = async function () {
         if (!topic || busy) return;
@@ -82,6 +166,10 @@
             var r = $('qb-result');
             if (r) r.innerHTML = '<div class="p-4 bg-white border border-slate-200 rounded-2xl text-sm text-slate-800 whitespace-pre-wrap leading-relaxed max-h-[55vh] overflow-y-auto hide-scrollbar">' + esc(reply) + '</div>'
                 + '<button onclick="window.__qbLoad()" class="w-full mt-2 py-3 rounded-2xl bg-slate-900 text-white font-black text-xs cursor-pointer">🔄 Agle 10 questions (Set ' + (setNo + 1) + ') — roz naye!</button>';
+            // 💾 Shared bank mein save (dedup ke saath) — UI block nahi karta
+            qbSaveShared(reply).then(function (sv) {
+                if (sv) { var stx = $('qb-status'); if (stx) stx.textContent = '✅ Set ' + setNo + ' ready! 💾 Bank mein naye: ' + sv.saved + ' • 🔁 repeat skip: ' + sv.repeat + ' • Total: ' + totalExplored().toLocaleString('en-IN'); }
+            });
             st.textContent = '✅ Set ' + setNo + ' ready! Total explored: ' + totalExplored().toLocaleString('en-IN');
             renderBank();
             var st2 = $('qb-status'); if (st2) st2.textContent = '✅ Set ' + setNo + ' ready!';
