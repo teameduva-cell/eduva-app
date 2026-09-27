@@ -11,7 +11,7 @@
         async function openNotesModal(prefillText) {
             document.getElementById('notes-modal').classList.remove('hidden');
             const textarea = document.getElementById('notesText');
-            if (prefillText) textarea.value = cleanNotesText(prefillText);
+            if (prefillText) textarea.value = cleanNotesTextKeepSvg(prefillText);
             try {
                 // font load hone ka intezaar, lekin 3 sec se zyada nahi (slow net par bhi modal khali na rahe)
                 await Promise.race([
@@ -70,6 +70,14 @@
 
         // Chat/KaTeX se copy kiya gaya text aksar toota-footaa hota hai (har akshar alag line par).
         // Isse saaf karke saaf-suthre paragraphs mein badalta hai taaki notes SAHI likhen.
+        // ✅ SVG bachake clean karo — solution/notes mein diagram render hone ke liye zaroori
+        function cleanNotesTextKeepSvg(raw) {
+            if (!raw) return '';
+            const __svgs = [];
+            const t = String(raw).replace(/<svg[\s\S]*?<\/svg>/gi, function (m) { __svgs.push(m); return ' \u00A7\u00A7SV' + (__svgs.length - 1) + '\u00A7\u00A7 '; });
+            return cleanNotesText(t).replace(/\u00A7\u00A7SV(\d+)\u00A7\u00A7/g, function (mm, i) { return __svgs[+i]; });
+        }
+
         function cleanNotesText(raw) {
             if (!raw) return '';
             let t = String(raw)
