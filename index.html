@@ -347,6 +347,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Kalam:wght@400;700&family=Patrick+Hand&display=swap" rel="stylesheet">
 
     
+<!-- 📊 Google Analytics (GA4) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-51MMG9S9F6"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-51MMG9S9F6');
+</script>
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
@@ -4519,5 +4527,13 @@ window.EDUVA_FIREBASE_CONFIG = {
     
     <!-- 🔒 EDUVA scroll manager v3 — sirf view-switch pe top, details pe kabhi nahi -->
     
+<script>
+/* PWA Service Worker — TWA/install ke liye zaroori */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+    });
+}
+</script>
 </body>
 </html>

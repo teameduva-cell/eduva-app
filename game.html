@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Golu-Bolu Quiz Battle — EDUVA</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; user-select:none; }
+body { font-family:'Segoe UI',system-ui,sans-serif; background:#0f172a; color:#fff; min-height:100vh; overflow-x:hidden; }
+.screen { display:none; min-height:100vh; flex-direction:column; align-items:center; justify-content:center; padding:20px; }
+.screen.active { display:flex; }
+h1 { font-size:1.8rem; font-weight:900; text-align:center; letter-spacing:-0.5px; }
+.sub { color:#94a3b8; font-size:0.85rem; font-weight:700; text-align:center; margin-top:4px; }
+
+/* ===== MASCOT SVG CARDS ===== */
+.vs-row { display:flex; align-items:center; gap:14px; margin:28px 0 8px; }
+.mascot-card { background:#1e293b; border:3px solid #334155; border-radius:24px; padding:16px 14px 12px; width:148px; text-align:center; cursor:pointer; transition:transform .2s, border-color .2s; }
+.mascot-card:hover { transform:translateY(-4px); }
+.mascot-card.selected { border-color:#f59e0b; box-shadow:0 0 24px rgba(245,158,11,.35); transform:scale(1.05); }
+.mascot-card svg { width:110px; height:110px; }
+.m-name { font-weight:900; font-size:1.05rem; margin-top:8px; }
+.m-tag { font-size:0.68rem; color:#94a3b8; font-weight:700; }
+.vs-badge { font-weight:900; font-size:1.5rem; color:#f59e0b; text-shadow:0 0 16px rgba(245,158,11,.6); }
+.golu-c { color:#2dd4bf; } .bolu-c { color:#a78bfa; }
+
+/* idle animations */
+@keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
+.idle { animation:bounce 1.6s ease-in-out infinite; }
+@keyframes happy { 0%{transform:scale(1)} 40%{transform:scale(1.18) rotate(-4deg)} 70%{transform:scale(1.1) rotate(3deg)} 100%{transform:scale(1)} }
+.happy { animation:happy .6s ease; }
+@keyframes sad { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-7px)} 75%{transform:translateX(7px)} }
+.sad { animation:sad .5s ease; filter:grayscale(.7); }
+
+/* ===== BUTTONS ===== */
+.btn { border:none; border-radius:999px; padding:15px 44px; font-size:1.05rem; font-weight:900; cursor:pointer; transition:transform .15s, opacity .2s; }
+.btn:active { transform:scale(.95); }
+.btn-amber { background:linear-gradient(135deg,#f59e0b,#f97316); color:#1c1005; box-shadow:0 6px 20px rgba(249,115,22,.4); }
+.btn:disabled { opacity:.4; cursor:not-allowed; }
+.btn-ghost { background:#1e293b; color:#94a3b8; font-size:.85rem; padding:11px 26px; }
+
+/* ===== GAME UI ===== */
+.topbar { width:100%; max-width:440px; display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }
+.score-pill { background:#1e293b; border-radius:999px; padding:8px 16px; font-weight:900; font-size:.95rem; }
+.streak { color:#f59e0b; }
+.timer-wrap { width:100%; max-width:440px; height:10px; background:#1e293b; border-radius:999px; overflow:hidden; margin-bottom:16px; }
+.timer-bar { height:100%; background:linear-gradient(90deg,#22c55e,#f59e0b); border-radius:999px; transition:width .1s linear, background .3s; }
+.timer-bar.danger { background:#ef4444; }
+.battle-arena { width:100%; max-width:440px; display:flex; align-items:center; gap:12px; background:#1e293b; border-radius:20px; padding:10px 14px; margin-bottom:16px; }
+.arena-mascot { width:64px; height:64px; flex-shrink:0; }
+.arena-mascot svg { width:100%; height:100%; }
+.speech { flex:1; background:#0f172a; border-radius:14px; padding:10px 12px; font-size:.85rem; font-weight:700; min-height:52px; display:flex; align-items:center; }
+.q-card { width:100%; max-width:440px; background:#1e293b; border-radius:20px; padding:18px; margin-bottom:14px; }
+.q-num { font-size:.7rem; font-weight:900; color:#64748b; letter-spacing:1px; }
+.q-text { font-size:1.02rem; font-weight:800; margin-top:6px; line-height:1.45; }
+.opts { width:100%; max-width:440px; display:grid; gap:10px; }
+.opt { background:#1e293b; border:2px solid #334155; border-radius:16px; padding:14px 16px; font-size:.95rem; font-weight:700; cursor:pointer; text-align:left; color:#fff; transition:all .15s; }
+.opt:active { transform:scale(.97); }
+.opt.correct { background:#14532d; border-color:#22c55e; }
+.opt.wrong { background:#7f1d1d; border-color:#ef4444; }
+.opt.dim { opacity:.45; }
+@keyframes shakeX {0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}60%{transform:translateX(6px)}}
+.shake { animation:shakeX .4s; }
+
+/* ===== RESULT ===== */
+.result-score { font-size:3.4rem; font-weight:900; background:linear-gradient(135deg,#f59e0b,#f97316); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+.result-msg { font-size:1rem; font-weight:800; margin:8px 0 20px; text-align:center; }
+.result-mascot { width:150px; height:150px; margin-bottom:8px; }
+.best-tag { font-size:.78rem; color:#94a3b8; font-weight:700; margin-bottom:20px; }
+.promo { position:fixed; bottom:10px; font-size:.7rem; color:#475569; font-weight:700; text-align:center; width:100%; }
+.promo a { color:#64748b; }
+.lang-row { display:flex; gap:8px; margin-top:18px; }
+.lang-btn { background:#1e293b; border:2px solid #334155; color:#94a3b8; border-radius:999px; padding:8px 20px; font-weight:900; font-size:.85rem; cursor:pointer; transition:all .2s; }
+.lang-btn.active { border-color:#f59e0b; color:#f59e0b; background:rgba(245,158,11,.1); }
+</style>
+</head>
+<body>
+
+<!-- ========== START SCREEN ========== -->
+<div class="screen active" id="scr-start">
+  <h1>🎮 GOLU-BOLU</h1>
+  <div class="sub" id="i-sub">QUIZ BATTLE — Apna mascot choose kar!</div>
+  <div class="lang-row">
+    <button class="lang-btn active" id="lang-hi" onclick="setLang('hi')">🇮🇳 हिंदी</button>
+    <button class="lang-btn" id="lang-en" onclick="setLang('en')">EN English</button>
+  </div>
+  <div class="vs-row">
+    <div class="mascot-card" id="card-golu" onclick="selectTeam('golu')">
+      <div class="idle" id="svg-golu-slot"></div>
+      <div class="m-name golu-c">GOLU</div>
+      <div class="m-tag" id="tag-golu">Dimag ka Dabba 🧠</div>
+    </div>
+    <div class="vs-badge">VS</div>
+    <div class="mascot-card" id="card-bolu" onclick="selectTeam('bolu')">
+      <div class="idle" id="svg-bolu-slot"></div>
+      <div class="m-name bolu-c">BOLU</div>
+      <div class="m-tag" id="tag-bolu">Speed ka Baap ⚡</div>
+    </div>
+  </div>
+  <button class="btn btn-amber" id="btn-start" disabled onclick="startGame()">🏁 BATTLE SHURU KARO</button>
+  <div class="promo">Padhai ke liye — <a href="https://eduva-app.vercel.app" onclick="event.stopPropagation()">EDUVA (FREE)</a></div>
+</div>
+
+<!-- ========== GAME SCREEN ========== -->
+<div class="screen" id="scr-game">
+  <div class="topbar">
+    <div class="score-pill">⭐ <span id="score">0</span></div>
+    <div class="score-pill streak">🔥 <span id="streak">0</span></div>
+    <div class="score-pill">Q <span id="qnow">1</span>/10</div>
+  </div>
+  <div class="timer-wrap"><div class="timer-bar" id="timerbar" style="width:100%"></div></div>
+  <div class="battle-arena">
+    <div class="arena-mascot" id="arena-mascot"></div>
+    <div class="speech" id="speech">Chalo shuru karte hain! 💪</div>
+  </div>
+  <div class="q-card">
+    <div class="q-num" id="qnum">QUESTION 1</div>
+    <div class="q-text" id="qtext"></div>
+  </div>
+  <div class="opts" id="opts"></div>
+</div>
+
+<!-- ========== RESULT SCREEN ========== -->
+<div class="screen" id="scr-result">
+  <div class="result-mascot idle" id="result-mascot"></div>
+  <div class="result-score" id="final-score">0</div>
+  <div class="result-msg" id="result-msg"></div>
+  <div class="best-tag" id="best-tag"></div>
+  <button class="btn btn-amber" style="margin-bottom:10px" id="btn-ad" onclick="showAdForDouble()">📺 Ad dekho — Points 2x karo</button>
+  <button class="btn btn-ghost" id="btn-again" onclick="resetToStart()">🔄 Dobara Khelo</button>
+  <div class="promo">Padhai ke liye — <a href="https://eduva-app.vercel.app">EDUVA (FREE)</a></div>
+</div>
+
+<script>
+/* ================= GOLU-BOLU SVG ART ================= */
+function goluSVG() {
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="60" cy="112" rx="34" ry="7" fill="rgba(0,0,0,.35)"/>
+    <rect x="28" y="52" width="64" height="56" rx="26" fill="#14b8a6"/>
+    <rect x="28" y="52" width="64" height="56" rx="26" fill="url(#gg)" opacity=".25"/>
+    <defs><linearGradient id="gg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".5"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs>
+    <rect x="42" y="96" width="14" height="14" rx="5" fill="#0d9488"/><rect x="64" y="96" width="14" height="14" rx="5" fill="#0d9488"/>
+    <rect x="22" y="58" width="12" height="30" rx="6" fill="#14b8a6"/><rect x="86" y="58" width="12" height="30" rx="6" fill="#14b8a6"/>
+    <circle cx="60" cy="38" r="24" fill="#fcd9b8"/>
+    <ellipse cx="52" cy="46" rx="4" ry="3" fill="#f59e0b" opacity=".5"/><ellipse cx="68" cy="46" rx="4" ry="3" fill="#f59e0b" opacity=".5"/>
+    <circle cx="51" cy="36" r="3.4" fill="#1e293b"/><circle cx="69" cy="36" r="3.4" fill="#1e293b"/>
+    <circle cx="52.2" cy="34.8" r="1.1" fill="#fff"/><circle cx="70.2" cy="34.8" r="1.1" fill="#fff"/>
+    <path d="M52 47 Q60 53 68 47" stroke="#7c2d12" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <rect x="38" y="8" width="44" height="22" rx="9" fill="#334155"/>
+    <rect x="38" y="8" width="44" height="8" rx="4" fill="#475569"/>
+    <rect x="34" y="26" width="52" height="5" rx="2.5" fill="#1e293b"/>
+  </svg>`;
+}
+function boluSVG() {
+  return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+    <ellipse cx="60" cy="112" rx="28" ry="6" fill="rgba(0,0,0,.35)"/>
+    <rect x="38" y="52" width="44" height="56" rx="18" fill="#8b5cf6"/>
+    <rect x="46" y="98" width="11" height="12" rx="4" fill="#7c3aed"/><rect x="63" y="98" width="11" height="12" rx="4" fill="#7c3aed"/>
+    <rect x="30" y="56" width="10" height="32" rx="5" fill="#8b5cf6"/><rect x="80" y="56" width="10" height="32" rx="5" fill="#8b5cf6"/>
+    <circle cx="60" cy="38" r="21" fill="#fcd9b8"/>
+    <path d="M40 30 Q44 8 52 20 Q56 4 63 18 Q70 6 75 22 Q82 12 80 30 Z" fill="#1e293b"/>
+    <rect x="44" y="30" width="14" height="12" rx="2" fill="none" stroke="#1e293b" stroke-width="2.6"/>
+    <rect x="62" y="30" width="14" height="12" rx="2" fill="none" stroke="#1e293b" stroke-width="2.6"/>
+    <line x1="58" y1="36" x2="62" y2="36" stroke="#1e293b" stroke-width="2.6"/>
+    <circle cx="51" cy="36" r="2.6" fill="#1e293b"/><circle cx="69" cy="36" r="2.6" fill="#1e293b"/>
+    <path d="M52 50 Q60 56 68 50" stroke="#7c2d12" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  </svg>`;
+}
+document.getElementById('svg-golu-slot').innerHTML = goluSVG();
+document.getElementById('svg-bolu-slot').innerHTML = boluSVG();
+setLang(LANG);
+
+/* ================= QUESTION BANK (Class 9-10, mixed) ================= */
+const QUESTIONS = [
+  {q:"मानव शरीर की सबसे बड़ी ग्रंथि कौन-सी है?",o:["यकृत (Liver)","अग्न्याशय","थायरॉइड","पित्ताशय"],a:0},
+  {q:"√144 का मान क्या है?",o:["10","11","12","14"],a:2},
+  {q:"H₂O का रासायनिक नाम क्या है?",o:["हाइड्रोजन परॉक्साइड","जल (Water)","ऑक्सीजन","हाइड्रिक एसिड"],a:1},
+  {q:"भारत का राष्ट्रीय पक्षी कौन-सा है?",o:["कबूतर","मोर","कोयल","बाज"],a:1},
+  {q:"यदि x + 5 = 12, तो x = ?",o:["5","6","7","8"],a:2},
+  {q:"प्रकाश संश्लेषण में पौधे कौन-सी गैस छोड़ते हैं?",o:["कार्बन डाइऑक्साइड","नाइट्रोजन","ऑक्सीजन","हाइड्रोजन"],a:2},
+  {q:"भारत का संविधान कब लागू हुआ?",o:["15 अगस्त 1947","26 जनवरी 1950","26 नवंबर 1949","2 अक्टूबर 1950"],a:1},
+  {q:"त्रिभुज के तीनों कोणों का योग कितना होता है?",o:["90°","120°","180°","360°"],a:2},
+  {q:"सबसे हल्की गैस कौन-सी है?",o:["ऑक्सीजन","नाइट्रोजन","हीलियम","हाइड्रोजन"],a:3},
+  {q:"विश्व का सबसे बड़ा महासागर कौन-सा है?",o:["अटलांटिक","हिंद महासागर","प्रशांत (Pacific)","आर्कटिक"],a:2},
+  {q:"(a + b)² = ?",o:["a² + b²","a² + 2ab + b²","a² - 2ab + b²","2a² + 2b²"],a:1},
+  {q:"DNA का पूरा नाम क्या है?",o:["डीऑक्सीराइबोन्यूक्लिक एसिड","राइबोन्यूक्लिक एसिड","डाइनाइट्रो एसिड","डीऑक्सी एसिड"],a:0},
+  {q:"'कर्मण्येवाधिकारस्ते' किस ग्रंथ से है?",o:["रामायण","महाभारत","गीता","उपनिषद"],a:2},
+  {q:"वृत्त की त्रिज्या 7 cm है, परिधि = ? (π = 22/7)",o:["22 cm","44 cm","88 cm","154 cm"],a:1},
+  {q:"पोटैशियम का रासायनिक प्रतीक क्या है?",o:["P","Po","K","Pt"],a:2},
+  {q:"UNO का मुख्यालय कहाँ है?",o:["जेनेवा","न्यूयॉर्क","पेरिस","लंदन"],a:1},
+  {q:"2⁵ = ?",o:["16","25","32","64"],a:2},
+  {q:"मोबाइल फोन में कौन-सी तरंगें use होती हैं?",o:["ध्वनि तरंगें","रेडियो तरंगें","दृश्य प्रकाश","अवरक्त"],a:1},
+  {q:"'The hungry lion roared' — 'lion' क्या है?",o:["Verb","Adjective","Noun","Adverb"],a:2},
+  {q:"सौरमंडल का सबसे बड़ा ग्रह?",o:["शुक्र","शनि","बृहस्पति (Jupiter)","मंगल"],a:2},
+  {q:"tan 45° = ?",o:["0","1","√3","1/2"],a:1},
+  {q:"Which is the largest gland in the human body?",o:["Liver","Pancreas","Thyroid","Gallbladder"],a:0},
+  {q:"What is the chemical symbol of Gold?",o:["Go","Gd","Au","Ag"],a:2},
+  {q:"If 2x = 16, then x = ?",o:["6","7","8","9"],a:2},
+  {q:"Which planet is known as the Red Planet?",o:["Venus","Jupiter","Mars","Mercury"],a:2},
+  {q:"How many bones does an adult human body have?",o:["186","206","226","256"],a:1},
+  {q:"The boiling point of water at sea level is?",o:["90°C","95°C","100°C","110°C"],a:2},
+  {q:"Who wrote the national anthem of India?",o:["Bankim Chandra","Rabindranath Tagore","Sarojini Naidu","Iqbal"],a:1},
+  {q:"Speed = ? (Physics formula)",o:["Distance ÷ Time","Time ÷ Distance","Distance × Time","Mass × Acceleration"],a:0},
+  {q:"Which gas do plants absorb for photosynthesis?",o:["Oxygen","Nitrogen","Carbon Dioxide","Hydrogen"],a:2},
+  {q:"Solve: 15% of 200 = ?",o:["20","25","30","35"],a:2},
+  {q:"भारत में प्रथम बार जनगणना कब हुई?",o:["1881","1891","1901","1872"],a:3},
+  {q:"ताजमहल किस नदी के किनारे है?",o:["गंगा","यमुना","सिंधु","गोदावरी"],a:1},
+  {q:"pH मान 7 क्या दर्शाता है?",o:["अम्लीय","क्षारीय","उदासीन (Neutral)","नमकीन"],a:2},
+  {q:"'अंधेर नगरी चौपट राजा' — यहाँ 'चौपट' का अर्थ?",o:["सफल","बिगड़ा हुआ","धनी","बलवान"],a:1}
+];
+
+/* ================= GAME STATE ================= */
+let team = null, oppTeam = null;
+let qList = [], qIndex = 0, score = 0, streakN = 0, timerInt = null, timeLeft = 15, answered = false;
+
+/* ================= LANGUAGE (Hindi / English) ================= */
+let LANG = localStorage.getItem('gb_lang') || 'hi';
+const STR = {
+  hi: {
+    sub: "QUIZ BATTLE — Apna mascot choose kar!",
+    tagGolu: "Dimag ka Dabba 🧠", tagBolu: "Speed ka Baap ⚡",
+    btnStart: "🏁 BATTLE SHURU KARO",
+    qNum: "QUESTION", startGolu: "Chalo bhai, dimag ki kasrat karte hain! 🧠",
+    startBolu: "Ready? Main toh paida hi fast hua tha! ⚡",
+    adBtn: "📺 Ad dekho — Points 2x karo",
+    again: "🔄 Dobara Khelo",
+    adDemo: "📺 Yahan rewarded ad aayega (Step 5 - AdMob setup ke baad)!\n\nTab tak: points double kar diye 🎁",
+    resChamp: "🏆 CHAMPION! Golu-Bolu dono hairaan hain!",
+    resGreat: "🔥 Zabardast! Aise hi padhte raho!",
+    resOk: "💪 Achha khela! Thoda aur practice!",
+    resLow: "📚 Koi baat nahi — EDUVA app se revise karke aao!"
+  },
+  en: {
+    sub: "QUIZ BATTLE — Choose your mascot!",
+    tagGolu: "Brain Box 🧠", tagBolu: "Speed King ⚡",
+    btnStart: "🏁 START BATTLE",
+    qNum: "QUESTION", startGolu: "Let's exercise those brains! 🧠",
+    startBolu: "Ready? I was born fast! ⚡",
+    adBtn: "📺 Watch ad — Double your points",
+    again: "🔄 Play Again",
+    adDemo: "📺 A rewarded ad will appear here (after Step 5 - AdMob setup)!\n\nTill then: points doubled 🎁",
+    resChamp: "🏆 CHAMPION! Golu-Bolu are amazed!",
+    resGreat: "🔥 Awesome! Keep studying like this!",
+    resOk: "💪 Well played! A bit more practice!",
+    resLow: "📚 No worries — revise with EDUVA app!"
+  }
+};
+function T(k) { return STR[LANG][k]; }
+function setLang(l) {
+  LANG = l; localStorage.setItem('gb_lang', l);
+  document.getElementById('lang-hi').classList.toggle('active', l === 'hi');
+  document.getElementById('lang-en').classList.toggle('active', l === 'en');
+  document.getElementById('i-sub').textContent = T('sub');
+  document.getElementById('tag-golu').textContent = T('tagGolu');
+  document.getElementById('tag-bolu').textContent = T('tagBolu');
+  document.getElementById('btn-start').innerHTML = T('btnStart');
+  document.getElementById('btn-ad').innerHTML = T('adBtn');
+  document.getElementById('btn-again').innerHTML = T('again');
+  const sp = document.getElementById('speech');
+  if (sp && !timerInt && document.getElementById('scr-game').classList.contains('active') === false)
+    sp.textContent = team ? SPEECH[team].start : T(team === 'golu' ? 'startGolu' : 'startBolu');
+  else if (document.getElementById('scr-start').classList.contains('active'))
+    sp.textContent = T('startGolu');
+}
+
+const SPEECH = {
+  golu: {
+    start:{hi:"Chalo bhai, dimag ki kasrat karte hain! 🧠", en:"Let's exercise those brains! 🧠"},
+    correct:{hi:"Wah! Ye toh mera favourite sawal tha 😎", en:"Wow! That was my favourite question 😎"},
+    wrong:{hi:"Arre... chhota mistake ho gaya 😅", en:"Oops... small mistake 😅"},
+    timeout:{hi:"Samay kahan bhaag gaya yaar! ⏰", en:"Where did the time run off! ⏰"}
+  },
+  bolu: {
+    start:{hi:"Ready? Main toh paida hi fast hua tha! ⚡", en:"Ready? I was born fast! ⚡"},
+    correct:{hi:"Ekdum sahi! Mera speed dekh raha hai? 😏", en:"Perfect! Seeing my speed? 😏"},
+    wrong:{hi:"Oye hoye! Yeh kya kar diya 😵", en:"Oh no! What did I do 😵"},
+    timeout:{hi:"Dheere chalo yaar, samay hi nahi bacha! ⏰", en:"Slow down, no time left! ⏰"}
+  }
+};
+
+/* sound (WebAudio, no assets) */
+let AC = null;
+function beep(freq, dur, type) {
+  try {
+    if (!AC) AC = new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || 'sine'; o.frequency.value = freq;
+    g.gain.setValueAtTime(0.15, AC.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001, AC.currentTime + dur);
+    o.connect(g); g.connect(AC.destination);
+    o.start(); o.stop(AC.currentTime + dur);
+  } catch(e) {}
+}
+const sndCorrect = () => { beep(660,.15); setTimeout(()=>beep(880,.2),120); };
+const sndWrong = () => beep(160,.3,'sawtooth');
+const sndTick = () => beep(1000,.05,'square');
+
+function selectTeam(t) {
+  team = t; oppTeam = t === 'golu' ? 'bolu' : 'golu';
+  document.getElementById('card-golu').classList.toggle('selected', t==='golu');
+  document.getElementById('card-bolu').classList.toggle('selected', t==='bolu');
+  document.getElementById('btn-start').disabled = false;
+  beep(520,.1);
+}
+
+function startGame() {
+  qList = QUESTIONS.slice().sort(()=>Math.random()-.5).slice(0,10);
+  qIndex = 0; score = 0; streakN = 0;
+  document.getElementById('score').textContent = '0';
+  document.getElementById('streak').textContent = '0';
+  document.getElementById('arena-mascot').innerHTML = team === 'golu' ? goluSVG() : boluSVG();
+  document.getElementById('speech').textContent = SPEECH[team].start[LANG];
+  showScreen('scr-game');
+  loadQuestion();
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function loadQuestion() {
+  answered = false;
+  const q = qList[qIndex];
+  document.getElementById('qnow').textContent = qIndex + 1;
+  document.getElementById('qnum').textContent = (LANG === 'hi' ? 'प्रश्न ' : 'QUESTION ') + (qIndex + 1);
+  document.getElementById('qtext').textContent = q.q;
+  const box = document.getElementById('opts'); box.innerHTML = '';
+  q.o.forEach((opt, i) => {
+    const b = document.createElement('button');
+    b.className = 'opt'; b.textContent = opt;
+    b.onclick = () => answer(i, b);
+    box.appendChild(b);
+  });
+  // timer
+  clearInterval(timerInt);
+  timeLeft = 15;
+  const bar = document.getElementById('timerbar');
+  bar.classList.remove('danger'); bar.style.width = '100%';
+  timerInt = setInterval(() => {
+    timeLeft -= 0.1;
+    bar.style.width = Math.max(0, (timeLeft/15)*100) + '%';
+    if (timeLeft <= 5) bar.classList.add('danger');
+    if (timeLeft <= 5 && Math.abs(timeLeft % 1) < 0.1) sndTick();
+    if (timeLeft <= 0) { clearInterval(timerInt); timeout(); }
+  }, 100);
+}
+
+function react(kind) {
+  const m = document.getElementById('arena-mascot');
+  const s = document.getElementById('speech');
+  s.textContent = SPEECH[team][kind][LANG];
+  m.classList.remove('happy','sad'); void m.offsetWidth;
+  m.classList.add(kind === 'correct' ? 'happy' : 'sad');
+  setTimeout(() => m.classList.remove('happy','sad'), 700);
+}
+
+function answer(i, btn) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInt);
+  const q = qList[qIndex];
+  const opts = document.querySelectorAll('.opt');
+  if (i === q.a) {
+    streakN++;
+    const pts = 10 + Math.min(streakN-1, 5) * 2; // streak bonus
+    score += pts;
+    btn.classList.add('correct');
+    sndCorrect(); react('correct');
+  } else {
+    streakN = 0;
+    btn.classList.add('wrong');
+    opts[q.a].classList.add('correct');
+    sndWrong(); react('wrong');
+  }
+  opts.forEach(o => o.classList.add('dim'));
+  document.getElementById('score').textContent = score;
+  document.getElementById('streak').textContent = streakN;
+  setTimeout(() => {
+    qIndex++;
+    if (qIndex < qList.length) loadQuestion();
+    else endGame();
+  }, 1300);
+}
+
+function timeout() {
+  if (answered) return;
+  answered = true;
+  const q = qList[qIndex];
+  const opts = document.querySelectorAll('.opt');
+  opts[q.a].classList.add('correct');
+  opts.forEach(o => o.classList.add('dim'));
+  streakN = 0;
+  document.getElementById('streak').textContent = '0';
+  sndWrong(); react('timeout');
+  setTimeout(() => {
+    qIndex++;
+    if (qIndex < qList.length) loadQuestion();
+    else endGame();
+  }, 1300);
+}
+
+let pendingDouble = false;
+function endGame() {
+  showScreen('scr-result');
+  document.getElementById('final-score').textContent = score;
+  document.getElementById('result-mascot').innerHTML = team === 'golu' ? goluSVG() : boluSVG();
+  let msg;
+  if (score >= 140) msg = T('resChamp');
+  else if (score >= 100) msg = T('resGreat');
+  else if (score >= 60) msg = T('resOk');
+  else msg = T('resLow');
+  document.getElementById('result-msg').textContent = msg;
+  const best = Math.max(score, parseInt(localStorage.getItem('gb_best') || '0'));
+  localStorage.setItem('gb_best', best);
+  document.getElementById('best-tag').textContent = '🥇 Best Score: ' + best + '  •  Team ' + team.toUpperCase();
+  pendingDouble = false;
+}
+
+function showAdForDouble() {
+  if (pendingDouble) return;
+  // 🔧 STEP 5 mein yahan asli AdMob rewarded ad lagega
+  alert(T('adDemo'));
+  score *= 2;
+  pendingDouble = true;
+  document.getElementById('final-score').textContent = score;
+  const best = Math.max(score, parseInt(localStorage.getItem('gb_best') || '0'));
+  localStorage.setItem('gb_best', best);
+  document.getElementById('best-tag').textContent = '🥇 Best Score: ' + best + '  •  Team ' + team.toUpperCase() + '  •  2x applied!';
+}
+
+function resetToStart() {
+  showScreen('scr-start');
+  document.getElementById('btn-start').disabled = !team;
+}
+</script>
+</body>
+</html>
