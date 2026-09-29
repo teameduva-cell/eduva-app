@@ -3490,6 +3490,21 @@ gtag('config', 'G-51MMG9S9F6');
     <section id="view-founder" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
         <div class="mb-2 flex items-center justify-between">
             <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+        </div>
+        <!-- 📊 LIVE ANALYTICS (Looker Studio embed) -->
+        <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-100 flex items-center justify-between">
+                <h3 class="font-black text-slate-800 text-sm">📊 Live Analytics — Users, Traffic, City</h3>
+                <span class="text-[10px] font-bold text-emerald-600">🔴 LIVE</span>
+            </div>
+            <div class="p-3">
+                <iframe id="founder-analytics-frame" src="PASTE_EMBED_URL_HERE" style="width:100%;height:430px;border:0;border-radius:12px;" allowfullscreen></iframe>
+                <div id="founder-analytics-note" class="hidden p-3 bg-amber-50 border border-amber-200 rounded-xl">
+                    <p class="text-xs font-bold text-amber-700">📊 Analytics embed URL abhi set nahi hai.</p>
+                    <p class="text-[11px] font-semibold text-amber-600 mt-1">1. lookerstudio.google.com → Blank Report → Google Analytics (EDUVA) add karo<br>2. Share → Enable embedding → embed URL copy karo<br>3. Mujhe woh URL bhej do — main laga dunga!</p>
+                </div>
+            </div>
+        </div>
             <span class="px-3 py-1 bg-red-50 border border-red-200 text-red-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">🔐 Founder Only</span>
         </div>
 
@@ -4534,6 +4549,26 @@ if ('serviceWorker' in navigator) {
         navigator.serviceWorker.register('/sw.js').catch(function () {});
     });
 }
+</script>
+<script>
+/* Founder Analytics — agar embed URL placeholder hai toh note dikhao */
+(function(){
+    function __checkFA(){
+        var f = document.getElementById('founder-analytics-frame');
+        if (!f) return;
+        if (f.getAttribute('src').indexOf('PASTE_EMBED_URL_HERE') !== -1) {
+            f.style.display = 'none';
+            var n = document.getElementById('founder-analytics-note');
+            if (n) n.classList.remove('hidden');
+        } else {
+            f.style.display = '';
+            var n2 = document.getElementById('founder-analytics-note');
+            if (n2) n2.classList.add('hidden');
+        }
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', __checkFA);
+    else __checkFA();
+})();
 </script>
 </body>
 </html>

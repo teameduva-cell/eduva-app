@@ -167,7 +167,6 @@ function boluSVG() {
 }
 document.getElementById('svg-golu-slot').innerHTML = goluSVG();
 document.getElementById('svg-bolu-slot').innerHTML = boluSVG();
-setLang(LANG);
 
 /* ================= QUESTION BANK (Class 9-10, mixed) ================= */
 const QUESTIONS = [
@@ -432,6 +431,7 @@ function resetToStart() {
   showScreen('scr-start');
   document.getElementById('btn-start').disabled = !team;
 }
+setLang(LANG);
 </script>
 </body>
 </html>
