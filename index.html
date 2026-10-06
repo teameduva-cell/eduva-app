@@ -355,7 +355,11 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-51MMG9S9F6');
 </script>
-</head>
+<style>
+    /* EDUVA skeleton loaders (P1 fix) */
+    .ed-skel{display:inline-block;border-radius:6px;background:linear-gradient(90deg,#e9edf3 25%,#f4f6fa 50%,#e9edf3 75%);background-size:200% 100%;animation:edSkel 1.2s infinite;color:transparent!important;min-height:1em}
+    @keyframes edSkel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+</style></head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
 
     <!-- TOP PROFESSIONAL HEADER -->
@@ -473,8 +477,8 @@ gtag('config', 'G-51MMG9S9F6');
                     <h3 class="font-extrabold text-sm text-slate-900 flex items-center justify-center gap-1">
                         <span id="sidebar-student-name">Student</span> <i data-lucide="check-circle" class="w-4 h-4 text-blue-600 fill-blue-600"></i>
                     </h3>
-                    <p class="text-xs text-slate-600 font-bold mt-0.5 mono-font" id="sidebar-greeting-title">Hello Future Doctor!</p>
-                    <div class="mt-2 pt-2 border-t border-slate-200 text-xs mono-font text-slate-400">ROLL NO: <span class="text-slate-900 font-bold">KOTA-2026-99</span></div>
+                    <p class="text-xs text-slate-600 font-bold mt-0.5 mono-font" id="sidebar-greeting-title">Hello Champion!</p>
+                    <div class="mt-2 pt-2 border-t border-slate-200 text-xs mono-font text-slate-400">STATUS: <span class="text-slate-900 font-bold">EDUVA CHAMPION</span></div>
                 </div>
 
                 <nav class="space-y-2 text-sm font-extrabold">
@@ -677,6 +681,38 @@ gtag('config', 'G-51MMG9S9F6');
                         </button>
                         <span class="text-[11px] opacity-80 font-semibold">Android Chrome पर एक tap में</span>
                     </div>
+                    <div class="mt-4 z-10">
+                        <span class="inline-block bg-amber-400 text-slate-900 text-xs sm:text-sm font-black px-4 py-2 rounded-full shadow-lg">🎁 31 December 2026 तक — 100% FREE • No Ads • No Fees</span>
+                    </div>
+                </div>
+                <!-- ========== शुरुआत यहाँ करो — 4 Quick Actions (P0: homepage simplification) ========== -->
+                <div class="rounded-3xl bg-white shadow-lg border border-slate-200 p-4">
+                    <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3">✨ शुरुआत यहाँ करो</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button onclick="switchTab('chat')" class="p-4 rounded-2xl text-left transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer" style="background:linear-gradient(135deg,#1e6fff,#0b3ea8);">
+                            <div class="text-2xl mb-1">📸</div>
+                            <p class="text-white font-black text-sm">Ask a Doubt</p>
+                            <p class="text-white/80 text-[11px] font-semibold mt-0.5">Photo bhejo, turant solution</p>
+                        </button>
+                        <button onclick="switchTab('study-material')" class="p-4 rounded-2xl text-left transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer bg-emerald-600">
+                            <div class="text-2xl mb-1">📚</div>
+                            <p class="text-white font-black text-sm">Study Material</p>
+                            <p class="text-white/80 text-[11px] font-semibold mt-0.5">NCERT + notes, Class 6-12</p>
+                        </button>
+                        <button onclick="switchTab('mocktest')" class="p-4 rounded-2xl text-left transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer bg-violet-600">
+                            <div class="text-2xl mb-1">📝</div>
+                            <p class="text-white font-black text-sm">Practice</p>
+                            <p class="text-white/80 text-[11px] font-semibold mt-0.5">Daily quiz + mock tests</p>
+                        </button>
+                        <button onclick="switchTab('profile')" class="p-4 rounded-2xl text-left transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer bg-slate-700">
+                            <div class="text-2xl mb-1">📊</div>
+                            <p class="text-white font-black text-sm">My Progress</p>
+                            <p class="text-white/80 text-[11px] font-semibold mt-0.5">Streak, XP, mistake book</p>
+                        </button>
+                    </div>
+                    <button onclick="document.getElementById('home-all-features').scrollIntoView({behavior:'smooth',block:'start'})" class="w-full mt-3 py-2.5 rounded-xl border-2 border-dashed border-slate-300 text-slate-500 font-black text-xs hover:bg-slate-50 transition cursor-pointer">
+                        ☰ सभी 25+ Features देखो ▾
+                    </button>
                 </div>
 
                 <!-- 🏆 ALL INDIA TEST — GOLDEN BADGE -->
@@ -805,7 +841,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="w-10 h-10 shrink-0 rounded-xl bg-indigo-600 text-white flex items-center justify-center text-lg shadow-md">🧠</div>
                     <div class="flex-1">
                         <p class="text-[10px] font-black text-indigo-500 uppercase tracking-wider">Edu Sir का Coach Note</p>
-                        <p id="coach-nudge-text" class="text-sm font-bold text-slate-800 mt-0.5">Loading...</p>
+                        <p id="coach-nudge-text" class="text-sm font-bold text-slate-800 mt-0.5"><span class="ed-skel">Loading...</span></p>
                     </div>
                 </div>
 
@@ -876,7 +912,7 @@ gtag('config', 'G-51MMG9S9F6');
                         <button onclick="switchTab('learning')" class="text-xs font-bold text-blue-600 hover:underline cursor-pointer">View All</button>
                     </div>
                     <div id="continue-learning-body" class="space-y-3">
-                        <p class="text-sm text-slate-400 text-center py-4">Loading...</p>
+                        <div class="space-y-3 py-2"><div class="ed-skel w-full h-16 rounded-2xl">&nbsp;</div><div class="ed-skel w-3/4 h-16 rounded-2xl">&nbsp;</div></div>
                     </div>
                 </div>
 
@@ -912,7 +948,8 @@ gtag('config', 'G-51MMG9S9F6');
                 </div>
 
                                 <div class="space-y-2">
-                    <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">📚 Academics (पढ़ाई)</h3>
+                    <div id="home-all-features"></div>
+                <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">📚 Academics (पढ़ाई)</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
                     <button onclick="switchTab('learning')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
                         <i data-lucide="book-open" class="w-5 h-5 text-indigo-600 shrink-0 group-hover:scale-110 transition"></i>
@@ -1401,8 +1438,8 @@ gtag('config', 'G-51MMG9S9F6');
                 <div class="rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 flex items-start gap-3.5">
                     <div class="text-3xl shrink-0">🎬</div>
                     <div>
-                        <p class="font-black text-sm sm:text-base text-amber-900">मैनुअल वीडियो अपलोडिंग पर कार्य अभी चल रहा है!</p>
-                        <p class="text-xs sm:text-sm font-semibold text-amber-800 mt-0.5">हमारी टीम धीरे-धीरे सभी chapters के recorded video lectures को अपने डेटाबेस से जोड़ रही है। तब तक नीचे दिए तरीकों से पढ़ाई जारी रखो — <b>AI Lecture Studio</b> से अपने topic का live lecture बनवाओ या <b>curated YouTube links</b> से कोटा के best teachers पढ़ें। 🙏</p>
+                        <p class="font-black text-sm sm:text-base text-amber-900">🎬 Video Learning — दो तरीके अभी Available हैं!</p>
+                        <p class="text-xs sm:text-sm font-semibold text-amber-800 mt-0.5"><b>AI Lecture Studio</b> (अपने topic का live lecture — अभी use करो) और <b>Curated YouTube</b> (कोटा के best teachers — अभी available)। EDUVA Video Library — Coming Soon 🎥</p>
                     </div>
                 </div>
 
@@ -1879,7 +1916,7 @@ gtag('config', 'G-51MMG9S9F6');
                             <div id="profile-avatar" class="w-16 h-16 rounded-2xl bg-indigo-600 text-white flex items-center justify-center text-2xl font-black shadow-lg">👨‍🎓</div>
                             <div>
                                 <h2 class="text-xl font-black text-slate-900 flex items-center gap-1.5"><span id="profile-name-display">Student</span> <span class="text-blue-600 text-sm">✔ Verified</span></h2>
-                                <p id="profile-meta-display" class="text-xs sm:text-sm text-slate-500 font-medium">Eduva Medicos • Class 12 | student@eduva.in</p>
+                                <p id="profile-meta-display" class="text-xs sm:text-sm text-slate-500 font-medium">Eduva Medicos • Class 12</p>
                                 <span class="premium-badge inline-block mt-1 px-3 py-0.5 rounded-full text-xs font-black">⭐ EDUVA Champion — Golu-Bolu ka dost!</span>
                             </div>
                         </div>
@@ -1947,11 +1984,11 @@ gtag('config', 'G-51MMG9S9F6');
 
                     <!-- Weekly Leaderboard Preview -->
                     <div class="space-y-3 pt-2">
-                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Weekly Leaderboard Rank</h3>
-                        <div class="space-y-2">
-                            <div class="p-3.5 bg-slate-50 rounded-xl border flex items-center justify-between text-xs sm:text-sm font-bold"><span>1. Aarav Singh</span><span class="text-indigo-600">5,230 XP</span></div>
-                            <div class="p-3.5 bg-slate-50 rounded-xl border flex items-center justify-between text-xs sm:text-sm font-bold"><span>2. Riya Sharma</span><span class="text-indigo-600">4,230 XP</span></div>
-                            <div class="p-3.5 bg-indigo-50 border border-indigo-200 rounded-xl flex items-center justify-between text-xs sm:text-sm font-black text-indigo-900"><span>🏆 12. Student (You)</span><span class="text-blue-600">2,450 XP</span></div>
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Weekly Leaderboard</h3>
+                        <div class="p-4 rounded-xl border-2 border-dashed border-indigo-200 bg-indigo-50/50 text-center space-y-1.5">
+                            <p class="text-2xl">🏆</p>
+                            <p class="text-xs sm:text-sm font-black text-slate-800">Pehla Weekly Leaderboard jald shuru!</p>
+                            <p class="text-[11px] text-slate-500 font-semibold">Tests do, XP kamao — aur India ke top students ke saath compete karo. Pehli rankings real students ki hongi. 💪</p>
                         </div>
                     </div>
                 </div>
@@ -1985,7 +2022,7 @@ gtag('config', 'G-51MMG9S9F6');
                                 <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> क्या EDUVA ऐप पूरी तरह से फ्री है?
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                                हाँ भाई! यह ऐप छात्रों के लिए पूरी तरह से 100% फ्री है। यहाँ बिना किसी क्रेडिट लिमिट, सब्सक्रिप्शन या पैसे के आप असीमित डाउट्स पूछ सकते हैं।
+                                हाँ भाई! EDUVA <b>31 December 2026 तक 100% FREE</b> है। कोई ads नहीं, कोई fees नहीं — बिना किसी credit limit के असीमित doubts पूछो। 🎁
                             </p>
                         </div>
 
@@ -2170,7 +2207,7 @@ gtag('config', 'G-51MMG9S9F6');
 
                     <div id="test-result-box" class="hidden text-center space-y-4 p-6 bg-slate-50 rounded-3xl border border-slate-200">
                         <div class="text-4xl">🏆</div>
-                        <h3 class="text-xl font-black text-slate-900">टेस्ट सफलताપूर्व संपन्न हुआ!</h3>
+                        <h3 class="text-xl font-black text-slate-900">टेस्ट सफलतापूर्वक संपन्न हुआ! 🎉</h3>
                         <p id="test-score-summary" class="text-sm font-bold text-blue-600 mono-font"></p>
                         <div id="test-share-btn-container"></div>
                         <button onclick="resetMockTest()" class="px-6 py-3.5 ink-navy text-white font-bold text-xs rounded-xl cursor-pointer">दोबारा टेस्ट दें</button>
@@ -3140,7 +3177,7 @@ gtag('config', 'G-51MMG9S9F6');
                 </div>
                 <div>
                     <label class="block text-slate-700 mb-1">Email (optional)</label>
-                    <input type="email" id="profile-edit-email" placeholder="जैसे: student@eduva.in" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-sm">
+                    <input type="email" id="profile-edit-email" placeholder="जैसे: tumhara@email.com" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 outline-none focus:border-blue-600 text-sm">
                 </div>
                 <button onclick="saveProfileEdit()" class="w-full py-3.5 ink-navy text-white font-black rounded-xl shadow-md cursor-pointer">Profile सेव करें ✅</button>
             </div>
@@ -3505,8 +3542,6 @@ gtag('config', 'G-51MMG9S9F6');
                 </div>
             </div>
         </div>
-            <span class="px-3 py-1 bg-red-50 border border-red-200 text-red-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">🔐 Founder Only</span>
-        </div>
 
         <div class="card-clean p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-indigo-900 border-slate-700 text-white flex items-center justify-between gap-4">
             <div>
@@ -3702,7 +3737,7 @@ gtag('config', 'G-51MMG9S9F6');
             </div>
             <div class="p-4 bg-white border border-pink-200 rounded-2xl space-y-2">
                 <p class="text-xs font-black text-pink-900">🏆 Invite Leaderboard — kisne sabse zyada dost jode?</p>
-                <div id="referral-board" class="space-y-2"><p class="text-sm text-slate-400 text-center py-2">Loading...</p></div>
+                <div id="referral-board" class="space-y-2"><div class="ed-skel w-full h-8 rounded-xl">&nbsp;</div><div class="ed-skel w-5/6 h-8 rounded-xl">&nbsp;</div></div>
             </div>
         </div>
     </section>
@@ -4164,7 +4199,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <div id="legal-terms" class="legal-tab hidden text-xs sm:text-sm text-slate-700 font-medium space-y-3 leading-relaxed">
                 <p class="font-black text-slate-900 text-base">📜 Terms & Conditions</p>
-                <p><b>1. FREE service:</b> EDUVA abhi aur aage bhi students ke liye 100% FREE hai — core features kabhi charge nahi honge. Kuch future optional features paid ho sakte hain, par wo alag se clearly bataya jayega.</p>
+                <p><b>1. FREE service:</b> EDUVA <b>31 December 2026 तक 100% FREE</b> है — कोई ads नहीं, कोई hidden charge नहीं। इसके बाद के plans अगर कोई आएंगे तो पहले से clearly बताए जाएंगे, बिना notice कुछ charge नहीं होगा।</p>
                 <p><b>2. Sahi use:</b> App sirf padhai ke liye hai. Gaali, gandi baatein, ya dusron ko pareshan karna allowed nahi — is par warning ke baad 24 ghante ka block lag sakta hai.</p>
                 <p><b>3. Content:</b> AI-generated answers mein kabhi-kabhi galti ho sakti hai — exam se pehle apni book/teacher se confirm karna. Coaching ke copyrighted material upload karna mana hai.</p>
                 <p><b>4. Uploads:</b> Jo notes/answers tum upload karte ho, wo tumhare original hone chahiye. Consent dene par EDUVA unhe improve karke apni library mein use kar sakta hai.</p>
@@ -4393,10 +4428,10 @@ gtag('config', 'G-51MMG9S9F6');
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 z-50 shadow-lg" id="mobile-bottom-nav">
         <div class="flex justify-around items-center text-xs font-extrabold text-slate-500">
             <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer p-1"><i data-lucide="home" class="w-5 h-5"></i> Home</button>
-            <button onclick="switchTab('community')" id="tab-community" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="users" class="w-5 h-5 text-purple-600"></i> कम्युनिटी</button>
+            <button onclick="switchTab('learning')" id="tab-learning" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="book-open" class="w-5 h-5 text-emerald-600"></i> Learn</button>
             <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
             <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="award" class="w-5 h-5 text-amber-600"></i> Profile</button>
-            <button onclick="switchTab('vault')" id="tab-vault" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="bookmark" class="w-5 h-5 text-emerald-600"></i> वॉल्ट</button>
+            <button onclick="switchTab('mocktest')" id="tab-mocktest" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="clipboard-list" class="w-5 h-5 text-violet-600"></i> Test</button>
         </div>
     </nav>
 
