@@ -672,38 +672,100 @@ gtag('config', 'G-51MMG9S9F6');
             <!-- ================= 1. HOME DASHBOARD VIEW ================= -->
             <section id="view-home" class="space-y-6 animate-fadeIn">
 
-                <!-- HERO CARD -->
-                <div class="hero-custom p-6 sm:p-8 rounded-[26px] relative overflow-hidden flex flex-col justify-between">
-                    <div class="flex items-center justify-between">
-                        <small class="font-extrabold uppercase tracking-widest opacity-90">🧑‍🏫 Edu Sir — तुम्हारा अपना AI Teacher</small>
-                        
-                    </div>
-                    <h1 class="premium-heading text-3xl sm:text-4xl font-black mt-3 leading-tight">
-                        📸 सवाल की Photo भेजो<br>
-                        <span style="color:#7CFC9A">तुरंत Solution पाओ</span>
-                    </h1>
-                    <p class="text-lg sm:text-xl font-black mt-3">FREE • Hindi + English • Class 6-12</p>
-                    <div class="mt-4 inline-flex items-center gap-2.5 rounded-2xl px-4 py-2.5 border-2 w-fit" style="background: rgba(16,185,129,0.18); border-color: rgba(52,211,153,0.55);">
-                        <span class="text-sm font-black text-white">बिना app download किए अभी इस्तेमाल करो</span>
-                    </div>
-                    <div class="flex flex-wrap gap-3 mt-5 z-10">
-                        <button onclick="switchTab('chat')" class="relative bg-white text-blue-700 px-6 py-4 rounded-xl font-black text-sm shadow-lg hover:scale-105 transition cursor-pointer">
-                            🚀 अपना पहला सवाल पूछो (FREE)
-                        </button>
-                        
-                    </div>
-                    <div class="flex items-center gap-3 mt-3 z-10">
-                        <button onclick="eduvaInstallApp()" class="bg-white/15 hover:bg-white/25 border border-white/40 text-white px-4 py-2.5 rounded-xl font-black text-xs transition cursor-pointer flex items-center gap-1.5">
-                            📲 App Install करें (FREE)
-                        </button>
-                        <span class="text-[11px] opacity-80 font-semibold">Android Chrome पर एक tap में</span>
-                    </div>
-                    <div class="mt-4 z-10">
-                        <span class="inline-block bg-amber-400 text-slate-900 text-xs sm:text-sm font-black px-4 py-2 rounded-full shadow-lg">🎁 31 December 2026 तक — 100% FREE • No Ads • No Fees</span>
+                <!-- HERO 2.0 — WOW first impression -->
+                <style>
+                .edh-anim{opacity:0;animation:edFadeUp .8s cubic-bezier(.22,1,.36,1) forwards}
+                @keyframes edFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+                .ed-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:edDrift 14s ease-in-out infinite alternate}
+                @keyframes edDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-30px) scale(1.15)}}
+                .ed-blob2{animation-duration:18s;animation-delay:-6s}
+                .ed-blob3{animation-duration:22s;animation-delay:-12s}
+                .ed-phone{animation:edFloat3d 6s ease-in-out infinite;transform-style:preserve-3d}
+                @keyframes edFloat3d{0%,100%{transform:translateY(0) rotateY(-12deg) rotateX(5deg)}50%{transform:translateY(-14px) rotateY(12deg) rotateX(-5deg)}}
+                .ed-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#64748b;margin-right:3px;animation:edBlink 1.2s infinite}
+                .ed-typing span:nth-child(2){animation-delay:.2s}.ed-typing span:nth-child(3){animation-delay:.4s}
+                @keyframes edBlink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+                .ed-shine{position:relative;overflow:hidden}
+                .ed-shine::after{content:'';position:absolute;top:-50%;left:-70%;width:45%;height:220%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.55),transparent);transform:rotate(12deg);animation:edSweep 3.2s ease-in-out infinite}
+                @keyframes edSweep{0%{left:-70%}55%,100%{left:140%}}
+                .ed-grad{background:linear-gradient(90deg,#60a5fa,#a78bfa,#f472b6,#60a5fa);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:edGrad 6s linear infinite}
+                @keyframes edGrad{0%{background-position:0% 50%}100%{background-position:300% 50%}}
+                .ed-dotpulse{animation:edPulse 1.6s ease-in-out infinite}
+                @keyframes edPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
+                .ed-bubblein{opacity:0;animation:edFadeUp .6s ease forwards}
+                </style>
+                <div class="rounded-[28px] relative overflow-hidden shadow-2xl" style="background:linear-gradient(150deg,#0b1023 0%,#151a35 45%,#1e1b4b 100%);">
+                    <!-- Aurora blobs -->
+                    <div class="ed-blob" style="width:340px;height:340px;background:#3b82f6;top:-120px;left:-100px;"></div>
+                    <div class="ed-blob ed-blob2" style="width:280px;height:280px;background:#8b5cf6;bottom:-100px;right:-60px;"></div>
+                    <div class="ed-blob ed-blob3" style="width:220px;height:220px;background:#06b6d4;top:35%;left:55%;opacity:.35;"></div>
+                    <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.07),transparent 55%);"></div>
+
+                    <div class="relative z-10 p-6 sm:p-9 flex flex-col items-center text-center" style="perspective:1100px;">
+                        <!-- Eyebrow chip -->
+                        <div class="edh-anim inline-flex items-center gap-2 bg-white/10 border border-white/15 backdrop-blur px-4 py-1.5 rounded-full" style="animation-delay:.05s">
+                            <span class="ed-dotpulse w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
+                            <span class="text-[11px] font-black tracking-wide text-white/90 uppercase">India's Smart Study Companion</span>
+                        </div>
+
+                        <!-- Headline -->
+                        <h1 class="edh-anim mt-5 text-white font-black leading-[1.12] text-[34px] sm:text-6xl" style="animation-delay:.15s">
+                            सवाल अटक गया?<br>
+                            <span class="ed-grad">📸 Photo भेजो.</span><br>
+                            <span class="text-white/95">Solution पाओ.</span>
+                        </h1>
+
+                        <!-- Rotator -->
+                        <div class="edh-anim mt-4 text-white/70 text-sm sm:text-base font-bold" style="animation-delay:.3s">
+                            आज के students पूछ रहे हैं:
+                            <span class="text-cyan-300 font-black" id="ed-rotator">Quadratic Equations…</span><span class="text-cyan-300 animate-pulse">|</span>
+                        </div>
+
+                        <!-- CTAs -->
+                        <div class="edh-anim mt-7 flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto" style="animation-delay:.45s">
+                            <button onclick="switchTab('chat')" class="ed-shine w-full sm:w-auto bg-amber-400 text-slate-900 text-base sm:text-lg font-black px-8 py-4 rounded-2xl shadow-[0_10px_30px_rgba(251,191,36,.35)] cursor-pointer transition hover:scale-[1.03] active:scale-[0.97]">
+                                🚀 पहला Doubt पूछो — FREE
+                            </button>
+                            <button onclick="eduvaInstallApp()" class="w-full sm:w-auto bg-white/10 border border-white/20 backdrop-blur text-white font-black text-sm px-6 py-4 rounded-2xl cursor-pointer transition hover:bg-white/20">
+                                📲 App Install
+                            </button>
+                        </div>
+
+                        <!-- Floating phone mockup -->
+                        <div class="edh-anim ed-phone mt-9 w-[230px] sm:w-[260px] rounded-[2rem] border-[6px] border-slate-700 bg-white shadow-[0_25px_60px_rgba(0,0,0,.5)] overflow-hidden" style="animation-delay:.6s">
+                            <div class="bg-slate-900 px-4 py-2.5 flex items-center gap-2">
+                                <span class="text-base">🤖</span><span class="text-white text-[11px] font-black">Edu Sir — AI Teacher</span>
+                                <span class="ml-auto w-2 h-2 rounded-full bg-emerald-400 ed-dotpulse"></span>
+                            </div>
+                            <div class="p-3.5 space-y-2.5 text-left" style="min-height:190px;">
+                                <div class="ed-bubblein bg-slate-100 rounded-2xl rounded-tl-sm px-3 py-2 text-[10.5px] font-bold text-slate-700" style="animation-delay:.9s">
+                                    📸 2x² − 5x + 3 = 0 kaise solve karein?
+                                </div>
+                                <div class="ed-bubblein ed-typing bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-3 py-2.5 inline-flex" style="animation-delay:1.4s">
+                                    <span></span><span></span><span></span>
+                                </div>
+                                <div class="ed-bubblein bg-cyan-600 text-white rounded-2xl rounded-tl-sm px-3 py-2 text-[10.5px] font-bold" style="animation-delay:2s">
+                                    Step 1: a=2, b=−5, c=3<br>Step 2: Discriminant = 25−24=1 ✓<br><span class="text-cyan-200">x = 1.5 ya x = 1 🎯</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Trust chips -->
+                        <div class="edh-anim mt-7 flex flex-wrap justify-center gap-2" style="animation-delay:.75s">
+                            <span class="bg-white/10 border border-white/10 px-3 py-1.5 rounded-full text-[11px] font-black text-white/85">⚡ Instant Solution</span>
+                            <span class="bg-white/10 border border-white/10 px-3 py-1.5 rounded-full text-[11px] font-black text-white/85">🌐 Hindi + English</span>
+                            <span class="bg-white/10 border border-white/10 px-3 py-1.5 rounded-full text-[11px] font-black text-white/85">🎯 Step-by-Step</span>
+                            <span class="bg-white/10 border border-white/10 px-3 py-1.5 rounded-full text-[11px] font-black text-white/85">Class 6-12</span>
+                        </div>
+
+                        <!-- Offer badge -->
+                        <div class="edh-anim mt-5" style="animation-delay:.9s">
+                            <span class="inline-block bg-amber-400 text-slate-900 text-xs sm:text-sm font-black px-5 py-2.5 rounded-full shadow-[0_8px_25px_rgba(251,191,36,.4)]">🎁 31 December 2026 तक — 100% FREE • No Ads • No Fees</span>
+                        </div>
                     </div>
                 </div>
-                <!-- ========== शुरुआत यहाँ करो — 4 Quick Actions (P0: homepage simplification) ========== -->
-                <div class="rounded-3xl bg-white shadow-lg border border-slate-200 p-4">
+<!-- ========== शुरुआत यहाँ करो — 4 Quick Actions (P0: homepage simplification) ========== -->
+                <div class="rounded-3xl bg-white shadow-xl border border-slate-200 p-4 -mt-6 relative z-20">
                     <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3">✨ शुरुआत यहाँ करो</p>
                     <div class="grid grid-cols-2 gap-3">
                         <button onclick="switchTab('chat')" class="p-4 rounded-2xl text-left transition hover:scale-[1.02] active:scale-[0.98] cursor-pointer" style="background:linear-gradient(135deg,#1e6fff,#0b3ea8);">
@@ -787,73 +849,124 @@ gtag('config', 'G-51MMG9S9F6');
                     </div>
                 </div>
 
-                <!-- 🆕 NAYE FEATURES — 5 genuinely new (not duplicates) -->
+                <style>
+.ed-flipwrap{perspective:1100px}
+.ed-flip{position:relative;transform-style:preserve-3d;transition:transform .65s cubic-bezier(.35,1.35,.5,1);width:100%}
+.ed-flip.ed-flipped{transform:rotateY(180deg)}
+.ed-flip-front,.ed-flip-back{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ed-flip-back{position:absolute;inset:0;transform:rotateY(180deg)}
+</style>
+<!-- 🆕 NAYE FEATURES — 3D flip cards -->
                 <div class="rounded-3xl p-[1.5px] shadow-xl" style="background:linear-gradient(135deg,#f59e0b,#ef4444,#8b5cf6,#3b82f6);">
-                    <div class="rounded-3xl bg-white p-4 sm:p-5 space-y-3">
-                        <div class="flex items-center justify-between">
+                    <div class="rounded-3xl bg-white p-4 sm:p-5">
+                        <div class="flex items-center justify-between mb-3.5">
                             <h3 class="font-black text-slate-900 text-sm sm:text-base">🆕 Naye Features</h3>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">3 Live • 3 Coming Soon</span>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">5 Live • 1 Coming Soon • 🔄 tap to flip</span>
                         </div>
-
-                        <!-- 1. Solution Checker (LIVE) -->
-                        <button onclick="edPrefillDoubt('check')" class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl text-left transition hover:scale-[1.01] active:scale-[0.99] cursor-pointer bg-gradient-to-r from-green-600 to-emerald-600 shadow-md">
-                            <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🧮</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-white font-black text-sm">Solution Checker <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle">LIVE</span></p>
-                                <p class="text-white/85 text-[11px] font-semibold">Apna solved answer bhejo — AI batayega sahi hai aur galti kahan hai</p>
-                            </div>
-                            <span class="text-white/80 text-lg">›</span>
-                        </button>
-
-                        <!-- 2. Golu-Bolu Mode (LIVE) -->
-                        <button onclick="edPrefillDoubt('golubolu')" class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl text-left transition hover:scale-[1.01] active:scale-[0.99] cursor-pointer bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md">
-                            <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🎭</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-white font-black text-sm">Golu-Bolu Mode <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle">LIVE</span></p>
-                                <p class="text-white/85 text-[11px] font-semibold">Koi bhi topic — Golu-Boli की funny style में समझो</p>
-                            </div>
-                            <span class="text-white/80 text-lg">›</span>
-                        </button>
-
-                        <!-- 3. NCERT Audio (COMING SOON) -->
-                        <div class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                            <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center text-2xl shrink-0 shadow-sm">🎧</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-slate-800 font-black text-sm">NCERT Audio <span class="ml-1 text-[9px] text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded-full align-middle">SOON</span></p>
-                                <p class="text-slate-500 text-[11px] font-semibold">Chapters ko padho nahi — suno. Travel mein bhi padhai</p>
-                            </div>
-                            <span class="text-lg">🔒</span>
+                        <div class="space-y-2.5">
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-gradient-to-r from-green-600 to-emerald-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🧮</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px] leading-tight">Solution Checker <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
+                                        <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Apna solved answer bhejo — AI batayega sahi hai aur galti kahan hai</p>
+                                    </div>
+                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">Solution Checker</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p>
+                                    </div>
+                                    <button onclick="edFlipBack(this);edPrefillDoubt('check')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
+                                </div>
+                            </div></div>
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎭</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px] leading-tight">Golu-Bolu Mode <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
+                                        <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Koi bhi topic — Golu-Bolu ki funny style mein samjho</p>
+                                    </div>
+                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">Golu-Bolu Mode</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p>
+                                    </div>
+                                    <button onclick="edFlipBack(this);edPrefillDoubt('golubolu')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
+                                </div>
+                            </div></div>
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎓</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px] leading-tight">AI Mastery Course <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
+                                        <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Poora structured course — 8 modules, 25 lessons, progress ke saath</p>
+                                    </div>
+                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">AI Mastery Course</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p>
+                                    </div>
+                                    <button onclick="edFlipBack(this);switchTab('ai-course')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
+                                </div>
+                            </div></div>
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎧</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px] leading-tight">NCERT Audio <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
+                                        <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Chapters suno — travel mein bhi padhai. Apna text bhi suna sakte ho!</p>
+                                    </div>
+                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">NCERT Audio</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p>
+                                    </div>
+                                    <button onclick="edFlipBack(this);switchTab('audio')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
+                                </div>
+                            </div></div>
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🗺️</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px] leading-tight">Chapter Mind Maps <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
+                                        <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">1 screen mein poora chapter — exam se pehle 5 min revision</p>
+                                    </div>
+                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">Chapter Mind Maps</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p>
+                                    </div>
+                                    <button onclick="edFlipBack(this);switchTab('mindmaps')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
+                                </div>
+                            </div></div>
+                            <div class="ed-flipwrap"><div class="ed-flip">
+                                <div class="ed-flip-front bg-slate-50 border-2 border-dashed border-slate-200 flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                    <div class="w-11 h-11 rounded-xl bg-white border border-slate-200 flex items-center justify-center text-xl shrink-0">📲</div>
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-slate-700 font-black text-[13px] leading-tight">WhatsApp Doubt Bot <span class="ml-1 text-[9px] text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded-full align-middle font-black">SOON</span></p>
+                                        <p class="text-slate-500 text-[11px] font-semibold leading-snug mt-0.5">Bina app khole — apne WhatsApp par hi doubt solve</p>
+                                    </div>
+                                    <span class="text-lg shrink-0">🔄</span>
+                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
+                                    <div class="flex-1 min-w-0">
+                                        <p class="text-white font-black text-[13px]">WhatsApp Doubt Bot</p>
+                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">Backend ban raha hai — jald LIVE hoga! 🔧</p>
+                                    </div>
+                                    <button onclick="edFlip(this.parentNode.parentNode)" class="px-3 py-2 rounded-xl bg-white/15 text-white text-xs font-black cursor-pointer shrink-0">↺ वापस</button>
+                                </div>
+                            </div></div>
                         </div>
-
-                        <!-- 4. Mind Maps (COMING SOON) -->
-                        <div class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                            <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center text-2xl shrink-0 shadow-sm">🗺️</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-slate-800 font-black text-sm">Chapter Mind Maps <span class="ml-1 text-[9px] text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded-full align-middle">SOON</span></p>
-                                <p class="text-slate-500 text-[11px] font-semibold">Har chapter ka visual concept map — 1 page mein poora chapter</p>
-                            </div>
-                            <span class="text-lg">🔒</span>
-                        </div>
-
-                        <!-- 5. WhatsApp Doubt Bot (COMING SOON) -->
-                        <div class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
-                            <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center text-2xl shrink-0 shadow-sm">📲</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-slate-800 font-black text-sm">WhatsApp Doubt Bot <span class="ml-1 text-[9px] text-slate-500 bg-slate-200 px-1.5 py-0.5 rounded-full align-middle">SOON</span></p>
-                                <p class="text-slate-500 text-[11px] font-semibold">Bina app khole — apne WhatsApp par hi doubt solve</p>
-                            </div>
-                            <span class="text-lg">🔒</span>
-                        </div>
-
-                        <!-- 6. AI Mastery Course (LIVE) -->
-                        <button onclick="switchTab('ai-course')" class="w-full flex items-center gap-3.5 p-3.5 rounded-2xl text-left transition hover:scale-[1.01] active:scale-[0.99] cursor-pointer bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md">
-                            <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-2xl shrink-0">🎓</div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-white font-black text-sm">AI Mastery Course <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle">LIVE</span></p>
-                                <p class="text-white/85 text-[11px] font-semibold">पूरा structured course — 8 modules, 25 lessons, progress ke साथ</p>
-                            </div>
-                            <span class="text-white/80 text-lg">›</span>
-                        </button>
                     </div>
                 </div>
 
@@ -2671,6 +2784,69 @@ gtag('config', 'G-51MMG9S9F6');
             </section>
 
             <!-- ================= AI MASTERY COURSE VIEW ================= -->
+            <!-- ================= NCERT AUDIO VIEW ================= -->
+            <!-- ================= MIND MAPS VIEW ================= -->
+            <section id="view-mindmaps" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <div class="mb-2 flex items-center gap-3">
+                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900">🗺️ Chapter Mind Maps</h2>
+                        <p class="text-[11px] font-bold text-slate-500">Poora chapter — 1 screen par. Exam se पहले 5 मिनट में revision!</p>
+                    </div>
+                </div>
+                <div id="mm-chapters" class="space-y-3"></div>
+                <div id="mm-canvas-wrap" class="hidden rounded-3xl bg-white border border-slate-200 shadow-sm p-4 sm:p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 id="mm-title" class="font-black text-slate-900 text-sm"></h3>
+                        <button onclick="document.getElementById('mm-canvas-wrap').classList.add('hidden');document.getElementById('mm-chapters').classList.remove('hidden');" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-xs font-black cursor-pointer">‹ वापस</button>
+                    </div>
+                    <div id="mm-canvas" class="space-y-2"></div>
+                </div>
+            </section>
+
+            <section id="view-audio" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <div class="mb-2 flex items-center gap-3">
+                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <div>
+                        <h2 class="text-lg font-black text-slate-900">🎧 NCERT Audio</h2>
+                        <p class="text-[11px] font-bold text-slate-500">Chapters sunein — padhein nahi. Travel, walk, khaana khaate hue!</p>
+                    </div>
+                </div>
+
+                <!-- Now Playing bar -->
+                <div id="audio-nowbar" class="hidden rounded-3xl p-4 sm:p-5 text-white shadow-xl flex items-center gap-4" style="background:linear-gradient(135deg,#0e7490,#1e6fff);">
+                    <div class="w-12 h-12 rounded-2xl bg-white/20 flex items-center justify-center text-2xl shrink-0" id="audio-eq">🎧</div>
+                    <div class="flex-1 min-w-0">
+                        <p id="audio-now-title" class="font-black text-sm truncate"></p>
+                        <p id="audio-now-status" class="text-white/80 text-[11px] font-bold">Ready</p>
+                    </div>
+                    <button onclick="edAudioStop()" class="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center cursor-pointer shrink-0">⏹</button>
+                </div>
+
+                <!-- Custom text player -->
+                <div class="rounded-3xl bg-white border border-slate-200 shadow-sm p-4 sm:p-5 space-y-3">
+                    <h3 class="font-black text-slate-900 text-sm">🎤 Apna text suno</h3>
+                    <p class="text-[11px] font-bold text-slate-500">Koi bhi paragraph paste karo — notes, chapter, formula list — AI voice padh degi!</p>
+                    <textarea id="audio-custom-text" rows="4" class="w-full p-3 rounded-2xl border-2 border-slate-200 focus:border-cyan-400 outline-none text-sm font-semibold text-slate-700" placeholder="Yahan apna text likho ya paste karo..."></textarea>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button onclick="edAudioPlayCustom()" class="px-5 py-2.5 rounded-2xl bg-cyan-600 hover:bg-cyan-700 text-white font-black text-sm cursor-pointer">▶ सुनो</button>
+                        <button onclick="edAudioStop()" class="px-4 py-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-600 font-black text-sm cursor-pointer">⏹ रोको</button>
+                        <label class="text-[11px] font-black text-slate-500 flex items-center gap-1.5 ml-auto">Speed
+                            <select id="audio-rate" class="border-2 border-slate-200 rounded-xl px-2 py-1.5 text-xs font-bold cursor-pointer">
+                                <option value="0.8">0.8x</option><option value="1" selected>1x</option>
+                                <option value="1.2">1.2x</option><option value="1.5">1.5x</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Ready chapters -->
+                <div>
+                    <h3 class="font-black text-slate-900 text-sm mb-3">📚 Ready-made chapter audio</h3>
+                    <div id="audio-chapters" class="space-y-2.5"></div>
+                </div>
+            </section>
+
             <section id="view-ai-course" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2 flex items-center gap-3">
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
@@ -4607,7 +4783,7 @@ gtag('config', 'G-51MMG9S9F6');
             <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer p-1"><i data-lucide="home" class="w-5 h-5"></i> Home</button>
             <button onclick="switchTab('learning')" id="tab-learning" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="book-open" class="w-5 h-5 text-emerald-600"></i> Learn</button>
             <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="award" class="w-5 h-5 text-amber-600"></i> Profile</button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="user-round" class="w-5 h-5 text-amber-600"></i> Profile</button>
             <button onclick="switchTab('mocktest')" id="tab-mocktest" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="clipboard-list" class="w-5 h-5 text-violet-600"></i> Test</button>
         </div>
     </nav>
@@ -4932,6 +5108,143 @@ if ('serviceWorker' in navigator) {
         else aiOpenLesson(0,0);
     }
     document.addEventListener('DOMContentLoaded', aiRenderCourse);
+    </script>
+
+
+    <!-- 🎧 NCERT AUDIO engine (Web Speech API) -->
+    <script>
+    const AUDIO_CHAPTERS = [
+  { id: "ach0", title: "Class 7 Science — Ch 1: Nutrition in Plants", text: "पौधे अपना खाना खुद बनाते हैं। इस प्रक्रिया को प्रकाश संश्लेषण कहते हैं। पौधे सूरज की रोशनी, पानी और कार्बन डाइऑक्साइड से खाना बनाते हैं। पत्तियाँ इस काम की फैक्ट्री हैं, जिनमें हरा रंग का क्लोरोफिल होता है। पौधे ऑक्सीजन भी छोड़ते हैं जिससे हम साँस लेते हैं। कुछ पौधे जैसे पीपल और बरगद, दूसरे पौधों पर निर्भर होते हैं। कुछ कीड़े जैसे कीड़े खाने वाले पौधे भी होते हैं। याद रखो — पौधे धरती के सबसे बड़े रसोइए हैं!" },
+  { id: "ach1", title: "Class 10 Maths — Averages (संक्षिप्त revision)", text: "औसत निकालने का सूत्र है — सभी संख्याओं का योग बटा संख्याओं की गिनती। याद रखो — groups की sizes अलग हों तो weighted average लगता है। जैसे 20 छात्रों के marks 60 और 30 छात्रों के 70 हों, तो total 1200 प्लस 2100 बटा 50 — यानी 66। mixture में भी न rule लगता है। हटाने या जोड़ने पर n minus 1 या n plus 1 से divide होता है। practice से ये सब आसान लगने लगता है!" },
+  { id: "ach2", title: "Class 9 Geography — Climate of India", text: "भारत का जलवायु मानसूनी है। तापमान, वर्षा और हवाओं का दबाव मौसम तय करते हैं। भारत में मुख्यतः चार मौसम होते हैं — शीत ऋतु, ग्रीष्म ऋतु, वर्षा ऋतु और शरद ऋतु। हिमालय ठंडी हवाओं से बचाव करता है, इसलिए उत्तर भारत ठंडा रहता है। दक्षिण में समुद्र का प्रभाव ज़्यादा है। मानसून भारतीय किसान की जीवन रेखा है।" },
+  { id: "ach3", title: "Class 8 History — The Revolt of 1857", text: "1857 का विद्रोह भारत का पहला बड़ा स्वतंत्रता संग्राम था। मंगल पांडे ने बarrackपुर में विद्रोह की शुरुआत की। लखनऊ, कानपुर, झाँसी और दिल्ली में लड़ाइयाँ हुईं। रानी लक्ष्मीबाई ने झाँसी की रक्षा की। इस विद्रोह के बाद ईस्ट इंडिया कंपनी का शासन समाप्त हुआ और भारत सीधे ब्रिटिश क्राउन के अधीन आया।" },
+  { id: "ach4", title: "Class 8 Science — Ch 8: Cell — The Unit of Life", text: "हर जीव बनता है कोशिकाओं से। कोशिका को जीवन की बुनियादी इकाई कहते हैं। पौधों की कोशिका में cell wall होती है, जानवरों की कोशिका में नहीं। मुख्य भाग हैं — nucleus जो कक्ष कहलाता है और DNA रखता है, cytoplasm जो घुलनशील पदार्थों से भरा होता है, और mitochondria जो ऊर्जा देता है। कोशिकाएं माइक्रोस्कोप से दिखती हैं। Robert Hooke ने सबसे पहले 1665 में कोशिका देखी — actually उन्होंने dead cells of cork देखी। याद रखो — जितनी बड़ी जीव, उतनी कोशिकाएं नहीं... बल्कि specialized cells होते हैं!" },
+  { id: "ach5", title: "Class 9 Maths — Number System (संख्या प्रणाली)", text: "संख्याएं परिवार की तरह हैं। Natural numbers — 1, 2, 3 से शुरू। Whole numbers — zero जोड़ दो। Integers — negative numbers भी लाओ। Rational numbers — p बटा q के रूप में, जैसे 3 बटा 4। Irrational — जो fraction नहीं बन सकती, जैसे root 2। और सब मिलकर Real numbers। Tricks: rational की decimal either terminating होती है या repeating। Irrational की decimal non-repeating non-terminating। Exam में पहचानना आसान — decimal देखो, pattern ढूंढो!" },
+  { id: "ach6", title: "Class 10 Science — Chemical Reactions", text: "रासायनिक अभिक्रिया की पहचान — गैस निकलना, रंग बदलना, तापमान बदलना, या अवक्षेप बनना। उदाहरण — लोहे पर जंग, पका केक। Types: combination जैसे CaO प्लस H2O gives Ca(OH)2, decomposition जैसे CaCO3 गर्म करने पर, displacement जैसे Fe plus CuSO4, और double displacement जैसे precipitation reactions। Balancing का rule — L.H.S. के हर atom की गिनती R.H.S. के बराबर करो। Yaad rakhna — हम equations balance करते हैं, atoms को नहीं बदलते!" },
+  { id: "ach7", title: "Class 10 Civics — Power Sharing (शक्ति का बँटवारा)", text: "लोकतंत्र में शक्ति बँटती है ताकि तानाशाही न आए। Belgium ने अपनी 3 समुदायों के बीच शक्ति साझा की — community government बनाई और देश टूटने से बच गया। Sri Lanka ने majority Sinhala को preference दी — Civil war हुई, देश तबाह हुआ। सबक साफ है — majority rule without minority rights = disaster। भारत में शक्ति तीन स्तरों पर बँटी है — केंद्र, राज्य, और local bodies। साथ ही legislature, executive, judiciary — तीनों एक-दूसे पर check रखते हैं।" },
+  { id: "ach8", title: "Class 7 Geography — The Solar System", text: "हमारा सौरमंडल — सूरज plus 8 ग्रह। Sequence याद करो — Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune। Trick — My Very Excellent Mother Just Served Us Noodles! Mercury सबसे छोटा और सबसे गर्म-तापमान वाला नहीं — Venus सबसे गर्म है क्योंकि उसकी atmosphere में CO2 भरा है। Jupiter सबसे बड़ा — Earth से 1300 गुना! Saturn के rings बर्फ और rock के हैं। Earth सही distance पर है — habitable zone — इसलिए यहाँ जीवन है।" },
+  { id: "ach9", title: "Class 8 Maths — Rational Numbers", text: "Rational numbers — वो संख्याएं जो p बटा q के रूप में लिखी जा सकें, जहाँ q zero नहीं। Integers भी rational हैं — 5 को 5 बटा 1 लिख सकते हो। Number line पर rational numbers के बीच infinite rational numbers होते हैं — यही उनकी density कहलाती है। Operations में ध्यान दो — denominators same करो addition में, और division में reciprocal multiply करो। Standard form — जब numerator और denominator के बीच common factor न हो और denominator positive हो।" },
+  { id: "ach10", title: "Class 9 Physics — Motion (गति)", text: "Motion = position समय के साथ बदलना। Distance scalar है — सिर्फ लंबाई। Displacement vector है — shortest path with direction। Speed = distance बटा time, Velocity = displacement बटा time। Acceleration = velocity में बदलाव बटा time। Graphs याद रखो — distance-time graph की slope = speed। Straight line = uniform motion, curve = non-uniform। Acceleration का SI unit — meter per second square। Free fall में acceleration 9.8 m/s2 होता है — इसे g कहते हैं।" },
+  { id: "ach11", title: "Class 6 Science — Components of Food", text: "हमारे खाने के 6 मुख्य घटक — carbohydrates जो ऊर्जा देते हैं, जैसे चावल और रोटी। Proteins जो growth और repair करते हैं — दाल, अंडे। Fats — concentrated energy — तेल, मक्खन। Vitamins और minerals — छोटी मात्रा में चाहिए पर ज़रूरी — fruits और vegetables से। Roughage — digestion के लिए — सब्जियों का fiber। और सबसे ज़रूरी — Water! Deficiency diseases याद रखो — Vitamin C की कमी से scurvy, Vitamin D से rickets, Iron से anaemia। Balanced diet — सब कुछ सही मात्रा में।" },
+  { id: "ach12", title: "Class 10 Geography — Resources and Development", text: "Resource — वो जो मनुष्य के लिए उपयोगी हो। Classification तीन तरीकों से — On the basis of origin: biotic और abiotic। On the basis of exhaustibility: renewable जैसे solar, wind — और non-renewable जैसे coal, petroleum। On the basis of status of development: potential, actual, stock, reserves। Sustainable development — आज की ज़रूरतें पूरी करो, पर आने वाली generations का हक मत छीनो। Land degradation — मिट्टी की उर्वरता घटना — बड़ी समस्या है।" },
+  { id: "ach13", title: "Class 7 History — The Mughal Empire (Foundations)", text: "1526 — Babur ने Panipat का पहला युद्ध जीता, Mughal Empire की नींव रखी। उसकी सेना में तोपें थीं — Ibrahim Lodi हारा। Humayun को Sher Shah Suri ने हराया — 15 साल exile। फिर Akbar — सबसे महान — 1556 से 1605। उसने mansabdari system शुरू की, sulh-i-kul की नीति अपनाई — सब धर्मों के लिए सहिष्णुता। Jahangir — justice के लिए जाना जाता। Shah Jahan — Taj Mahal। Aurangzeb — empire सबसे बड़ा हुआ पर rebellion भी बढ़े। 1857 तक नाम के badshah रहे — पर power पहले ही जा चुकी थी।" },
+];
+    let edAudioCurrent = null;
+    function edAudioRate(){ var r=document.getElementById('audio-rate'); return r?parseFloat(r.value):1; }
+    function edAudioRender(){
+        var w=document.getElementById('audio-chapters'); if(!w) return;
+        w.innerHTML = AUDIO_CHAPTERS.map(function(c,i){
+            return '<div class="flex items-center gap-3 p-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm">'
+                +'<div class="w-11 h-11 rounded-xl bg-cyan-50 flex items-center justify-center text-xl shrink-0">📖</div>'
+                +'<div class="flex-1 min-w-0"><p class="font-bold text-slate-800 text-[13px] truncate">'+c.title+'</p>'
+                +'<p class="text-[10px] font-bold text-slate-400">~'+Math.max(1,Math.round(c.text.length/300))+' min audio • Hindi voice</p></div>'
+                +'<button onclick="edAudioPlayChapter(\''+c.id+'\')" class="px-4 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-700 text-white text-xs font-black cursor-pointer shrink-0">▶ सुनो</button>'
+                +'</div>';
+        }).join('');
+    }
+    function edAudioSpeak(text, title){
+        if(!('speechSynthesis' in window)){ alert('Sorry — tumhara browser voice support nahi karta. Chrome use karo!'); return; }
+        window.speechSynthesis.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = 'hi-IN'; u.rate = edAudioRate();
+        var bar=document.getElementById('audio-nowbar');
+        if(bar){ bar.classList.remove('hidden');
+            document.getElementById('audio-now-title').textContent = title;
+            document.getElementById('audio-now-status').textContent = 'Playing...';
+            document.getElementById('audio-eq').textContent = '🔊'; }
+        u.onend = function(){ var s=document.getElementById('audio-now-status'); if(s) s.textContent='Khatam — achha laga? 🎉'; var e=document.getElementById('audio-eq'); if(e) e.textContent='🎧'; };
+        window.speechSynthesis.speak(u);
+    }
+    function edAudioPlayChapter(id){
+        var c = AUDIO_CHAPTERS.find(function(x){return x.id===id;}); if(!c) return;
+        edAudioCurrent = c; edAudioSpeak(c.text, c.title);
+    }
+    function edAudioPlayCustom(){
+        var t = document.getElementById('audio-custom-text');
+        if(!t || !t.value.trim()){ alert('Pehle kuch text likho ya paste karo! ✍️'); return; }
+        edAudioCurrent = null; edAudioSpeak(t.value.trim(), '🎤 Tera custom text');
+    }
+    function edAudioStop(){
+        if('speechSynthesis' in window) window.speechSynthesis.cancel();
+        var bar=document.getElementById('audio-nowbar'); if(bar) bar.classList.add('hidden');
+    }
+    document.addEventListener('DOMContentLoaded', edAudioRender);
+    </script>
+
+
+    <!-- 🗺️ MIND MAPS engine -->
+    <style>
+    .mm-root { border-left:5px solid #0e7490; }
+    .mm-branch { border-left:4px solid #6366f1; }
+    .mm-leaf { border-left:3px solid #cbd5e1; }
+    </style>
+    <script>
+    const MM_DATA = [
+  { id: "mm0", title: "Class 7 Science — Nutrition in Plants", tree: [{ k: "पोषण", v: ["प्रकाश संश्लेषण (खाना बनाना)", "पत्ती = फैक्ट्री", "क्लोरोफिल (हरा रंग)"] }, { k: "ज़रूरी चीज़ें", v: ["सूरज की रोशनी", "पानी", "कार्बन डाइऑक्साइड"] }, { k: "खास पौधे", v: ["पराश्रयी (पीपल, बरगद)", "कीटभक्षी (कीड़े खाने वाले)"] }, { k: "Output", v: ["ऑक्सीजन 🌬️", "ग्लूकोज़ (खाना)"] }] },
+  { id: "mm1", title: "Class 10 Maths — Averages", tree: [{ k: "Basic", v: ["Average = योग ÷ गिनती"] }, { k: "Weighted", v: ["Sizes अलग? → weighted formula", "Example: 20×60 + 30×70 ÷ 50"] }, { k: "Tricks", v: ["Add/remove → n±1 से divide", "Mixture → ratio-weighted", "Custom weights → weight × value"] }, { k: "Data", v: ["Table = सीधा average", "Stacked bar = cluster read", "Pie = 360° = 100%"] }] },
+  { id: "mm2", title: "Class 9 Geography — Climate of India", tree: [{ k: "4 मौसम", v: ["शीत (Dec–Feb)", "ग्रीष्म (Mar–May)", "वर्षा (Jun–Sep)", "शरद (Oct–Nov)"] }, { k: "Factor", v: ["तापमान", "वर्षा", "दबाव"] }, { k: "मानसून", v: ["किसान की जीवन रेखा", "दक्षिण-पश्चिम मानसून"] }, { k: "भूगोल", v: ["हिमालय = ठंड से बचाव", "समुद्र = दक्षिण पर प्रभाव"] }] },
+  { id: "mm3", title: "Class 8 History — Revolt of 1857", tree: [{ k: "शुरुआत", v: ["मंगल पांडे — बarrackपुर"] }, { k: "केंद्र", v: ["दिल्ली", "कानपुर", "झाँसी", "लखनऊ"] }, { k: "Heroes", v: ["रानी लक्ष्मीबाई", "तात्या टोपे", "बहादुर शाह ज़फ़र"] }, { k: "नतीजा", v: ["कंपनी राज ख़त्म", "सीधे ब्रिटिश क्राउन शासन"] }] },
+  { id: "mm4", title: "Class 8 Science — Cell Structure", tree: [{ k: "Boundary", v: ["Cell membrane (selective)", "Cell wall (plants only)"] }, { k: "Control", v: ["Nucleus — DNA store", "Chromosomes — genes carry"] }, { k: "Jelly", v: ["Cytoplasm — reactions here", "Organelles float inside"] }, { k: "Energy", v: ["Mitochondria — ATP maker", "Chloroplast (plants) — food"] }] },
+  { id: "mm5", title: "Class 9 Maths — Number System", tree: [{ k: "Family Tree", v: ["Natural (1,2,3...)", "Whole (+0)", "Integers (±)", "Rational (p/q)"] }, { k: "Irrational", v: ["root 2, pi, e", "Non-repeating decimals"] }, { k: "Real Numbers", v: ["Rational + Irrational"] }, { k: "Key Rule", v: ["√2, √3 irrational — proof by contradiction"] }] },
+  { id: "mm6", title: "Class 10 Science — Chemical Reactions", tree: [{ k: "Signs", v: ["Gas ↑", "Precipitate ↓", "Color/Temp change"] }, { k: "Types", v: ["Combination (A+B→AB)", "Decomposition (AB→A+B)", "Displacement (Fe+CuSO4)", "Double disp."] }, { k: "Balance", v: ["Atoms same both sides", "Hit-trial method"] }, { k: "Examples", v: ["Rust = oxidation", "Cake = decomposition-ish"] }] },
+  { id: "mm7", title: "Class 10 Physics — Light: Reflection", tree: [{ k: "Laws", v: ["∠i = ∠r", "Incident, normal, reflected — same plane"] }, { k: "Mirrors", v: ["Plane — image same size", "Concave — converging", "Convex — diverging"] }, { k: "Uses", v: ["Concave: torch, shaving", "Convex: rear-view"] }, { k: "Formula", v: ["1/v + 1/u = 1/f", "Sign convention zaroori!"] }] },
+  { id: "mm8", title: "Class 7 Civics — Democracy", tree: [{ k: "Features", v: ["People rule", "Free & fair elections", "Majority + minority rights"] }, { k: "Types", v: ["Direct — sab vote karein", "Representative — leaders chuno"] }, { k: "Need", v: ["Dignity of citizens", "Better decisions (more minds)"] }, { k: "India", v: ["Largest democracy 🌍", "Universal adult franchise"] }] },
+  { id: "mm9", title: "Class 8 Geography — Agriculture", tree: [{ k: "Types", v: ["Primitive subsistence", "Intensive subsistence", "Commercial"] }, { k: "Cropping", v: ["Kharif — monsoon (rice)", "Rabi — winter (wheat)", "Zaid — summer"] }, { k: "India", v: ["Rice — West Bengal #1", "Wheat — UP #1"] }, { k: "Problems", v: ["Rain dependence", "Small land holdings"] }] },
+  { id: "mm10", title: "Class 6 Maths — Integers", tree: [{ k: "What", v: ["...-3, -2, -1, 0, 1, 2... ", "Whole + negatives"] }, { k: "Number Line", v: ["Right = increase", "Left = decrease"] }, { k: "Rules", v: ["(+)+(+) = +", "(-)+(-) = -", "(+)+(-) → bigger wins"] }, { k: "Trick", v: ["Subtract = add opposite"] }] },
+  { id: "mm11", title: "Class 9 Chemistry — Atoms & Molecules", tree: [{ k: "Laws", v: ["Conservation of mass (Lavoisier)", "Constant proportions (Proust)"] }, { k: "Atom", v: ["Smallest unit (Dalton)", "Indivisible (then!)"] }, { k: "Mole Concept", v: ["6.022×10²³ particles", "Mass = moles × molar mass"] }, { k: "Formulas", v: ["Valency cross karo", "Balance charges"] }] },
+  { id: "mm12", title: "Class 10 History — Nationalism in India", tree: [{ k: "1915-16", v: ["Gandhi returns", "Champaran, Kheda, Ahmedabad"] }, { k: "Movements", v: ["Non-Cooperation (1920)", "Civil Disobedience (1930) — Dandi", "Quit India (1942)"] }, { k: "Key Figures", v: ["Gandhi, Nehru, Patel", "Bhagat Singh, Bose"] }, { k: "End", v: ["1947 — Independence! 🎉"] }] },
+  { id: "mm13", title: "Class 7 Maths — Simple Equations", tree: [{ k: "Equation", v: ["LHS = RHS", "Variable x unknown"] }, { k: "Solve karo", v: ["Same op both sides", "Isolate x"] }, { k: "Steps", v: ["Transpose → change sign", "Check by substituting"] }, { k: "Word Problems", v: ["Mark mein 'x' maano", "Condition se equation banao"] }] },
+];
+    function mmRender(){
+        var w=document.getElementById('mm-chapters'); if(!w) return;
+        w.innerHTML = MM_DATA.map(function(m){
+            var leaves = m.tree.reduce(function(a,b){return a+b.v.length;},0);
+            return '<button onclick="mmOpen(\''+m.id+'\')" class="w-full flex items-center gap-3 p-4 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md transition text-left cursor-pointer">'
+                +'<div class="w-11 h-11 rounded-xl bg-indigo-50 flex items-center justify-center text-xl shrink-0">🗺️</div>'
+                +'<div class="flex-1 min-w-0"><p class="font-bold text-slate-800 text-[13px] truncate">'+m.title+'</p>'
+                +'<p class="text-[10px] font-bold text-slate-400">'+m.tree.length+' branches • '+leaves+' points</p></div>'
+                +'<span class="text-slate-400 text-lg">›</span></button>';
+        }).join('');
+    }
+    function mmOpen(id){
+        var m = MM_DATA.find(function(x){return x.id===id;}); if(!m) return;
+        document.getElementById('mm-chapters').classList.add('hidden');
+        var wrap=document.getElementById('mm-canvas-wrap'); wrap.classList.remove('hidden');
+        document.getElementById('mm-title').textContent='🗺️ '+m.title;
+        var root = m.tree.map(function(b){
+            var leaves = b.v.map(function(l){ return '<div class="mm-leaf bg-slate-50 rounded-r-xl px-3 py-2 text-xs font-bold text-slate-600">• '+l+'</div>'; }).join('');
+            return '<div class="mm-branch bg-indigo-50/60 rounded-r-2xl p-3 space-y-1.5">'
+                +'<p class="font-black text-indigo-900 text-[13px]">⬤ '+b.k+'</p>'+leaves+'</div>';
+        }).join('');
+        document.getElementById('mm-canvas').innerHTML = '<div class="mm-root bg-cyan-50 rounded-r-2xl p-4"><p class="font-black text-cyan-900">📌 '+m.title.split('—')[1].trim()+'</p></div><div class="pl-4 sm:pl-6 space-y-3 pt-3">'+root+'</div>';
+        wrap.scrollIntoView({behavior:'smooth',block:'start'});
+    }
+    document.addEventListener('DOMContentLoaded', mmRender);
+    </script>
+
+
+    <!-- 🎬 Hero doubt rotator -->
+    <script>
+    (function(){
+        var topics = ["Quadratic Equations…","Chemical Reactions…","Motion graphs…","Photosynthesis…","Trigonometry…","The Revolt of 1857…","Light — Reflection…","Number System…"];
+        var i = 0, el = null, ci = 0, deleting = false;
+        function tick(){
+            if(!el){ el = document.getElementById('ed-rotator'); if(!el){ setTimeout(tick, 800); return; } }
+            var word = topics[i];
+            if(!deleting){ ci++; if(ci >= word.length){ deleting = true; setTimeout(tick, 1800); el.textContent = word; return; } }
+            else { ci--; if(ci <= 0){ deleting = false; i = (i+1)%topics.length; } }
+            el.textContent = word.slice(0, ci);
+            setTimeout(tick, deleting ? 30 : 65);
+        }
+        tick();
+    })();
+    </script>
+
+
+    <!-- 🔄 3D flip card helpers -->
+    <script>
+    function edFlip(el){ if(el) el.classList.toggle('ed-flipped'); }
+    function edFlipBack(btn){ var f=btn.closest('.ed-flip'); if(f) f.classList.remove('ed-flipped'); }
     </script>
 
 </body>
