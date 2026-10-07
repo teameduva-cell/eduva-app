@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
+<!-- BUILD: EDUVA-v2.7-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -376,11 +377,74 @@ gtag('config', 'G-51MMG9S9F6');
     /* EDUVA skeleton loaders (P1 fix) */
     .ed-skel{display:inline-block;border-radius:6px;background:linear-gradient(90deg,#e9edf3 25%,#f4f6fa 50%,#e9edf3 75%);background-size:200% 100%;animation:edSkel 1.2s infinite;color:transparent!important;min-height:1em}
     @keyframes edSkel{0%{background-position:200% 0}100%{background-position:-200% 0}}
-</style></head>
+</style><style>
+/* 📱 Compact bottom nav (#7) */
+#mobile-bottom-nav{padding:4px 10px 2px !important;}
+#mobile-bottom-nav button{padding:2px 4px !important;gap:1px !important;font-size:9px !important;line-height:1.1;}
+#mobile-bottom-nav button svg{width:19px;height:19px;}
+#mobile-bottom-nav button[onclick="switchTab('chat')"]{width:44px !important;height:44px !important;margin-top:-16px !important;border-width:3px !important;}
+#mobile-bottom-nav button[onclick="switchTab('chat')] svg{width:22px;height:22px;}
+</style>
+</head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
     <!-- 🎬 Splash screen -->
     <div id="ed-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(150deg,#0b1023,#1e1b4b);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease;">
-        <div style="font-size:64px;animation:edSpBounce 1s ease infinite alternate;">👦🏻👦🏻</div>
+        <div style="animation:edSpBounce 1s ease infinite alternate;">
+        <svg width="220" height="150" viewBox="0 0 220 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- ===== GOLU: mota, teal kurta, dark topi ===== -->
+            <g>
+                <!-- body/kurta (chubby) -->
+                <path d="M18 148 C18 108 34 92 62 92 C90 92 106 108 106 148 Z" fill="#0d9488"/>
+                <path d="M18 148 C18 108 34 92 62 92 C90 92 106 108 106 148 Z" fill="#000" opacity="0.08"/>
+                <!-- collar -->
+                <path d="M52 94 L62 106 L72 94" stroke="#0f766e" stroke-width="4" fill="none" stroke-linecap="round"/>
+                <!-- head (round) -->
+                <circle cx="62" cy="60" r="30" fill="#f6c79a"/>
+                <!-- ears -->
+                <circle cx="32" cy="62" r="6" fill="#f6c79a"/><circle cx="92" cy="62" r="6" fill="#f6c79a"/>
+                <!-- topi (dark, flat) -->
+                <path d="M30 52 Q62 14 94 52 L94 44 Q62 20 30 44 Z" fill="#1f2937"/>
+                <rect x="28" y="42" width="68" height="9" rx="4.5" fill="#111827"/>
+                <circle cx="62" cy="26" r="3.5" fill="#fbbf24"/>
+                <!-- eyes + brows -->
+                <circle cx="51" cy="62" r="3.4" fill="#1f2937"/><circle cx="73" cy="62" r="3.4" fill="#1f2937"/>
+                <path d="M45 53 Q51 50 57 53" stroke="#1f2937" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                <path d="M67 53 Q73 50 79 53" stroke="#1f2937" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+                <!-- cheeks + smile -->
+                <circle cx="43" cy="71" r="4.5" fill="#f59e0b" opacity="0.35"/><circle cx="81" cy="71" r="4.5" fill="#f59e0b" opacity="0.35"/>
+                <path d="M53 72 Q62 81 71 72" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- book in hand -->
+                <rect x="86" y="112" width="24" height="18" rx="3" fill="#fbbf24" transform="rotate(-12 86 112)"/>
+                <rect x="86" y="112" width="24" height="18" rx="3" fill="#000" opacity="0.1" transform="rotate(-12 86 112)"/>
+            </g>
+            <!-- ===== BOLU: patla, purple kurta, spiky hair, square glasses ===== -->
+            <g>
+                <!-- body/kurta (thin) -->
+                <path d="M138 148 C138 116 148 104 170 104 C192 104 202 116 202 148 Z" fill="#7c3aed"/>
+                <path d="M138 148 C138 116 148 104 170 104 C192 104 202 116 202 148 Z" fill="#000" opacity="0.08"/>
+                <!-- neck -->
+                <rect x="164" y="88" width="12" height="14" fill="#f6c79a"/>
+                <!-- head -->
+                <circle cx="170" cy="66" r="25" fill="#f6c79a"/>
+                <!-- ears -->
+                <circle cx="145" cy="68" r="5" fill="#f6c79a"/><circle cx="195" cy="68" r="5" fill="#f6c79a"/>
+                <!-- spiky hair -->
+                <path d="M144 58 L148 40 L155 50 L161 36 L168 48 L175 34 L182 48 L189 38 L193 56 Q188 42 170 42 Q150 42 144 58 Z" fill="#111827"/>
+                <!-- square glasses -->
+                <rect x="148" y="58" width="17" height="14" rx="2.5" stroke="#111827" stroke-width="2.6" fill="rgba(255,255,255,.25)"/>
+                <rect x="175" y="58" width="17" height="14" rx="2.5" stroke="#111827" stroke-width="2.6" fill="rgba(255,255,255,.25)"/>
+                <line x1="165" y1="63" x2="175" y2="63" stroke="#111827" stroke-width="2.6"/>
+                <!-- eyes behind glasses -->
+                <circle cx="156.5" cy="65" r="2.6" fill="#1f2937"/><circle cx="183.5" cy="65" r="2.6" fill="#1f2937"/>
+                <!-- big excited smile -->
+                <path d="M160 80 Q170 89 180 80" stroke="#1f2937" stroke-width="3" fill="none" stroke-linecap="round"/>
+                <!-- raised arm with phone -->
+                <rect x="128" y="104" width="10" height="26" rx="5" fill="#7c3aed" transform="rotate(24 128 104)"/>
+                <rect x="118" y="96" width="15" height="24" rx="3.5" fill="#0f172a" transform="rotate(24 118 96)"/>
+                <rect x="121" y="100" width="9" height="14" rx="1.5" fill="#38bdf8" transform="rotate(24 121 100)"/>
+            </g>
+        </svg>
+        </div>
         <div style="color:#fff;font-weight:900;font-size:32px;letter-spacing:2px;margin-top:12px;">EDUVA</div>
         <div style="color:rgba(255,255,255,.6);font-weight:700;font-size:13px;margin-top:4px;">Padhai ka asli dost 💙</div>
         <div style="width:120px;height:5px;background:rgba(255,255,255,.15);border-radius:99px;margin-top:28px;overflow:hidden;">
@@ -816,7 +880,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="w-14 h-14 rounded-2xl bg-white/25 flex items-center justify-center shrink-0 text-3xl">🏆</div>
                     <div class="flex-1">
                         <p class="text-white font-black text-sm sm:text-base">ALL INDIA EDUVA TEST — 3 JANUARY 2027</p>
-                        <p class="text-white/90 text-xs font-bold mt-0.5">25 MCQ • 50 min • Class-wise Rank • सभी को Certificate • Top 100: 1 साल FREE • Top 5: 3 साल FREE!</p>
+                        <p class="text-white/90 text-xs font-bold mt-0.5">25 MCQ • 50 min • Class-wise Rank • सभी को Certificate • Top 100: 1 साल तक FREE • Top 5: 3 साल तक FREE!</p>
                     </div>
                     <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
                 </button>
@@ -826,7 +890,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="grid grid-cols-2 sm:grid-cols-4 divide-x divide-y sm:divide-y-0 divide-slate-200 bg-white">
                         <div class="p-4 text-center">
                             <p class="text-2xl font-black gradient-text mono-font">🧠 <span id="doubt-counter-num-strip">2,000+</span></p>
-                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider mt-1">Doubts Solved</p>
+                            <p class="text-[10px] font-black text-slate-500 uppercase tracking-wider mt-1">Doubts Solved • <span class="text-emerald-600"><span class="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse align-middle"></span> LIVE</span></p>
                         </div>
                         <div class="p-4 text-center">
                             <p class="text-2xl font-black gradient-text mono-font">🇮🇳</p>
@@ -861,7 +925,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega</p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v2.7</span></p>
                     </div>
                 </div>
 
@@ -901,13 +965,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">🔄</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-white font-black text-[13px]">Solution Checker</p>
-                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p>
-                                    </div>
-                                    <button onclick="edFlipBack(this);edPrefillDoubt('check')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
-                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('check')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Solution Checker</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -918,13 +976,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">🔄</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-white font-black text-[13px]">Golu-Bolu Mode</p>
-                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p>
-                                    </div>
-                                    <button onclick="edFlipBack(this);edPrefillDoubt('golubolu')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
-                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('golubolu')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Golu-Bolu Mode</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -935,13 +987,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">🔄</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-white font-black text-[13px]">AI Mastery Course</p>
-                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p>
-                                    </div>
-                                    <button onclick="edFlipBack(this);switchTab('ai-course')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
-                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('ai-course')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -952,13 +998,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">🔄</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-white font-black text-[13px]">NCERT Audio</p>
-                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p>
-                                    </div>
-                                    <button onclick="edFlipBack(this);switchTab('audio')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
-                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('audio')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">NCERT Audio</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -969,13 +1009,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">🔄</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md">
-                                    <div class="flex-1 min-w-0">
-                                        <p class="text-white font-black text-[13px]">Chapter Mind Maps</p>
-                                        <p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p>
-                                    </div>
-                                    <button onclick="edFlipBack(this);switchTab('mindmaps')" class="px-4 py-2 rounded-xl bg-white text-slate-900 text-xs font-black cursor-pointer shrink-0 hover:scale-105 transition">खोलो ›</button>
-                                </div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('mindmaps')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Chapter Mind Maps</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-slate-50 border-2 border-dashed border-slate-200 flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -1100,11 +1134,11 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="flex items-center justify-between gap-3 flex-wrap">
                         <div>
                             <p class="text-[10px] font-black text-red-500 uppercase tracking-wider">⏳ Board Exam Countdown</p>
-                            <p class="text-2xl font-black text-red-600 mono-font" id="countdown-days">Date chuno 👇</p>
+                            <p class="text-xl sm:text-2xl font-black text-red-600" id="countdown-days">पहले अपनी exam date चुनो 👇</p>
                         </div>
-                        <input type="date" id="exam-date-input" onchange="setExamDate(this.value)" class="bg-white border border-red-200 rounded-xl p-2 text-xs font-bold text-slate-700 outline-none focus:border-red-500">
+                        <input type="date" id="exam-date-input" onchange="setExamDate(this.value)" min="2026-10-01" class="bg-white border border-red-200 rounded-xl p-2 text-xs font-bold text-slate-700 outline-none focus:border-red-500" title="अपनी बोर्ड exam की date चुनो">
                     </div>
-                    <p class="text-[11px] font-bold text-red-700" id="countdown-motivation">अपनी exam date चुनो — रोज़ यहाँ countdown दिखेगा!</p>
+                    <p class="text-[11px] font-bold text-red-700" id="countdown-motivation">⚡ Tip: Board exams आमतौर पर Feb–Mar में होते हैं — date चुनते ही रोज़ का countdown शुरू!</p>
                 </div>
 
                 <!-- 🧠 AJ KA CONCEPT -->
@@ -2353,7 +2387,7 @@ gtag('config', 'G-51MMG9S9F6');
                                 <span class="w-2.5 h-2.5 rounded-full bg-blue-600"></span> All India EDUVA Test क्या है?
                             </h3>
                             <p class="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-4">
-                                पूरे भारत के बच्चों के साथ एक FREE online test — 25 MCQ, 50 मिनट, class-wise All India Rank। हर participant को Certificate + Analysis, Top 100 को 1 साल और Top 5 को 3 साल की subscription FREE। Test page से FREE register करो!
+                                पूरे भारत के बच्चों के साथ एक FREE online test — 25 MCQ, 50 मिनट, class-wise All India Rank। हर participant को Certificate + Analysis, Top 100 को 1 साल और Top 5 को 3 साल तक सभी features FREE! Test page से FREE register करो!
                             </p>
                         </div>
 
@@ -4534,8 +4568,8 @@ gtag('config', 'G-51MMG9S9F6');
             </div>
             <div class="p-4 bg-gradient-to-r from-yellow-50 to-amber-50 border-2 border-amber-300 rounded-2xl space-y-1.5">
                 <p class="text-xs font-black text-amber-900">🎁 PRIZES:</p>
-                <p class="text-[11px] font-bold text-amber-800">🥇 <b>TOP 5</b> → 3 साल की subscription bilkul FREE</p>
-                <p class="text-[11px] font-bold text-amber-800">🥈 <b>TOP 100</b> → 1 साल की subscription bilkul FREE</p>
+                <p class="text-[11px] font-bold text-amber-800">🥇 <b>TOP 5</b> → 3 साल तक sabhi features bilkul FREE</p>
+                <p class="text-[11px] font-bold text-amber-800">🥈 <b>TOP 100</b> → 1 साल tak sabhi features bilkul FREE</p>
                 <p class="text-[11px] font-bold text-amber-800">📜 <b>SABHI participants</b> → Digital Participation Certificate + Full Analysis Report</p>
             </div>
             <div id="ait-body" class="space-y-4">
@@ -4848,8 +4882,8 @@ gtag('config', 'G-51MMG9S9F6');
             </div>
             <div class="mt-6 bg-gradient-to-r from-amber-400 to-yellow-300 rounded-3xl p-5 sm:p-6 space-y-2 text-amber-950">
                 <p class="font-black text-base sm:text-lg">🎁 INAAM (सब FREE!)</p>
-                <p class="font-bold text-sm">🥇 <b>TOP 5</b> — 3 साल की subscription बिल्कुल FREE</p>
-                <p class="font-bold text-sm">🥈 <b>TOP 100</b> — 1 साल की subscription बिल्कुल FREE</p>
+                <p class="font-bold text-sm">🥇 <b>TOP 5</b> — 3 साल तक सभी features बिल्कुल FREE</p>
+                <p class="font-bold text-sm">🥈 <b>TOP 100</b> — 1 साल तक सभी features बिल्कुल FREE</p>
                 <p class="font-bold text-sm">📜 <b>सभी participants</b> — Digital Certificate + पूरी Analysis Report</p>
             </div>
             <div class="mt-6 bg-white/10 border border-white/15 rounded-3xl p-5 space-y-3 text-white">
@@ -5496,6 +5530,123 @@ if ('serviceWorker' in navigator) {
     document.addEventListener('DOMContentLoaded', function(){
         if(localStorage.getItem('eduva_remind') === '1'){ startRemind(); setRemindUI(true); }
     });
+    </script>
+
+
+    <!-- 😊 Tone patch: धमकी -> दोस्ताना (core.js के rendered texts) -->
+    <script>
+    (function(){
+        var MAP = [
+            ['प्रतिबंधित', 'सीमित'],
+            ['🚫 डाउनलोड', '🔒 डाउनलोड'],
+            ['Student✔ Verified', '👤 Student'],
+            ['Eduva Medicos • Class 12', 'अपना नाम यहाँ सेट करो ✏️'],
+            ['प्रतिबंधित है', 'सीमित है']
+        ];
+        function edCopyPatch(){
+            try {
+                var w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+                var n, hit;
+                while(n = w.nextNode()){
+                    hit = false;
+                    for(var i=0;i<MAP.length;i++){
+                        if(n.nodeValue && n.nodeValue.indexOf(MAP[i][0]) !== -1){
+                            n.nodeValue = n.nodeValue.split(MAP[i][0]).join(MAP[i][1]); hit = true;
+                        }
+                    }
+                }
+            } catch(e){}
+        }
+        document.addEventListener('DOMContentLoaded', edCopyPatch);
+        window.addEventListener('load', function(){ edCopyPatch(); setTimeout(edCopyPatch, 2000); setTimeout(edCopyPatch, 6000); });
+    })();
+    </script>
+
+
+    <!-- 📈 Analytics bridge: GA4 ID paste karo — bina ID ke dormant (zero cost) -->
+    <script>
+    (function(){
+        var GA4_ID = "G-51MMG9S9F6"; // ✅ EDUVA GA4 web stream
+        window.edAnalyticsConfig = { ga4: GA4_ID };
+        if(GA4_ID){
+            var s = document.createElement('script'); s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA4_ID;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function(){ window.dataLayer.push(arguments); };
+            window.gtag('js', new Date());
+            window.gtag('config', GA4_ID);
+        }
+        window.edLogEvent = function(evt){
+            try {
+                var a = JSON.parse(localStorage.getItem('eduva_analytics') || '[]');
+                a.push({e: evt, t: Date.now()});
+                if(a.length > 800) a = a.slice(-800);
+                localStorage.setItem('eduva_analytics', JSON.stringify(a));
+            } catch(e){}
+            if(window.gtag){ try{ window.gtag('event', evt); }catch(e){} }
+        };
+    })();
+    </script>
+
+
+    <!-- 🎯 First-visit onboarding (sirf pehli baar) -->
+    <div id="ed-onboard" class="hidden fixed inset-0 z-[95] flex items-center justify-center p-5" style="background:rgba(11,16,35,.75);backdrop-filter:blur(8px);">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-sm w-full p-6 text-center relative overflow-hidden">
+            <div style="position:absolute;top:-40px;right:-40px;width:130px;height:130px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#e0e7ff);opacity:.6;"></div>
+            <div id="ed-ob-emoji" style="font-size:56px;animation:edSpBounce 1.2s ease infinite alternate;">📸</div>
+            <h3 id="ed-ob-title" class="text-lg font-black text-slate-900 mt-3">Photo bhejo, turant solution</h3>
+            <p id="ed-ob-text" class="text-[13px] font-semibold text-slate-500 mt-2 leading-relaxed">Kisi bhi sawal ki photo khicho — step-by-step solution Hindi ya English mein. Homework ho ya exam prep!</p>
+            <div class="flex justify-center gap-1.5 mt-5" id="ed-ob-dots">
+                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+            </div>
+            <div class="flex gap-2.5 mt-5">
+                <button onclick="edObFinish()" class="flex-1 py-3 rounded-2xl bg-slate-100 text-slate-600 font-black text-sm cursor-pointer">Skip</button>
+                <button onclick="edObNext()" id="ed-ob-next" class="flex-1 py-3 rounded-2xl bg-indigo-600 text-white font-black text-sm cursor-pointer">Aage ›</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 🎯 Onboarding logic -->
+    <script>
+    (function(){
+        var SLIDES = [
+            {e:'📸', t:'Photo bhejo, turant solution', d:'Kisi bhi sawal ki photo khicho — step-by-step solution Hindi ya English mein. Homework ho ya exam prep!'},
+            {e:'📝', t:'Test do, XP kamao', d:'Daily quizzes, mock tests, All India Test — poore India ke students ke saath compete karo. Certificates bhi!'},
+            {e:'🌱', t:'Apna progress dekh', d:'Streak, mistake book, aur parent report — mummy-papa ko teri progress seedha WhatsApp par milegi!'}
+        ];
+        var cur = 0;
+        function render(){
+            var s = SLIDES[cur];
+            document.getElementById('ed-ob-emoji').textContent = s.e;
+            document.getElementById('ed-ob-title').textContent = s.t;
+            document.getElementById('ed-ob-text').textContent = s.d;
+            var dots = document.getElementById('ed-ob-dots').children;
+            for(var i=0;i<dots.length;i++){ dots[i].className = 'w-2 h-2 rounded-full ' + (i===cur ? 'bg-indigo-600' : 'bg-slate-300'); }
+            document.getElementById('ed-ob-next').textContent = cur === SLIDES.length-1 ? 'Shuru karo! 🚀' : 'Aage ›';
+        }
+        window.edObNext = function(){
+            if(cur < SLIDES.length-1){ cur++; render(); } else { edObFinish(); }
+        };
+        window.edObFinish = function(){
+            try{ localStorage.setItem('eduva_onboarded_v1','1'); }catch(e){}
+            var el = document.getElementById('ed-onboard');
+            if(el){ el.style.transition='opacity .4s'; el.style.opacity='0'; setTimeout(function(){ el.remove(); },420); }
+        };
+        document.addEventListener('DOMContentLoaded', function(){
+            try {
+                if(!localStorage.getItem('eduva_onboarded_v1')){
+                    setTimeout(function(){
+                        var el = document.getElementById('ed-onboard');
+                        if(el){ el.classList.remove('hidden'); render(); }
+                    }, 2400);
+                }
+            } catch(e){}
+        });
+    })();
     </script>
 
 </body>
