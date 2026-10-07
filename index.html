@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v2.7-20261007 -->
+<!-- BUILD: EDUVA-v2.9-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -555,7 +555,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <div class="hidden sm:flex bg-red-500/20 border border-red-300/30 px-3.5 py-1.5 rounded-full items-center gap-1.5 shadow-2xs">
                 <i data-lucide="flame" class="w-4 h-4 text-amber-300 fill-amber-300"></i>
-                <span class="text-xs font-black text-white mono-font" id="header-streak-display">12 STREAK</span>
+                <span class="text-xs font-black text-white mono-font" id="header-streak-display">0 STREAK</span>
             </div>
         </div>
     </header>
@@ -842,6 +842,7 @@ gtag('config', 'G-51MMG9S9F6');
                         <div class="edh-anim mt-5" style="animation-delay:.9s">
                             <span class="inline-block bg-amber-400 text-slate-900 text-xs sm:text-sm font-black px-5 py-2.5 rounded-full shadow-[0_8px_25px_rgba(251,191,36,.4)]">🎁 31 December 2026 तक — 100% FREE • No Ads • No Fees</span>
                         </div>
+                        <p class="edh-anim mt-3 text-[10.5px] font-bold text-white/50" style="animation-delay:1s">🔒 तुम्हारी photo सिर्फ solution निकालने के लिए use होती है — कहीं save या share नहीं होती</p>
                     </div>
                 </div>
 <!-- ========== शुरुआत यहाँ करो — 4 Quick Actions (P0: homepage simplification) ========== -->
@@ -925,7 +926,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v2.7</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v2.9</span></p>
                     </div>
                 </div>
 
@@ -953,61 +954,61 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="rounded-3xl bg-white p-4 sm:p-5">
                         <div class="flex items-center justify-between mb-3.5">
                             <h3 class="font-black text-slate-900 text-sm sm:text-base">🆕 Naye Features</h3>
-                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">5 Live • 1 Coming Soon • 🔄 tap to flip</span>
+                            <span class="text-[9px] font-black uppercase tracking-widest text-emerald-600 bg-emerald-50 border border-emerald-200 px-2 py-1 rounded-full">5 Live • 1 Coming Soon</span>
                         </div>
                         <div class="space-y-2.5">
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-green-600 to-emerald-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                <div class="ed-flip-front bg-gradient-to-r from-green-600 to-emerald-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edPrefillDoubt('check')">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🧮</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">Solution Checker <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
                                         <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Apna solved answer bhejo — AI batayega sahi hai aur galti kahan hai</p>
                                     </div>
-                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                    <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('check')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Solution Checker</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                <div class="ed-flip-front bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edPrefillDoubt('golubolu')">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎭</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">Golu-Bolu Mode <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
                                         <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Koi bhi topic — Golu-Bolu ki funny style mein samjho</p>
                                     </div>
-                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                    <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('golubolu')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Golu-Bolu Mode</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('ai-course')">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎓</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">AI Mastery Course <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
                                         <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Poora structured course — 8 modules, 25 lessons, progress ke saath</p>
                                     </div>
-                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                    <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('ai-course')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('audio')">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎧</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">NCERT Audio <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
                                         <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">Chapters suno — travel mein bhi padhai. Apna text bhi suna sakte ho!</p>
                                     </div>
-                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                    <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('audio')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">NCERT Audio</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
+                                <div class="ed-flip-front bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('mindmaps')">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🗺️</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">Chapter Mind Maps <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
                                         <p class="text-white/85 text-[11px] font-semibold leading-snug mt-0.5">1 screen mein poora chapter — exam se pehle 5 min revision</p>
                                     </div>
-                                    <span class="text-white/80 text-lg shrink-0">🔄</span>
+                                    <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('mindmaps')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Chapter Mind Maps</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
@@ -2257,12 +2258,11 @@ gtag('config', 'G-51MMG9S9F6');
 
                     <!-- Badges & Achievements -->
                     <div class="space-y-3 pt-2">
-                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Badges & Achievements (Level 8)</h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                            <div class="p-4 bg-amber-50 border border-amber-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🔥</div><p class="text-xs font-bold text-slate-900">7 Day Streak</p></div>
-                            <div class="p-4 bg-purple-50 border border-purple-200 rounded-2xl text-center space-y-1"><div class="text-2xl">👑</div><p class="text-xs font-bold text-slate-900">Doubt Master</p></div>
-                            <div class="p-4 bg-blue-50 border border-blue-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🎯</div><p class="text-xs font-bold text-slate-900">100 Questions</p></div>
-                            <div class="p-4 bg-emerald-50 border border-emerald-200 rounded-2xl text-center space-y-1"><div class="text-2xl">🏆</div><p class="text-xs font-bold text-slate-900">Test Champion</p></div>
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">Badges & Achievements</h3>
+                        <div class="p-4 rounded-2xl border-2 border-dashed border-amber-200 bg-amber-50/50 text-center space-y-1.5">
+                            <p class="text-2xl">🔥</p>
+                            <p class="text-xs font-black text-slate-800">Pehla badge yahin banega!</p>
+                            <p class="text-[11px] text-slate-500 font-semibold">Tests do, streak banao — real badges real achievements se milte hain 💪</p>
                         </div>
                     </div>
 
@@ -3421,7 +3421,7 @@ gtag('config', 'G-51MMG9S9F6');
         <div id="pg-result-wrap" class="hidden space-y-3">
             <div class="p-4 bg-indigo-50 border border-indigo-200 rounded-2xl space-y-1">
                 <p id="pg-time-estimate" class="text-xs font-black text-indigo-800"></p>
-                <p class="text-[10px] font-bold text-rose-500">🔒 यह पेपर 2 घंटे बाद सिस्टम से अपने आप delete हो जाएगा — पहले save कर लो। EDUVA पर कोई copy नहीं रखता।</p>
+                <p class="text-[10px] font-bold text-rose-500">🔒 यह link जल्द expire हो जाएगा — पहले save कर लो। EDUVA पर कोई copy नहीं रखता।</p>
             </div>
             <div id="pg-result" class="space-y-3"></div>
             <div class="p-5 bg-white border border-slate-200 rounded-2xl max-h-[60vh] overflow-y-auto hide-scrollbar">
@@ -3507,7 +3507,7 @@ gtag('config', 'G-51MMG9S9F6');
 
         <div id="dp-result-wrap" class="hidden space-y-3">
             <div class="p-4 bg-teal-50 border border-teal-200 rounded-2xl">
-                <p class="text-[10px] font-bold text-rose-500">🔒 यह sheet भी 2 घंटे बाद system से अपने आप delete हो जाएगी — पहले save कर लो।</p>
+                <p class="text-[10px] font-bold text-rose-500">🔒 यह link भी जल्द expire होगी — पहले save कर लो।</p>
             </div>
             <div id="dp-result" class="space-y-3"></div>
             <div class="p-5 bg-white border border-slate-200 rounded-2xl max-h-[60vh] overflow-y-auto hide-scrollbar">
@@ -4571,6 +4571,7 @@ gtag('config', 'G-51MMG9S9F6');
                 <p class="text-[11px] font-bold text-amber-800">🥇 <b>TOP 5</b> → 3 साल तक sabhi features bilkul FREE</p>
                 <p class="text-[11px] font-bold text-amber-800">🥈 <b>TOP 100</b> → 1 साल tak sabhi features bilkul FREE</p>
                 <p class="text-[11px] font-bold text-amber-800">📜 <b>SABHI participants</b> → Digital Participation Certificate + Full Analysis Report</p>
+                            <p class="text-[10px] font-bold text-emerald-700 mt-1">✅ यह prize हमेशा मिलेगा — 31 Dec 2026 के बाद भी Top ranks को reward जारी रहेगा।</p>
             </div>
             <div id="ait-body" class="space-y-4">
                 <button onclick="registerAIT()" id="ait-reg-btn" class="w-full py-4 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-black text-sm rounded-2xl shadow-md transition cursor-pointer">✍️ REGISTER HERE — FREE!</button>
@@ -4606,7 +4607,7 @@ gtag('config', 'G-51MMG9S9F6');
             <div id="legal-privacy" class="legal-tab text-xs sm:text-sm text-slate-700 font-medium space-y-3 leading-relaxed">
                 <p class="font-black text-slate-900 text-base">🔒 Privacy Policy</p>
                 <p><b>1. Kaunsi information milti hai:</b> Login ke waqt tumhara naam aur email. App mein tumhari padhai ki progress (streak, XP, homework marks, test scores) tumhare device par (localStorage) aur Google Firebase (secure cloud) par save hoti hai.</p>
-                <p><b>2. Bachchon ki privacy (DPDP Act 2023):</b> EDUVA ka target students hain. Hum koi ads nahi dikhate, koi data bechte nahi, aur koi third-party tracking nahi karte. Agar tum 18 saal se kam ke ho, toh app use karte waqt apne parents/guardian ko batao aur unki permission lo.</p>
+                <p><b>2. Bachchon ki privacy (DPDP Act 2023):</b> EDUVA ka target students hain. Hum koi ads nahi dikhate, koi data bechte nahi, aur koi third-party tracking nahi karte. Agar tum 18 saal se kam ke ho, toh app use karte waqt apne parents/guardian ko batao aur unki permission lo. AI (Google Gemini) se solve karne ke liye bheji jaati hain — यह सिर्फ solving के लिए है, कहीं store या share नहीं होती।</p>
                 <p><b>3. Data ka use:</b> Sirf tumhari padhai behtar banane ke liye — doubts ke jawab, homework checking, rank/leaderboard. Tumhare upload kiye notes/question sirf tumhari permission (consent checkbox) ke saath hi EDUVA ki library mein use hote hain.</p>
                 <p><b>4. Third-party services:</b> Authentication & database: Google Firebase. AI answers: Google Gemini. Ye services apne security standards follow karti hain.</p>
                 <p><b>5. Tumhare rights:</b> Kisi bhi waqt Profile → Account Delete se apna account aur data hamesha ke liye delete kar sakte ho. Feedback/contact: <b>team.eduva@gmail.com</b></p>
@@ -5541,6 +5542,8 @@ if ('serviceWorker' in navigator) {
             ['🚫 डाउनलोड', '🔒 डाउनलोड'],
             ['Student✔ Verified', '👤 Student'],
             ['Eduva Medicos • Class 12', 'अपना नाम यहाँ सेट करो ✏️'],
+            ['PASTE_EMBED_URL_HERE', 'Analytics जल्द configure होगा'],
+            ['Mujhe woh URL bhej do', 'Founder analytics यहाँ setup होगा'],
             ['प्रतिबंधित है', 'सीमित है']
         ];
         function edCopyPatch(){
