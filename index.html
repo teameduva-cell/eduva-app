@@ -378,6 +378,22 @@ gtag('config', 'G-51MMG9S9F6');
     @keyframes edSkel{0%{background-position:200% 0}100%{background-position:-200% 0}}
 </style></head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
+    <!-- 🎬 Splash screen -->
+    <div id="ed-splash" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(150deg,#0b1023,#1e1b4b);display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .5s ease;">
+        <div style="font-size:64px;animation:edSpBounce 1s ease infinite alternate;">👦🏻👦🏻</div>
+        <div style="color:#fff;font-weight:900;font-size:32px;letter-spacing:2px;margin-top:12px;">EDUVA</div>
+        <div style="color:rgba(255,255,255,.6);font-weight:700;font-size:13px;margin-top:4px;">Padhai ka asli dost 💙</div>
+        <div style="width:120px;height:5px;background:rgba(255,255,255,.15);border-radius:99px;margin-top:28px;overflow:hidden;">
+            <div style="width:40%;height:100%;background:#fbbf24;border-radius:99px;animation:edSpLoad 1.2s ease-in-out infinite;"></div>
+        </div>
+        <style>@keyframes edSpBounce{from{transform:translateY(0)}to{transform:translateY(-12px)}}@keyframes edSpLoad{0%{margin-left:-40%}100%{margin-left:100%}}</style>
+    </div>
+    <script>
+    (function(){ function hideSp(){ var s=document.getElementById('ed-splash'); if(!s) return; s.style.opacity='0'; setTimeout(function(){ s.remove(); },520); }
+        window.addEventListener('load', function(){ setTimeout(hideSp, 700); });
+        setTimeout(hideSp, 3500); })();
+    </script>
+
 
     <!-- TOP PROFESSIONAL HEADER -->
     <header class="header-custom" id="app-header">
@@ -674,14 +690,14 @@ gtag('config', 'G-51MMG9S9F6');
 
                 <!-- HERO 2.0 — WOW first impression -->
                 <style>
-                .edh-anim{opacity:0;animation:edFadeUp .8s cubic-bezier(.22,1,.36,1) forwards}
+                .edh-anim{animation:edFadeUp .8s cubic-bezier(.22,1,.36,1) backwards}
                 @keyframes edFadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-                .ed-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:edDrift 14s ease-in-out infinite alternate}
+                .ed-blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:.55;animation:edDrift 14s ease-in-out infinite alternate;-webkit-transform:translateZ(0);transform:translateZ(0)}
                 @keyframes edDrift{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-30px) scale(1.15)}}
                 .ed-blob2{animation-duration:18s;animation-delay:-6s}
                 .ed-blob3{animation-duration:22s;animation-delay:-12s}
-                .ed-phone{animation:edFloat3d 6s ease-in-out infinite;transform-style:preserve-3d}
-                @keyframes edFloat3d{0%,100%{transform:translateY(0) rotateY(-12deg) rotateX(5deg)}50%{transform:translateY(-14px) rotateY(12deg) rotateX(-5deg)}}
+                .ed-phone{animation:edFloat3d 6s ease-in-out infinite;-webkit-backface-visibility:hidden;backface-visibility:hidden;will-change:transform}
+                @keyframes edFloat3d{0%,100%{transform:translateY(0) rotateY(-10deg)}50%{transform:translateY(-12px) rotateY(10deg)}}
                 .ed-typing span{display:inline-block;width:6px;height:6px;border-radius:50%;background:#64748b;margin-right:3px;animation:edBlink 1.2s infinite}
                 .ed-typing span:nth-child(2){animation-delay:.2s}.ed-typing span:nth-child(3){animation-delay:.4s}
                 @keyframes edBlink{0%,80%,100%{opacity:.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
@@ -692,9 +708,9 @@ gtag('config', 'G-51MMG9S9F6');
                 @keyframes edGrad{0%{background-position:0% 50%}100%{background-position:300% 50%}}
                 .ed-dotpulse{animation:edPulse 1.6s ease-in-out infinite}
                 @keyframes edPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.75)}}
-                .ed-bubblein{opacity:0;animation:edFadeUp .6s ease forwards}
+                .ed-bubblein{animation:edFadeUp .6s ease backwards}
                 </style>
-                <div class="rounded-[28px] relative overflow-hidden shadow-2xl" style="background:linear-gradient(150deg,#0b1023 0%,#151a35 45%,#1e1b4b 100%);">
+                <div class="rounded-[28px] relative overflow-hidden shadow-2xl" style="background:linear-gradient(150deg,#0b1023 0%,#151a35 45%,#1e1b4b 100%);isolation:isolate;">
                     <!-- Aurora blobs -->
                     <div class="ed-blob" style="width:340px;height:340px;background:#3b82f6;top:-120px;left:-100px;"></div>
                     <div class="ed-blob ed-blob2" style="width:280px;height:280px;background:#8b5cf6;bottom:-100px;right:-60px;"></div>
@@ -847,6 +863,18 @@ gtag('config', 'G-51MMG9S9F6');
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
                         <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega</p>
                     </div>
+                </div>
+
+                <!-- 🎁 Invite + 🔔 Reminder bar -->
+                <div class="grid grid-cols-2 gap-2.5">
+                    <button onclick="edInvite()" class="p-3 rounded-2xl bg-gradient-to-r from-rose-500 to-pink-600 text-white text-left cursor-pointer shadow-md hover:scale-[1.02] transition">
+                        <p class="text-[11px] font-black">🎁 Dost ko batao</p>
+                        <p class="text-[9px] font-bold text-white/80">Share karo — dono ko +50 XP!</p>
+                    </button>
+                    <button onclick="edToggleReminder(this)" id="ed-remind-btn" class="p-3 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-left cursor-pointer hover:scale-[1.02] transition">
+                        <p class="text-[11px] font-black">🔔 Daily reminder</p>
+                        <p class="text-[9px] font-bold" id="ed-remind-state">7 PM • OFF</p>
+                    </button>
                 </div>
 
                 <style>
@@ -2889,7 +2917,7 @@ gtag('config', 'G-51MMG9S9F6');
                                 <p id="ai-lesson-mins" class="text-[11px] text-slate-400 font-bold"></p>
                             </div>
                             <div class="flex gap-1.5 shrink-0">
-                                <button onclick="aiSetLang(aiLang==='hi'?'en':'hi')" class="h-9 px-2.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-[11px] font-black cursor-pointer hover:bg-cyan-100" id="ai-lang-btn">🌐 EN</button>
+                                <button onclick="aiToggleLang()" class="h-9 px-2.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-[11px] font-black cursor-pointer hover:bg-cyan-100" id="ai-lang-btn">🌐 EN</button>
                                 <button onclick="aiCloseLesson()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer">✕</button>
                             </div>
                         </div>
@@ -5060,6 +5088,7 @@ if ('serviceWorker' in navigator) {
     let aiCurrent = null;
     let aiLang = 'hi';
     function aiSetLang(lg){ aiLang = lg; if(aiCurrent){ aiOpenLesson(aiCurrent.mi, aiCurrent.li); } }
+    function aiToggleLang(){ aiSetLang(aiLang==='hi' ? 'en' : 'hi'); }
     function aiOpenLesson(mi, li){
         const l = AI_COURSE[mi].lessons[li];
         aiCurrent = {mi, li};
@@ -5245,6 +5274,228 @@ if ('serviceWorker' in navigator) {
     <script>
     function edFlip(el){ if(el) el.classList.toggle('ed-flipped'); }
     function edFlipBack(btn){ var f=btn.closest('.ed-flip'); if(f) f.classList.remove('ed-flipped'); }
+    </script>
+
+
+    <!-- 📱 Mobile scroll-fix: har view change par top par le jao + safety fallback -->
+    <script>
+    (function(){
+        function edFallbackShowView(name){
+            var secs = document.querySelectorAll('section[id^="view-"]');
+            for(var i=0;i<secs.length;i++){ secs[i].classList.add('hidden'); }
+            var v = document.getElementById('view-'+name);
+            if(v){ v.classList.remove('hidden'); }
+            window.scrollTo(0,0);
+        }
+        function edPatch(){
+            if(typeof switchTab !== 'function' || switchTab._edPatched) return;
+            var orig = switchTab;
+            var wrapped = function(name){
+                var r;
+                try { r = orig.apply(this, arguments); } catch(e){ r = undefined; }
+                var v = document.getElementById('view-'+name);
+                if(v && v.classList.contains('hidden')){
+                    edFallbackShowView(name);
+                } else {
+                    window.scrollTo(0,0);
+                }
+                return r;
+            };
+            wrapped._edPatched = true;
+            window.switchTab = wrapped;
+        }
+        if(document.readyState === 'complete'){ edPatch(); }
+        else { window.addEventListener('load', edPatch); }
+    })();
+    </script>
+
+
+    <!-- ✨ POLISH PACK 1: haptics + confetti -->
+    <script>
+    // --- Haptics: har tap पर हल्की vibration (supported phones पर) ---
+    document.addEventListener('click', function(e){
+        var t = e.target.closest('button, a, .ed-flip-front, [role="button"]');
+        if(t && navigator.vibrate){ try{ navigator.vibrate(8); }catch(err){} }
+    }, {passive:true});
+
+    // --- Confetti: हल्का canvas celebration ---
+    function edConfetti(){
+        if(document.getElementById('ed-confetti-canvas')) return;
+        var c = document.createElement('canvas');
+        c.id = 'ed-confetti-canvas';
+        c.style.cssText = 'position:fixed;inset:0;z-index:9998;pointer-events:none;';
+        document.body.appendChild(c);
+        var ctx = c.getContext('2d');
+        c.width = innerWidth; c.height = innerHeight;
+        var colors = ['#f59e0b','#ef4444','#8b5cf6','#3b82f6','#10b981','#ec4899'];
+        var parts = [];
+        for(var i=0;i<130;i++){
+            parts.push({x:Math.random()*c.width, y:-20-Math.random()*c.height*.4, w:6+Math.random()*6, h:8+Math.random()*8,
+                vy:2.2+Math.random()*3, vx:-1.6+Math.random()*3.2, r:Math.random()*Math.PI, vr:-.12+Math.random()*.24,
+                col:colors[i%colors.length]});
+        }
+        var start = Date.now();
+        (function anim(){
+            ctx.clearRect(0,0,c.width,c.height);
+            var alive = false;
+            parts.forEach(function(p){
+                p.y += p.vy; p.x += p.vx; p.r += p.vr;
+                if(p.y < c.height+30) alive = true;
+                ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+                ctx.fillStyle = p.col; ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h); ctx.restore();
+            });
+            if(alive && Date.now()-start < 3200) requestAnimationFrame(anim);
+            else c.remove();
+        })();
+        if(navigator.vibrate){ try{ navigator.vibrate([30,60,30]); }catch(e){} }
+    }
+
+    // Trigger 1: Mock test success (poll light)
+    var _edTestCelebrated = false;
+    setInterval(function(){
+        if(_edTestCelebrated) return;
+        var box = document.getElementById('mocktest-result-box');
+        if(box && !box.classList.contains('hidden')){
+            _edTestCelebrated = true; edConfetti();
+            setTimeout(function(){ _edTestCelebrated = false; }, 60000);
+        }
+    }, 1500);
+
+    // Trigger 2: AI Course 100%
+    if(typeof aiRenderCourse === 'function' && !aiRenderCourse._edConf){
+        var _origAI = aiRenderCourse;
+        window.aiRenderCourse = function(){
+            _origAI.apply(this, arguments);
+            try {
+                var p = document.getElementById('ai-course-pct');
+                if(p && p.textContent.indexOf('100') === 0 && !localStorage.getItem('eduvaAI100')){
+                    localStorage.setItem('eduvaAI100','1'); edConfetti();
+                }
+            } catch(e){}
+        };
+        window.aiRenderCourse._edConf = true;
+    }
+    </script>
+
+
+    <!-- ✨ POLISH PACK 2: PTR + analytics + referral + reminder -->
+    <script>
+    // --- Pull-to-refresh (home view पर) ---
+    (function(){
+        var startY = null, ptrEl = null;
+        document.addEventListener('touchstart', function(e){
+            if(window.scrollY <= 0){ startY = e.touches[0].clientY; }
+        }, {passive:true});
+        document.addEventListener('touchmove', function(e){
+            if(startY === null) return;
+            var dy = e.touches[0].clientY - startY;
+            if(dy > 90 && !ptrEl){
+                ptrEl = document.createElement('div');
+                ptrEl.textContent = '⬇️ छोड़ो — refresh...';
+                ptrEl.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);z-index:9997;background:#0f172a;color:#fff;padding:8px 16px;border-radius:99px;font-size:12px;font-weight:800;box-shadow:0 6px 20px rgba(0,0,0,.3)';
+                document.body.appendChild(ptrEl);
+            }
+        }, {passive:true});
+        document.addEventListener('touchend', function(e){
+            if(ptrEl){ ptrEl.remove(); ptrEl = null;
+                if(navigator.vibrate){ try{ navigator.vibrate(15); }catch(err){} }
+                location.reload();
+            }
+            startY = null;
+        }, {passive:true});
+    })();
+
+    // --- Analytics-lite: kaunsa feature kitna use hota hai (localStorage) ---
+    (function(){
+        function log(evt){
+            try {
+                var a = JSON.parse(localStorage.getItem('eduva_analytics') || '[]');
+                a.push({e: evt, t: Date.now()});
+                if(a.length > 800) a = a.slice(-800);
+                localStorage.setItem('eduva_analytics', JSON.stringify(a));
+            } catch(e){}
+        }
+        window.edLogEvent = log;
+        if(typeof switchTab === 'function' && !switchTab._edAnalytics){
+            var orig = switchTab;
+            var w2 = function(name){ log('view:'+name); return orig.apply(this, arguments); };
+            w2._edAnalytics = true; w2._edPatched = true;
+            window.switchTab = w2;
+        }
+        log('app_open');
+    })();
+
+    // --- Referral: ?ref= capture + share ---
+    (function(){
+        try {
+            var url = new URL(location.href);
+            var ref = url.searchParams.get('ref');
+            if(ref && !localStorage.getItem('eduva_ref_by')){
+                localStorage.setItem('eduva_ref_by', ref);
+                localStorage.setItem('eduva_ref_xp', '50');
+                if(typeof edToast !== 'function'){
+                    var t = document.createElement('div');
+                    t.textContent = '🎉 Referral active! +50 XP milega';
+                    t.style.cssText = 'position:fixed;bottom:90px;left:50%;transform:translateX(-50%);z-index:9996;background:#059669;color:#fff;padding:10px 18px;border-radius:99px;font-size:13px;font-weight:800;box-shadow:0 8px 25px rgba(0,0,0,.3)';
+                    document.body.appendChild(t);
+                    setTimeout(function(){ t.remove(); }, 3000);
+                }
+            }
+        } catch(e){}
+    })();
+    function edInvite(){
+        var link = location.origin + location.pathname + '?ref=student_' + Math.random().toString(36).slice(2,7);
+        var text = 'EDUVA app try kar — FREE hai, ads nahi! 👉 ' + link;
+        if(navigator.share){
+            navigator.share({title:'EDUVA — Free Study App', text:text, url:link}).catch(function(){});
+        } else if(navigator.clipboard){
+            navigator.clipboard.writeText(text).then(function(){ alert('📋 Link copy ho gaya! WhatsApp par paste kar do.'); });
+        } else {
+            prompt('Link copy karo:', text);
+        }
+        if(window.edLogEvent) edLogEvent('invite_clicked');
+    }
+
+    // --- Daily reminder (local, jab app khula ho) ---
+    var _edRemindTimer = null;
+    function edToggleReminder(btn){
+        var on = localStorage.getItem('eduva_remind') === '1';
+        if(on){
+            localStorage.setItem('eduva_remind','0');
+            if(_edRemindTimer){ clearInterval(_edRemindTimer); _edRemindTimer = null; }
+            setRemindUI(false);
+            return;
+        }
+        if(!('Notification' in window)){ alert('Tumhara browser notifications support nahi karta 😅'); return; }
+        Notification.requestPermission().then(function(p){
+            if(p === 'granted'){
+                localStorage.setItem('eduva_remind','1');
+                startRemind(); setRemindUI(true);
+            } else { alert('Notification permission nahi mili — browser settings se allow karo.'); }
+        });
+    }
+    function setRemindUI(on){
+        var b = document.getElementById('ed-remind-btn'), s = document.getElementById('ed-remind-state');
+        if(!b) return;
+        if(on){ b.className = 'p-3 rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 text-white text-left cursor-pointer hover:scale-[1.02] transition shadow-md'; if(s) s.textContent = '7 PM • ON ✅'; }
+        else { b.className = 'p-3 rounded-2xl bg-slate-100 border border-slate-200 text-slate-600 text-left cursor-pointer hover:scale-[1.02] transition'; if(s) s.textContent = '7 PM • OFF'; }
+    }
+    function startRemind(){
+        if(_edRemindTimer) return;
+        _edRemindTimer = setInterval(function(){
+            try {
+                if(localStorage.getItem('eduva_remind') !== '1') return;
+                var d = new Date();
+                if(d.getHours() === 19 && d.getMinutes() < 2 && localStorage.getItem('eduva_remind_done') !== d.toDateString()){
+                    localStorage.setItem('eduva_remind_done', d.toDateString());
+                    new Notification('📚 EDUVA — Padhai time!', {body:'Aaj ka homework aur AI DPP ready hai. 10 minute de do! 💪'});
+                }
+            } catch(e){}
+        }, 30000);
+    }
+    document.addEventListener('DOMContentLoaded', function(){
+        if(localStorage.getItem('eduva_remind') === '1'){ startRemind(); setRemindUI(true); }
+    });
     </script>
 
 </body>
