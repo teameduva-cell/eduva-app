@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v2.9-20261007 -->
+<!-- BUILD: EDUVA-v3.2-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -926,7 +926,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v2.9</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v3.2</span></p>
                     </div>
                 </div>
 
@@ -1719,14 +1719,32 @@ gtag('config', 'G-51MMG9S9F6');
             <section id="view-avatar-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
 
-                <!-- ⚠️ Honest banner -->
-                <div class="rounded-3xl p-4 sm:p-5 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-300 flex items-start gap-3.5">
-                    <div class="text-3xl shrink-0">🎬</div>
-                    <div>
-                        <p class="font-black text-sm sm:text-base text-amber-900">🎬 Video Learning — दो तरीके अभी Available हैं!</p>
-                        <p class="text-xs sm:text-sm font-semibold text-amber-800 mt-0.5"><b>AI Lecture Studio</b> (अपने topic का live lecture — अभी use करो) और <b>Curated YouTube</b> (कोटा के best teachers — अभी available)। EDUVA Video Library — Coming Soon 🎥</p>
+                <!-- 🎬 GOLU-BOLU APP TOUR VIDEO (lazy-load facade) -->
+                <div class="rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900">
+                    <div class="relative cursor-pointer group" id="ed-tour-thumb" onclick="edPlayTour(this)">
+                        <img src="https://i.ytimg.com/vi/fDtQB65vBHQ/hqdefault.jpg" alt="Golu-Bolu — EDUVA App Tour" class="w-full aspect-video object-cover" loading="lazy">
+                        <div class="absolute inset-0 flex items-center justify-center" style="background:rgba(11,16,35,.35);">
+                            <div class="w-16 h-16 rounded-full bg-red-600 flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+                                <span class="text-white text-2xl ml-1">▶</span>
+                            </div>
+                        </div>
+                        <span class="absolute bottom-2.5 right-2.5 bg-black/80 text-white text-[10px] font-black px-2 py-1 rounded-md">🎬 Golu-Bolu Tour • 60 sec</span>
+                    </div>
+                    <div class="p-3.5 flex items-center gap-3">
+                        <span class="text-xl">🤖</span>
+                        <div class="flex-1 min-w-0">
+                            <p class="text-white font-black text-[13px]">Golu-Bolu का App Tour — 1 video में सारे features!</p>
+                            <p class="text-white/60 text-[10.5px] font-bold">EDUVA में क्या-क्या मिलता है? 60 second में देखो 😄</p>
+                        </div>
                     </div>
                 </div>
+                <script>
+                function edPlayTour(el){
+                    var wrap = el.parentNode;
+                    wrap.innerHTML = '<iframe class="w-full aspect-video" src="https://www.youtube-nocookie.com/embed/fDtQB65vBHQ?autoplay=1&rel=0" title="Golu-Bolu EDUVA Tour" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    if(window.edLogEvent) edLogEvent('tour_video_played');
+                }
+                </script>
 
                 <!-- 🤖 AI LECTURE STUDIO -->
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
@@ -5312,12 +5330,20 @@ if ('serviceWorker' in navigator) {
     </script>
 
 
-    <!-- 📱 Mobile scroll-fix: har view change par top par le jao + safety fallback -->
+    <!-- 📱 VIEW MANAGER: naye views (ai-course/audio/mindmaps) ka poora control -->
     <script>
     (function(){
-        function edFallbackShowView(name){
+        var ED_NEW_VIEWS = ['ai-course', 'audio', 'mindmaps'];
+        function edManageNewViews(target){
+            ED_NEW_VIEWS.forEach(function(v){
+                var el = document.getElementById('view-'+v);
+                if(el){ el.classList.toggle('hidden', v !== target); }
+            });
+        }
+        function edFallbackShow(name){
             var secs = document.querySelectorAll('section[id^="view-"]');
             for(var i=0;i<secs.length;i++){ secs[i].classList.add('hidden'); }
+            edManageNewViews(name);
             var v = document.getElementById('view-'+name);
             if(v){ v.classList.remove('hidden'); }
             window.scrollTo(0,0);
@@ -5326,14 +5352,18 @@ if ('serviceWorker' in navigator) {
             if(typeof switchTab !== 'function' || switchTab._edPatched) return;
             var orig = switchTab;
             var wrapped = function(name){
+                var isNew = ED_NEW_VIEWS.indexOf(name) !== -1;
+                if(isNew){
+                    edFallbackShow(name);
+                    if(window.edLogEvent) edLogEvent('view:'+name);
+                    return;
+                }
                 var r;
                 try { r = orig.apply(this, arguments); } catch(e){ r = undefined; }
+                edManageNewViews('__none__');
                 var v = document.getElementById('view-'+name);
-                if(v && v.classList.contains('hidden')){
-                    edFallbackShowView(name);
-                } else {
-                    window.scrollTo(0,0);
-                }
+                if(v && v.classList.contains('hidden')){ edFallbackShow(name); }
+                else { window.scrollTo(0,0); }
                 return r;
             };
             wrapped._edPatched = true;
@@ -5341,6 +5371,7 @@ if ('serviceWorker' in navigator) {
         }
         if(document.readyState === 'complete'){ edPatch(); }
         else { window.addEventListener('load', edPatch); }
+        window.edForceShowView = edFallbackShow;
     })();
     </script>
 
@@ -5604,6 +5635,7 @@ if ('serviceWorker' in navigator) {
                 <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
                 <span class="w-2 h-2 rounded-full bg-slate-300"></span>
                 <span class="w-2 h-2 rounded-full bg-slate-300"></span>
+                <span class="w-2 h-2 rounded-full bg-slate-300"></span>
             </div>
             <div class="flex gap-2.5 mt-5">
                 <button onclick="edObFinish()" class="flex-1 py-3 rounded-2xl bg-slate-100 text-slate-600 font-black text-sm cursor-pointer">Skip</button>
@@ -5618,17 +5650,33 @@ if ('serviceWorker' in navigator) {
     (function(){
         var SLIDES = [
             {e:'📸', t:'Photo bhejo, turant solution', d:'Kisi bhi sawal ki photo khicho — step-by-step solution Hindi ya English mein. Homework ho ya exam prep!'},
+            {e:'🎬', t:'60 second में पूरा tour', d:'Golu-Bolu से सुनो — EDUVA में क्या-क्या मिलता है!', video:'fDtQB65vBHQ'},
             {e:'📝', t:'Test do, XP kamao', d:'Daily quizzes, mock tests, All India Test — poore India ke students ke saath compete karo. Certificates bhi!'},
             {e:'🌱', t:'Apna progress dekh', d:'Streak, mistake book, aur parent report — mummy-papa ko teri progress seedha WhatsApp par milegi!'}
         ];
         var cur = 0;
+        var _edObVideoLoaded = false;
         function render(){
             var s = SLIDES[cur];
-            document.getElementById('ed-ob-emoji').textContent = s.e;
+            var em = document.getElementById('ed-ob-emoji');
+            if(s.video){
+                if(!_edObVideoLoaded){
+                    em.innerHTML = '<iframe class="w-full rounded-2xl" style="aspect-ratio:16/9;" src="https://www.youtube-nocookie.com/embed/' + s.video + '?rel=0" title="EDUVA Tour" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    em.style.fontSize = '0';
+                    _edObVideoLoaded = true;
+                }
+            } else {
+                if(em.querySelector && em.querySelector('iframe')){ em.innerHTML = s.e; em.style.fontSize = '56px'; }
+                else { em.textContent = s.e; em.style.fontSize = '56px'; }
+            }
             document.getElementById('ed-ob-title').textContent = s.t;
             document.getElementById('ed-ob-text').textContent = s.d;
-            var dots = document.getElementById('ed-ob-dots').children;
-            for(var i=0;i<dots.length;i++){ dots[i].className = 'w-2 h-2 rounded-full ' + (i===cur ? 'bg-indigo-600' : 'bg-slate-300'); }
+            var dotsWrap = document.getElementById('ed-ob-dots');
+            if(dotsWrap.children.length !== SLIDES.length){
+                dotsWrap.innerHTML = SLIDES.map(function(_,i){ return '<span class="w-2 h-2 rounded-full ' + (i===cur?'bg-indigo-600':'bg-slate-300') + '"></span>'; }).join('');
+            } else {
+                for(var i=0;i<dotsWrap.children.length;i++){ dotsWrap.children[i].className = 'w-2 h-2 rounded-full ' + (i===cur ? 'bg-indigo-600' : 'bg-slate-300'); }
+            }
             document.getElementById('ed-ob-next').textContent = cur === SLIDES.length-1 ? 'Shuru karo! 🚀' : 'Aage ›';
         }
         window.edObNext = function(){
