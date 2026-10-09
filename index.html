@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v3.2-20261007 -->
+<!-- BUILD: EDUVA-v3.4-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -384,6 +384,11 @@ gtag('config', 'G-51MMG9S9F6');
 #mobile-bottom-nav button svg{width:19px;height:19px;}
 #mobile-bottom-nav button[onclick="switchTab('chat')"]{width:44px !important;height:44px !important;margin-top:-16px !important;border-width:3px !important;}
 #mobile-bottom-nav button[onclick="switchTab('chat')] svg{width:22px;height:22px;}
+</style>
+<style>
+/* 🎓 AI Course — bulletproof full-screen overlay mode */
+.ed-ai-overlay{position:fixed!important;inset:0!important;overflow-y:auto!important;z-index:75!important;background:#f6f8fc!important;padding:14px!important;-webkit-overflow-scrolling:touch;}
+.ed-ai-overlay .ed-ai-close{display:flex!important;}
 </style>
 </head>
 <body class="bg-paper text-slate-900 min-h-screen flex flex-col antialiased secure-content">
@@ -926,7 +931,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v3.2</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v3.4</span></p>
                     </div>
                 </div>
 
@@ -980,7 +985,7 @@ gtag('config', 'G-51MMG9S9F6');
                                 <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('golubolu')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Golu-Bolu Mode</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
-                                <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('ai-course')">
+                                <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edOpenAI()">
                                     <div class="w-11 h-11 rounded-xl bg-white/20 flex items-center justify-center text-xl shrink-0">🎓</div>
                                     <div class="flex-1 min-w-0">
                                         <p class="text-white font-black text-[13px] leading-tight">AI Mastery Course <span class="ml-1 text-[9px] bg-white/25 px-1.5 py-0.5 rounded-full align-middle font-black">LIVE</span></p>
@@ -988,7 +993,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('ai-course')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edOpenAI()"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('audio')">
@@ -1073,18 +1078,47 @@ gtag('config', 'G-51MMG9S9F6');
                     <i data-lucide="chevron-right" class="w-5 h-5 text-white/80 shrink-0"></i>
                 </button>
 
-                <!-- 🎬 YOUTUBE TUTORIAL VIDEO (embedded) -->
-                <div class="rounded-3xl overflow-hidden border-4 border-amber-400 shadow-2xl" style="box-shadow:0 12px 32px rgba(245,158,11,.25)">
-                    <div class="bg-slate-900 px-4 py-2.5 flex items-center justify-between">
-                        <p class="text-white font-black text-xs sm:text-sm">🎬 EDUVA पूरा Tutorial — 12 Features Step-by-Step (देखो और सीखो!)</p>
-                        <a href="https://youtu.be/VB9NFNfiBKg" target="_blank" rel="noopener" class="text-amber-400 font-black text-[10px] hover:underline shrink-0 ml-2">YouTube पर खोलें ↗</a>
+                <!-- 🎬 VIDEO TABS — 60-sec Tour + Full Tutorial (lazy-load) -->
+                <div class="rounded-3xl overflow-hidden border-4 border-amber-400 shadow-2xl bg-slate-900">
+                    <div class="px-3 pt-2.5 flex gap-1.5">
+                        <button id="vt-tab-0" onclick="edVideoTab(0)" class="flex-1 py-2 rounded-xl text-[11px] font-black transition">⚡ 60-sec Tour</button>
+                        <button id="vt-tab-1" onclick="edVideoTab(1)" class="flex-1 py-2 rounded-xl text-[11px] font-black transition">📖 Full Tutorial</button>
                     </div>
-                    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden">
-                        <iframe style="position:absolute;top:0;left:0;width:100%;height:100%" src="https://www.youtube.com/embed/VB9NFNfiBKg" title="EDUVA Complete Tutorial" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    <div id="vt-player" class="relative bg-black" style="aspect-ratio:16/9;"></div>
+                    <div class="px-4 py-2.5">
+                        <p id="vt-caption" class="text-white/80 text-[11px] font-bold"></p>
                     </div>
                 </div>
-
-                <div id="install-banner-slot"></div>
+                <script>
+                var ED_VIDEOS = [
+                    {id:'fDtQB65vBHQ', cap:'Golu-Bolu से सुनो — EDUVA के सारे features, 60 second में! 😄'},
+                    {id:'VB9NFNfiBKg', cap:'12 features — step-by-step। 5 minute में EDUVA master करो! 🎓'}
+                ];
+                var ED_VT_PLAYED = [false,false], ED_VT_CUR = 0;
+                function edVideoTab(i){
+                    ED_VT_CUR = i;
+                    for(var k=0;k<ED_VIDEOS.length;k++){
+                        var b = document.getElementById('vt-tab-'+k);
+                        if(b) b.className = 'flex-1 py-2 rounded-xl text-[11px] font-black transition ' + (k===i ? 'bg-amber-400 text-slate-900 shadow' : 'bg-white/10 text-white/60 hover:bg-white/20');
+                    }
+                    var p = document.getElementById('vt-player');
+                    var v = ED_VIDEOS[i];
+                    p.innerHTML = '<div class="absolute inset-0 cursor-pointer" onclick="edVideoPlay('+i+')">'
+                        + '<img src="https://i.ytimg.com/vi/' + v.id + '/hqdefault.jpg" alt="EDUVA video" class="w-full h-full object-cover" loading="lazy">'
+                        + '<div class="absolute inset-0 flex items-center justify-center" style="background:rgba(0,0,0,.35)">'
+                        + '<div class="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"><span class="text-white text-xl ml-0.5">▶</span></div>'
+                        + '</div></div>';
+                    var c = document.getElementById('vt-caption');
+                    if(c) c.textContent = v.cap;
+                }
+                function edVideoPlay(i){
+                    ED_VT_PLAYED[i] = true;
+                    var p = document.getElementById('vt-player');
+                    p.innerHTML = '<iframe class="w-full h-full" style="position:absolute;inset:0;" src="https://www.youtube-nocookie.com/embed/' + ED_VIDEOS[i].id + '?autoplay=1&rel=0" title="EDUVA Video" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+                    if(window.edLogEvent) edLogEvent('video_play:' + ED_VIDEOS[i].id);
+                }
+                document.addEventListener('DOMContentLoaded', function(){ edVideoTab(0); });
+                </script>
 
                 <!-- 🥊 CHALLENGE BANNER SLOT (dost ka challenge yahan dikhega) -->
             <div id="challenge-banner-slot"></div>
@@ -2825,7 +2859,7 @@ gtag('config', 'G-51MMG9S9F6');
                     </div>
 
                     <!-- 🤖 AI Mastery Course CTA -->
-                    <button onclick="switchTab('ai-course')" class="w-full mt-2 p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background:linear-gradient(135deg,#0e7490,#1e6fff);">
+                    <button onclick="edOpenAI()" class="w-full mt-2 p-4 sm:p-5 rounded-3xl flex items-center gap-4 text-left cursor-pointer transition hover:scale-[1.01] shadow-lg" style="background:linear-gradient(135deg,#0e7490,#1e6fff);">
                         <div class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center shrink-0 text-3xl">🤖</div>
                         <div class="flex-1">
                             <p class="text-white font-black text-sm sm:text-base">🎓 AI Mastery Course — पूरा structured course</p>
@@ -2928,6 +2962,7 @@ gtag('config', 'G-51MMG9S9F6');
             </section>
 
             <section id="view-ai-course" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
+                <button onclick="edCloseAI()" class="ed-ai-close sticky top-3 ml-auto z-10 w-11 h-11 rounded-full bg-slate-900 text-white items-center justify-center text-lg shadow-xl cursor-pointer" style="display:none;">✕</button>
                 <div class="mb-2 flex items-center gap-3">
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
@@ -5698,6 +5733,31 @@ if ('serviceWorker' in navigator) {
             } catch(e){}
         });
     })();
+    </script>
+
+
+    <!-- 🎓 AI Course bulletproof overlay -->
+    <script>
+    function edOpenAI(){
+        var secs = document.querySelectorAll('section[id^="view-"]');
+        for(var i=0;i<secs.length;i++){ secs[i].classList.add('hidden'); }
+        var v = document.getElementById('view-ai-course');
+        if(!v) return;
+        v.classList.remove('hidden');
+        v.classList.add('ed-ai-overlay');
+        document.body.style.overflow = 'hidden';
+        window.scrollTo(0,0);
+        if(typeof aiRenderCourse === 'function'){ try{ aiRenderCourse(); }catch(e){} }
+        if(window.edLogEvent) edLogEvent('open:ai-course');
+    }
+    function edCloseAI(){
+        var v = document.getElementById('view-ai-course');
+        if(v){ v.classList.add('hidden'); v.classList.remove('ed-ai-overlay'); }
+        document.body.style.overflow = '';
+        var home = document.getElementById('view-home');
+        if(home) home.classList.remove('hidden');
+        window.scrollTo(0,0);
+    }
     </script>
 
 </body>
