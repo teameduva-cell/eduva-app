@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v4.2-20261007 -->
+<!-- BUILD: EDUVA-v4.4-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -57,27 +57,7 @@
     </script>
     <!-- PWA: Manifest + Install + Web Share Target (ताकि WhatsApp/Chrome के Share sheet में "EDUVA" दिखे) -->
     <link rel="manifest" href="/manifest.json">
-    <style id="ed-critical">
-/* 🔥 CRITICAL CSS — above-the-fold only (rest Tailwind se aayega) */
-body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#f6f8fc;color:#1a2332}
-.p-4{padding:16px}.p-6{padding:24px}.p-2{padding:8px}
-.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:center}
-.text-center{text-align:center}
-.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
-.w-full{width:100%}
-.mt-3{margin-top:12px}.mt-4{margin-top:16px}.mt-5{margin-top:20px}.mt-7{margin-top:28px}.mt-9{margin-top:36px}
-.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}
-.rounded-3xl{border-radius:24px}.rounded-2xl{border-radius:16px}.rounded-full{border-radius:999px}
-.text-white{color:#fff}.text-slate-900{color:#0f172a}
-.font-black{font-weight:900}.font-bold{font-weight:700}
-.text-sm{font-size:14px}.text-xs{font-size:12px}
-.shadow-xl{box-shadow:0 20px 40px rgba(20,40,90,.18)}
-.bg-white{background:#fff}
-.border-slate-200{border-color:#e2e8f0}
-/* hero headline sizes */
-.hero-h1{font-size:34px;line-height:1.12;font-weight:900;color:#fff;text-align:center;margin-top:20px}
-@media(min-width:640px){.hero-h1{font-size:56px}}
-</style>
+    
 <meta name="theme-color" content="#1e3a8a">
     <link rel="icon" href="/favicon-32.png" sizes="32x32">
     <link rel="icon" href="/icon-192.png" sizes="192x192">
@@ -86,7 +66,7 @@ body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#f
     <!-- Tailwind CSS & Lucide Icons -->
     <!-- 🛡️ EMERGENCY FALLBACK — agar Tailwind CDN fail ho to bhi app chale -->
     <link rel="stylesheet" href="css/app.css">
-    <script defer src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/lucide@0.454.0"></script>
 
     <!-- Three.js ab lazy-load hota hai (sirf 3D classroom khulne par) -->
@@ -605,10 +585,10 @@ gtag('config', 'G-51MMG9S9F6');
                 </div>
 
                 <nav class="space-y-2 text-sm font-extrabold">
-                    <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl ink-navy text-white transition shadow-2xs cursor-pointer">
+                    <button onclick="switchTab('home')" id="dtab-home" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl ink-navy text-white transition shadow-2xs cursor-pointer" aria-label="होम">
                         <i data-lucide="home" class="w-5 h-5"></i> Home Dashboard
                     </button>
-                    <button onclick="switchTab('learning')" id="dtab-learning" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
+                    <button onclick="switchTab('learning')" id="dtab-learning" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition cursor-pointer" aria-label="पढ़ाई">
                         <i data-lucide="book-open" class="w-5 h-5 text-indigo-600"></i> My Learning & Subjects 📚
                     </button>
                     <button onclick="switchTab('avatar-lectures')" id="dtab-avatar-lectures" class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-700 hover:bg-slate-100 transition cursor-pointer">
@@ -807,7 +787,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="ed-blob ed-blob3" style="width:220px;height:220px;background:#06b6d4;top:35%;left:55%;opacity:.35;"></div>
                     <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.07),transparent 55%);"></div>
 
-                    <div class="relative z-10 p-6 sm:p-9 flex flex-col items-center text-center" style="display:flex;flex-direction:column;align-items:center;text-align:center">
+                    <div class="relative z-10 p-6 sm:p-9 flex flex-col items-center text-center">
                         <!-- Eyebrow chip -->
                         <div class="edh-anim inline-flex items-center gap-2 bg-white/10 border border-white/15 backdrop-blur px-4 py-1.5 rounded-full" style="animation-delay:.05s">
                             <span class="ed-dotpulse w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
@@ -815,7 +795,7 @@ gtag('config', 'G-51MMG9S9F6');
                         </div>
 
                         <!-- Headline -->
-                        <h1 class="edh-anim hero-h1 mt-5 text-white font-black leading-[1.12] text-[34px] sm:text-6xl" style="animation-delay:.15s">
+                        <h1 class="edh-anim mt-5 text-white font-black leading-[1.12] text-[34px] sm:text-6xl" style="animation-delay:.15s">
                             सवाल अटक गया?<br>
                             <span class="ed-grad">📸 Photo भेजो.</span><br>
                             <span class="text-white/95">Solution पाओ.</span>
@@ -949,10 +929,10 @@ gtag('config', 'G-51MMG9S9F6');
             <!-- ================= EXPLORE VIEW ================= -->
             <section id="view-explore" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2 flex items-center gap-3">
-                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.2</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.4</span></p>
                     </div>
                 </div>
 
@@ -989,7 +969,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('check')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Solution Checker</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('check')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer" aria-label="वापस घुमाएं">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Solution Checker</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Apna solved answer bhejo — AI check karega, step-by-step feedback 💡</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-teal-500 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edPrefillDoubt('golubolu')">
@@ -1000,7 +980,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('golubolu')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Golu-Bolu Mode</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edPrefillDoubt('golubolu')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer" aria-label="वापस घुमाएं">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Golu-Bolu Mode</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">Chat khulega aur prompt ready milega — bas topic likho! 😄</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-cyan-600 to-blue-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edOpenAI()">
@@ -1011,7 +991,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edOpenAI()"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="edOpenAI()"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer" aria-label="वापस घुमाएं">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">AI Mastery Course</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">8 modules • 25 lessons • Hindi + English • progress tracking 🌐</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-sky-600 to-cyan-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('audio')">
@@ -1022,7 +1002,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('audio')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">NCERT Audio</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('audio')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer" aria-label="वापस घुमाएं">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">NCERT Audio</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapters ready + apna custom text bhi suna sakte ho 🎤</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-gradient-to-r from-indigo-600 to-violet-600 shadow-md flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="switchTab('mindmaps')">
@@ -1033,7 +1013,7 @@ gtag('config', 'G-51MMG9S9F6');
                                     </div>
                                     <span class="text-white/80 text-lg shrink-0">›</span>
                                 </div>
-                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('mindmaps')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Chapter Mind Maps</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
+                                <div class="ed-flip-back bg-slate-900 rounded-2xl p-3.5 flex items-center gap-3 shadow-md cursor-pointer" onclick="switchTab('mindmaps')"><button onclick="event.stopPropagation();edFlip(this.closest('.ed-flip'))" class="w-7 h-7 rounded-full bg-white/15 text-white text-xs font-black shrink-0 cursor-pointer" aria-label="वापस घुमाएं">↺</button><div class="flex-1 min-w-0"><p class="text-white font-black text-[13px]">Chapter Mind Maps</p><p class="text-white/70 text-[11px] font-semibold mt-0.5">14 chapter maps — root → branches → points, instant revision 🎯</p></div><span class="text-white/80 text-lg shrink-0">›</span></div>
                             </div></div>
                             <div class="ed-flipwrap"><div class="ed-flip">
                                 <div class="ed-flip-front bg-slate-50 border-2 border-dashed border-slate-200 flex items-center gap-3.5 p-3.5 rounded-2xl cursor-pointer select-none" onclick="edFlip(this.parentNode)">
@@ -1288,7 +1268,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div id="home-all-features"></div>
                 <h3 class="text-xs font-black uppercase tracking-wider text-slate-400 mono-font">📚 Academics (पढ़ाई)</h3>
                     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                    <button onclick="switchTab('learning')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left">
+                    <button onclick="switchTab('learning')" class="card-clean p-3.5 rounded-2xl flex items-center gap-3 hover:border-slate-400 transition group cursor-pointer text-left" aria-label="पढ़ाई">
                         <i data-lucide="book-open" class="w-5 h-5 text-indigo-600 shrink-0 group-hover:scale-110 transition"></i>
                         <p class="text-xs font-bold text-slate-900">My Learning</p>
                     </button>
@@ -1493,7 +1473,7 @@ gtag('config', 'G-51MMG9S9F6');
                 <!-- Slim premium header -->
                 <div class="flex items-center justify-between gap-2 px-3 py-2.5 border-b border-slate-100 shrink-0">
                     <div class="flex items-center gap-2 min-w-0">
-                        <button type="button" class="eduva-back-btn !w-9 !h-9 !rounded-full shrink-0" onclick="goBack()">←</button>
+                        <button type="button" class="eduva-back-btn !w-9 !h-9 !rounded-full shrink-0" onclick="goBack()" aria-label="वापस जाएं">←</button>
                         <div class="min-w-0">
                             <p class="font-black text-sm text-slate-900 leading-none truncate"><span style="font-size:12px;font-weight:900;">Edu Sir</span></p>
                             <p class="text-[10px] font-bold text-emerald-600 mt-0.5">🧠 <span id="doubt-counter-num-chat">2,000+</span> doubts</p>
@@ -1535,7 +1515,7 @@ gtag('config', 'G-51MMG9S9F6');
                 <div id="image-preview-container" class="hidden px-4 py-2 shrink-0">
                     <div class="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-full text-xs text-blue-700 font-semibold">
                         📷 <span>Question Photo Attached</span>
-                        <button onclick="removeImage()" class="text-rose-500 font-black ml-1 cursor-pointer">✕</button>
+                        <button onclick="removeImage()" class="text-rose-500 font-black ml-1 cursor-pointer" aria-label="बंद करें">✕</button>
                     </div>
                 </div>
 
@@ -1726,7 +1706,7 @@ gtag('config', 'G-51MMG9S9F6');
                         <span style="font-size:20px;">🔔</span>
                         <span style="flex:1;font-size:12px;line-height:1.35;"><strong style="font-size:13px;">Notifications ON kar lo!</strong><br><span style="opacity:.85;">Doubt reply + streak reminder + big announcements</span></span>
                         <button onclick="enablePush()" style="background:#ffd54a;color:#5a3d00;border:none;border-radius:10px;padding:8px 12px;font-weight:900;font-size:12px;cursor:pointer;">Enable</button>
-                        <button onclick="dismissPush()" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:10px;padding:8px 10px;font-size:12px;cursor:pointer;">✕</button>
+                        <button onclick="dismissPush()" style="background:rgba(255,255,255,.15);color:#fff;border:none;border-radius:10px;padding:8px 10px;font-size:12px;cursor:pointer;" aria-label="बंद करें">✕</button>
                     </div>
                 </div>
                 <script>
@@ -1769,7 +1749,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= 3. AI AVATAR LECTURE ENGINE VIEW ================= -->
             <section id="view-avatar-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <!-- 🎬 GOLU-BOLU APP TOUR VIDEO (lazy-load facade) -->
                 <div class="rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-slate-900">
@@ -1955,7 +1935,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= MOTIVATION & CAREER GUIDANCE VIEW ================= -->
             <section id="view-motivation" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
@@ -1990,7 +1970,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= MENTAL HEALTH & COUNSELING VIEW ================= -->
             <section id="view-counseling" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
@@ -2051,7 +2031,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= ABOUT US VIEW ================= -->
             <section id="view-about" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
@@ -2084,7 +2064,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= CONTACT US VIEW ================= -->
             <section id="view-contact" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
@@ -2184,7 +2164,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= HELP & SUPPORT CENTER ================= -->
             <section id="view-help" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl font-black shadow-sm">🆘</div>
@@ -2229,7 +2209,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= MY LEARNING VIEW ================= -->
             <section id="view-learning" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-4">
@@ -2263,7 +2243,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= MY PROFILE & BADGES VIEW ================= -->
             <section id="view-profile" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -2350,7 +2330,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= FAQ VIEW ================= -->
             <section id="view-faq" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-6">
                     <div class="flex items-center gap-3.5 border-b border-slate-200 pb-4">
@@ -2475,7 +2455,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= COMMUNITY DOUBT POOL VIEW ================= -->
             <section id="view-community" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -2504,7 +2484,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= FLASHCARDS VIEW ================= -->
             <section id="view-flashcards" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-4">
                     <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 border border-amber-200 text-amber-800 rounded-full text-xs font-bold mono-font">
@@ -2531,7 +2511,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= MOCK TEST VIEW ================= -->
             <section id="view-mocktest" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -2571,7 +2551,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= VAULT VIEW ================= -->
             <section id="view-vault" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center justify-between border-b border-slate-200 pb-4">
@@ -2622,7 +2602,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= VIDEO LECTURES LIBRARY VIEW ================= -->
             <section id="view-video-lectures" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-4">
@@ -2655,7 +2635,7 @@ gtag('config', 'G-51MMG9S9F6');
             <!-- VIDEO PLAYER MODAL -->
             <div id="video-player-modal" class="hidden fixed inset-0 z-50 bg-slate-900/80 backdrop-blur-xs flex items-center justify-center p-4">
                 <div class="bg-black rounded-3xl overflow-hidden max-w-3xl w-full relative shadow-2xl">
-                    <button onclick="closeVideoPlayer()" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white font-black flex items-center justify-center cursor-pointer">✕</button>
+                    <button onclick="closeVideoPlayer()" class="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white font-black flex items-center justify-center cursor-pointer" aria-label="बंद करें">✕</button>
                     <div class="aspect-video w-full" id="video-player-container"></div>
                     <div class="p-4 bg-slate-950">
                         <p id="video-player-title" class="text-white font-bold text-sm"></p>
@@ -2665,7 +2645,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= COURSES VIEW ================= -->
             <section id="view-courses" class="hidden space-y-6 max-w-6xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div>
@@ -2716,7 +2696,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= OTHER VIEWS ================= -->
             <section id="view-feedback" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
                     <div class="flex items-center gap-3">
                         <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl shadow-sm">💬</div>
@@ -2742,7 +2722,7 @@ gtag('config', 'G-51MMG9S9F6');
             </section>
 
             <section id="view-timetable" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl space-y-5 bg-white border border-slate-200">
                     <h2 class="text-xl font-black text-slate-900">स्मार्ट स्टूडेंट टाइम टेबल जनरेटर</h2>
                     <p class="text-xs sm:text-sm text-slate-600 -mt-2">नीचे अपनी जानकारी भरें, Edu Sir आपके लिए एक practical टाइम टेबल बनाएगा।</p>
@@ -2772,7 +2752,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= VEDIC MATHS AI TEACHER VIEW ================= -->
             <section id="view-vedic-maths" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center text-xl font-black shadow-sm">🧮</div>
@@ -2825,7 +2805,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= ABACUS AI TEACHER VIEW ================= -->
             <section id="view-abacus" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-amber-50 text-amber-700 flex items-center justify-center text-xl font-black shadow-sm">🧮</div>
@@ -2866,7 +2846,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= COMPUTER & AI TEACHER VIEW ================= -->
             <section id="view-computer-ai" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl font-black shadow-sm">💻</div>
@@ -2920,7 +2900,7 @@ gtag('config', 'G-51MMG9S9F6');
             <!-- ================= MIND MAPS VIEW ================= -->
             <section id="view-mindmaps" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2 flex items-center gap-3">
-                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🗺️ Chapter Mind Maps</h2>
                         <p class="text-[11px] font-bold text-slate-500">Poora chapter — 1 screen par. Exam se पहले 5 मिनट में revision!</p>
@@ -2938,7 +2918,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <section id="view-audio" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
                 <div class="mb-2 flex items-center gap-3">
-                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🎧 NCERT Audio</h2>
                         <p class="text-[11px] font-bold text-slate-500">Chapters sunein — padhein nahi. Travel, walk, khaana khaate hue!</p>
@@ -2952,7 +2932,7 @@ gtag('config', 'G-51MMG9S9F6');
                         <p id="audio-now-title" class="font-black text-sm truncate"></p>
                         <p id="audio-now-status" class="text-white/80 text-[11px] font-bold">Ready</p>
                     </div>
-                    <button onclick="edAudioStop()" class="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center cursor-pointer shrink-0">⏹</button>
+                    <button onclick="edAudioStop()" class="w-11 h-11 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center cursor-pointer shrink-0" aria-label="रोकें">⏹</button>
                 </div>
 
                 <!-- Custom text player -->
@@ -2980,9 +2960,9 @@ gtag('config', 'G-51MMG9S9F6');
             </section>
 
             <section id="view-ai-course" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <button onclick="edCloseAI()" class="ed-ai-close fixed top-3.5 right-3.5 z-[80] w-11 h-11 rounded-full bg-slate-900/95 text-white shadow-2xl cursor-pointer flex items-center justify-center text-lg border-2 border-white/20" style="display:none;">✕</button>
+                <button onclick="edCloseAI()" class="ed-ai-close fixed top-3.5 right-3.5 z-[80] w-11 h-11 rounded-full bg-slate-900/95 text-white shadow-2xl cursor-pointer flex items-center justify-center text-lg border-2 border-white/20" style="display:none;" aria-label="बंद करें">✕</button>
                 <div class="mb-2 flex items-center gap-3">
-                    <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+                    <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🤖 AI Mastery Course</h2>
                         <p class="text-[11px] font-bold text-slate-500">बिल्कुल शुरू से — 8 modules • 25 lessons • FREE</p>
@@ -3023,7 +3003,7 @@ gtag('config', 'G-51MMG9S9F6');
                             </div>
                             <div class="flex gap-1.5 shrink-0">
                                 <button onclick="aiToggleLang()" class="h-9 px-2.5 rounded-full bg-cyan-50 border border-cyan-200 text-cyan-700 text-[11px] font-black cursor-pointer hover:bg-cyan-100" id="ai-lang-btn">🌐 EN</button>
-                                <button onclick="aiCloseLesson()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer">✕</button>
+                                <button onclick="aiCloseLesson()" class="w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center cursor-pointer" aria-label="बंद करें">✕</button>
                             </div>
                         </div>
                         <div id="ai-lesson-body" class="p-5 overflow-y-auto text-sm text-slate-700 leading-relaxed space-y-3"></div>
@@ -3038,7 +3018,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= SPOKEN ENGLISH AI TEACHER VIEW ================= -->
             <section id="view-spoken-english" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-sky-50 text-sky-600 flex items-center justify-center text-xl font-black shadow-sm">🗣️</div>
@@ -3079,7 +3059,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= STUDY MATERIAL (NCERT) VIEW ================= -->
             <section id="view-study-material" class="hidden space-y-5 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-7 rounded-3xl bg-white border border-slate-200 space-y-4">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-fuchsia-50 text-fuchsia-600 flex items-center justify-center text-xl font-black shadow-sm">📚</div>
@@ -3113,7 +3093,7 @@ gtag('config', 'G-51MMG9S9F6');
 
             <!-- ================= NCERT & OLYMPIAD PRACTICE GENERATOR VIEW ================= -->
             <section id="view-ncert-olympiad" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl font-black shadow-sm">📘</div>
@@ -3159,7 +3139,7 @@ gtag('config', 'G-51MMG9S9F6');
                         </div>
                     </div>
 
-                    <button onclick="generateNcertOlympiadSet()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer">
+                    <button onclick="generateNcertOlympiadSet()" class="w-full py-4 bg-rose-600 hover:bg-rose-700 text-white font-black text-sm rounded-2xl shadow-md transition flex items-center justify-center gap-2 cursor-pointer" aria-label="डाउट पूछें">
                         <i data-lucide="sparkles" class="w-4 h-4"></i> प्रैक्टिस सेट बनाएं (5 सवाल + उत्तर)
                     </button>
                 </div>
@@ -3167,7 +3147,7 @@ gtag('config', 'G-51MMG9S9F6');
 
                     <!-- ================= STUDY GYM (5 unique padhai tools) ================= -->
         <section id="view-studygym" class="hidden space-y-5 max-w-2xl mx-auto animate-fadeIn py-2">
-            <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+            <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
             <div class="text-center space-y-1">
                 <h2 class="text-xl sm:text-2xl font-black text-slate-900">🧠 Study Gym</h2>
                 <p class="text-xs sm:text-sm font-bold text-slate-500">Padhai ke 5 unique tools — dimag ki real workout 💪</p>
@@ -3250,7 +3230,7 @@ gtag('config', 'G-51MMG9S9F6');
         
         <!-- ================= FOCUS TIMER (POMODORO) VIEW ================= -->
             <section id="view-pomodoro" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-6">
                     <div>
                         <span id="pomodoro-mode-badge" class="px-3 py-1 bg-red-50 text-red-700 rounded-full text-[11px] font-black uppercase tracking-wider mono-font">Study Time 📚</span>
@@ -3279,7 +3259,7 @@ gtag('config', 'G-51MMG9S9F6');
             </section>
 
             <section id="view-health" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+                <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
                 <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
                     <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                         <div class="w-12 h-12 rounded-2xl bg-red-50 text-red-600 flex items-center justify-center text-xl font-black shadow-sm">❤️</div>
@@ -3313,7 +3293,7 @@ gtag('config', 'G-51MMG9S9F6');
        <script src="/teacher-panel.js"></script>
      ============================================================ -->
 <section id="view-teacher" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-    <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+    <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
     <!-- Header -->
     <div class="card-clean p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-900 to-violet-900 text-white flex items-center justify-between gap-4">
@@ -3603,7 +3583,7 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- EDU SIR PERSONA SELECTOR MODAL -->
     <div id="persona-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full space-y-5 relative shadow-2xl animate-fadeIn">
-            <button onclick="closePersonaModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closePersonaModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <div class="text-center space-y-1.5">
                 <div class="text-3xl">🎭</div>
                 <h3 class="text-lg sm:text-xl font-black text-slate-900">Edu Sir का अंदाज़ चुनें</h3>
@@ -3616,7 +3596,7 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- LANGUAGE SELECTOR MODAL -->
     <div id="language-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-7 max-w-lg w-full space-y-5 relative shadow-2xl animate-fadeIn">
-            <button onclick="closeLanguageModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closeLanguageModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <div class="text-center space-y-1.5">
                 <div class="text-3xl">🌐</div>
                 <h3 class="text-lg sm:text-xl font-black text-slate-900">अपनी भाषा चुनें</h3>
@@ -3629,7 +3609,7 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- STUDENT PROFILE EDIT MODAL -->
     <div id="profile-edit-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full space-y-4 relative shadow-2xl animate-fadeIn">
-            <button onclick="closeProfileEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closeProfileEditModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <div class="text-center space-y-1.5">
                 <div class="text-3xl">👨‍🎓</div>
                 <h3 class="text-lg sm:text-xl font-black text-slate-900">अपनी Profile बनाएं</h3>
@@ -3672,7 +3652,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <div id="login-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-8 max-w-md w-full space-y-5 relative shadow-2xl animate-fadeIn max-h-[92vh] overflow-y-auto hide-scrollbar">
-            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <div class="text-center space-y-2">
                 <img src="/icon-192.png" alt="EDUVA" class="w-12 h-12 mx-auto rounded-2xl shadow-md">
                 <h3 id="auth-modal-title" class="text-xl font-black text-slate-900">EDUVA में आपका स्वागत है</h3>
@@ -3727,7 +3707,7 @@ gtag('config', 'G-51MMG9S9F6');
         <div style="position:fixed;top:14px;right:14px;z-index:9999" class="flex items-center gap-2">
             <button onclick="eduvaRegenNotes('hi')" class="px-3 h-11 rounded-full bg-slate-900 text-white text-xs font-black shadow-2xl cursor-pointer hover:scale-105 transition">🇮🇳 हिंदी</button>
             <button onclick="eduvaRegenNotes('en')" class="px-3 h-11 rounded-full bg-slate-900 text-white text-xs font-black shadow-2xl cursor-pointer hover:scale-105 transition">🇬🇧 English</button>
-            <button onclick="closeNotesModal()" class="w-11 h-11 rounded-full bg-slate-900 text-white font-black text-xl shadow-2xl cursor-pointer hover:scale-105 transition">✕</button>
+            <button onclick="closeNotesModal()" class="w-11 h-11 rounded-full bg-slate-900 text-white font-black text-xl shadow-2xl cursor-pointer hover:scale-105 transition" aria-label="बंद करें">✕</button>
         </div>
         <div style="position:fixed;bottom:14px;left:50%;transform:translateX(-50%);z-index:9999" class="flex gap-2">
             <button onclick="eduvaCopyNotes()" class="px-4 py-3 bg-slate-800 text-white rounded-2xl text-xs font-black shadow-2xl cursor-pointer">📋 Copy</button>
@@ -3773,7 +3753,7 @@ gtag('config', 'G-51MMG9S9F6');
                 <div class="flex items-center gap-2 shrink-0">
                     <button onclick="speakMaterialText()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold text-[11px] rounded-xl transition cursor-pointer flex items-center gap-1"><i data-lucide="volume-2" class="w-3.5 h-3.5"></i> सुनें</button>
                     <button onclick="openNotesModal(document.getElementById('material-content').innerText)" class="px-3 py-2 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-bold text-[11px] rounded-xl transition cursor-pointer flex items-center gap-1"><i data-lucide="pen-line" class="w-3.5 h-3.5"></i> नोट्स</button>
-                    <button onclick="closeMaterialModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 font-black text-sm cursor-pointer">✕</button>
+                    <button onclick="closeMaterialModal()" class="w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
                 </div>
             </div>
             <div class="relative flex-1 overflow-y-auto hide-scrollbar">
@@ -3785,7 +3765,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= EDUVA MEMORY & MISTAKE BOOK ================= -->
     <section id="view-memory" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
         <div class="card-clean p-6 rounded-3xl bg-gradient-to-r from-violet-50 via-white to-blue-50 border-violet-200">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -3835,7 +3815,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= PARENT REPORT VIEW ================= -->
     <section id="view-parent-report" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
         <div class="card-clean p-6 rounded-3xl bg-gradient-to-r from-teal-50 via-white to-blue-50 border-teal-200">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -3879,7 +3859,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= RESULTS DASHBOARD VIEW (Online + Offline) ================= -->
     <section id="view-results" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
 
         <div class="card-clean p-6 rounded-3xl bg-gradient-to-r from-indigo-50 via-white to-blue-50 border-indigo-200">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -3915,7 +3895,7 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- OFFLINE TEST ENTRY MODAL -->
     <div id="offline-test-modal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 sm:p-7 max-w-md w-full space-y-4 relative shadow-2xl animate-fadeIn">
-            <button onclick="closeOfflineTestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closeOfflineTestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-900 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <div class="text-center space-y-1.5">
                 <div class="text-3xl">📝</div>
                 <h3 class="text-lg sm:text-xl font-black text-slate-900">ऑफलाइन टेस्ट Result</h3>
@@ -3958,7 +3938,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= DAILY HOMEWORK VIEW ================= -->
     <section id="view-homework" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-3 border-b border-slate-200 pb-4">
                 <div>
@@ -4012,7 +3992,7 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- ================= FOUNDER DASHBOARD (SECRET — PIN PROTECTED) ================= -->
     <section id="view-founder" class="hidden space-y-6 max-w-5xl mx-auto animate-fadeIn py-2">
         <div class="mb-2 flex items-center justify-between">
-            <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
+            <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
         </div>
         <!-- 📊 LIVE ANALYTICS (Looker Studio embed) -->
         <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden">
@@ -4100,7 +4080,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= AI BATTLE MODE ================= -->
     <section id="view-battle" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="text-center space-y-2">
                 <div class="text-5xl">⚔️</div>
@@ -4137,7 +4117,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= AI PAPER PREDICTOR ================= -->
     <section id="view-predictor" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="flex items-center gap-4">
                 <div class="text-4xl">🔮</div>
@@ -4154,7 +4134,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= VIVA EXAMINER ================= -->
     <section id="view-viva" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="text-center space-y-2">
                 <div class="text-5xl">🎤</div>
@@ -4190,7 +4170,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= LEAGUE SYSTEM ================= -->
     <section id="view-league" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="text-center space-y-2">
                 <div id="league-emoji" class="text-6xl">🥉</div>
@@ -4230,7 +4210,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= DAILY SPIN WHEEL ================= -->
     <section id="view-spin" class="hidden space-y-6 max-w-2xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 text-center space-y-5">
             <div>
                 <div class="text-5xl">🎡</div>
@@ -4249,7 +4229,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= MERA PED (Virtual Tree) ================= -->
     <section id="view-tree" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-emerald-50 to-white border border-emerald-200 text-center space-y-4">
             <div id="tree-emoji" class="text-8xl transition-all duration-700">🌰</div>
             <h2 id="tree-name" class="text-xl font-black text-slate-900">Beej (Seed)</h2>
@@ -4268,7 +4248,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= GALTI PAKDO (Error Hunt) ================= -->
     <section id="view-hunt" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-4">
             <div class="text-center space-y-2">
                 <div class="text-5xl">🐛</div>
@@ -4298,7 +4278,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= KOTA CHRONICLES (Story Mode) ================= -->
     <section id="view-story" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-violet-50 to-white border border-violet-200 space-y-4">
             <div class="text-center space-y-2">
                 <div class="text-5xl">📖</div>
@@ -4314,7 +4294,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= WEEKLY WRAPPED ================= -->
     <section id="view-wrapped" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-gradient-to-br from-indigo-900 via-violet-900 to-purple-900 text-white space-y-5" id="wrapped-card">
             <div class="text-center space-y-1">
                 <p class="text-[11px] font-black tracking-[0.3em] text-violet-300 uppercase">EDUVA Presents</p>
@@ -4332,7 +4312,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= OLYMPIAD GUIDE CENTER ================= -->
     <section id="view-olympiad" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-amber-50 via-white to-yellow-50 border-amber-200 space-y-5">
             <div class="flex items-center gap-4">
                 <div class="text-4xl">🏆</div>
@@ -4479,7 +4459,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= UPLOAD YOUR NOTES ================= -->
     <section id="view-upload" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="text-center space-y-2">
                 <div class="text-5xl">📤</div>
@@ -4570,7 +4550,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= COMMUNITY QUESTION BANK ================= -->
     <section id="view-qbank" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="flex items-center justify-between gap-3">
                 <div class="flex items-center gap-4">
@@ -4599,7 +4579,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= CERTIFICATES ================= -->
     <section id="view-certificates" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="text-center space-y-2">
                 <div class="text-5xl">📜</div>
@@ -4619,7 +4599,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= ALL INDIA EDUVA TEST ================= -->
     <section id="view-ait" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-gradient-to-b from-amber-50 to-white border-2 border-amber-300 space-y-5">
             <div class="text-center space-y-2">
                 <div class="text-5xl">🏆</div>
@@ -4660,7 +4640,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= LEGAL: PRIVACY + TERMS ================= -->
     <section id="view-legal" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-5">
             <div class="flex items-center gap-4 border-b border-slate-200 pb-4">
                 <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center text-xl">⚖️</div>
@@ -4705,7 +4685,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= PYQ LIBRARY ================= -->
     <section id="view-pyq" class="hidden space-y-6 max-w-4xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-4">
             <div class="flex items-center gap-4">
                 <div class="text-4xl">🗞️</div>
@@ -4864,7 +4844,7 @@ gtag('config', 'G-51MMG9S9F6');
 
     <!-- ================= STUDY ROOM ================= -->
     <section id="view-room" class="hidden space-y-6 max-w-3xl mx-auto animate-fadeIn py-2">
-        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()">←</button></div>
+        <div class="mb-2"><button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button></div>
         <div class="card-clean p-6 sm:p-8 rounded-3xl bg-white border border-slate-200 space-y-4">
             <div class="text-center space-y-2">
                 <div class="text-5xl">👥</div>
@@ -4905,7 +4885,7 @@ gtag('config', 'G-51MMG9S9F6');
             <div class="p-4 border-b border-slate-200 flex items-center gap-3">
                 <i data-lucide="search" class="w-5 h-5 text-blue-600"></i>
                 <input id="global-search-input" placeholder="Feature ya topic खोजो... (jaise: battle, ped, pyq)" class="flex-1 text-base font-bold outline-none" oninput="renderSearchResults(this.value)" onkeydown="if(event.key==='Enter'&&document.querySelector('.search-hit'))document.querySelector('.search-hit').click()">
-                <button onclick="closeSearch()" class="text-slate-400 hover:text-slate-900 font-black cursor-pointer">✕</button>
+                <button onclick="closeSearch()" class="text-slate-400 hover:text-slate-900 font-black cursor-pointer" aria-label="बंद करें">✕</button>
             </div>
             <div id="search-results" class="max-h-96 overflow-y-auto hide-scrollbar p-2"></div>
         </div>
@@ -4914,11 +4894,11 @@ gtag('config', 'G-51MMG9S9F6');
     <!-- MOBILE BOTTOM NAVIGATION -->
     <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-slate-200 px-3 py-2.5 z-50 shadow-lg" id="mobile-bottom-nav">
         <div class="flex justify-around items-center text-xs font-extrabold text-slate-500">
-            <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer p-1"><i data-lucide="home" class="w-5 h-5"></i> Home</button>
-            <button onclick="switchTab('learning')" id="tab-learning" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="book-open" class="w-5 h-5 text-emerald-600"></i> Learn</button>
-            <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
-            <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="user-round" class="w-5 h-5 text-amber-600"></i> Profile</button>
-            <button onclick="switchTab('mocktest')" id="tab-mocktest" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1"><i data-lucide="clipboard-list" class="w-5 h-5 text-violet-600"></i> Test</button>
+            <button onclick="switchTab('home')" id="tab-home" class="flex flex-col items-center gap-1 text-slate-900 transition cursor-pointer p-1" aria-label="होम"><i data-lucide="home" class="w-5 h-5"></i> Home</button>
+            <button onclick="switchTab('learning')" id="tab-learning" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1" aria-label="पढ़ाई"><i data-lucide="book-open" class="w-5 h-5 text-emerald-600"></i> Learn</button>
+            <button onclick="switchTab('chat')" class="w-12 h-12 -mt-5 rounded-full ink-navy text-white flex items-center justify-center shadow-lg active:scale-95 transition border-2 border-white cursor-pointer" aria-label="डाउट पूछें"><i data-lucide="sparkles" class="w-5 h-5 text-amber-400"></i></button>
+            <button onclick="switchTab('profile')" id="tab-profile" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1" aria-label="प्रोफाइल"><i data-lucide="user-round" class="w-5 h-5 text-amber-600"></i> Profile</button>
+            <button onclick="switchTab('mocktest')" id="tab-mocktest" class="flex flex-col items-center gap-1 hover:text-slate-900 transition cursor-pointer p-1" aria-label="टेस्ट"><i data-lucide="clipboard-list" class="w-5 h-5 text-violet-600"></i> Test</button>
         </div>
     </nav>
 
@@ -4931,7 +4911,7 @@ gtag('config', 'G-51MMG9S9F6');
         <div class="min-h-screen flex flex-col max-w-3xl mx-auto px-4 py-6 pb-28">
             <div class="flex items-center justify-between">
                 <span class="px-3 py-1 bg-amber-400 text-amber-950 rounded-full text-[11px] font-black uppercase tracking-wider">🇮🇳 All India Level</span>
-                <button onclick="closeTestCampaign()" class="w-10 h-10 rounded-xl bg-white/15 hover:bg-white/30 text-white font-black text-lg cursor-pointer">✕</button>
+                <button onclick="closeTestCampaign()" class="w-10 h-10 rounded-xl bg-white/15 hover:bg-white/30 text-white font-black text-lg cursor-pointer" aria-label="बंद करें">✕</button>
             <button aria-label="band karo" onclick="(function(){var el=document.getElementById('test-campaign');if(el){el.classList.add('hidden');}document.body.style.overflow='';try{localStorage.setItem('tc_seen','1');}catch(e){}})()" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 12px);right:12px;z-index:9999;width:46px;height:46px;border-radius:14px;background:rgba(0,0,0,.65);color:#fff;font-size:24px;font-weight:900;border:2px solid rgba(255,255,255,.9);cursor:pointer;line-height:1;box-shadow:0 4px 12px rgba(0,0,0,.5);">✕</button>
             </div>
             <div class="text-center mt-6 space-y-3">
@@ -5029,7 +5009,7 @@ window.EDUVA_FIREBASE_CONFIG = {
     <!-- ⚙️ EDUVA SETTINGS -->
     <div id="settings-modal" class="hidden fixed inset-0 z-[98] bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
         <div class="card-clean bg-white rounded-3xl p-6 max-w-md w-full space-y-3 relative max-h-[88vh] overflow-y-auto hide-scrollbar">
-            <button onclick="closeSettings()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 font-black text-sm cursor-pointer">✕</button>
+            <button onclick="closeSettings()" class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-500 font-black text-sm cursor-pointer" aria-label="बंद करें">✕</button>
             <h3 class="text-lg font-black text-slate-900 flex items-center gap-2">⚙️ Settings</h3>
             <div class="space-y-2 text-sm font-bold">
                 <button onclick="toggleDarkMode(); closeSettings();" class="w-full flex items-center gap-3 p-3.5 bg-slate-50 hover:bg-slate-100 rounded-2xl text-left cursor-pointer"><span>🌙</span> Dark Mode</button>
@@ -5786,7 +5766,7 @@ if ('serviceWorker' in navigator) {
         <div class="flex gap-2 mt-3">
             <button onclick="edShareScore()" class="flex-1 py-2.5 rounded-2xl bg-white text-slate-900 font-black text-xs cursor-pointer">🏆 Score Card</button>
             <button onclick="edShareApp()" class="flex-1 py-2.5 rounded-2xl bg-white/20 text-white font-black text-xs cursor-pointer">📤 App Share</button>
-            <button onclick="document.getElementById('ed-share-banner').classList.add('hidden')" class="px-3 rounded-2xl bg-white/10 text-white/70 font-black text-xs cursor-pointer">✕</button>
+            <button onclick="document.getElementById('ed-share-banner').classList.add('hidden')" class="px-3 rounded-2xl bg-white/10 text-white/70 font-black text-xs cursor-pointer" aria-label="बंद करें">✕</button>
         </div>
     </div>
     <script>
