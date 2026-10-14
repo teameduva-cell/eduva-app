@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v4.1-20261007 -->
+<!-- BUILD: EDUVA-v4.2-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -57,7 +57,28 @@
     </script>
     <!-- PWA: Manifest + Install + Web Share Target (ताकि WhatsApp/Chrome के Share sheet में "EDUVA" दिखे) -->
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#1e3a8a">
+    <style id="ed-critical">
+/* 🔥 CRITICAL CSS — above-the-fold only (rest Tailwind se aayega) */
+body{margin:0;font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#f6f8fc;color:#1a2332}
+.p-4{padding:16px}.p-6{padding:24px}.p-2{padding:8px}
+.flex{display:flex}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-center{justify-content:center}.justify-between{justify-content:center}
+.text-center{text-align:center}
+.gap-2{gap:8px}.gap-3{gap:12px}.gap-4{gap:16px}
+.w-full{width:100%}
+.mt-3{margin-top:12px}.mt-4{margin-top:16px}.mt-5{margin-top:20px}.mt-7{margin-top:28px}.mt-9{margin-top:36px}
+.mb-2{margin-bottom:8px}.mb-3{margin-bottom:12px}
+.rounded-3xl{border-radius:24px}.rounded-2xl{border-radius:16px}.rounded-full{border-radius:999px}
+.text-white{color:#fff}.text-slate-900{color:#0f172a}
+.font-black{font-weight:900}.font-bold{font-weight:700}
+.text-sm{font-size:14px}.text-xs{font-size:12px}
+.shadow-xl{box-shadow:0 20px 40px rgba(20,40,90,.18)}
+.bg-white{background:#fff}
+.border-slate-200{border-color:#e2e8f0}
+/* hero headline sizes */
+.hero-h1{font-size:34px;line-height:1.12;font-weight:900;color:#fff;text-align:center;margin-top:20px}
+@media(min-width:640px){.hero-h1{font-size:56px}}
+</style>
+<meta name="theme-color" content="#1e3a8a">
     <link rel="icon" href="/favicon-32.png" sizes="32x32">
     <link rel="icon" href="/icon-192.png" sizes="192x192">
     <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -65,7 +86,7 @@
     <!-- Tailwind CSS & Lucide Icons -->
     <!-- 🛡️ EMERGENCY FALLBACK — agar Tailwind CDN fail ho to bhi app chale -->
     <link rel="stylesheet" href="css/app.css">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.tailwindcss.com"></script>
     <script defer src="https://unpkg.com/lucide@0.454.0"></script>
 
     <!-- Three.js ab lazy-load hota hai (sirf 3D classroom khulne par) -->
@@ -786,7 +807,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <div class="ed-blob ed-blob3" style="width:220px;height:220px;background:#06b6d4;top:35%;left:55%;opacity:.35;"></div>
                     <div class="absolute inset-0" style="background:radial-gradient(ellipse at 30% 0%,rgba(255,255,255,.07),transparent 55%);"></div>
 
-                    <div class="relative z-10 p-6 sm:p-9 flex flex-col items-center text-center">
+                    <div class="relative z-10 p-6 sm:p-9 flex flex-col items-center text-center" style="display:flex;flex-direction:column;align-items:center;text-align:center">
                         <!-- Eyebrow chip -->
                         <div class="edh-anim inline-flex items-center gap-2 bg-white/10 border border-white/15 backdrop-blur px-4 py-1.5 rounded-full" style="animation-delay:.05s">
                             <span class="ed-dotpulse w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
@@ -794,7 +815,7 @@ gtag('config', 'G-51MMG9S9F6');
                         </div>
 
                         <!-- Headline -->
-                        <h1 class="edh-anim mt-5 text-white font-black leading-[1.12] text-[34px] sm:text-6xl" style="animation-delay:.15s">
+                        <h1 class="edh-anim hero-h1 mt-5 text-white font-black leading-[1.12] text-[34px] sm:text-6xl" style="animation-delay:.15s">
                             सवाल अटक गया?<br>
                             <span class="ed-grad">📸 Photo भेजो.</span><br>
                             <span class="text-white/95">Solution पाओ.</span>
@@ -931,7 +952,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.1</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.2</span></p>
                     </div>
                 </div>
 
