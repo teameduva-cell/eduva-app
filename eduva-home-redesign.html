@@ -1,0 +1,186 @@
+<!-- ============================================================
+  EDUVA — P0 HOME REDESIGN (drop-in section)
+  Paste this where your current hero/home section starts.
+  Baki purana feature-dump content "All Features" page mein move kar do.
+  ============================================================ -->
+
+<style>
+  :root{
+    --eduva-blue:#1e6fff;
+    --eduva-blue-dark:#0b3ea8;
+    --eduva-yellow:#ffd028;
+    --eduva-text:#1a2332;
+    --eduva-muted:#5b6472;
+    --eduva-bg:#f6f8fc;
+    --eduva-card:#ffffff;
+    --eduva-radius:16px;
+  }
+  .ed-hero{
+    background:linear-gradient(160deg,var(--eduva-blue-dark),var(--eduva-blue));
+    color:#fff;
+    padding:48px 20px 64px;
+    text-align:center;
+    border-radius:0 0 28px 28px;
+  }
+  .ed-hero h1{
+    font-size:26px;
+    line-height:1.35;
+    margin:0 0 10px;
+    font-weight:800;
+  }
+  .ed-hero h1 .hl{
+    background:var(--eduva-yellow);
+    color:var(--eduva-text);
+    padding:1px 8px;
+    border-radius:8px;
+    display:inline-block;
+    transform:rotate(-1.2deg);
+  }
+  .ed-hero .sub{
+    font-size:15px;
+    opacity:.95;
+    margin:0 0 6px;
+  }
+  .ed-hero .meta{
+    font-size:12.5px;
+    opacity:.8;
+    margin:0 0 22px;
+  }
+  .ed-cta{
+    display:inline-block;
+    background:var(--eduva-yellow);
+    color:var(--eduva-text);
+    font-size:17px;
+    font-weight:800;
+    padding:15px 34px;
+    border-radius:999px;
+    text-decoration:none;
+    box-shadow:0 6px 0 rgba(0,0,0,.18);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .ed-cta:active{
+    transform:translateY(3px);
+    box-shadow:0 3px 0 rgba(0,0,0,.18);
+  }
+  .ed-offer{
+    margin-top:16px;
+    font-size:12.5px;
+    font-weight:600;
+    background:rgba(255,255,255,.14);
+    display:inline-block;
+    padding:7px 14px;
+    border-radius:999px;
+  }
+
+  .ed-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    padding:20px 16px;
+    background:var(--eduva-bg);
+    margin-top:-32px;
+    position:relative;
+  }
+  .ed-card{
+    background:var(--eduva-card);
+    border-radius:var(--eduva-radius);
+    padding:18px 14px;
+    text-decoration:none;
+    color:var(--eduva-text);
+    box-shadow:0 4px 14px rgba(20,40,90,.08);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .ed-card .ic{
+    font-size:26px;
+  }
+  .ed-card b{
+    font-size:15px;
+  }
+  .ed-card span{
+    font-size:12px;
+    color:var(--eduva-muted);
+    line-height:1.4;
+  }
+
+  .ed-nav{
+    position:fixed;
+    bottom:0;left:0;right:0;
+    display:flex;
+    background:#fff;
+    border-top:1px solid #e6e9f0;
+    padding:6px 4px calc(6px + env(safe-area-inset-bottom));
+    z-index:50;
+  }
+  .ed-nav a{
+    flex:1;
+    text-align:center;
+    text-decoration:none;
+    color:var(--eduva-muted);
+    font-size:10.5px;
+    padding:6px 0;
+    border-radius:10px;
+  }
+  .ed-nav a.on{
+    color:var(--eduva-blue);
+    font-weight:700;
+  }
+  .ed-nav .doubt{
+    flex:1.25;
+  }
+  .ed-nav .doubt .fab{
+    display:inline-flex;
+    align-items:center;justify-content:center;
+    width:52px;height:52px;
+    margin-top:-26px;
+    border-radius:50%;
+    background:var(--eduva-blue);
+    color:#fff;
+    font-size:24px;
+    box-shadow:0 6px 16px rgba(30,111,255,.45);
+    border:4px solid #fff;
+  }
+  .ed-nav small{
+    display:block;
+    margin-top:3px;
+  }
+</style>
+
+<!-- ============ HERO ============ -->
+<section class="ed-hero">
+  <h1>सवाल अटक गया? <span class="hl">📸 Photo लो</span><br>समझो → खुद Solve करो</h1>
+  <p class="sub">AI Step-by-Step Explanation — Hindi में</p>
+  <p class="meta">Class 6-12 • कोई ad नहीं • कोई fees नहीं</p>
+  <a class="ed-cta" href="#doubt">🚀 TRY EDUVA FREE</a>
+  <div class="ed-offer">🎁 31 December 2026 तक 100% FREE</div>
+</section>
+
+<!-- ============ 4 CARDS (baaki sab ☰ All Features mein) ============ -->
+<section class="ed-grid">
+  <a class="ed-card" href="#doubt">
+    <div class="ic">📸</div><b>Ask a Doubt</b>
+    <span>Photo bhejo, turant step-by-step solution</span>
+  </a>
+  <a class="ed-card" href="#learn">
+    <div class="ic">📚</div><b>Study Material</b>
+    <span>NCERT + notes, Class 6-12, Hindi में</span>
+  </a>
+  <a class="ed-card" href="#practice">
+    <div class="ic">📝</div><b>Practice</b>
+    <span>Daily quiz + mock tests + leaderboard</span>
+  </a>
+  <a class="ed-card" href="#progress">
+    <div class="ic">📊</div><b>My Progress</b>
+    <span>Streak, XP, mistake book, parent report</span>
+  </a>
+</section>
+
+<!-- ============ 5-TAB BOTTOM NAV ============ -->
+<nav class="ed-nav">
+  <a href="#home" class="on">🏠<small>Home</small></a>
+  <a href="#learn">📚<small>Learn</small></a>
+  <a href="#doubt" class="doubt"><span class="fab">✨</span><small>Doubt</small></a>
+  <a href="#test">📝<small>Test</small></a>
+  <a href="#profile">👤<small>Profile</small></a>
+</nav>

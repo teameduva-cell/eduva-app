@@ -1,0 +1,230 @@
+╔══════════════════════════════════════════════════════════════╗
+║     GOLU-BOLU: "APP TOUR" SERIES — COMPLETE SHOOT LIST      ║
+║     EDUVA Promo • 2 Parts • Production-ready                 ║
+╚══════════════════════════════════════════════════════════════╝
+
+VIDEO SPECS (same as your pipeline):
+- 720x1280 portrait • PIL-rendered scenes • crossfade 0.6s
+- Golu: pitch -4 (heavy) • Bolu: pitch +2 (energetic) — TTSMaker
+- Posting: 7 PM • Caption hook + "link bio" • Pin comment
+
+══════════════════════════════════════════════════════════════
+PART 1 — "PADHAI WALA POWER" (32 sec, 7 shots)
+══════════════════════════════════════════════════════════════
+
+SHOT 1 — HOOK (0:00–0:05)
+BG: PG room, night, lamp light, Kota lights in window
+Bolu: 3-4 books balanced on head, panic face, glasses tilted
+Golu: sitting on bed, relaxed, phone in hand
+Action: book falls from stack
+
+BOLU: "Bhai! Padhai ke liye 10 apps, 15 books... dimaag ghoom gaya!"
+GOLU: "Arre Bolu... ek app kaafi hai. Dekh!"
+
+PIL NOTES: PG room bg reuse • book stack = labeled rectangles
+           (MATHS/SCIENCE/JEE) • Bolu head-balance pose
+
+──────────────────────────────────────────────────────────────
+
+SHOT 2 — DOUBT SOLVER (0:05–0:09)
+Screen: [Ask a Doubt — camera preview — Class 10 Maths — Solved!]
+Both lean toward phone.
+
+GOLU: "Sawal atka? Photo bhej — step-by-step solution, Hindi ya English mein!"
+
+PIL NOTES: phone mockup template • camera frame = white corner borders
+
+──────────────────────────────────────────────────────────────
+
+SHOT 3 — TESTS (0:09–0:13)
+Screen: [Mock Test — Score 89/100] then [All India Test — FREE • Certificate]
+Bolu jumps.
+
+BOLU: "Mock test! All India Test! Certificate bhi milega!"
+
+PIL NOTES: score card = white card + green text + trophy emoji
+           Bolu jump = same sprite shifted up
+
+──────────────────────────────────────────────────────────────
+
+SHOT 4 — AI POWER (0:13–0:17)
+Screen: [AI DPP — Fresh questions] + [Paper Predictor — Important Qs ⭐⭐⭐]
+Golu winks; Bolu impressed.
+
+GOLU: "Roz fresh questions — AI DPP. Kisi book se copy nahi!"
+BOLU: "Aur Paper Predictor bata dega exam mein kya aayega!"
+
+PIL NOTES: wink = one eye closed line • ⭐⭐⭐ as text
+
+──────────────────────────────────────────────────────────────
+
+SHOT 5 — PARENT REPORT (0:17–0:21) ★ EMOTIONAL BEAT
+Screen: [Parent Report — WhatsApp sent] + [Mummy: "Good beta! ❤️"]
+Bolu holds phone, teary smile.
+
+GOLU: "Aur mummy-papa ko teri progress seedha WhatsApp par!"
+BOLU (soft): "Mummy ne reply kiya — 'Good beta!'"
+
+PIL NOTES: WhatsApp mockup = green header + white/grey bubbles
+           softer/warmer lighting this shot
+
+──────────────────────────────────────────────────────────────
+
+SHOT 6 — STUDY MATERIAL (0:21–0:26)
+Screen: 3 fast flashes (1.5s each):
+  [NCERT Notes — Ch 5] → [PYQ 2023 Board] → [Video Lectures — Averages]
+Golu counts on fingers 1-2-3.
+
+BOLU: "NCERT notes, PYQ question papers, video lectures — sab ek jagah!"
+
+PIL NOTES: 3 mini-cards, same layout, icon+title only
+
+──────────────────────────────────────────────────────────────
+
+SHOT 7 — AI TEACHER + PART-END (0:26–0:32)
+Screen: [Edu Sir — "Bol, champion!"] + [AI Mastery Course — 25 lessons]
+Both to camera.
+
+GOLU: "Edu Sir se baat kar — 'bol champion!'"
+BOLU (whisper): "Aur AI Mastery Course — poora AI seekh!"
+BOTH: "Ye tha Part 1... Part 2 mein GAMES!"
+
+END CARD TEXT: "Part 2 jald — EDUVA FREE 👉 link bio"
+
+══════════════════════════════════════════════════════════════
+PART 2 — "GAMES AUR TOOLS" (30 sec, 8 shots)
+══════════════════════════════════════════════════════════════
+
+SHOT 1 — RECAP HOOK (0:00–0:03)
+Bolu claps.
+
+BOLU: "Part 1 mein padhai... ab Part 2 mein MAZA!"
+GOLU: "Chal, games dikhaata hun!"
+
+──────────────────────────────────────────────────────────────
+
+SHOT 2 — BATTLE (0:03–0:07)
+Screen: [BATTLE — Golu 850 vs Bolu 720 — You Win!]
+Competitive faces at each other.
+
+BOLU: "Battle mein dost ko harao!"
+GOLU: "Champ! 850 points!"
+
+PIL NOTES: VS = 2 score cards + lightning between • angled eyebrows
+
+──────────────────────────────────────────────────────────────
+
+SHOT 3 — LEAGUE + SPIN (0:07–0:11)
+Screen flashes: [League — Rank #3 ↑] → [Daily Spin — +50 XP Jackpot]
+Bolu raises arm spinning; Golu thumbs up.
+
+GOLU: "League mein rank badhao!"
+BOLU: "Aur Spin karke XP kamao! JACKPOT!"
+
+PIL NOTES: spin wheel = circle + colored segments + pointer
+           league = podium 1-2-3 + flag
+
+──────────────────────────────────────────────────────────────
+
+SHOT 4 — DAILY ROUTINE (0:11–0:15)
+Screen flashes: [Homework ✅] → [Viva] → [Flashcards 10/10]
+Golu ticks checklist.
+
+GOLU: "Daily homework, viva practice, flashcards — roz ka routine set!"
+
+──────────────────────────────────────────────────────────────
+
+SHOT 5 — SMART TOOLS (0:15–0:19)
+Screen flashes: [Mistake Book — 12 fixed ✅] → [Pomodoro 25:00 🍅]
+               → [Weekly Wrapped — 5 din streak 🔥]
+
+BOLU: "Mistake book, Pomodoro focus timer, timetable planner!"
+GOLU: "Aur weekly wrapped — jaise Spotify, par padhai wala!"
+
+PIL NOTES: pomodoro = tomato circle + countdown • wrapped = colorful + 🔥
+
+──────────────────────────────────────────────────────────────
+
+SHOT 6 — SKILLS (0:19–0:23)
+Screen flashes: [Spoken English] → [Vedic Maths 99×99] → [Abacus Lv3]
+Bolu speaking pose.
+
+BOLU: "Spoken English, Vedic Maths, Abacus — extra skills FREE!"
+
+──────────────────────────────────────────────────────────────
+
+SHOT 7 — OLYMPIAD + COMMUNITY (0:23–0:27)
+Screen flashes: [Olympiad — Registration OPEN] → [Community — 1000+ online]
+Golu medal pose (hand on chest).
+
+GOLU: "Olympiad guide bhai — scholarship tak ka raasta!"
+BOLU: "Aur community mein poore India ke students!"
+
+PIL NOTES: medal = gold circle + ribbon • community = India map + dots
+
+──────────────────────────────────────────────────────────────
+
+SHOT 8 — GRAND FINALE + CTA (0:27–0:30)
+Zoom out, both center, arms crossed, swag.
+
+GOLU: "Itne features... ek app mein..."
+BOLU: "Aur ek bhi ad nahi! FREE hai bhai!"
+BOTH: "EDUVA — padhai ka asli dost!"
+
+END CARD (2 sec):
+  "🎁 31 December 2026 tak FREE"
+  "👉 eduva-app.vercel.app"
+
+══════════════════════════════════════════════════════════════
+TTS DIALOGUE SHEET (copy into TTSMaker directly)
+══════════════════════════════════════════════════════════════
+
+[GOLU lines - pitch -4]
+Arre Bolu... ek app kaafi hai. Dekh!
+Sawal atka? Photo bhej — step-by-step solution, Hindi ya English mein!
+Roz fresh questions — AI DPP. Kisi book se copy nahi!
+Aur mummy-papa ko teri progress seedha WhatsApp par!
+Edu Sir se baat kar — bol champion!
+Chal, games dikhaata hun!
+League mein rank badhao!
+Daily homework, viva practice, flashcards — roz ka routine set!
+Aur weekly wrapped — jaise Spotify, par padhai wala!
+Olympiad guide bhai — scholarship tak ka raasta!
+Itne features... ek app mein...
+
+[BOLU lines - pitch +2]
+Bhai! Padhai ke liye 10 apps, 15 books... dimaag ghoom gaya!
+Mock test! All India Test! Certificate bhi milega!
+Aur Paper Predictor bata dega exam mein kya aayega!
+Mummy ne reply kiya — Good beta!
+NCERT notes, PYQ question papers, video lectures — sab ek jagah!
+Ye tha Part 1... Part 2 mein GAMES!
+Part 1 mein padhai... ab Part 2 mein MAZA!
+Battle mein dost ko harao!
+Aur Spin karke XP kamao! JACKPOT!
+Mistake book, Pomodoro focus timer, timetable planner!
+Spoken English, Vedic Maths, Abacus — extra skills FREE!
+Aur community mein poore India ke students!
+Aur ek bhi ad nahi! FREE hai bhai!
+EDUVA — padhai ka asli dost!
+
+[BOTH together]
+EDUVA — padhai ka asli dost!
+
+══════════════════════════════════════════════════════════════
+POSTING PLAN
+══════════════════════════════════════════════════════════════
+Day 1 (7 PM): Part 1 + caption hook + pin comment
+Day 2 (7 PM): Part 2 + caption hook + pin comment
+Day 3 (7 PM): "Full tour dekh liya? Ab khud try karo — FREE 👉 link bio"
+Story: har episode ke saath poster swipe-up
+WhatsApp groups: dono parts forward + poster
+
+CAPTION TEMPLATE (Part 1):
+10 apps + 15 books = confusion? 🤯
+1 app = sab kuch! 😱
+Part 2 kal same time! 👇
+#GoluBolu #EDUVA #Class10 #BoardExam #FreeEducation
+
+PIN COMMENT:
+Poore 40+ features EDUVA par FREE — 31 Dec 2026 tak 👉 link bio

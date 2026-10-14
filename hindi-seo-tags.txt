@@ -1,0 +1,21 @@
+=== EDUVA HINDI SEO TITLE/META TAGS ===
+अपने existing pages की <head> में यह बदलो:
+
+--- class-10-maths-formulas.html ---
+<title>Class 10 Maths Formula PDF — Hindi में FREE | EDUVA</title>
+<meta name="description" content="क्लास 10 Maths के सभी formulas Hindi में — FREE download। NCERT solutions, mock tests, doubt solver। 31 Dec 2026 तक 100% FREE।">
+
+--- class-10-science-*.html (हर chapter page) ---
+<title>[Chapter Name] Class 10 Hindi में — NCERT Solutions FREE | EDUVA</title>
+<meta name="description" content="[Chapter] के आसान Hindi notes, solved examples और mock test — बिल्कुल FREE। Photo भेजो, तुरंत solution पाओ। Class 6-12 के लिए।">
+
+--- olympiad guide page ---
+<title>Olympiad तैयारी FREE — Class 6-10 | Hindi + English | EDUVA</title>
+<meta name="description" content="Olympiad guide, practice questions और tests — FREE में। Hindi medium students के लिए। आज ही शुरू करो, कोई fees नहीं!">
+
+=== नए pages बनाने के लिए keywords (Google में search volume वाले) ===
+1. ncert-solutions-hindi-class-10.html  → "ncert solutions class 10 hindi"
+2. class-10-board-exam-tips-hindi.html  → "बोर्ड परीक्षा की तैयारी कैसे करें"
+3. free-tuition-app-hindi.html          → "फ्री ट्यूशन ऐप हिंदी"
+4. class-10-time-table-hindi.html       → "क्लास 10 टाइम टेबल हिंदी"
+5. maths-doubt-solver-hindi.html        → "maths का सवाल solve करने वाला app"
