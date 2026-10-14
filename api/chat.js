@@ -1,9 +1,9 @@
 // ============================================================
-// EDUVA — api/chat.js v3.5 (MULTI-IMAGE + TEACHER MODE PATCH)
+// EDUVA — api/chat.js v3.6 (BILINGUAL + BOARD EXAM MODE)
 // Gemini → (retry) → Groq → OpenRouter | Photos: Gemini → OpenRouter-Vision
-// NEW: (1) body.images = [base64...] multi-page support
-//      (2) body.system = custom system prompt (Teacher Panel ke liye)
-//      (3) OpenRouter max_tokens 4096 (lambe audit reports ke liye)
+// NEW v3.6: (1) हर answer Hindi + English दोनों में
+//           (2) Board Exam Mode: marks-wise format, exam tips,
+//               common mistakes, practice question
 // ============================================================
 const crypto = require('crypto');
 const FS_PROJECT = 'eduva-app-5ecec';
@@ -12,11 +12,18 @@ const FS_KEY = process.env.FS_KEY || 'AIzaSyDO_fAFk8PITh9opzWXPIM_g7wd1NzXsHw';
 const SYSTEM_PROMPT = `तुम "Edu Sir" हो — कोटा का प्यार भरा, high-energy mentor (22-24 साल का बड़ा भाई)।
 कड़े नियम:
 0. स्वभाव: कभी गुस्सा/चिढ़/थकान नहीं दिखाना। छात्र 20 बार भी पूछे — हर बार प्यार से।
-1. भाषा (सबसे ज़रूरी): हर जवाब उसी भाषा में दो जो latest message में बताई गई हो; नहीं तो सवाल की भाषा में। छात्र नई भाषा माँगे तो तुरंत बदल दो।
-2. हमेशा सवाल का सीधा, पूरा, step-by-step उत्तर दो — filler से शुरुआत नहीं। Solution पहले, कोई लंबी भूमिका नहीं। Motivation/शायरी हो तो सिर्फ आखिर में 1 छोटी line, solution के बीच में कुछ नहीं।
+1. भाषा (सबसे ज़रूरी): हर जवाब हिंदी में मुख्य रूप से दो, और उसके साथ English version भी दो। Format: पहले Hindi में पूरा solution, फिर separator "— ENGLISH —" के बाद English में solution (या कम से कम English में key terms + final answer)। अगर सवाल सिर्फ English में हो तो भी Hindi में भी समझा दो। छात्र नई भाषा माँगे तो उसी में जवाब दो।
+2. हमेशा सवाल का सीधा, पूरा, step-by-step उत्तर दो — filler से शुरुआत नहीं। Solution पहले, कोई लंबी भूमिका नहीं। Motivation/शायरी हो तो सिर्फ आखिर में 1 छोटी line।
 3. कोई गाली नहीं। छात्र को "चैंपियन" बुलाओ।
 4. हर उत्तर original हो।
-5. 📐 DIAGRAM नियम: अगर सवाल चित्र से संबंधित हो (त्रिभुज, वृत्त, ज्यामिति, ऊँचाई-दूरी, ग्राफ, ray diagram, संरचना), तो solution के साथ एक छोटा inline SVG चित्र ज़रूर दो। SVG के नियम: <svg viewBox="0 0 320 220">...</svg> में सिर्फ line, circle, polygon, path, text tags; labels अंग्रेजी अक्षर (A, B, C...); stroke="#1c2333" fill="none" (एक accent #2b6de0 इस्तेमाल कर सकते हो); कोई style/class/script attribute नहीं; सफ़ेद background नहीं (transparent)। चित्र ज़रूरी न हो तो SVG मत दो।`;
+5. 📐 DIAGRAM नियम: अगर सवाल चित्र से संबंधित हो (त्रिभुज, वृत्त, ज्यामिति, ऊँचाई-दूरी, ग्राफ, ray diagram, संरचना), तो solution के साथ एक छोटा inline SVG चित्र ज़रूर दो। SVG के नियम: <svg viewBox="0 0 320 220">...</svg> में सिर्फ line, circle, polygon, path, text tags; labels अंग्रेजी अक्षर (A, B, C...); stroke="#1c2333" fill="none" (एक accent #2b6de0 इस्तेमाल कर सकते हो); कोई style/class/script attribute नहीं; सफ़ेद background नहीं (transparent)। चित्र ज़रूरी न हो तो SVG मत दो।
+
+🎯 BOARD EXAM MODE (हर academic सवाल पर):
+- शुरुआत में एक line में बता दो: "📚 [Class X] • [Subject] • [Chapter name, NCERT]"
+- हर solution के बाद "✍️ Exam Tip" दो: यह सवाल कितने marks का आ सकता है (2/3/5 marks) और उस marks के हिसाब से answer कैसे लिखना है — 2-marker में सिर्फ 2 line, 5-marker में step + explanation + example।
+- आखिर में "⚠️ Common Mistake" दो: बच्चे यहाँ क्या गलती करते हैं और marks कटते हैं।
+- फिर "📝 Ab ye try karo" दो: 1 similar practice सवाल (बिना answer के) ताकि student खुद solve करे।
+- Answer length: 2-marker के लिए छोटा, 5-marker के लिए पूरा — smart तरीके से adjust करो। बहुत लंबा मत लिखो।`;
 
 function fetchT(url, opts, ms) {
   const ctrl = new AbortController();
@@ -24,7 +31,7 @@ function fetchT(url, opts, ms) {
   return fetch(url, Object.assign({}, opts, { signal: ctrl.signal })).finally(() => clearTimeout(t));
 }
 function cacheKey(text) {
-  const norm = String(text).toLowerCase().replace(/[^a-z0-9\u0900-\u097F]+/g, ' ').trim(); // FIX: full text hash — no slice (boilerplate prefix used to hide the actual question)
+  const norm = String(text).toLowerCase().replace(/[^a-z0-9\u0900-\u097F]+/g, ' ').trim();
   return crypto.createHash('sha256').update(norm).digest('hex').slice(0, 40);
 }
 async function cacheGet(id) {
@@ -47,9 +54,6 @@ async function cacheSet(id, answer) {
   } catch (e) {}
 }
 
-// ✅ NEW: images normalize karo — dono format support:
-//   - dataURL ("data:image/jpeg;base64,/9j/...")  — purana single `image` field
-//   - plain base64 ("9j/4AAQSkZJRg...")           — Teacher Panel ka `images` array
 function normImages(image, images) {
   const raw = [];
   if (Array.isArray(images) && images.length) raw.push(...images);
@@ -108,7 +112,6 @@ async function askOpenRouter(message, imgs, sysPrompt) {
   const model = process.env.OR_MODEL || 'google/gemini-2.0-flash-001:free';
   let userContent = message;
   if (imgs.length) {
-    // ✅ multi-photo: text pehle, phir saari images
     userContent = [{ type: 'text', text: message }];
     imgs.forEach(im => userContent.push({ type: 'image_url', image_url: { url: im.dataUrl } }));
   }
@@ -118,7 +121,7 @@ async function askOpenRouter(message, imgs, sysPrompt) {
     body: JSON.stringify({
       model: model,
       messages: [{ role: 'system', content: sysPrompt }, { role: 'user', content: userContent }],
-      max_tokens: 4096,   // ✅ lambe audit reports ke liye
+      max_tokens: 4096,
       temperature: 0.7
     })
   });
@@ -180,13 +183,11 @@ module.exports = async function handler(req, res) {
   } catch (e) {}
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-  // ✅ NEW: images array + custom system prompt (Teacher Panel)
   const { message, image, images, system } = body;
   const sysPrompt = (typeof system === 'string' && system.trim()) ? system.trim() : SYSTEM_PROMPT;
   const imgs = normImages(image, images);
   if ((!message || !String(message).trim()) && !imgs.length) return res.status(400).json({ error: 'Message ya photo toh bhejo!' });
 
-  // ✅ size check: saari images milakar 10MB tak (multi-page ke liye)
   const totalSize = imgs.reduce((a, im) => a + im.data.length, 0);
   if (totalSize > 14000000) return res.status(413).json({ error: 'Photos bahut badi hain — kam pages ya chhoti photo bhejo.' });
   const msg = String(message || '').trim();
