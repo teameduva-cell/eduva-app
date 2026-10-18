@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDUVA – Free AI Study App Class 6-12 | Doubt Solver, Homework, Mock Tests (Hindi)</title>
-<!-- BUILD: EDUVA-v4.5-20261007 -->
+<!-- BUILD: EDUVA-v4.6-20261007 -->
     <meta name="description" content="EDUVA — Class 6-12 के लिए FREE AI study app (Hindi + English medium)। Photo भेजो = instant step-by-step solution, homework, mock tests, Olympiad guide। 31 December 2026 तक 100% FREE — No ads, no fees!">
     <meta name="keywords" content="free study app, padhai app, doubt solving app, class 10 maths solution, AI teacher hindi, free coaching app, NCERT solutions, olympiad preparation, board exam preparation, homework app, EDUVA, Edu Sir">
     <meta name="author" content="EDUVA">
@@ -932,7 +932,7 @@ gtag('config', 'G-51MMG9S9F6');
                     <button type="button" class="eduva-back-btn" onclick="goBack()" aria-label="वापस जाएं">←</button>
                     <div>
                         <h2 class="text-lg font-black text-slate-900">🧭 Explore EDUVA</h2>
-                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.5</span></p>
+                        <p class="text-[11px] font-bold text-slate-500">Padhai • Tests • Games • Tools — sab kuch yahan milega • <span class="mono-font text-cyan-600">v4.6</span></p>
                     </div>
                 </div>
 
@@ -5842,6 +5842,92 @@ if ('serviceWorker' in navigator) {
             if(b) b.classList.remove('hidden');
         }
     }, 2000);
+    </script>
+
+
+    <!-- 💎 VALUE-FIRST POPUP — pehla doubt ke BAAD hi aata hai -->
+    <div id="ed-value-popup" class="hidden fixed inset-x-0 bottom-0 z-[88] p-3 pb-[calc(12px+env(safe-area-inset-bottom))]" style="display:none;">
+        <div class="max-w-md mx-auto rounded-3xl p-[1.5px] shadow-2xl" style="background:linear-gradient(135deg,#f59e0b,#ec4899,#8b5cf6);">
+            <div class="rounded-3xl bg-white p-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0" style="background:linear-gradient(135deg,#dbeafe,#ede9fe);">🎉</div>
+                    <div class="flex-1 min-w-0">
+                        <p class="font-black text-slate-900 text-sm">Solution pasand aaya, champion?</p>
+                        <p class="text-[11px] font-bold text-slate-500 mt-0.5">Ek baar save karo — kal bina link ke seedha aana! 💙</p>
+                    </div>
+                    <button onclick="edCloseValuePopup()" class="w-8 h-8 rounded-full bg-slate-100 text-slate-400 text-sm cursor-pointer shrink-0">✕</button>
+                </div>
+                <div class="grid grid-cols-2 gap-2 mt-3.5">
+                    <button onclick="edPopupInstall()" class="py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-black text-xs cursor-pointer shadow-md active:scale-[0.97] transition">📲 Home Screen पर रखो</button>
+                    <button onclick="edPopupLogin()" class="py-3 rounded-2xl bg-slate-900 text-white font-black text-xs cursor-pointer shadow-md active:scale-[0.97] transition">🔥 Login (1 tap) — streak बचाओ</button>
+                </div>
+                <button onclick="edCloseValuePopup()" class="w-full mt-2.5 py-1.5 text-[10.5px] font-bold text-slate-400 cursor-pointer">अभी नहीं, बाद में</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 💎 Value-first popup logic -->
+    <script>
+    (function(){
+        var SHOWN_KEY = 'eduva_value_popup_v1';
+        var lastWasChat = false, shown = false, pendingTimer = null;
+
+        function shouldShow(){
+            try { return !localStorage.getItem(SHOWN_KEY); } catch(e){ return true; }
+        }
+        function markShown(){
+            try { localStorage.setItem(SHOWN_KEY, '1'); } catch(e){}
+        }
+        window.edCloseValuePopup = function(){
+            var p = document.getElementById('ed-value-popup');
+            if(p){ p.style.display='none'; p.classList.add('hidden'); }
+            markShown();
+        };
+        window.edPopupInstall = function(){
+            markShown();
+            var p = document.getElementById('ed-value-popup');
+            if(p){ p.style.display='none'; p.classList.add('hidden'); }
+            try { if(typeof eduvaInstallApp === 'function'){ eduvaInstallApp(); return; } } catch(e){}
+            alert('📲 Chrome menu (⋮) → "Add to Home screen" / "Install app"');
+        };
+        window.edPopupLogin = function(){
+            markShown();
+            var p = document.getElementById('ed-value-popup');
+            if(p){ p.style.display='none'; p.classList.add('hidden'); }
+            try { if(typeof handleHeaderAuthClick === 'function'){ handleHeaderAuthClick(); return; } } catch(e){}
+            try { if(typeof openLoginModal === 'function'){ openLoginModal(); } } catch(e){}
+        };
+        function showPopup(){
+            if(shown || !shouldShow()) return;
+            shown = true; markShown();
+            var p = document.getElementById('ed-value-popup');
+            if(!p) return;
+            p.classList.remove('hidden'); p.style.display='block';
+            if(window.edLogEvent) edLogEvent('value_popup_shown');
+        }
+        function wrap(){
+            if(typeof switchTab !== 'function' || switchTab._edValueWrapped) return;
+            var orig = switchTab;
+            var w = function(name){
+                var r;
+                try { r = orig.apply(this, arguments); } catch(e){ r = undefined; }
+                if(name === 'chat'){ lastWasChat = true; }
+                else if(lastWasChat && name !== 'chat'){
+                    lastWasChat = false;
+                    if(shouldShow() && !shown){
+                        clearTimeout(pendingTimer);
+                        pendingTimer = setTimeout(showPopup, 900);
+                    }
+                }
+                return r;
+            };
+            w._edValueWrapped = true;
+            w._edPatched = true;
+            window.switchTab = w;
+        }
+        if(document.readyState === 'complete'){ wrap(); }
+        else { window.addEventListener('load', wrap); }
+    })();
     </script>
 
 </body>
